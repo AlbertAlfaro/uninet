@@ -1,0 +1,28 @@
+
+//
+// accordion.scss
+//
+
+.custom-accordion {
+
+    .card {
+        + .card {
+            margin-top: 0.5rem;
+        }
+    }
+
+    a {
+
+        &.collapsed {
+            i.accor-down-icon {
+                &:before {
+                    content: "\F0140";
+                }
+            }
+        }
+    }
+
+    .card-body {
+        color: $text-muted;
+    }
+}

@@ -1,0 +1,66 @@
+// 
+// authentication.scss
+//
+
+
+// authentication home icon
+.home-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+}
+
+.authentication-bg{
+    background-color: $auth-bg;
+    .auth-logo{
+        .logo{
+            margin: 0px auto;
+        }
+    }
+
+}
+
+
+// signin card title
+
+.signin-other-title{
+    position: relative;
+    &:after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        left: 0;
+        right: 0;
+        background-color: $border-color;
+        top: 10px;
+    }
+
+    .title{
+        display: inline-block;
+        position: relative;
+        z-index: 9;
+        background-color: $card-bg;
+        padding: 2px 16px;
+    }
+}
+
+
+// auth carousel
+
+.auth-carousel{
+    &.owl-theme {
+        .owl-dots {
+            .owl-dot {
+                span{
+                    background-color: $card-bg;
+                }
+                &.active{
+                    span{
+                        background-color: $primary;
+                    }
+                }
+            }
+        }
+    }
+}

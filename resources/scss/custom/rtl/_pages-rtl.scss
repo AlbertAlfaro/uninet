@@ -1,0 +1,191 @@
+// 
+// pages-rtl.scss
+//
+
+.search-box{
+    .form-control{
+        padding-left: 12px;
+        padding-right: 40px;
+    }
+
+    .search-icon{
+        left: auto;
+        right: 13px;
+    }
+}
+
+
+// timeline
+
+.verti-timeline{
+    padding-left: 0;
+    padding-right: 100px;
+
+    .event-list{
+        border-right: 3px dashed $gray-300;
+        border-left: 0;
+        padding: 0px 30px 30px 0px;
+
+        &:after {
+            left: auto;
+            right: -6px;
+        }
+
+        .event-date{
+            left: auto;
+            right: -102px;
+        }
+    }
+}
+
+// email
+
+.email-leftbar{
+    float: right;
+}
+
+.email-rightbar {
+    margin-right: 260px;
+    margin-left: 0px;
+}
+
+.message-list {
+    li {
+        .col-mail{
+            float: right;
+        }
+        .col-mail-1{
+            .star-toggle, .checkbox-wrapper-mail, .dot{
+                float: right
+            }
+            .checkbox-wrapper-mail {
+                margin: 15px 20px 0 10px;
+            }
+            .star-toggle {
+                margin-right: 5px;
+            }
+            
+            .title {
+                right: 110px;
+                left: 0;
+            }
+        }
+        .col-mail-2{
+            right: 320px;
+            left: 0;
+
+            .subject {
+                right: 0;
+                left: 200px;
+            }
+
+            .date {
+                left: 0;
+                right: auto;
+                padding-right: 80px;
+                padding-left: 0px;
+            }
+        
+        }
+    }
+    .checkbox-wrapper-mail {
+        label{
+            &:before{
+                right: 4px;
+            }
+        }
+    }
+}
+
+@media (max-width: 767px){
+    .email-leftbar {
+        float: none !important;
+        width: 100%;
+    }
+    .email-rightbar {
+        margin-right: 0;
+    }
+}
+
+// chat
+
+.chat-list {
+    li{
+        .unread-message{
+            right: auto;
+            left: 16px;
+        }
+    }
+}
+
+.chat-conversation{
+    .conversation-list {
+        .ctext-wrap-content{
+            margin-left: 0;
+            margin-right: 16px;
+            border-radius: 8px 0 8px 8px;
+
+            &::before{
+                left: auto;
+                right: -10px;
+                border-right-color: transparent;
+                border-left-color: rgba($primary,0.1);
+            }
+
+        }
+    }
+
+    .right{
+        .conversation-list{
+            float: left;
+            text-align: left;
+            .ctext-wrap{
+                .ctext-wrap-content{
+                    text-align: left;
+                    border-radius: 0 8px 8px 8px;
+                    margin-right: 0;
+                    margin-left: 16px;
+
+                    &::before{
+                        right: auto;
+                        left: -10px;
+                        border-left-color: transparent;
+                        border-right-color: $light;
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+// ecommerce
+
+.product-wishlist{
+    right: auto;
+    left: 20px;
+}
+
+.product-img{
+    .product-ribbon{
+        left: auto;
+        right: 20px;
+    }
+}
+
+
+.card-radio-input{
+    &:checked+.card-radio:before{
+        right: auto;
+        left: 20px;
+    }
+}
+
+// authentication
+
+.home-btn {
+    position: absolute;
+    left: 25px;
+    right: auto;
+}
+

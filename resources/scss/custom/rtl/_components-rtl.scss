@@ -1,0 +1,56 @@
+//
+// components-rtl.scss
+//
+
+// Blockquote
+
+.blockquote{
+  border-left: 0;
+  border-right: 4px solid $gray-300;
+}
+
+.blockquote-reverse{
+  border-right: 0;
+  border-left: 4px solid $gray-300;
+}
+
+
+// widgets
+
+.main-chart {
+  .chart-border-left {
+      border-left: 0;
+      border-right: 1.4px solid $gray-200;
+  }
+}
+
+.activity-feed{
+  .feed-item{
+    padding-left: 0;
+    padding-right: 16px;
+    border-left: 0;
+    border-right: 2px solid $light;
+    &:after{
+      left: auto;
+      right: -6px;
+    }
+  }
+}
+
+
+// Invoice
+
+@media print {
+  .content-page,
+  .content,
+  body {
+      margin-right: 0;
+  }
+}
+
+// Demos button 
+.demos-show-btn {
+  left: 0;
+  right: auto;
+  border-radius: 0 6px 6px 0;
+}

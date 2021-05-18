@@ -1,0 +1,33 @@
+// 
+// _table.scss
+// 
+
+.table {
+  th {
+      font-weight: $font-weight-bold;
+  }
+}
+
+//Table centered
+.table-centered {
+  td,th {
+      vertical-align: middle !important;
+  }
+}
+
+.table-nowrap {
+  th, td {
+    white-space: nowrap;
+  }
+}
+
+// table card list
+
+.table-card-list{
+  border-collapse:separate; 
+  border-spacing:0 12px; 
+  tr{
+    background-color: $card-bg;
+  }
+
+}

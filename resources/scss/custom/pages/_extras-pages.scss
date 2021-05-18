@@ -1,0 +1,32 @@
+// 
+// Extras pages.scss
+//
+
+// Faqs
+
+.faq-nav-tabs{
+    .nav-link{
+        margin-bottom: 8px;
+        background-color: $light;
+        padding: 8px 16px;
+        .nav-icon{
+            font-size: 24px;
+            vertical-align: middle;
+        }
+    }
+    
+}
+
+
+// pricing
+
+.pricing-box{
+    max-width: 388px;
+    margin: 0px auto 20px;
+
+    .plan-features{
+        li{
+            padding: 7px 0px;
+        }
+    }
+}

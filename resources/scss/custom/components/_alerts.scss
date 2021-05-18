@@ -1,0 +1,17 @@
+
+//
+// alerts.scss
+//
+
+.alert-border{
+    background-color: $card-bg;
+    border-color: $light;
+    border-top: 2px solid $light;
+  }
+  
+  @each $color,
+  $value in $theme-colors {
+      .alert-border-#{$color} {
+          border-top-color: $value;
+      }
+  }

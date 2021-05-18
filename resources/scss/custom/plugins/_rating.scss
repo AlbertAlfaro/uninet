@@ -1,0 +1,71 @@
+
+//
+// Rating
+//
+
+.br-wrapper{
+  display: inline-block;
+}
+
+.br-theme-fontawesome-stars, .br-theme-css-stars {
+  .br-widget {
+    a{
+      font-weight: 900;
+
+      &.br-selected{
+        &:after{
+          color: $warning;
+        }
+      }
+  
+    }
+  }
+}
+
+.br-theme-fontawesome-stars {
+  .br-widget {
+    a{
+      font-weight: 900;
+  
+    }
+  }
+}
+
+.br-theme-fontawesome-stars, .br-theme-fontawesome-stars-o {
+  .br-widget {
+    a{
+      font-family: 'Font Awesome 5 Free'
+    }
+  }
+}
+
+.br-theme-fontawesome-stars-o {
+  .br-widget a{
+
+    &.br-selected, &.br-active, &.br-fractional{
+      &:after{
+        font-weight: 900;
+        color: $success;
+      }
+    }
+
+    &.br-fractional:after, &:after{
+      content: '\f005';
+    }
+  }
+}
+
+
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+
+// rating 1to10
+
+.br-theme-bars-1to10 .br-widget {
+  .br-current-rating{
+    line-height: inherit;
+  }
+}

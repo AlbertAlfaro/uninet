@@ -21,8 +21,8 @@ class RolesController extends Controller
     public function store(Request $request){
         $role = Role::create(['name' => $request->nombre_rol]);
         flash()->success("Registro creado exitosamente!")->important();
-        //$obj_controller_bitacora=new bitacoraController();	
-        //$obj_controller_bitacora->create_mensaje('Rol creado');
+        $obj_controller_bitacora=new BitacoraController();
+        $obj_controller_bitacora->create_mensaje('Rol creado');
         return redirect()->route('roles.index');
 
     }
@@ -58,8 +58,8 @@ class RolesController extends Controller
         }
 
         flash()->success("Permisos asignados exitosamente!")->important();
-        //$obj_controller_bitacora=new bitacoraController();	
-        //$obj_controller_bitacora->create_mensaje('Rol editado con el id: '.$id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Rol editado con el id: '.$id);
         return redirect()->route('roles.index');
 
     }
@@ -67,8 +67,8 @@ class RolesController extends Controller
     public function destroy($id){
         Role::destroy($id);
         flash()->success("Registro eliminado exitosamente!")->important();
-        //$obj_controller_bitacora=new bitacoraController();	
-        //$obj_controller_bitacora->create_mensaje('Rol eliminado con el id: '.$id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Rol eliminado con el id: '.$id);
         return redirect()->route('roles.index');
     }
 }

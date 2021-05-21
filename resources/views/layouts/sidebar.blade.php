@@ -56,6 +56,9 @@
                         @can('Permisos')
                         <li><a href="{{url('permission')}}">Permisos</a></li>
                         @endcan
+                        @can('bitacora')
+                        <li><a href="{{url('bitacora')}}">Bitacora</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

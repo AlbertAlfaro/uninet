@@ -34,6 +34,10 @@ class UsersController extends Controller
         $user=User::find($id->id);
         $role=Role::find($request->id_role);
         $user->assignRole($role->name);
+
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Usuario creado con el rol: '.$role->name);
+
         flash()->success("Registro creado exitosamente!")->important();
         return redirect()->route('users.index');
     }
@@ -82,12 +86,16 @@ class UsersController extends Controller
             }
             
         }
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Usuario editado con  id: '.$request->id_usuario.' y rol: '.$request->id_role);
         flash()->success("Registro editado exitosamente!")->important();
         return redirect()->route('users.index');
     }
 
     public function destroy($id){
         User::destroy($id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Usuario eliminado con  id: '.$id);
         flash()->success("Registro eliminado exitosamente!")->important();
         return redirect()->route('users.index');
     }

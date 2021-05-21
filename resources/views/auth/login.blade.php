@@ -68,7 +68,7 @@ Login
                     </div>
                 </div>
                 <div class="mt-5 text-center">
-                    <p>© 2021 UNINEX.</p>
+                    <p>© 2021 UNINET.</p>
                 </div>
             </div>
         </div>

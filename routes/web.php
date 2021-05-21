@@ -21,6 +21,7 @@ Route::get('index', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => ['permission:Administracion']], function () {
     //grupo users
+            //ruta      //controlador al que apunta la ruta        //nombre de la funcion   //permiso               //nombre de la ruta
     Route::get('users',[App\Http\Controllers\UsersController::class ,'index'])->middleware('permission:Usuarios')->name('users.index');
     Route::get('users/create',[App\Http\Controllers\UsersController::class ,'create'])->middleware('permission:Usuarios')->name('users.create');
     Route::post('users/store',[App\Http\Controllers\UsersController::class ,'store'])->middleware('permission:Usuarios')->name('users.store');
@@ -48,3 +49,17 @@ Route::group(['middleware' => ['permission:Administracion']], function () {
     Route::get('bitacora',[App\Http\Controllers\BitacoraController::class ,'index'])->middleware('permission:bitacora')->name('bitacora.index');
 });
 
+Route::group(['middleware' => ['permission:Clientes']], function () {
+
+    Route::get('cliente',[App\Http\Controllers\ClienteController::class ,'index'])->middleware('permission:index_cliente')->name('cliente.index');
+    Route::get('cliente/create',[App\Http\Controllers\ClienteController::class ,'create'])->middleware('permission:create_cliente')->name('cliente.create');
+    Route::post('cliente/store',[App\Http\Controllers\ClienteController::class ,'store'])->middleware('permission:create_cliente')->name('cliente.store');
+    Route::get('cliente/edit/{id}',[App\Http\Controllers\ClienteController::class ,'edit'])->middleware('permission:edit_cliente')->name('cliente.edit');
+    Route::post('cliente/update/{id}',[App\Http\Controllers\ClienteController::class ,'update'])->middleware('permission:edit_cliente')->name('cliente.update');
+    Route::get('cliente/destroy/{id}',[App\Http\Controllers\ClienteController::class ,'destroy'])->middleware('permission:destroy_cliente')->name('cliente.distroy');
+
+});
+
+//Usuario1 -> rol-> administrador_cliente-> index_cliente,create_cliente,edit_cliente
+//Usuario2 -> rol-> administrador-> all_permission
+//Usuario3 -> rol-> cliente-> index_factura,pay_factura

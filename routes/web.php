@@ -47,6 +47,15 @@ Route::group(['middleware' => ['permission:Administracion']], function () {
 
     //rutas bitacora
     Route::get('bitacora',[App\Http\Controllers\BitacoraController::class ,'index'])->middleware('permission:bitacora')->name('bitacora.index');
+    
+    //grupo actividades
+    Route::get('actividades',[App\Http\Controllers\ActividadesController::class ,'index'])->middleware('permission:Actividades')->name('actividades.index');
+    Route::get('actividades/create',[App\Http\Controllers\ActividadesController::class ,'create'])->middleware('permission:Actividades')->name('actividades.create');
+    Route::post('actividades/store',[App\Http\Controllers\ActividadesController::class ,'store'])->middleware('permission:Actividades')->name('actividades.store');
+    Route::get('actividades/edit/{id}',[App\Http\Controllers\ActividadesController::class ,'edit'])->middleware('permission:Actividades')->name('actividades.edit');
+    Route::post('actividades/update/{id}',[App\Http\Controllers\ActividadesController::class ,'update'])->middleware('permission:Actividades')->name('actividades.update');
+    Route::get('actividades/destroy/{id}',[App\Http\Controllers\ActividadesController::class ,'destroy'])->middleware('permission:Actividades')->name('actividades.distroy');
+
 });
 
 Route::group(['middleware' => ['permission:Clientes']], function () {

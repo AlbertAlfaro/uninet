@@ -22,6 +22,7 @@ class CreateOrdenesTable extends Migration
             $table->string('observacion')->nullable();
             $table->string('recepcion')->nullable();
             $table->date('fecha_trabajo')->nullable();
+            $table->string('tipo_servicio');
             $table->timestamps();
         });
     }

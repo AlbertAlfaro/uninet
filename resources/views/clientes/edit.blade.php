@@ -4,7 +4,6 @@ Usuarios
 @endsection
 @section('css')
     <!-- DataTables -->
-    <link href="{{ URL::asset('assets/libs/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
 @endsection
@@ -115,10 +114,8 @@ Usuarios
 
 @endsection
 @section('script')
-    <script src="{{ URL::asset('assets/libs/datatables/datatables.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/jszip/jszip.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{ URL::asset('assets/js/pages/datatables.init.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 

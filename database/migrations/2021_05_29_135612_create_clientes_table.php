@@ -15,6 +15,7 @@ class CreateClientesTable extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo');
             $table->string('nombre');
             $table->string('email')->unique();
             $table->string('dui');
@@ -25,6 +26,9 @@ class CreateClientesTable extends Migration
             $table->integer('id_municipio');
             $table->string('dirreccion');
             $table->string('dirreccion_cobro');
+            $table->string('ocupacion');// empleado, comerciante, independiente, otros
+            $table->string('condicion_lugar');//casa propia, alquilada, otros
+            $table->string('nombre_dueno');
             $table->string('numero_registro')->nullable();
             $table->string('giro')->nullable();
             $table->string('colilla');

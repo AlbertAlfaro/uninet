@@ -20,7 +20,7 @@ class BitacoraController extends Controller
 
     public function create_mensaje($mensajes){ 
         //Almacena la transacción en la base de datos
-           $fecha_hora= Carbon::now(); 
+        
            $obj_bitacora= new Bitacora();
            $obj_bitacora->id_usuario=Auth::user()->id;
            $obj_bitacora->transaccion_realizada=$mensajes;

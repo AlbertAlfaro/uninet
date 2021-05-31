@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrasladosTable extends Migration
+class CreateReconexionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateTrasladosTable extends Migration
      */
     public function up()
     {
-        Schema::create('traslados', function (Blueprint $table) {
+        Schema::create('reconexions', function (Blueprint $table) {
             $table->id();
             $table->integer('id_cliente');
             $table->integer('id_usuario');
             $table->integer('id_tecnico');
-            $table->string('nueva_direccion')->nullable();
-            $table->date('fecha_trabajo')->nullable();
             $table->string('observacion')->nullable();
+            $table->date('fecha_trabajo')->nullable();
             $table->string('tipo_servicio');
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ class CreateTrasladosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('traslados');
+        Schema::dropIfExists('reconexions');
     }
 }

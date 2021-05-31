@@ -60,12 +60,12 @@ Route::group(['middleware' => ['permission:Administracion']], function () {
 
 Route::group(['middleware' => ['permission:Clientes']], function () {
 
-    Route::get('cliente',[App\Http\Controllers\ClienteController::class ,'index'])->middleware('permission:index_cliente')->name('cliente.index');
-    Route::get('cliente/create',[App\Http\Controllers\ClienteController::class ,'create'])->middleware('permission:create_cliente')->name('cliente.create');
-    Route::post('cliente/store',[App\Http\Controllers\ClienteController::class ,'store'])->middleware('permission:create_cliente')->name('cliente.store');
-    Route::get('cliente/edit/{id}',[App\Http\Controllers\ClienteController::class ,'edit'])->middleware('permission:edit_cliente')->name('cliente.edit');
-    Route::post('cliente/update/{id}',[App\Http\Controllers\ClienteController::class ,'update'])->middleware('permission:edit_cliente')->name('cliente.update');
-    Route::get('cliente/destroy/{id}',[App\Http\Controllers\ClienteController::class ,'destroy'])->middleware('permission:destroy_cliente')->name('cliente.distroy');
+    Route::get('clientes',[App\Http\Controllers\ClientesController::class ,'index'])->middleware('permission:index_cliente')->name('clientes.index');
+    Route::get('clientes/create',[App\Http\Controllers\ClientesController::class ,'create'])->middleware('permission:create_cliente')->name('clientes.create');
+    Route::post('clientes/store',[App\Http\Controllers\ClientesController::class ,'store'])->middleware('permission:create_cliente')->name('clientes.store');
+    Route::get('clientes/edit/{id}',[App\Http\Controllers\ClientesController::class ,'edit'])->middleware('permission:edit_cliente')->name('clientes.edit');
+    Route::post('clientes/update/{id}',[App\Http\Controllers\ClientesController::class ,'update'])->middleware('permission:edit_cliente')->name('clientes.update');
+    Route::get('cliente/destroy/{id}',[App\Http\Controllers\ClientesController::class ,'destroy'])->middleware('permission:destroy_cliente')->name('clientes.distroy');
 
 });
 

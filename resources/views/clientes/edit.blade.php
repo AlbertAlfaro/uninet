@@ -23,21 +23,21 @@ Usuarios
 
                     <h4 class="card-title">Administracion de Usuarios</h4>
                     <p class="card-title-desc">
-                        Usted se encuentra en el modulo de Administracion de Usuarios Creacion.
+                        Usted se encuentra en el modulo de Administracion de Usuarios edicion.
                     </p>
                     <hr>
 
-                    <form action="{{Route('users.store')}}" method="post" id="form">
-                        @csrf
+                    <form action="{{Route('users.update',$user->id)}}" method="post" id="form">
+                        {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-8">
 
                                 <div class="row">
                                     <div class="form-group row col-md-6">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombres *</label>
                                         <div class="col-md-8">
-                                            
-                                            <input class="form-control" type="text"  id="name" name="name" required>
+                                            <input class="form-control" type="text"  id="id_usuario" name="id_usuario" value="{{$user->id}}" style="display: none" required>
+                                            <input class="form-control" type="text"  id="name" name="name" value="{{$user->name}}" required>
                                         </div>
                                     </div>
         
@@ -46,7 +46,7 @@ Usuarios
                                     <div class="form-group row col-md-6">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Correo electronico *</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="email"  id="email" name="email" required>
+                                            <input class="form-control" type="email"  id="email" name="email" value="{{$user->email}}" required>
                                             <ul class="parsley-errors-list filled" id="error_email" aria-hidden="false" style="display: none"><li class="parsley-required">Correo electronico ya registrado!</li></ul>
                                         </div>
                                     </div>
@@ -57,10 +57,14 @@ Usuarios
                                         <label for="example-text-input" class="col-md-4 col-form-label">Rol *</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" name="id_role" id="id_role" required>
-                                                <option value="" >Seleccionar...</option>
+                                                <option value="">Seleccionar...</option>
                                                 
-                                                   @foreach ($roles as $roles_item)
-                                                        <option value="{{$roles_item->id}}">{{$roles_item->name}}</option>
+                                                    @foreach ($roles as $roles_item)
+                                                        @if($user->id_rol==$roles_item->id)
+                                                            <option value="{{$roles_item->id}}" selected>{{$roles_item->name}}</option>
+                                                        @else
+                                                            <option value="{{$roles_item->id}}">{{$roles_item->name}}</option>
+                                                        @endif
                                                         
                                                     @endforeach
                                                     
@@ -68,30 +72,27 @@ Usuarios
                                             </select>
                                         </div>
                                     </div>
-                                    
                                 </div>
-                               
-                               
                                 <div class="row">
                                     <div class="form-group row col-md-6">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Cotraseña *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Cotraseña</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="password"  id="password" name="password" required>
+                                            <input class="form-control" type="password"  id="password" name="password">
                                         </div>
                                     </div>
         
                                 </div>
-
                                 <div class="row">
                                     <div class="form-group row col-md-6">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Repite la contraseña *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Repite la contraseña</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="password"  id="password2" name="password2" required>
+                                            <input class="form-control" type="password"  id="password2" name="password2">
                                             <ul class="parsley-errors-list filled" id="error" aria-hidden="false" style="display: none"><li class="parsley-required">Las contraseñas no coinciden!</li></ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        
                         </div>
                         <p class="card-title-desc">
                             * Campo requerido
@@ -122,6 +123,8 @@ Usuarios
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 
     <script type="text/javascript">
+     var id = $("#id_region").val();
+        filtro(id);
     $('#id_region').on('change', function() {
         var id = $("#id_region").val();
         filtro(id);
@@ -129,6 +132,7 @@ Usuarios
     function filtro(id) {
         // Guardamos el select de cursos
         var lab = $("#id_lab");
+        var id_user_lab = '{{ $user->id_lab }}';
 
         $.ajax({
             type:'GET',
@@ -137,7 +141,13 @@ Usuarios
                 lab.find('option').remove();
                 lab.append('<option value="">Seleccionar...</option>');
                 $(data).each(function(i, v){ // indice, valor
-                    lab.append('<option value="' + v.id_laboratorio + '">' + v.nombre_lab + '</option>');
+                    if(id_user_lab==v.id_laboratorio){
+                        lab.append('<option value="' + v.id_laboratorio + '" selected>' + v.nombre_lab + '</option>');
+
+                    }else{
+                        lab.append('<option value="' + v.id_laboratorio + '">' + v.nombre_lab + '</option>');
+
+                    }
                 })
             }
         });
@@ -209,16 +219,16 @@ Usuarios
         });
 
         $( "#email" ).change(function() {
-            verificacion_email($("#email").val());
+            verificacion_email($("#email").val(),$("#id_usuario").val());
         });
         $( "#nombre" ).change(function() {
-            verificacion_user($("#nombre").val());
+            verificacion_user($("#nombre").val(),$("#id_usuario").val());
         });
 
-        function verificacion_email(email){
+        function verificacion_email(email,id){
             $.ajax({
                 type: 'GET',
-                url: 'verificacion_email/'+email+'/0',
+                url: '/verificacion_email/'+email+'/'+id,
                 
                 success: function(data) {
                     if(data.mensaje==1){
@@ -234,10 +244,10 @@ Usuarios
             });
         }
 
-        function verificacion_user(user){
+        function verificacion_user(user,id){
             $.ajax({
                 type: 'GET',
-                url: 'verificacion_user/'+user+'/0',
+                url: '/verificacion_user/'+user+'/'+id,
                 
                 success: function(data) {
                     if(data.mensaje==1){

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class BitacoraController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     public function index(){
         $bitacora = Bitacora::select('bitacora.id','bitacora.ip_dispositivo','bitacora.updated_at','bitacora.transaccion_realizada','users.name')->join('users','bitacora.id_usuario','=','users.id')->get();
         return view('bitacora/index',compact('bitacora'));

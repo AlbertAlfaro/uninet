@@ -8,6 +8,9 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 class RolesController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     public function index(){
         $roles = Role::all();
         return view('roles.index',compact('roles'));

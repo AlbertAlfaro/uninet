@@ -40,6 +40,20 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                @can('Clientes')
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="uil-users-alt"></i>
+                        <span>Clientes</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        @can('index_cliente')
+                        <li><a href="{{url('clientes')}}">Gestión de Clientes</a></li>
+                        @endcan
+                    </ul>
+                    
+                </li>
+                @endcan
                 @can('Administracion')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class ActividadesController extends Controller
 {
+    public function __construct(){
+        // verifica si la session esta activa
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *

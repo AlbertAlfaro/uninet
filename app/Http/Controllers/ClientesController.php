@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ClientesController extends Controller
 {
     public function __construct(){
+        // verifica si la session esta activa
         $this->middleware('auth');
     }
     public function index(){

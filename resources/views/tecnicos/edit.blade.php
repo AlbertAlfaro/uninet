@@ -73,7 +73,7 @@ Tecnicos
                         </p>
 
                         <div class="mt-4">
-                            <a href="{{Route('actividades.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            <a href="{{Route('tecnicos.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

@@ -15,6 +15,7 @@ class CreateTrasladosTable extends Migration
     {
         Schema::create('traslados', function (Blueprint $table) {
             $table->id();
+            $table->string('numero');
             $table->integer('id_cliente');
             $table->integer('id_usuario');
             $table->integer('id_tecnico');

@@ -16,7 +16,7 @@ class CreateTecnicosTable extends Migration
         Schema::create('tecnicos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('dirreccion')->nullable();
+            $table->string('direccion')->nullable();
             $table->string('telefono');
             $table->string('correo')->nullable();
             $table->timestamps();

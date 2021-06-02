@@ -43,6 +43,7 @@ class CreateClientesTable extends Migration
             $table->string('internet');
             $table->string('cordenada')->nullable();
             $table->string('nodo')->nullable();
+            $table->integer('activo');
             $table->timestamps();
         });
     }

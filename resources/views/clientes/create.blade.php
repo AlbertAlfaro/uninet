@@ -837,7 +837,7 @@ Gestión de Clientes
                                                         <div class="col-md-4">
                                                             <div class="row">
                                                                 <div class="form-group row col-md-12">
-                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Resepción </label>
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Recepción </label>
                                                                     <div class="col-md-6">
                                                                         <input class="form-control" type="text"  id="recepcion" name="recepcion">
                                                                         

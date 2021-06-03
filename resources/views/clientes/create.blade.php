@@ -51,13 +51,7 @@ Gestión de Clientes
                                 <li class="nav-item">
                                     <a href="#progress-bank-detail" class="nav-link" data-toggle="tab">
                                         <span class="step-number mr-2">03</span>
-                                        Facturación
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#progress-confirm-detail" class="nav-link" data-toggle="tab">
-                                        <span class="step-number mr-2">04</span>
-                                        Contrato
+                                        Servicio
                                     </a>
                                 </li>
                             </ul>
@@ -69,6 +63,19 @@ Gestión de Clientes
                                 <div class="tab-pane" id="progress-seller-details">
                                     <form>
                                         <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Codigo *</label>
+                                                        <div class="col-md-8">
+                                                            
+                                                            <input class="form-control" type="text"  id="codigo" name="codigo" required>
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                
+                                            </div>
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
@@ -163,6 +170,26 @@ Gestión de Clientes
                                                 </div>
                 
                                             </div>
+                                            <div class="col-md-4">
+                
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Ocupación *</label>
+                                                        <div class="col-md-8">
+                                                            <select class="form-control" name="colilla" id="colilla" required>
+                                                                <option value="" >Seleccionar...</option>
+                                                                <option value="1" >Empleado</option>
+                                                                <option value="2" >comerciante</option>
+                                                                <option value="3" >Independiente</option>
+                                                                <option value="3" >Otros</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                
+                                            </div>
                 
                                             <div class="col-md-4">
                 
@@ -211,12 +238,84 @@ Gestión de Clientes
                 
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion*</label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion *</label>
                                                         <div class="col-md-8">
                                                             <textarea id="dirreccion" name="dirreccion" class="form-control" rows="2"></textarea>
                                                         </div>
                                                     </div>
                     
+                                                </div>
+                
+                                            </div>
+                                            <div class="col-md-4">
+                
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion de facturación *</label>
+                                                        <div class="col-md-8">
+                                                            <textarea id="dirreccion_cobro" name="dirreccion_cobro" class="form-control" rows="2"></textarea>
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                
+                                            </div>
+
+                                            <div class="col-md-4">
+                
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Condición del Lugar *</label>
+                                                        <div class="col-md-8">
+                                                            <select class="form-control" name="condicion_lugar" id="condicion_lugar" required>
+                                                                <option value="" >Seleccionar...</option>
+                                                                <option value="1" >Casa propia</option>
+                                                                <option value="2" >Alquilada</option>
+                                                                <option value="3" >Otros</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                
+                                            </div>
+                                            <div class="col-md-4">
+                
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre del nueño *</label>
+                                                        <div class="col-md-8">
+                                                            <input class="form-control" type="text"  id="nombre_dueno" name="nombre_dueno" required>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                
+                                            </div>
+                                            <div class="col-md-4">
+                
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Cordenada </label>
+                                                        <div class="col-md-8">
+                                                            <input class="form-control" type="text"  id="cordenada" name="cordenada">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                
+                                            </div>
+                                            <div class="col-md-4">
+                
+                                                <div class="row">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nodo </label>
+                                                        <div class="col-md-8">
+                                                            <input class="form-control" type="text"  id="nodo" name="nodo">
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                 
                                             </div>
@@ -322,96 +421,471 @@ Gestión de Clientes
                                                 <div class="col-md-4">
                                                     <div class="row">
                                                         <div class="form-group row col-md-12">
-                                                            <label for="example-text-input" class="col-md-4 col-form-label">Numero de registro </label>
-                                                            <div class="col-md-8">
-                                                                
-                                                                <input class="form-control" type="text"  id="numero_registro" name="numero_registro" >
-                                                            </div>
-                                                        </div>
-                        
-                                                    </div>
-                    
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="form-group row col-md-12">
-                                                            <label for="example-text-input" class="col-md-4 col-form-label">Giro</label>
-                                                            <div class="col-md-8">
-                                                                
-                                                                <input class="form-control" type="text"  id="giro" name="giro" >
-                                                            </div>
-                                                        </div>
-                        
-                                                    </div>
-                    
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-
-                
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="form-group row col-md-12">
-                                                            <label for="example-text-input" class="col-md-4 col-form-label">Colilla *</label>
-                                                            <div class="col-md-8">
-                                                                
-                                                                <input class="form-control" type="text"  id="colilla" name="colilla" required>
-                                                            </div>
-                                                        </div>
-                        
-                                                    </div>
-                    
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="form-group row col-md-12">
-                                                            <label for="example-text-input" class="col-md-4 col-form-label">Tipo de Documento</label>
-                                                            <div class="col-md-8">
-                                                                
-                                                                <input class="form-control" type="text"  id="tipo_documento" name="tipo_documento" >
-                                                            </div>
-                                                        </div>
-                        
-                                                    </div>
-                    
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="progress-confirm-detail">
-                                    <div>
-                                        <form>
-                                            <div class="row">
-
-                                                <div class="col-md-4">
-                
-                                                    <div class="row">
-                                                        <div class="form-group row col-md-12">
                                                             <label for="example-text-input" class="col-md-4 col-form-label">Tipo de servicio *</label>
                                                             <div class="col-md-8">
-                                                                <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
+                                                                <select class="form-control" name="colilla" id="colilla" required>
                                                                     <option value="" >Seleccionar...</option>
                                                                     <option value="1" >TV</option>
-                                                                    <option value="2" >TV Satelitar</option>
-                                                                    <option value="3" >Internet</option>
+                                                                    <option value="2" >Internet</option>
+                                                                    <option value="3" >Ambos</option>
 
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        
+                        
                                                     </div>
                     
                                                 </div>
+                                                <div class="col-md-12" id="tv">
+                                                    <hr>
+                                                   
+                                                    <h4>Televición</h4>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="date"  id="fecha_instalacion" name="fecha_instalacion" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="date"  id="fecha_primer_fact" name="fecha_primer_fact">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="cuota_mensual" name="cuota_mensual" value="24.5"  required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Prepago</label>
+                                                                    <div class="col-md-8">
+                                                                        <select class="form-control" name="colilla" id="colilla" required>
+                                                                            <option value="" >Seleccionar...</option>
+                                                                            <option value="1" >SI</option>
+                                                                            <option value="2" >NO</option>
+        
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="number"  id="dia_gene_fact" name="dia_gene_fact" maxlength="2" required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Periodo</label>
+                                                                    <div class="col-md-8">
+                                                                        <select class="form-control" name="colilla" id="colilla" required>
+                                                                            <option value="" >Seleccionar...</option>
+                                                                            <option value="1" >3 meses</option>
+                                                                            <option value="2" >6 meses</option>
+                                                                            <option value="3" >12 meses</option>
+                                                                            <option value="4" >18 meses</option>
+                                                                            <option value="5" >24 meses</option>
+        
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Tiempo de cortesia </label>
+                                                                    <div class="col-md-8">
+                                                                        <select class="form-control" name="cortesia" id="cortesia">
+                                                                            <option value="" >Seleccionar...</option>
+                                                                            <option value="1" >1 mes</option>
+                                                                            <option value="2" >2 meses</option>
+                                                                            <option value="3" >3 meses</option>
+                                                                            <option value="4" >4 meses</option>
+                                                                            <option value="5" >5 meses</option>
+        
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="date"  id="contrato_vence" name="contrato_vence" required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">TV digital ? *</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" id="digital" name="digital" value="1" >
+                                                                            <label class="custom-control-label" for="digital"></label>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="marca" name="marca" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="text"  id="modelo" name="modelo" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Serie </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="serie" name="serie" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        
+
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-12" id="internet">
+                                                    <hr>
+                                                    <h4>Internet</h4>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="date"  id="fecha_instalacion" name="fecha_instalacion" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="date"  id="fecha_primer_fact" name="fecha_primer_fact">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="cuota_mensual" name="cuota_mensual" value="26.5"  required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Prepago</label>
+                                                                    <div class="col-md-8">
+                                                                        <select class="form-control" name="colilla" id="colilla" required>
+                                                                            <option value="" >Seleccionar...</option>
+                                                                            <option value="1" >SI</option>
+                                                                            <option value="2" >NO</option>
+        
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="number"  id="dia_gene_fact" name="dia_gene_fact" maxlength="2" required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Periodo</label>
+                                                                    <div class="col-md-8">
+                                                                        <select class="form-control" name="colilla" id="colilla" required>
+                                                                            <option value="" >Seleccionar...</option>
+                                                                            <option value="1" >3 meses</option>
+                                                                            <option value="2" >6 meses</option>
+                                                                            <option value="3" >12 meses</option>
+                                                                            <option value="4" >18 meses</option>
+                                                                            <option value="5" >24 meses</option>
+        
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Tiempo de cortesia </label>
+                                                                    <div class="col-md-8">
+                                                                        <select class="form-control" name="cortesia" id="cortesia">
+                                                                            <option value="" >Seleccionar...</option>
+                                                                            <option value="1" >1 mes</option>
+                                                                            <option value="2" >2 meses</option>
+                                                                            <option value="3" >3 meses</option>
+                                                                            <option value="4" >4 meses</option>
+                                                                            <option value="5" >5 meses</option>
+        
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="date"  id="contrato_vence" name="contrato_vence" required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Velocidad *</label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="number"  id="velocidad" name="velocidad" required>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="marca" name="marca" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="text"  id="modelo" name="modelo" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Serie </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="serie" name="serie" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Mac </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="mac" name="mac" >
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-6 col-form-label">Resepción </label>
+                                                                    <div class="col-md-6">
+                                                                        <input class="form-control" type="text"  id="recepcion" name="recepcion">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Transmisión </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="trasmision" name="trasmision">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="form-group row col-md-12">
+                                                                    <label for="example-text-input" class="col-md-4 col-form-label">Ip </label>
+                                                                    <div class="col-md-8">
+                                                                        <input class="form-control" type="text"  id="ip" name="ip">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                
+                                                            </div>
+                            
+                                                        </div>
+                                                        
+
+
+                                                    </div>
+
+                                                </div>
+
                                             </div>
+                                            
                                         </form>
                                     </div>
-
-
-                                    
                                 </div>
                             </div>
                            

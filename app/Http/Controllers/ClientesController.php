@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Departamentos;
+use App\Models\Municipios;
 use Illuminate\Http\Request;
 
 class ClientesController extends Controller
@@ -23,5 +24,18 @@ class ClientesController extends Controller
         $obj_departamento = Departamentos::all();
 
         return view('clientes.create',compact('obj_departamento'));
+    }
+
+    public function municipios($id){
+
+        $municipios = Municipios::where('id_departamento',$id)->get();
+       return response()->json(
+            $municipios-> toArray()  
+        );
+
+    }
+
+    public function store(Request $request){
+
     }
 }

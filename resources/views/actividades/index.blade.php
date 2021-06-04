@@ -90,7 +90,7 @@
         function eliminar(id){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',
-                text: 'No podras desaser esta accion',
+                text: 'No podras deshacer esta acción',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',

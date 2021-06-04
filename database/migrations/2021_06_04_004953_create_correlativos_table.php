@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTecnicosTable extends Migration
+class CreateCorrelativosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateTecnicosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tecnicos', function (Blueprint $table) {
+        Schema::create('correlativos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('direccion')->nullable();
-            $table->string('telefono');
-            $table->string('correo')->nullable();
+            $table->string('serie')->nullable();
+            $table->integer('desde')->nullable();
+            $table->integer('hasta')->nullable();
+            $table->integer('ultimo')->nullable();
+            $table->integer('cantidad')->nullable();
             $table->integer('id_sucursal');
             $table->timestamps();
         });
@@ -31,6 +33,6 @@ class CreateTecnicosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tecnicos');
+        Schema::dropIfExists('correlativos');
     }
 }

@@ -44,6 +44,7 @@ class CreateClientesTable extends Migration
             $table->string('cordenada')->nullable();
             $table->string('nodo')->nullable();
             $table->integer('activo');
+            $table->integer('id_sucursal');
             $table->timestamps();
         });
     }

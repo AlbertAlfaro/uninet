@@ -39,8 +39,8 @@ class CreateClientesTable extends Migration
             $table->string('telefo2')->nullable();
             $table->string('referencia3')->nullable();
             $table->string('telefo3')->nullable();
-            $table->string('tv');
-            $table->string('internet');
+            $table->integer('tv');
+            $table->integer('internet');
             $table->string('cordenada')->nullable();
             $table->string('nodo')->nullable();
             $table->integer('activo');

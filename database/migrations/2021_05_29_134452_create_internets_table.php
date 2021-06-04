@@ -16,6 +16,7 @@ class CreateInternetsTable extends Migration
         Schema::create('internets', function (Blueprint $table) {
             $table->id();
             $table->integer('id_cliente');
+            $table->string('numero_contrato');
             $table->date('fecha_instalacion')->nullable();
             $table->date('fecha_primer_fact')->nullable();
             $table->float('cuota_mensual');

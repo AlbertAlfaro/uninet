@@ -75,7 +75,16 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('clientes/update/{id}',[App\Http\Controllers\ClientesController::class ,'update'])->middleware('permission:edit_cliente')->name('clientes.update');
     Route::get('cliente/destroy/{id}',[App\Http\Controllers\ClientesController::class ,'destroy'])->middleware('permission:destroy_cliente')->name('clientes.distroy');
 
+    //grupo ordenes
+    Route::get('ordenes',[App\Http\Controllers\OrdenController::class ,'index'])->middleware('permission:Ordenes')->name('ordenes.index');
+    Route::get('ordenes/create',[App\Http\Controllers\OrdenController::class ,'create'])->middleware('permission:create_orden')->name('ordenes.create');
+    Route::post('ordenes/store',[App\Http\Controllers\OrdenController::class ,'store'])->middleware('permission:create_orden')->name('ordenes.store');
+    Route::get('ordenes/edit/{id}',[App\Http\Controllers\OrdenController::class ,'edit'])->middleware('permission:edit_orden')->name('ordenes.edit');
+    Route::post('ordenes/update/{id}',[App\Http\Controllers\OrdenController::class ,'update'])->middleware('permission:edit_orden')->name('ordenes.update');
+    Route::get('ordenes/destroy/{id}',[App\Http\Controllers\OrdenController::class ,'destroy'])->middleware('permission:destroy_orden')->name('ordenes.distroy');
+
 });
+
 
 //Usuario1 -> rol-> administrador_cliente-> index_cliente,create_cliente,edit_cliente
 //Usuario2 -> rol-> administrador-> all_permission

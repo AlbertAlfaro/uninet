@@ -22,12 +22,12 @@ Actividades
 
                     <h4 class="card-title">Administracion de Actividades</h4>
                     <p class="card-title-desc">
-                        Usted se encuentra en el modulo de Administracion de Actividades Creacion.
+                        Usted se encuentra en el modulo de Administracion de Actividades edicion.
                     </p>
                     <hr>
 
-                    <form action="{{Route('actividades.store')}}" method="post" id="form">
-                        @csrf
+                    <form action="{{Route('actividades.update',$actividad->id)}}" method="post" id="form">
+                        {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-8">
 
@@ -35,22 +35,23 @@ Actividades
                                     <div class="form-group row col-md-6">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Actividad *</label>
                                         <div class="col-md-8">
-                                            
-                                            <input class="form-control" type="text"  id="actividad" name="actividad" required>
+                                            <input class="form-control" type="text"  id="id_actividad" name="id_actividad" value="{{$actividad->id}}" style="display: none" required>
+                                            <input class="form-control" type="text"  id="actividad" name="actividad" value="{{$actividad->actividad}}" required>
                                         </div>
                                     </div>
         
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-6">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Descripción</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Descripcion</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="text"  id="descripcion" name="descripcion">
+                                            <input class="form-control" type="text"  id="descripcion" name="descripcion" value="{{$actividad->descripcion}}">
                                         </div>
                                     </div>
         
                                 </div>
                             </div>
+                        
                         </div>
                         <p class="card-title-desc">
                             * Campo requerido
@@ -79,17 +80,6 @@ Actividades
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 
     <script type="text/javascript">
-
- 
-        $(function () {
-          $('#form').parsley().on('field:validated', function() {
-            var ok = $('.parsley-error').length === 0;
-            $('.bs-callout-info').toggleClass('hidden', !ok);
-            $('.bs-callout-warning').toggleClass('hidden', ok);
-          })
-        
-        });
-
     </script>
 
     

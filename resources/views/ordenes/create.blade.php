@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Actividades
+Ordenes
 @endsection
 @section('css')
     <!-- DataTables -->
@@ -10,8 +10,8 @@ Actividades
 
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Administracion @endslot
-    @slot('title') Actividades @endslot
+    @slot('pagetitle') Clientes @endslot
+    @slot('title') Ordenes @endslot
     
 @endcomponent
 
@@ -20,9 +20,9 @@ Actividades
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title">Administracion de Actividades</h4>
+                    <h4 class="card-title">Administracion de Ordenes</h4>
                     <p class="card-title-desc">
-                        Usted se encuentra en el modulo de Administracion de Actividades Creacion.
+                        Usted se encuentra en el modulo de Administracion de Ordenes Creacion.
                     </p>
                     <hr>
 

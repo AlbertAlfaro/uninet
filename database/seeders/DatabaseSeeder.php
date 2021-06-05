@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartamentosSeeder::class);
         $this->call(MunicipiosSeeder::class);
         $this->call(UsuarioSeeder::class);
+        $this->call(RolPermissionsSeeder::class);
         $this->call(CorrelativoSeeder::class);
     }
 }

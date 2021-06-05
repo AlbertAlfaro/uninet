@@ -16,7 +16,7 @@ class CreateCorrelativosTable extends Migration
         Schema::create('correlativos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->date('resolucion')->nullable();
+            $table->string('resolucion')->nullable();
             $table->date('fecha')->nullable();
             $table->string('serie')->nullable();
             $table->integer('desde')->nullable();

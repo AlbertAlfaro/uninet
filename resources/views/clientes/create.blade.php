@@ -9,6 +9,7 @@ Gestión de Clientes
     <link href="{{ URL::asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
 
     <link href="{{ URL::asset('assets/libs/twitter-bootstrap-wizard/twitter-bootstrap-wizard.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
 
 @endsection
 
@@ -69,7 +70,7 @@ Gestión de Clientes
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Codigo *</label>
                                                     <div class="col-md-8">
                                                         
-                                                        <input class="form-control" type="text"  id="codigo" name="codigo" required readonly>
+                                                        <input class="form-control" type="text"  id="codigo" name="codigo" value="{{ $correlativo_cod_cliente }}" required readonly>
                                                     </div>
                                                 </div>
                 
@@ -108,7 +109,7 @@ Gestión de Clientes
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Fecha de Nacimiento</label>
                                                     <div class="col-md-8">
                                                         
-                                                        <input class="form-control" type="date"  id="fecha_nacimiento" name="fecha_nacimiento">
+                                                        <input class="form-control datepicker" type="text"  id="fecha_nacimiento" name="fecha_nacimiento" autocomplete="off">
                                                     </div>
                                                 </div>
                 
@@ -219,7 +220,7 @@ Gestión de Clientes
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Municipio *</label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select2" name="id_municipio" id="id_municipio" required>
+                                                        <select class="form-control" name="id_municipio" id="id_municipio" required>
                                                             <option value="" >Seleccionar...</option>
                                                             
                                                 
@@ -239,7 +240,7 @@ Gestión de Clientes
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion *</label>
                                                     <div class="col-md-8">
-                                                        <textarea id="dirreccion" name="dirreccion" class="form-control" rows="2"></textarea>
+                                                        <textarea id="dirreccion" name="dirreccion" class="form-control" rows="2" required></textarea>
                                                     </div>
                                                 </div>
                 
@@ -300,7 +301,7 @@ Gestión de Clientes
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion de facturación *</label>
                                                     <div class="col-md-8">
-                                                        <textarea id="dirreccion_cobro" name="dirreccion_cobro" class="form-control" rows="2"></textarea>
+                                                        <textarea id="dirreccion_cobro" name="dirreccion_cobro" class="form-control" rows="2" required></textarea>
                                                     </div>
                                                 </div>
                 
@@ -409,7 +410,7 @@ Gestión de Clientes
                                                         <label for="example-text-input" class="col-md-4 col-form-label">Nombre ferencia 2 </label>
                                                         <div class="col-md-8">
                                                             
-                                                            <input class="form-control" type="referencia2"  id="referencia2" name="name">
+                                                            <input class="form-control" type="text"  id="referencia2" name="referencia2">
                                                         </div>
                                                     </div>
                     
@@ -472,8 +473,8 @@ Gestión de Clientes
                                                         <div class="col-md-8">
                                                             <select class="form-control" name="colilla" id="colilla" required>
                                                                 <option value="" >Seleccionar...</option>
-                                                                <option value="1" >TV</option>
-                                                                <option value="2" >Internet</option>
+                                                                <option value="1" >Internet</option>
+                                                                <option value="2" >TV</option>
                                                                 <option value="3" >Ambos</option>
 
                                                             </select>
@@ -482,245 +483,6 @@ Gestión de Clientes
                     
                                                 </div>
                 
-                                            </div>
-                                            <div class="col-md-12" id="tv" style="display: none;">
-                                                <hr>
-                                                
-                                                <h4>Televición</h4>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
-                                                                <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="num_contrato_tv" name="num_contrato_tv" required readonly>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
-                                                                <div class="col-md-8">
-                                                                    <input class="form-control" type="date"  id="fecha_instalacion_tv" name="fecha_instalacion_tv" >
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
-                                                                <div class="col-md-6">
-                                                                    <input class="form-control" type="date"  id="fecha_primer_fact_tv" name="fecha_primer_fact_tv">
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
-                                                                <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left" type="text"  id="cuota_mensual_tv" name="cuota_mensual_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago</label>
-                                                                <div class="col-md-8">
-                                                                    <select class="form-control" name="prepago_tv" id="prepago_tv" required>
-                                                                        <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >SI</option>
-                                                                        <option value="2" >NO</option>
-    
-                                                                    </select>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
-                                                                <div class="col-md-6">
-                                                                    <select class="form-control" name="dia_gene_fact_tv" id="dia_gene_fact_tv" required>
-                                                                        <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >01</option>
-                                                                        <option value="2" >02</option>
-                                                                        <option value="3" >03</option>
-                                                                        <option value="4" >04</option>
-                                                                        <option value="5" >05</option>
-                                                                        <option value="6" >06</option>
-                                                                        <option value="7" >07</option>
-                                                                        <option value="8" >08</option>
-                                                                        <option value="9" >09</option>
-                                                                        <option value="10" >10</option>
-                                                                        <option value="11" >11</option>
-                                                                        <option value="12" >12</option>
-                                                                        <option value="13" >13</option>
-                                                                        <option value="14" >14</option>
-                                                                        <option value="15" >15</option>
-                                                                        <option value="16" >16</option>
-                                                                        <option value="17" >17</option>
-                                                                        <option value="18" >18</option>
-                                                                        <option value="19" >19</option>
-                                                                        <option value="20" >20</option>
-                                                                        <option value="21" >21</option>
-                                                                        <option value="22" >22</option>
-                                                                        <option value="23" >23</option>
-                                                                        <option value="24" >24</option>
-                                                                        <option value="25" >25</option>
-                                                                        <option value="26" >26</option>
-                                                                        <option value="27" >27</option>
-                                                                        <option value="28" >28</option>
-                                                                        <option value="29" >29</option>
-                                                                        <option value="30" >30</option>
-                                                                        <option value="31" >31</option>
-    
-                                                                    </select>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Periodo</label>
-                                                                <div class="col-md-8">
-                                                                    <select class="form-control" name="peridodo_tv" id="periodo_tv" required>
-                                                                        <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >3 meses</option>
-                                                                        <option value="2" >6 meses</option>
-                                                                        <option value="3" >12 meses</option>
-                                                                        <option value="4" >18 meses</option>
-                                                                        <option value="5" >24 meses</option>
-    
-                                                                    </select>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
-                                                                <div class="col-md-8">
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
-                                                                        <label class="custom-control-label" for="cortesia_tv"></label>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
-                                                                <div class="col-md-6">
-                                                                    <input class="form-control" type="date"  id="contrato_vence_tv" name="contrato_vence_tv" required>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">TV digital ? *</label>
-                                                                <div class="col-md-8">
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
-                                                                        <label class="custom-control-label" for="digital_tv"></label>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
-                                                                <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="marca_tv" name="marca_tv" >
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
-                                                                <div class="col-md-6">
-                                                                    <input class="form-control" type="text"  id="modelo_tv" name="modelo_tv" >
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="row">
-                                                            <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Serie </label>
-                                                                <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="serie_tv" name="serie_tv" >
-                                                                    
-                                                                </div>
-                                                            </div>
-                            
-                                                        </div>
-                        
-                                                    </div>
-                                                    
-
-
-                                                </div>
-
                                             </div>
                                             <div class="col-md-12" id="internet" style="display: none;">
                                                 <hr>
@@ -732,7 +494,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="num_contrato" name="num_contrato" required readonly>
+                                                                    <input class="form-control inter" type="text"  id="num_contrato" name="num_contrato" value="{{ $correlativo_contra_inter }}" required readonly>
                                                                     
                                                                 </div>
                                                             </div>
@@ -745,7 +507,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="date"  id="fecha_instalacion" name="fecha_instalacion" >
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_instalacion" name="fecha_instalacion" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -758,7 +520,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control" type="date"  id="fecha_primer_fact" name="fecha_primer_fact">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_primer_fact" name="fecha_primer_fact" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -771,7 +533,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left" type="text"  id="cuota_mensual" name="cuota_mensual" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="cuota_mensual" name="cuota_mensual" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
                                                                     
                                                                 </div>
                                                             </div>
@@ -783,9 +545,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago *</label>
                                                                 <div class="col-md-8">
-                                                                    <select class="form-control" name="prepago" id="prepago" required>
+                                                                    <select class="form-control inter" name="prepago" id="prepago" required>
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" >SI</option>
                                                                         <option value="2" >NO</option>
@@ -804,7 +566,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
                                                                 <div class="col-md-6">
-                                                                    <select class="form-control" name="dia_gene_fact" id="dia_gene_fact" required>
+                                                                    <select class="form-control inter" name="dia_gene_fact" id="dia_gene_fact" required>
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" >01</option>
                                                                         <option value="2" >02</option>
@@ -849,15 +611,15 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Periodo</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Periodo *</label>
                                                                 <div class="col-md-8">
-                                                                    <select class="form-control" name="periodo" id="periodo" required>
+                                                                    <select class="form-control inter" name="periodo" id="periodo" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >3 meses</option>
-                                                                        <option value="2" >6 meses</option>
-                                                                        <option value="3" >12 meses</option>
-                                                                        <option value="4" >18 meses</option>
-                                                                        <option value="5" >24 meses</option>
+                                                                        <option value="3" >3 meses</option>
+                                                                        <option value="6" >6 meses</option>
+                                                                        <option value="12" >12 meses</option>
+                                                                        <option value="18" >18 meses</option>
+                                                                        <option value="24" >24 meses</option>
     
                                                                     </select>
                                                                     
@@ -889,7 +651,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control" type="date"  id="contrato_vence" name="contrato_vence" required>
+                                                                    <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" required autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -903,7 +665,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Velocidad *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="number"  id="velocidad" name="velocidad" required>
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="velocidad" name="velocidad"  data-inputmask="'alias': 'numeric', 'digits': 0, 'radixPoint': '', 'suffix': ' MB' " required>
                                                                     
                                                                 </div>
                                                             </div>
@@ -1013,6 +775,246 @@ Gestión de Clientes
 
                                             </div>
 
+                                            <div class="col-md-12" id="tv" style="display: none;">
+                                                <hr>
+                                                
+                                                <h4>Televición</h4>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control tv" type="text"  id="num_contrato_tv" name="num_contrato_tv" value="{{ $correlativo_contra_tv }}" required readonly>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_instalacion_tv" name="fecha_instalacion_tv" autocomplete="off">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
+                                                                <div class="col-md-6">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_primer_fact_tv" name="fecha_primer_fact_tv" autocomplete="off">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control input-mask text-left tv" type="text"  id="cuota_mensual_tv" name="cuota_mensual_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago *</label>
+                                                                <div class="col-md-8">
+                                                                    <select class="form-control tv" name="prepago_tv" id="prepago_tv" required>
+                                                                        <option value="" >Seleccionar...</option>
+                                                                        <option value="1" >SI</option>
+                                                                        <option value="2" >NO</option>
+    
+                                                                    </select>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
+                                                                <div class="col-md-6">
+                                                                    <select class="form-control tv" name="dia_gene_fact_tv" id="dia_gene_fact_tv" required>
+                                                                        <option value="" >Seleccionar...</option>
+                                                                        <option value="1" >01</option>
+                                                                        <option value="2" >02</option>
+                                                                        <option value="3" >03</option>
+                                                                        <option value="4" >04</option>
+                                                                        <option value="5" >05</option>
+                                                                        <option value="6" >06</option>
+                                                                        <option value="7" >07</option>
+                                                                        <option value="8" >08</option>
+                                                                        <option value="9" >09</option>
+                                                                        <option value="10" >10</option>
+                                                                        <option value="11" >11</option>
+                                                                        <option value="12" >12</option>
+                                                                        <option value="13" >13</option>
+                                                                        <option value="14" >14</option>
+                                                                        <option value="15" >15</option>
+                                                                        <option value="16" >16</option>
+                                                                        <option value="17" >17</option>
+                                                                        <option value="18" >18</option>
+                                                                        <option value="19" >19</option>
+                                                                        <option value="20" >20</option>
+                                                                        <option value="21" >21</option>
+                                                                        <option value="22" >22</option>
+                                                                        <option value="23" >23</option>
+                                                                        <option value="24" >24</option>
+                                                                        <option value="25" >25</option>
+                                                                        <option value="26" >26</option>
+                                                                        <option value="27" >27</option>
+                                                                        <option value="28" >28</option>
+                                                                        <option value="29" >29</option>
+                                                                        <option value="30" >30</option>
+                                                                        <option value="31" >31</option>
+    
+                                                                    </select>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Periodo *</label>
+                                                                <div class="col-md-8">
+                                                                    <select class="form-control tv" name="periodo_tv" id="periodo_tv" required>
+                                                                        <option value="" >Seleccionar...</option>
+                                                                        <option value="3" >3 meses</option>
+                                                                        <option value="6" >6 meses</option>
+                                                                        <option value="12" >12 meses</option>
+                                                                        <option value="18" >18 meses</option>
+                                                                        <option value="24" >24 meses</option>
+    
+                                                                    </select>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
+                                                                <div class="col-md-8">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
+                                                                        <label class="custom-control-label" for="cortesia_tv"></label>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
+                                                                <div class="col-md-6">
+                                                                    <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" required autocomplete="off">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">TV digital ? </label>
+                                                                <div class="col-md-8">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1">
+                                                                        <label class="custom-control-label" for="digital_tv"></label>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control" type="text"  id="marca_tv" name="marca_tv" >
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
+                                                                <div class="col-md-6">
+                                                                    <input class="form-control" type="text"  id="modelo_tv" name="modelo_tv" >
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Serie </label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control" type="text"  id="serie_tv" name="serie_tv" >
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    
+
+
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                             
                                         
@@ -1052,6 +1054,8 @@ Gestión de Clientes
     <script src="{{ URL::asset('assets/libs/inputmask/inputmask.min.js')}}"></script>
     <script src="{{ URL::asset('assets/js/pages/form-mask.init.js')}}"></script>
 
+    <script src="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script> 
+
     <script type="text/javascript">
     $('#id_departamento').on('change', function() {
         var id = $("#id_departamento").val();
@@ -1068,7 +1072,7 @@ Gestión de Clientes
                 municipios.find('option').remove();
                 municipios.append('<option value="">Seleccionar...</option>');
                 $(data).each(function(i, v){ // indice, valor
-                    municipios.append('<option value="' + v.id_municipio + '">' + v.nombre + '</option>');
+                    municipios.append('<option value="' + v.id + '">' + v.nombre + '</option>');
                 })
             }
         });
@@ -1083,7 +1087,8 @@ Gestión de Clientes
         });
 
 
-
+        required_op(2,'.tv');
+        required_op(2,'.inter');
         $('#colilla').on('change', function() {
             var id = $("#colilla").val();
 
@@ -1093,21 +1098,85 @@ Gestión de Clientes
                 $("#tv").hide();
             }
             
-            if(id==1){
+            if(id==2){
                 $("#internet").hide();
                 $("#tv").show();
+                required_op(1,'.tv');
+                required_op(2,'.inter');
             }
-            if(id==2){
+            if(id==1){
                 $("#tv").hide();
                 $("#internet").show();
+                required_op(2,'.tv');
+                required_op(1,'.inter');
             }
             if(id==3){
 
                 $("#tv").show();
                 $("#internet").show();
+                required_op(1,'.tv');
+                required_op(1,'.inter');
 
             }
         });
+
+        function required_op(op,pref) {
+            if(op==1){
+                $(pref).prop("required", true);
+
+            }else{
+
+                $(pref).prop("required", false);
+
+            }
+        }
+
+        $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            language: "es",
+            autoclose: true
+        });
+
+        $('#periodo').on('change', function() {
+            var fecha = $("#fecha_instalacion").val();
+            var meses = $("#periodo").val();
+            if(fecha!="" && meses!=""){
+                sumarmeses(fecha, meses);
+
+            }
+        });
+        $('#periodo_tv').on('change', function() {
+            var fecha = $("#fecha_instalacion_tv").val();
+            var meses = $("#periodo_tv").val();
+            if(fecha!="" && meses!=""){
+                sumarmesestv(fecha, meses);
+
+            }
+        });
+        //sumarDias('10/05/2021',6);
+        function sumarmeses(fecha,meses){
+            console.log(fecha);
+            meses =parseInt(meses)-1;
+            var fecha_split = fecha.split('/');
+
+            var e = new Date(fecha_split[2], fecha_split[1], fecha_split[0]);
+            e.setMonth(e.getMonth() + meses);
+            fecha_vente =e.getDate() +"/"+ ("0"+(e.getMonth()+1)).slice(-2) +"/"+ e.getFullYear();
+
+            $("#contrato_vence").val(fecha_vente);
+        }
+        function sumarmesestv(fecha,meses){
+            console.log(fecha);
+            meses =parseInt(meses)-1;
+            var fecha_split = fecha.split('/');
+
+            var e = new Date(fecha_split[2], fecha_split[1], fecha_split[0]);
+            e.setMonth(e.getMonth() + meses);
+            fecha_vente =e.getDate() +"/"+ ("0"+(e.getMonth()+1)).slice(-2) +"/"+ e.getFullYear();
+
+            $("#contrato_vence_tv").val(fecha_vente);
+        }
+
 
     </script>
 

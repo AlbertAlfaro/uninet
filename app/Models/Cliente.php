@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     use HasFactory;
+
+    public function get_municipio()
+    {
+        return $this->hasOne('App\Models\Municipios','id', 'id_municipio');
+    }
+
+
+
 }

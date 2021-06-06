@@ -24,8 +24,10 @@ class CreateInternetsTable extends Migration
             $table->string('dia_gene_fact');
             $table->date('contrato_vence')->nullable();
             $table->string('periodo')->nullable();
+            $table->string('cortesia')->nullable();
             $table->string('velocidad')->nullable();
             $table->string('marca')->nullable();
+            $table->string('modelo')->nullable();
             $table->string('mac')->nullable();
             $table->string('serie')->nullable();
             $table->string('recepcion')->nullable();

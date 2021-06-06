@@ -34,8 +34,8 @@
 					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
-								<th>Id</th>
-								<th>Nombres</th>
+                                <th>Codigo</th>
+								<th>Nombre</th>
 								<th>Correo</th>
                                 <th>Telefono</th>
                                 <th>DUI</th>
@@ -50,15 +50,21 @@
 							<tbody>
 								@foreach ($obj as $obj_item)
 								<tr class="filas">
-									<td>{{$obj_item->id}}</td>
+                                    <td>{{$obj_item->codigo}}</td>
 									<td>{{$obj_item->nombre}}</td>
 									<td>{{$obj_item->email}}</td>
                                     <td>{{$obj_item->telefono1}}</td>
                                     <td>{{$obj_item->dui}}</td>
-                                    <td>{{$obj_item->nombre_departamento}}</td>
-                                    <td>{{$obj_item->nombre_municipio}}</td>
-                                    <td>{{$obj_item->internet}}</td>
-                                    <td>{{$obj_item->tv}}</td>
+                                    <td>{{$obj_item->get_municipio->get_departamento->nombre}}</td>
+                                    <td>{{$obj_item->get_municipio->nombre}}</td>
+                                    <td> 
+                                        @if($obj_item->internet==1) SI @else NO @endif
+                                    </td>
+                                    <td>
+                                        @if($obj_item->tv==1) SI @else NO @endif
+                                        
+                                    </td>
+                                    
                                     <td>
                                         <div class="btn-group mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>
@@ -66,9 +72,9 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('users.edit',$obj_item->id)}}">Editar</a>
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
-                                                <div class="dropdown-divider"></div>
+                                                <li><a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Detalles</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Editar</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a></li>
                                                 
                                             </div>
                                         </div>

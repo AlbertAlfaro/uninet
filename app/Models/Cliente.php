@@ -9,6 +9,8 @@ class Cliente extends Model
 {
     use HasFactory;
 
+    protected $dates = ['fecha_nacimiento'];
+
     public function get_municipio()
     {
         return $this->hasOne('App\Models\Municipios','id', 'id_municipio');

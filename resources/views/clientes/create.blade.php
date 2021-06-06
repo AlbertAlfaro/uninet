@@ -179,9 +179,9 @@ Gestión de Clientes
                                                         <select class="form-control" name="ocupacion" id="ocupacion" required>
                                                             <option value="" >Seleccionar...</option>
                                                             <option value="1" >Empleado</option>
-                                                            <option value="2" >comerciante</option>
+                                                            <option value="2" >Comerciante</option>
                                                             <option value="3" >Independiente</option>
-                                                            <option value="3" >Otros</option>
+                                                            <option value="4" >Otros</option>
 
                                                         </select>
                                                     </div>
@@ -379,10 +379,10 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre ferencia 1 *</label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre ferencia 1 </label>
                                                         <div class="col-md-8">
                                                             
-                                                            <input class="form-control" type="text"  id="referencia1" name="referencia1" required>
+                                                            <input class="form-control" type="text"  id="referencia1" name="referencia1" >
                                                         </div>
                                                     </div>
                     
@@ -392,10 +392,10 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Telefono ferencia 1 *</label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Telefono ferencia 1 </label>
                                                         <div class="col-md-8">
                                                             
-                                                            <input class="form-control input-mask" type="text"  id="telefo1" name="telefo1" required data-inputmask="'mask': '9999-9999'" im-insert="true">
+                                                            <input class="form-control input-mask" type="text"  id="telefo1" name="telefo1"  data-inputmask="'mask': '9999-9999'" im-insert="true">
                                                         </div>
                                                     </div>
                     
@@ -1138,7 +1138,7 @@ Gestión de Clientes
         });
 
         $('#periodo').on('change', function() {
-            var fecha = $("#fecha_instalacion").val();
+            var fecha = $("#fecha_primer_fact").val();
             var meses = $("#periodo").val();
             if(fecha!="" && meses!=""){
                 sumarmeses(fecha, meses);
@@ -1146,7 +1146,7 @@ Gestión de Clientes
             }
         });
         $('#periodo_tv').on('change', function() {
-            var fecha = $("#fecha_instalacion_tv").val();
+            var fecha = $("#fecha_primer_fact_tv").val();
             var meses = $("#periodo_tv").val();
             if(fecha!="" && meses!=""){
                 sumarmesestv(fecha, meses);

@@ -41,8 +41,7 @@
                                 <th>DUI</th>
                                 <th>Departamento</th>
                                 <th>Municipio</th>
-                                <th>Internet</th>
-                                <th>TV</th>
+                                <th>Servicios</th>
 								<th>Acciones</th>
 							
 							</tr>
@@ -58,11 +57,8 @@
                                     <td>{{$obj_item->get_municipio->get_departamento->nombre}}</td>
                                     <td>{{$obj_item->get_municipio->nombre}}</td>
                                     <td> 
-                                        @if($obj_item->internet==1) SI @else NO @endif
-                                    </td>
-                                    <td>
-                                        @if($obj_item->tv==1) SI @else NO @endif
-                                        
+                                        @if($obj_item->internet==1) <div class="badge badge-pill badge-success">Internet</div> @endif
+                                        @if($obj_item->tv==1) <div class="badge badge-pill badge-secondary ">Televisión</div> @endif
                                     </td>
                                     
                                     <td>
@@ -72,12 +68,15 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Detalles</a></li>
-                                                <li><a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Editar</a></li>
-                                                <li><a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a></li>
-                                                
+                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Contrato</a>
+                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Estado de cuenta</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Detalles</a>
+                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Editar</a>
+                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                             </div>
                                         </div>
+
                                     </td>
 											
 								</tr>

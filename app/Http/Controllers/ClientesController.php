@@ -256,6 +256,16 @@ class ClientesController extends Controller
 
     }
 
+    public function edit($id){
+        $cliente = Cliente::find($id);
+        $tv = Tv::where('id_cliente',$id)->get();
+        $internet = Internet::where('id_cliente',$id)->get();
+        $obj_departamento = Departamentos::all();
+
+        return view('clientes.edit', compact('cliente','tv','internet','obj_departamento'));
+
+    }
+
     private function correlativo($id,$digitos){
         //id correlativo 
         /*
@@ -311,4 +321,5 @@ class ClientesController extends Controller
         $valor_txt=$valor_txt.$ult_doc;
         return $valor_txt;
     }
+    
 }

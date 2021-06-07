@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Tv extends Model
 {
     use HasFactory;
+    protected $dates = ['fecha_instalacion','contrato_vence','fecha_primer_fact'];
 }

@@ -31,7 +31,7 @@ Gestión de Clientes
                     </p>
                     <hr>
 
-                    <form action="{{Route('clientes.store')}}" method="post" id="form">
+                    <form action="{{Route('clientes.update')}}" method="post" id="form">
                         @csrf
 
                         <div id="progrss-wizard" class="twitter-bs-wizard">
@@ -69,7 +69,7 @@ Gestión de Clientes
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Codigo *</label>
                                                     <div class="col-md-8">
-                                                        
+                                                        <input hidden class="form-control" type="text"  id="id_cliente" name="id_cliente" value="{{ $cliente->id }}">
                                                         <input class="form-control" type="text"  id="codigo" name="codigo" value="{{ $cliente->codigo }}" required readonly>
                                                     </div>
                                                 </div>
@@ -473,8 +473,12 @@ Gestión de Clientes
                                                         <div class="col-md-8">
                                                             <select class="form-control" name="colilla" id="colilla" required>
                                                                 <option value="" >Seleccionar...</option>
-                                                                <option value="1" @if($cliente->colilla==1) selected @endif>Internet</option>
-                                                                <option value="2" @if($cliente->colilla==2) selected @endif>TV</option>
+                                                                @if($cliente->internet==1)
+                                                                    <option value="1" @if($cliente->colilla==1) selected @endif>Internet</option>
+                                                                @endif
+                                                                @if($cliente->tv==1)
+                                                                    <option value="2" @if($cliente->colilla==2) selected @endif>TV</option>
+                                                                @endif
                                                                 <option value="3" @if($cliente->colilla==3) selected @endif>Ambos</option>
 
                                                             </select>
@@ -492,9 +496,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control inter" type="text"  id="num_contrato" name="num_contrato" value="@if (isset($internet[0]->numero_contrato)==1) {{ $internet[0]->numero_contrato }} @endif" required readonly>
+                                                                    <input class="form-control" type="text"  id="num_contrato" name="num_contrato" value="@if (isset($internet[0]->numero_contrato)==1){{ $internet[0]->numero_contrato }}@endif" readonly>
                                                                     
                                                                 </div>
                                                             </div>
@@ -507,7 +511,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control datepicker" type="text"  id="fecha_instalacion" name="fecha_instalacion" value="@if (isset($internet[0]->fecha_instalacion)==1) {{ $internet[0]->fecha_instalacion->format('d/m/Y') }} @endif" autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_instalacion" name="fecha_instalacion" value="@if (isset($internet[0]->fecha_instalacion)==1){{ $internet[0]->fecha_instalacion->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -520,7 +524,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control datepicker" type="text"  id="fecha_primer_fact" name="fecha_primer_fact" value="@if (isset($internet[0]->fecha_primer_fact)==1) {{ $internet[0]->fecha_primer_fact->format('d/m/Y') }} @endif" autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_primer_fact" name="fecha_primer_fact" value="@if (isset($internet[0]->fecha_primer_fact)==1){{ $internet[0]->fecha_primer_fact->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -533,7 +537,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="cuota_mensual" name="cuota_mensual" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="cuota_mensual" name="cuota_mensual" value="@if (isset($internet[0]->cuota_mensual)==1){{ $internet[0]->cuota_mensual }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
                                                                     
                                                                 </div>
                                                             </div>
@@ -549,8 +553,8 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <select class="form-control inter" name="prepago" id="prepago" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >SI</option>
-                                                                        <option value="2" >NO</option>
+                                                                        <option value="1" @if (isset($internet[0]->prepago)==1) @if($internet[0]->prepago==1) selected @endif @endif>SI</option>
+                                                                        <option value="2" @if (isset($internet[0]->prepago)==1) @if($internet[0]->prepago==2) selected @endif @endif>NO</option>
     
                                                                     </select>
                                                                     
@@ -568,37 +572,37 @@ Gestión de Clientes
                                                                 <div class="col-md-6">
                                                                     <select class="form-control inter" name="dia_gene_fact" id="dia_gene_fact" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >01</option>
-                                                                        <option value="2" >02</option>
-                                                                        <option value="3" >03</option>
-                                                                        <option value="4" >04</option>
-                                                                        <option value="5" >05</option>
-                                                                        <option value="6" >06</option>
-                                                                        <option value="7" >07</option>
-                                                                        <option value="8" >08</option>
-                                                                        <option value="9" >09</option>
-                                                                        <option value="10" >10</option>
-                                                                        <option value="11" >11</option>
-                                                                        <option value="12" >12</option>
-                                                                        <option value="13" >13</option>
-                                                                        <option value="14" >14</option>
-                                                                        <option value="15" >15</option>
-                                                                        <option value="16" >16</option>
-                                                                        <option value="17" >17</option>
-                                                                        <option value="18" >18</option>
-                                                                        <option value="19" >19</option>
-                                                                        <option value="20" >20</option>
-                                                                        <option value="21" >21</option>
-                                                                        <option value="22" >22</option>
-                                                                        <option value="23" >23</option>
-                                                                        <option value="24" >24</option>
-                                                                        <option value="25" >25</option>
-                                                                        <option value="26" >26</option>
-                                                                        <option value="27" >27</option>
-                                                                        <option value="28" >28</option>
-                                                                        <option value="29" >29</option>
-                                                                        <option value="30" >30</option>
-                                                                        <option value="31" >31</option>
+                                                                        <option value="1" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==1) selected @endif @endif>01</option>
+                                                                        <option value="2" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==2) selected @endif @endif>02</option>
+                                                                        <option value="3" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==3) selected @endif @endif>03</option>
+                                                                        <option value="4" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==4) selected @endif @endif>04</option>
+                                                                        <option value="5" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==5) selected @endif @endif>05</option>
+                                                                        <option value="6" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==6) selected @endif @endif>06</option>
+                                                                        <option value="7" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==7) selected @endif @endif>07</option>
+                                                                        <option value="8" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==8) selected @endif @endif>08</option>
+                                                                        <option value="9" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==9) selected @endif @endif>09</option>
+                                                                        <option value="10" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==10) selected @endif @endif>10</option>
+                                                                        <option value="11" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==11) selected @endif @endif>11</option>
+                                                                        <option value="12" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==12) selected @endif @endif>12</option>
+                                                                        <option value="13" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==13) selected @endif @endif>13</option>
+                                                                        <option value="14" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==14) selected @endif @endif>14</option>
+                                                                        <option value="15" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==15) selected @endif @endif>15</option>
+                                                                        <option value="16" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==16) selected @endif @endif>16</option>
+                                                                        <option value="17" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==17) selected @endif @endif>17</option>
+                                                                        <option value="18" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==18) selected @endif @endif>18</option>
+                                                                        <option value="19" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==19) selected @endif @endif>19</option>
+                                                                        <option value="20" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==20) selected @endif @endif>20</option>
+                                                                        <option value="21" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==21) selected @endif @endif>21</option>
+                                                                        <option value="22" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==22) selected @endif @endif>22</option>
+                                                                        <option value="23" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==23) selected @endif @endif>23</option>
+                                                                        <option value="24" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==24) selected @endif @endif >24</option>
+                                                                        <option value="25" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==25) selected @endif @endif>25</option>
+                                                                        <option value="26" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==26) selected @endif @endif>26</option>
+                                                                        <option value="27" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==27) selected @endif @endif>27</option>
+                                                                        <option value="28" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==28) selected @endif @endif>28</option>
+                                                                        <option value="29" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==29) selected @endif @endif>29</option>
+                                                                        <option value="30" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==30) selected @endif @endif>30</option>
+                                                                        <option value="31" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==31) selected @endif @endif>31</option>
     
                                                                     </select>
                                                                     
@@ -615,11 +619,11 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <select class="form-control inter" name="periodo" id="periodo" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="3" >3 meses</option>
-                                                                        <option value="6" >6 meses</option>
-                                                                        <option value="12" >12 meses</option>
-                                                                        <option value="18" >18 meses</option>
-                                                                        <option value="24" >24 meses</option>
+                                                                        <option value="3" @if (isset($internet[0]->periodo)==1) @if($internet[0]->periodo==3) selected @endif @endif>3 meses</option>
+                                                                        <option value="6" @if (isset($internet[0]->periodo)==1) @if($internet[0]->periodo==6) selected @endif @endif>6 meses</option>
+                                                                        <option value="12" @if (isset($internet[0]->periodo)==1) @if($internet[0]->periodo==12) selected @endif @endif >12 meses</option>
+                                                                        <option value="18" @if (isset($internet[0]->periodo)==1) @if($internet[0]->periodo==18) selected @endif @endif>18 meses</option>
+                                                                        <option value="24" @if (isset($internet[0]->periodo)==1) @if($internet[0]->periodo==24) selected @endif @endif>24 meses</option>
     
                                                                     </select>
                                                                     
@@ -635,8 +639,21 @@ Gestión de Clientes
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
                                                                 <div class="col-md-8">
                                                                     <div class="custom-control custom-checkbox">
+                                                                        @if (isset($internet[0]->cortesia)==1) @if($internet[0]->cortesia==1)
+                                                                            <input checked type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
+                                                                            <label class="custom-control-label" for="cortesia"></label>
+                                                                        
+                                                                        @else 
                                                                         <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
                                                                         <label class="custom-control-label" for="cortesia"></label>
+
+                                                                        @endif
+                                                                        
+                                                                        @else
+                                                                        <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
+                                                                        <label class="custom-control-label" for="cortesia"></label>
+
+                                                                        @endif
                                                                     </div>
                                                                     
                                                                 </div>
@@ -651,7 +668,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" value="@if (isset($internet[0]->contrato_vence)==1) {{ $internet[0]->contrato_vence->format('d/m/Y') }} @endif" required autocomplete="off">
+                                                                    <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" value="@if (isset($internet[0]->contrato_vence)==1){{ $internet[0]->contrato_vence->format('d/m/Y') }}@endif" required autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -665,7 +682,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Velocidad *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="velocidad" name="velocidad"  data-inputmask="'alias': 'numeric', 'digits': 0, 'radixPoint': '', 'suffix': ' MB' " required>
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="velocidad" name="velocidad" value="@if (isset($internet[0]->velocidad)==1){{ $internet[0]->velocidad }}@endif"  data-inputmask="'alias': 'numeric', 'digits': 0, 'radixPoint': '', 'suffix': ' MB' " required>
                                                                     
                                                                 </div>
                                                             </div>
@@ -678,7 +695,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="marca" name="marca" >
+                                                                    <input class="form-control" type="text"  id="marca" name="marca" value="@if (isset($internet[0]->marca)==1){{ $internet[0]->marca }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -691,7 +708,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control" type="text"  id="modelo" name="modelo" >
+                                                                    <input class="form-control" type="text"  id="modelo" name="modelo" value="@if (isset($internet[0]->modelo)==1){{ $internet[0]->modelo }}@endif" >
                                                                     
                                                                 </div>
                                                             </div>
@@ -705,7 +722,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Serie </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="serie" name="serie" >
+                                                                    <input class="form-control" type="text"  id="serie" name="serie" value="@if (isset($internet[0]->serie)==1){{ $internet[0]->serie }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -718,7 +735,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Mac </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="mac" name="mac" >
+                                                                    <input class="form-control" type="text"  id="mac" name="mac" value="@if (isset($internet[0]->mac)==1){{ $internet[0]->mac }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -732,7 +749,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Resepción </label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control" type="text"  id="recepcion" name="recepcion">
+                                                                    <input class="form-control" type="text"  id="recepcion" name="recepcion" value="@if (isset($internet[0]->recepcion)==1){{ $internet[0]->recepcion }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -746,7 +763,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Transmisión </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="trasmision" name="trasmision">
+                                                                    <input class="form-control" type="text"  id="trasmision" name="trasmision" value="@if (isset($internet[0]->trasmision)==1){{ $internet[0]->trasmision }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -760,7 +777,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Ip </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="ip" name="ip">
+                                                                    <input class="form-control" type="text"  id="ip" name="ip" value="@if (isset($internet[0]->ip)==1){{ $internet[0]->ip }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -784,9 +801,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control tv" type="text"  id="num_contrato_tv" name="num_contrato_tv" value="@if (isset($tv[0]->numero_contrato)==1) {{ $tv[0]->numero_contrato }} @endif" required readonly>
+                                                                    <input class="form-control" type="text"  id="num_contrato_tv" name="num_contrato_tv" readonly value="@if (isset($tv[0]->numero_contrato)==1){{ $tv[0]->numero_contrato }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -799,7 +816,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Fecha de instalación</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control datepicker" type="text"  id="fecha_instalacion_tv" name="fecha_instalacion_tv" autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_instalacion_tv" name="fecha_instalacion_tv" value="@if (isset($tv[0]->fecha_instalacion)==1){{ $tv[0]->fecha_instalacion->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -812,7 +829,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control datepicker" type="text"  id="fecha_primer_fact_tv" name="fecha_primer_fact_tv" autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="fecha_primer_fact_tv" name="fecha_primer_fact_tv" value="@if (isset($tv[0]->fecha_primer_fact)==1){{ $tv[0]->fecha_primer_fact->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -825,7 +842,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Cuota mensual *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left tv" type="text"  id="cuota_mensual_tv" name="cuota_mensual_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
+                                                                    <input class="form-control input-mask text-left tv" type="text"  id="cuota_mensual_tv" name="cuota_mensual_tv" value="@if (isset($tv[0]->cuota_mensual)==1){{ $tv[0]->cuota_mensual }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" required>
                                                                     
                                                                 </div>
                                                             </div>
@@ -841,8 +858,8 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <select class="form-control tv" name="prepago_tv" id="prepago_tv" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >SI</option>
-                                                                        <option value="2" >NO</option>
+                                                                        <option value="1" @if (isset($tv[0]->prepago)==1) @if($tv[0]->prepago==1) selected @endif @endif>SI</option>
+                                                                        <option value="2" @if (isset($tv[0]->prepago)==1) @if($tv[0]->prepago==2) selected @endif @endif>NO</option>
     
                                                                     </select>
                                                                     
@@ -860,37 +877,37 @@ Gestión de Clientes
                                                                 <div class="col-md-6">
                                                                     <select class="form-control tv" name="dia_gene_fact_tv" id="dia_gene_fact_tv" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" >01</option>
-                                                                        <option value="2" >02</option>
-                                                                        <option value="3" >03</option>
-                                                                        <option value="4" >04</option>
-                                                                        <option value="5" >05</option>
-                                                                        <option value="6" >06</option>
-                                                                        <option value="7" >07</option>
-                                                                        <option value="8" >08</option>
-                                                                        <option value="9" >09</option>
-                                                                        <option value="10" >10</option>
-                                                                        <option value="11" >11</option>
-                                                                        <option value="12" >12</option>
-                                                                        <option value="13" >13</option>
-                                                                        <option value="14" >14</option>
-                                                                        <option value="15" >15</option>
-                                                                        <option value="16" >16</option>
-                                                                        <option value="17" >17</option>
-                                                                        <option value="18" >18</option>
-                                                                        <option value="19" >19</option>
-                                                                        <option value="20" >20</option>
-                                                                        <option value="21" >21</option>
-                                                                        <option value="22" >22</option>
-                                                                        <option value="23" >23</option>
-                                                                        <option value="24" >24</option>
-                                                                        <option value="25" >25</option>
-                                                                        <option value="26" >26</option>
-                                                                        <option value="27" >27</option>
-                                                                        <option value="28" >28</option>
-                                                                        <option value="29" >29</option>
-                                                                        <option value="30" >30</option>
-                                                                        <option value="31" >31</option>
+                                                                        <option value="1" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==1) selected @endif @endif>01</option>
+                                                                        <option value="2" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==2) selected @endif @endif>02</option>
+                                                                        <option value="3" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==3) selected @endif @endif>03</option>
+                                                                        <option value="4" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==4) selected @endif @endif>04</option>
+                                                                        <option value="5" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==5) selected @endif @endif>05</option>
+                                                                        <option value="6" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==6) selected @endif @endif>06</option>
+                                                                        <option value="7" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==7) selected @endif @endif>07</option>
+                                                                        <option value="8" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==8) selected @endif @endif>08</option>
+                                                                        <option value="9" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==9) selected @endif @endif>09</option>
+                                                                        <option value="10" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==10) selected @endif @endif>10</option>
+                                                                        <option value="11" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==11) selected @endif @endif>11</option>
+                                                                        <option value="12" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==12) selected @endif @endif>12</option>
+                                                                        <option value="13" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==13) selected @endif @endif>13</option>
+                                                                        <option value="14" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==14) selected @endif @endif>14</option>
+                                                                        <option value="15" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==15) selected @endif @endif>15</option>
+                                                                        <option value="16" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==16) selected @endif @endif>16</option>
+                                                                        <option value="17" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==17) selected @endif @endif>17</option>
+                                                                        <option value="18" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==18) selected @endif @endif>18</option>
+                                                                        <option value="19" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==19) selected @endif @endif>19</option>
+                                                                        <option value="20" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==20) selected @endif @endif>20</option>
+                                                                        <option value="21" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==21) selected @endif @endif>21</option>
+                                                                        <option value="22" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==22) selected @endif @endif>22</option>
+                                                                        <option value="23" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==23) selected @endif @endif>23</option>
+                                                                        <option value="24" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==24) selected @endif @endif >24</option>
+                                                                        <option value="25" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==25) selected @endif @endif>25</option>
+                                                                        <option value="26" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==26) selected @endif @endif>26</option>
+                                                                        <option value="27" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==27) selected @endif @endif>27</option>
+                                                                        <option value="28" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==28) selected @endif @endif>28</option>
+                                                                        <option value="29" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==29) selected @endif @endif>29</option>
+                                                                        <option value="30" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==30) selected @endif @endif>30</option>
+                                                                        <option value="31" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==31) selected @endif @endif>31</option>
     
                                                                     </select>
                                                                     
@@ -907,11 +924,11 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <select class="form-control tv" name="periodo_tv" id="periodo_tv" required>
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="3" >3 meses</option>
-                                                                        <option value="6" >6 meses</option>
-                                                                        <option value="12" >12 meses</option>
-                                                                        <option value="18" >18 meses</option>
-                                                                        <option value="24" >24 meses</option>
+                                                                        <option value="3" @if (isset($tv[0]->periodo)==1) @if($tv[0]->periodo==3) selected @endif @endif>3 meses</option>
+                                                                        <option value="6" @if (isset($tv[0]->periodo)==1) @if($tv[0]->periodo==6) selected @endif @endif>6 meses</option>
+                                                                        <option value="12" @if (isset($tv[0]->periodo)==1) @if($tv[0]->periodo==12) selected @endif @endif>12 meses</option>
+                                                                        <option value="18" @if (isset($tv[0]->periodo)==1) @if($tv[0]->periodo==18) selected @endif @endif>18 meses</option>
+                                                                        <option value="24" @if (isset($tv[0]->periodo)==1) @if($tv[0]->periodo==24) selected @endif @endif>24 meses</option>
     
                                                                     </select>
                                                                     
@@ -927,8 +944,22 @@ Gestión de Clientes
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
                                                                 <div class="col-md-8">
                                                                     <div class="custom-control custom-checkbox">
+                                                                        @if (isset($tv[0]->cortesia)==1) 
+                                                                        @if($tv[0]->cortesia==1)
+                                                                            <input checked type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia" value="1" >
+                                                                            <label class="custom-control-label" for="cortesia_tv"></label>
+                                                                        
+                                                                        @else 
                                                                         <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
                                                                         <label class="custom-control-label" for="cortesia_tv"></label>
+
+                                                                        @endif
+                                                                        
+                                                                        @else
+                                                                        <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
+                                                                        <label class="custom-control-label" for="cortesia_tv"></label>
+
+                                                                        @endif
                                                                     </div>
                                                                     
                                                                 </div>
@@ -943,7 +974,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" required autocomplete="off">
+                                                                    <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" value="@if (isset($tv[0]->contrato_vence)==1){{ $tv[0]->contrato_vence->format('d/m/Y') }}@endif" required autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -957,9 +988,24 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">TV digital ? </label>
                                                                 <div class="col-md-8">
+
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1">
+                                                                        @if (isset($tv[0]->digital)==1) 
+                                                                        @if($tv[0]->digital==1)
+                                                                            <input checked type="checkbox" class="custom-control-input" id="digital_tv" name="cortesia" value="1" >
+                                                                            <label class="custom-control-label" for="digital_tv"></label>
+                                                                        
+                                                                        @else 
+                                                                        <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
                                                                         <label class="custom-control-label" for="digital_tv"></label>
+
+                                                                        @endif
+                                                                        
+                                                                        @else
+                                                                        <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
+                                                                        <label class="custom-control-label" for="digital_tv"></label>
+
+                                                                        @endif
                                                                     </div>
                                                                     
                                                                 </div>
@@ -973,7 +1019,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="marca_tv" name="marca_tv" >
+                                                                    <input class="form-control" type="text"  id="marca_tv" name="marca_tv" value="@if (isset($tv[0]->marca)==1){{ $tv[0]->marca }}@endif">
                                                                     
                                                                 </div>
                                                             </div>
@@ -986,7 +1032,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
                                                                 <div class="col-md-6">
-                                                                    <input class="form-control" type="text"  id="modelo_tv" name="modelo_tv" >
+                                                                    <input class="form-control" type="text"  id="modelo_tv" name="modelo_tv"value="@if (isset($tv[0]->modelo)==1){{ $tv[0]->modelo }}@endif" >
                                                                     
                                                                 </div>
                                                             </div>
@@ -1000,7 +1046,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Serie </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control" type="text"  id="serie_tv" name="serie_tv" >
+                                                                    <input class="form-control" type="text"  id="serie_tv" name="serie_tv" value="@if (isset($tv[0]->serie)==1){{ $tv[0]->serie }}@endif">
                                                                     
                                                                 </div>
                                                             </div>

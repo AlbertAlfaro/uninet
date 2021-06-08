@@ -16,6 +16,4 @@ class Cliente extends Model
         return $this->hasOne('App\Models\Municipios','id', 'id_municipio');
     }
 
-
-
 }

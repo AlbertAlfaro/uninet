@@ -26,33 +26,77 @@ Actividades
                     </p>
                     <hr>
 
-                    <form action="{{Route('actividades.update',$actividad->id)}}" method="post" id="form">
+                    <form action="{{Route('ordenes.update',$orden->id)}}" method="post" id="form">
                         {{ csrf_field() }}
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
 
                                 <div class="row">
-                                    <div class="form-group row col-md-6">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Actividad *</label>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="text"  id="id_actividad" name="id_actividad" value="{{$actividad->id}}" style="display: none" required>
-                                            <input class="form-control" type="text"  id="actividad" name="actividad" value="{{$actividad->actividad}}" required>
+                                            
+                                        <input class="form-control" type="text"  id="id_orden" name="id_orden" value="{{$orden->id}}" style="display: none" required>
+                                        <input type="text" name="numero" id="numero" class="form-control" value="{{$orden->numero}}" placeholder="" >
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre</label>
+                                        <div class="col-md-8">
+                                            
+                                            <input class="form-control" type="text"  id="nombre" name="nombre" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">tipo de Servicio *</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
+                                                <option value="" >Seleccionar...</option>
+                                                <option value="Internet" >Internet</option>
+                                                <option value="Tv" >TV</option>
+                                            </select>
                                         </div>
                                     </div>
         
                                 </div>
                                 <div class="row">
-                                    <div class="form-group row col-md-6">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Descripcion</label>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Actividad *</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="text"  id="descripcion" name="descripcion" value="{{$actividad->descripcion}}">
+                                            <select class="form-control" data-live-search="true" name="id_actividad" id="id_actividad" required>
+                                                <option value="" >Seleccionar...</option>        
+                                                @foreach ($obj_actividades as $obj_item)
+                                                    <option value="{{$obj_item->id}}">{{$obj_item->actividad}}</option>          
+                                                @endforeach            
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Tecnico *</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" data-live-search="true" name="id_tecnico" id="id_tecnico" required>
+                                                <option value="" >Seleccionar...</option>        
+                                                @foreach ($obj_tecnicos as $obj_item)
+                                                    <option value="{{$obj_item->id}}">{{$obj_item->nombre}}</option>          
+                                                @endforeach            
+                                            </select>
                                         </div>
                                     </div>
         
                                 </div>
+                                <div class="row">
+                                    <div class="form-group row col-md-8">
+                                        <label for="example-text-input" class="col-md-2  col-form-label">Observaciones</label>
+                                        <div class="col-md-10">
+                                            <textarea id="observacion" name="observacion" class="form-control" rows="2" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        
                         </div>
+                        
+
                         <p class="card-title-desc">
                             * Campo requerido
                         </p>

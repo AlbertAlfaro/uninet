@@ -125,7 +125,7 @@ class ClientesController extends Controller
 
             }
             $internet->periodo = $request->periodo;
-            $internet->cortesia = $request->cortesia_tv;
+            $internet->cortesia = $request->cortesia;
             $internet->velocidad = $request->velocidad;
             $internet->marca = $request->marca;
             $internet->modelo = $request->modelo;
@@ -263,6 +263,282 @@ class ClientesController extends Controller
         $obj_departamento = Departamentos::all();
 
         return view('clientes.edit', compact('cliente','tv','internet','obj_departamento'));
+
+    }
+
+    public function update(Request $request){
+        //dd($request->all());
+
+        $id_cliente = $request->id_cliente;
+        if($request->colilla==1){
+            $nternet = 1;
+            $tv = 0;
+        }
+        if($request->colilla==2){
+            $tv = 1;
+            $internet = 0;
+        }
+        if($request->colilla==3){
+            $tv = 1;
+            $internet = 1;
+        }
+        $fecha_nacimiento="";
+        if($request->fecha_nacimiento!=""){
+            $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento);
+
+        }
+
+
+        Cliente::where('id',$id_cliente)->update([
+            'nombre' =>$request->nombre,
+            'email' =>$request->email,
+            'dui' =>$request->dui,
+            'nit' =>$request->nit,
+            'fecha_nacimiento' =>$fecha_nacimiento,
+            'telefono1' =>$request->telefono1,
+            'telefono2' =>$request->telefono2,
+            'id_municipio' =>$request->id_municipio,
+            'dirreccion' =>$request->dirreccion,
+            'dirreccion_cobro' =>$request->dirreccion_cobro,
+            'ocupacion' =>$request->ocupacion,
+            'condicion_lugar' =>$request->condicion_lugar,
+            'nombre_dueno' =>$request->nombre_dueno,
+            'numero_registro' =>$request->numero_registro,
+            'giro' =>$request->giro,
+            'colilla' =>$request->colilla,
+            'tipo_documento' =>$request->tipo_documento,
+            'referencia1' =>$request->referencia1,
+            'telefo1' =>$request->telefo1,
+            'referencia2' =>$request->referencia2,
+            'telefo2' =>$request->telefo2,
+            'referencia3' =>$request->referencia3,
+            'telefo3' =>$request->telefo3,
+            'tv' =>$tv,
+            'internet' =>$internet,
+            'cordenada' =>$request->cordenada,
+            'nodo' =>$request->nodo
+
+        ]);
+        
+
+        //para internet
+        $cliente = Cliente::find($id_cliente);
+        $internet = $cliente->internet;
+        $tv = $cliente->tv;
+
+        $fecha_instalacion="";
+        $fecha_primer_fact="";
+        $contrato_vence="";
+
+        if($request->fecha_instalacion!=""){
+            $fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion);
+
+        }
+        if($request->fecha_primer_fact!=""){
+            $fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact);
+
+        }
+
+        if($request->contrato_vence!=""){
+            $contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence);
+
+        }
+
+        $cuota_mensual = explode(" ", $request->cuota_mensual);
+
+        if($internet==1){
+            $isset_internet = Internet::where('id_cliente',$id_cliente)->get();
+            if(count($isset_internet)!=0){
+                Internet::where('id_cliente',$id_cliente)->update([
+                    'fecha_instalacion' => $fecha_instalacion,
+                    'fecha_instalacion' => $fecha_primer_fact,
+                    'cuota_mensual' => $cuota_mensual[1],
+                    'prepago' => $request->prepago,
+                    'dia_gene_fact' => $request->dia_gene_fact,
+                    'contrato_vence' => $contrato_vence,
+                    'periodo' => $request->periodo,
+                    'cortesia' => $request->cortesia,
+                    'velocidad' => $request->velocidad,
+                    'marca' => $request->marca,
+                    'modelo' => $request->modelo,
+                    'mac' => $request->mac,
+                    'serie' => $request->serie,
+                    'recepcion' => $request->recepcion,
+                    'trasmision' => $request->trasmision,
+                    'ip' => $request->ip,
+
+                ]);
+
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Se edito servicio de internet para el cliente id: '.$id_cliente);
+
+            }else{
+
+                $internet = new Internet();
+                $internet->id_cliente = $id_cliente;
+                $internet->numero_contrato = $this->correlativo(5,6);
+                if($request->fecha_instalacion!=""){
+                    $internet->fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion);
+
+                }
+                if($request->fecha_primer_fact!=""){
+                    $internet->fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact);
+
+                }
+                $cuota_mensual = explode(" ", $request->cuota_mensual);
+                $internet->cuota_mensual = $cuota_mensual[1];
+                $internet->prepago = $request->prepago;
+                $internet->dia_gene_fact = $request->dia_gene_fact;
+                if($request->contrato_vence!=""){
+                    $internet->contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence);
+
+                }
+                $internet->periodo = $request->periodo;
+                $internet->cortesia = $request->cortesia;
+                $internet->velocidad = $request->velocidad;
+                $internet->marca = $request->marca;
+                $internet->modelo = $request->modelo;
+                $internet->mac = $request->mac;
+                $internet->serie = $request->serie;
+                $internet->recepcion = $request->recepcion;
+                $internet->trasmision = $request->trasmision;
+                $internet->ip = $request->ip;
+                $internet->save();
+                $this->setCorrelativo(5);
+
+
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+
+
+            }
+        }
+
+        $fecha_instalacion_tv="";
+        $fecha_primer_fact_tv="";
+        $contrato_vence_tv="";
+
+        if($request->fecha_instalacion_tv!=""){
+            $fecha_instalacion_tv = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion_tv);
+
+        }
+        if($request->fecha_primer_fact_tv!=""){
+            $fecha_primer_fact_tv = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact_tv);
+
+        }
+
+        if($request->contrato_vence_tv!=""){
+            $contrato_vence_tv = Carbon::createFromFormat('d/m/Y', $request->contrato_vence_tv);
+
+        }
+
+        $cuota_mensual_tv = explode(" ", $request->cuota_mensual_tv);
+
+        if($tv==1){
+            $isset_tv = Tv::where('id_cliente',$id_cliente)->get();
+
+            if(count($isset_tv)!=0){
+                Tv::where('id_cliente',$id_cliente)->update([
+                    'fecha_instalacion' => $fecha_instalacion_tv,
+                    'fecha_instalacion' => $fecha_primer_fact_tv,
+                    'cuota_mensual' => $cuota_mensual_tv[1],
+                    'prepago' => $request->prepago_tv,
+                    'dia_gene_fact' => $request->dia_gene_fact_tv,
+                    'contrato_vence' => $contrato_vence_tv,
+                    'periodo' => $request->periodo_tv,
+                    'cortesia' => $request->cortesia_tv,
+                    'digital' => $request->digital_tv,
+                    'marca' => $request->marca_tv,
+                    'modelo' => $request->modelo_tv,
+                    'serie' => $request->serie_tv,
+
+                ]);
+
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Se edito servicio de Televisión para el cliente id: '.$id_cliente);
+
+            }else{
+
+                $tv = new Tv();
+                $tv->id_cliente = $id_cliente;
+                $tv->numero_contrato = $this->correlativo(4,6);
+                if($request->fecha_instalacion_tv!=""){
+                    $tv->fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion_tv);
+
+                }
+                if($request->fecha_primer_fact_tv!=""){
+                    $tv->fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact_tv);
+
+                }
+                $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
+                $tv->cuota_mensual = $cuota_mensual[1];
+                $tv->prepago = $request->prepago_tv;
+                $tv->dia_gene_fact = $request->dia_gene_fact_tv;
+                if($request->contrato_vence_tv!=""){
+                    $tv->contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence_tv);
+
+                }
+                $tv->periodo = $request->periodo_tv;
+                $tv->cortesia = $request->cortesia_tv;
+                $tv->digital = $request->digital_tv;
+                $tv->marca = $request->marca_tv;
+                $tv->serie = $request->serie_tv;
+                $tv->modelo = $request->modelo_tv;
+                $tv->save();
+                $this->setCorrelativo(4);
+
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+
+
+
+            }
+        }
+
+
+
+        flash()->success("Cliente y servicios editados exitosamente!")->important();
+        return redirect()->route('clientes.index');
+    }
+
+    public function details($id){
+        $cliente = Cliente::select(
+                            'clientes.codigo',
+                            'clientes.nombre',
+                            'clientes.email',
+                            'clientes.dui',
+                            'clientes.nit',
+                            'clientes.fecha_nacimiento',
+                            'clientes.telefono1',
+                            'clientes.telefono2',
+                            'clientes.dirreccion',
+                            'clientes.dirreccion_cobro',
+                            'clientes.ocupacion',
+                            'clientes.condicion_lugar',
+                            'clientes.nombre_dueno',
+                            'clientes.numero_registro',
+                            'clientes.giro',
+                            'clientes.colilla',
+                            'clientes.tipo_documento',
+                            'clientes.referencia1',
+                            'clientes.telefo1',
+                            'clientes.referencia2',
+                            'clientes.telefo2',
+                            'clientes.referencia3',
+                            'clientes.telefo3',
+                            'clientes.cordenada',
+                            'clientes.nodo',
+                            'municipios.nombre as nombre_municipio',
+                            'departamentos.nombre as nombre_departamento',
+
+                                )
+                            ->join('municipios','clientes.id_municipio','=','municipios.id')
+                            ->join('departamentos','municipios.id_departamento','=','departamentos.id')
+                            ->where('clientes.id',$id)->get();
+
+        return response()->json(
+            $cliente-> toArray()  
+        );
 
     }
 

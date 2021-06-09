@@ -41,6 +41,7 @@ class TecnicosController extends Controller
         $tecnico->telefono = $request->telefono;
         $tecnico->direccion = $request->direccion;
         $tecnico->correo = $request->email;
+        $tecnico->id_sucursal = "1";
         $tecnico->save();
 
         $obj_controller_bitacora=new BitacoraController();	

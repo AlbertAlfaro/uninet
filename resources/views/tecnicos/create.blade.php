@@ -43,7 +43,7 @@ Tecnicos
                                         <label for="example-text-input" class="col-md-4 col-form-label">Telefono</label>
                                         <div class="col-md-8">
                                             
-                                            <input class="form-control" type="text"  id="telefono" name="telefono" required>
+                                            <input class="form-control input-mask" type="text"  id="telefono" name="telefono" required data-inputmask="'mask': '9999-9999'" im-insert="true">
                                         </div>
                                     </div>
         

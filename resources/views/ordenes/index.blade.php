@@ -34,9 +34,10 @@
 					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
-								<th>Id</th>
-								<th>id cliente</th>
+								<th>Numero</th>
 								<th>Cliente</th>
+								<th>Tipo de Orden</th>
+                                <th>Actividad</th>
 								<th>Acciones</th>
 							
 							</tr>
@@ -45,8 +46,9 @@
 								@foreach ($ordenes as $obj_item)
 								<tr class="filas">
 									<td>{{$obj_item->numero}}</td>
-									<td>{{$obj_item->id}}</td>
-									<td>{{$obj_item->nombre}}</td>
+									<td>{{$obj_item->get_cliente->nombre}}</td>
+									<td>{{$obj_item->tipo_servicio}}</td>
+                                    <td>{{$obj_item->get_actividad->actividad}}</td>
                                     <td>
                                         <div class="btn-group mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>
@@ -102,7 +104,7 @@
                     'Registro eliminado',
                     'success'
                     )
-                    window.location.href = "actividades/destroy/"+id;
+                    window.location.href = "ordenes/destroy/"+id;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

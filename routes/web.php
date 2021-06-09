@@ -85,6 +85,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('ordenes/edit/{id}',[App\Http\Controllers\OrdenController::class ,'edit'])->middleware('permission:edit_orden')->name('ordenes.edit');
     Route::post('ordenes/update/{id}',[App\Http\Controllers\OrdenController::class ,'update'])->middleware('permission:edit_orden')->name('ordenes.update');
     Route::get('ordenes/destroy/{id}',[App\Http\Controllers\OrdenController::class ,'destroy'])->middleware('permission:destroy_orden')->name('ordenes.distroy');
+    Route::get('autocomplete',[App\Http\Controllers\OrdenController::class ,'busqueda_cliente'])->middleware('permission:create_orden')->name('autocomplete');
 
 });
 

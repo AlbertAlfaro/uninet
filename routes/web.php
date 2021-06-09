@@ -74,6 +74,8 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('clientes/edit/{id}',[App\Http\Controllers\ClientesController::class ,'edit'])->middleware('permission:edit_cliente')->name('clientes.edit');
     Route::post('clientes/update',[App\Http\Controllers\ClientesController::class ,'update'])->middleware('permission:edit_cliente')->name('clientes.update');
     Route::get('clientes/details/{id}',[App\Http\Controllers\ClientesController::class ,'details'])->middleware('permission:index_cliente')->name('clientes.details');
+    Route::get('clientes/internet_details/{id}',[App\Http\Controllers\ClientesController::class ,'internet_details'])->middleware('permission:index_cliente')->name('clientes.tv_details');
+    Route::get('clientes/tv_details/{id}',[App\Http\Controllers\ClientesController::class ,'tv_details'])->middleware('permission:index_cliente')->name('clientes.internet_details');
     Route::get('cliente/destroy/{id}',[App\Http\Controllers\ClientesController::class ,'destroy'])->middleware('permission:destroy_cliente')->name('clientes.distroy');
 
     //grupo ordenes

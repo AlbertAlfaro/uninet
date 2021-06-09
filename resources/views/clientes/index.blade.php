@@ -28,6 +28,8 @@
 
                 </div>
 				<br>
+
+                
                 @include('flash::message')
                 <div class="table-responsive">
 
@@ -105,212 +107,355 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        
-                        <div class="col-lg-12">
-                            <div class="card border border-primary">
-                                <div class="card-header bg-transparent border-primary">
-                                    <h5 class="my-0 text-primary"><i class="uil uil-user me-3"></i> Datos generales</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table" style="width: 100%;">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th class="col-md-3">Campo</th>
-                                                <th class="col-md-6">Valor</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th>Código:</th>
-                                                <td id="codigo"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Nombre:</th>
-                                                <td id="nombre"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Correo:</th>
-                                                <td id="email"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Fecha de Nacimiento:</th>
-                                                <td id="fecha_nacimiento"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono:</th>
-                                                <td id="telefono1"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono secundario:</th>
-                                                <td id="telefono2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>DUI:</th>
-                                                <td id="dui"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>NIT:</th>
-                                                <td id="nit"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Departamento:</th>
-                                                <td id="departamento"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Municipio:</th>
-                                                <td id="municipio"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Ocupación:</th>
-                                                <td id="ocupacion"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Dirreccion:</th>
-                                                <td id="dirreccion"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Tipo de documento:</th>
-                                                <td id="tipo_documento"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Giro:</th>
-                                                <td id="giro"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Número de registro:</th>
-                                                <td id="numero_registro"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Dirrección de facturación:</th>
-                                                <td id="dirreccion_cobro"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Condición del lugar:</th>
-                                                <td id="condicion_lugar"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Nombre del dueño:</th>
-                                                <td id="nombre_dueno"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Coordenada:</th>
-                                                <td id="cordenada"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Nodo:</th>
-                                                <td id="nodo"></td>
-                                            </tr>
-                            
-                                        </tbody>
-                                    </table>
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#navtabs-home" role="tab">
+                                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                    <span class="d-none d-sm-block">Datos generales</span>    
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#navtabs-profile" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                    <span class="d-none d-sm-block">Referencias</span>    
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#navtabs-messages" role="tab">
+                                    <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                    <span class="d-none d-sm-block">Servicios</span>    
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content p-3 text-muted">
+                            <div class="tab-pane active" id="navtabs-home" role="tabpanel">
+                                <div class="col-lg-12">
+                                    <div class="card border border-primary">
+                                        <div class="card-header bg-transparent border-primary">
+                                            <h5 class="my-0 text-primary"><i class="uil uil-user me-3"></i> Datos generales</h5>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <table class="table" style="width: 100%;">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="col-md-3">Campo</th>
+                                                        <th class="col-md-6">Valor</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Código:</th>
+                                                        <td id="codigo"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Nombre:</th>
+                                                        <td id="nombre"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Correo:</th>
+                                                        <td id="email"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Fecha de Nacimiento:</th>
+                                                        <td id="fecha_nacimiento"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Telefono:</th>
+                                                        <td id="telefono1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Telefono secundario:</th>
+                                                        <td id="telefono2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DUI:</th>
+                                                        <td id="dui"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>NIT:</th>
+                                                        <td id="nit"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Departamento:</th>
+                                                        <td id="departamento"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Municipio:</th>
+                                                        <td id="municipio"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Ocupación:</th>
+                                                        <td id="ocupacion"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Dirreccion:</th>
+                                                        <td id="dirreccion"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tipo de documento:</th>
+                                                        <td id="tipo_documento"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Giro:</th>
+                                                        <td id="giro"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Número de registro:</th>
+                                                        <td id="numero_registro"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Dirrección de facturación:</th>
+                                                        <td id="dirreccion_cobro"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Condición del lugar:</th>
+                                                        <td id="condicion_lugar"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Nombre del dueño:</th>
+                                                        <td id="nombre_dueno"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Coordenada:</th>
+                                                        <td id="cordenada"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Nodo:</th>
+                                                        <td id="nodo"></td>
+                                                    </tr>
                                     
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="card border border-info">
-                                <div class="card-header bg-transparent border-info">
-                                    <h5 class="my-0 text-info"><i class="uil-users-alt me-3"></i> Referencias</h5>
-                                </div>
-                                <div class="card-body">
-
-                                  
-                                    <table class="table" style="width: 100%;">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th class="col-md-3">Campo</th>
-                                                <th class="col-md-6">Valor</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th>Referencia 1:</th>
-                                                <td id="referencia1"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono referencia 1</th>
-                                                <td id="telefo1"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Referencia 2:</th>
-                                                <td id="referencia2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono referencia 2:</th>
-                                                <td id="telefo2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Referencia 3:</th>
-                                                <td id="referencia3"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono referencia 3</th>
-                                                <td id="telefo3"></td>
-                                            </tr>
+                                                </tbody>
+                                            </table>
                                             
-                            
-                                        </tbody>
-                                    </table>
-                                
-                            </div>
-                     
-
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="card border border-success">
-                                <div class="card-header bg-transparent border-success">
-                                    <h5 class="my-0 text-success"><i class="uil-wrench me-3"></i> Servicios</h5>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-
-                                    <h5>Internet</h5>
-                                    <table class="table" style="width: 100%;">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th class="col-md-3">Campo</th>
-                                                <th class="col-md-6">Valor</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th>Numero Contraro:</th>
-                                                <td id="numero_contrato"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Fecha de instalación</th>
-                                                <td id="fecha_instalacion"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Referencia 2:</th>
-                                                <td id="referencia2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono referencia 2:</th>
-                                                <td id="telefo2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Referencia 3:</th>
-                                                <td id="referencia3"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telefono referencia 3</th>
-                                                <td id="telefo3"></td>
-                                            </tr>
-                                            
-                            
-                                        </tbody>
-                                    </table>
-                                
                             </div>
-                     
-
+                            <div class="tab-pane" id="navtabs-profile" role="tabpanel">
+                                <div class="col-lg-12">
+                                    <div class="card border border-info">
+                                        <div class="card-header bg-transparent border-info">
+                                            <h5 class="my-0 text-info"><i class="uil-users-alt me-3"></i> Referencias</h5>
+                                        </div>
+                                        <div class="card-body">
+        
+                                          
+                                            <table class="table" style="width: 100%;">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="col-md-3">Campo</th>
+                                                        <th class="col-md-6">Valor</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Referencia 1:</th>
+                                                        <td id="referencia1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Telefono referencia 1</th>
+                                                        <td id="telefo1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Referencia 2:</th>
+                                                        <td id="referencia2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Telefono referencia 2:</th>
+                                                        <td id="telefo2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Referencia 3:</th>
+                                                        <td id="referencia3"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Telefono referencia 3</th>
+                                                        <td id="telefo3"></td>
+                                                    </tr>
+                                                    
+                                    
+                                                </tbody>
+                                            </table>
+                                        
+                                        </div>
+                             
+        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="navtabs-messages" role="tabpanel">
+                                <div class="col-lg-12">
+                                    <div class="card border border-success">
+                                        <div class="card-header bg-transparent border-success">
+                                            <h5 class="my-0 text-success"><i class="uil-wrench me-3"></i> Servicios</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="internet">
+                                                <h5>Internet</h5>
+                                                <table class="table" style="width: 100%;">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th class="col-md-3">Campo</th>
+                                                            <th class="col-md-6">Valor</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Numero Contraro:</th>
+                                                            <td id="numero_contrato"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Fecha de instalación:</th>
+                                                            <td id="fecha_instalacion"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Primer fecha de factura:</th>
+                                                            <td id="fecha_primer_fact"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Cuota mensual:</th>
+                                                            <td id="cuota_mensual"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Prepago:</th>
+                                                            <td id="prepago"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Dia generación factura:</th>
+                                                            <td id="dia_gene_fact"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Periodo:</th>
+                                                            <td id="periodo"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Cortesia:</th>
+                                                            <td id="cortesia"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Fecha vence contrato:</th>
+                                                            <td id="contrato_vence"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Velocidad:</th>
+                                                            <td id="velocidad"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Marca:</th>
+                                                            <td id="marca"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Modelo:</th>
+                                                            <td id="modelo"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Serie:</th>
+                                                            <td id="serie"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Mac:</th>
+                                                            <td id="mac"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Resepción:</th>
+                                                            <td id="recepcion"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Transmisión:</th>
+                                                            <td id="trasmision"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Ip:</th>
+                                                            <td id="ip"></td>
+                                                        </tr>
+                                                        
+                                        
+                                                    </tbody>
+                                                </table>
+        
+                                            </div>
+        
+                                            <div id="tv">
+        
+                                                <h5>Televisión</h5>
+                                                <table class="table" style="width: 100%;">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th class="col-md-3">Campo</th>
+                                                            <th class="col-md-6">Valor</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Numero Contraro:</th>
+                                                            <td id="numero_contrato_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Fecha de instalación:</th>
+                                                            <td id="fecha_instalacion_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Primer fecha de factura:</th>
+                                                            <td id="fecha_primer_fact_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Cuota mensual:</th>
+                                                            <td id="cuota_mensual_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Prepago:</th>
+                                                            <td id="prepago_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Dia generación factura:</th>
+                                                            <td id="dia_gene_fact_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Periodo:</th>
+                                                            <td id="periodo_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Cortesia:</th>
+                                                            <td id="cortesia_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Fecha vence contrato:</th>
+                                                            <td id="contrato_vence_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Digital:</th>
+                                                            <td id="digital_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Marca:</th>
+                                                            <td id="marca_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Modelo:</th>
+                                                            <td id="modelo_tv"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Serie:</th>
+                                                            <td id="serie_tv"></td>
+                                                        </tr>
+                                                        
+                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        
+                                    </div>
+                             
+        
+                                </div>
+                            </div>
                         </div>
-
-                        
-                        
-                            
+                       
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cerrar</button>
@@ -345,14 +490,14 @@
                 if (result.value) {
                     Swal.fire(
                     'Eliminado!',
-                    'Registro eliminado',
+                    'Registro con id:'+id+' fue eliminado',
                     'success'
                     )
-                    window.location.href = "users/destroy/"+id;
+                    window.location.href = "cliente/destroy/"+id;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',
-                    'El registro no fue eliminado :)',
+                    'El registro id: '+id+' no fue eliminado :)',
                     'error'
                     )
                     
@@ -392,12 +537,29 @@
                 $("#referencia1").text(validacion(data[0].referencia1,1));
                 $("#referencia2").text(validacion(data[0].referencia2,1));
                 $("#referencia3").text(validacion(data[0].referencia3,1));
-
                 $("#telefo1").text(validacion(data[0].telefo1,1));
                 $("#telefo2").text(validacion(data[0].telefo2,1));
                 $("#telefo3").text(validacion(data[0].telefo3,1));
 
-                
+                // para servicios
+                if(data[0].internet==1){
+                    $("#tv").hide();
+                    $("#internet").show();
+                    internet_details(id);
+                }
+
+                if(data[0].tv==1){
+                    $("#internet").hide();
+                    $("#tv").show();
+                    tv_details(id);
+
+                }
+
+                if(data[0].internet==1 && data[0].tv==1 ){
+                    $("#internet").show();
+                    $("#tv").show();
+                }
+
 
             }
         });
@@ -406,19 +568,83 @@
             
         }
 
+        function internet_details(id){
+            $.ajax({
+            type:'GET',
+            url:'{{ url("clientes/internet_details") }}/'+id,
+            success:function(data) {
+                $("#numero_contrato").text(validacion(data[0].numero_contrato,1));
+                $("#fecha_instalacion").text(validacion(data[0].fecha_instalacion,2));
+                $("#fecha_primer_fact").text(validacion(data[0].fecha_primer_fact,2));
+                $("#cuota_mensual").text('$ '+validacion(data[0].cuota_mensual,1));
+                $("#prepago").text(validacion(data[0].prepago,6));
+                $("#dia_gene_fact").text(validacion(data[0].dia_gene_fact,8));
+                $("#periodo").text(validacion(data[0].periodo,7));
+                $("#cortesia").text(validacion(data[0].cortesia,9));
+                $("#contrato_vence").text(validacion(data[0].contrato_vence,2));
+                $("#velocidad").text(validacion(data[0].velocidad,1));
+                $("#marca").text(validacion(data[0].marca,1));
+                $("#modelo").text(validacion(data[0].modelo,1));
+                $("#serie").text(validacion(data[0].serie,1));
+                $("#mac").text(validacion(data[0].mac,1));
+                $("#recepcion").text(validacion(data[0].recepcion,1));
+                $("#trasmision").text(validacion(data[0].trasmision,1));
+                $("#ip").text(validacion(data[0].ip,1));
+                
+
+
+
+            }
+        });
+
+        }
+        function tv_details(id){
+            $.ajax({
+            type:'GET',
+            url:'{{ url("clientes/tv_details") }}/'+id,
+            success:function(data) {
+                $("#numero_contrato_tv").text(validacion(data[0].numero_contrato,1));
+                $("#fecha_instalacion_tv").text(validacion(data[0].fecha_instalacion,2));
+                $("#fecha_primer_fact_tv").text(validacion(data[0].fecha_primer_fact,2));
+                $("#cuota_mensual_tv").text('$ '+validacion(data[0].cuota_mensual,1));
+                $("#prepago_tv").text(validacion(data[0].prepago,6));
+                $("#dia_gene_fact_tv").text(validacion(data[0].dia_gene_fact,8));
+                $("#periodo_tv").text(validacion(data[0].periodo,7));
+                $("#cortesia_tv").text(validacion(data[0].cortesia,9));
+                $("#contrato_vence_tv").text(validacion(data[0].contrato_vence,2));
+                $("#digital_tv").text(validacion(data[0].digital,9));
+                $("#marca_tv").text(validacion(data[0].marca,1));
+                $("#modelo_tv").text(validacion(data[0].modelo,1));
+                $("#serie_tv").text(validacion(data[0].serie,1));
+                
+
+
+
+            }
+        });
+
+        }
+
         function validacion(data,tipo){
 
             if(tipo==1){
                 if(data!=null){
                     return data;
                 }else{
-                    return "---- ----"
+                    return "---- ----";
                 }
             }
 
             if(tipo==2){
-                var f = new Date(data);
-                return f.getDate()+"/"+("0"+(f.getMonth()+1)).slice(-2)+"/"+f.getFullYear();
+                if(data!=null){
+
+                    var f = new Date(data);
+                    return f.getDate()+"/"+("0"+(f.getMonth()+1)).slice(-2)+"/"+f.getFullYear();
+                }else{
+
+                    return "---- ----";
+
+                }
             }
 
             if(tipo==3){
@@ -434,6 +660,9 @@
                 if(data==4){
                     return "Otros";
                 }
+                if(data==null){
+                    return "---- ----";
+                }
             }
 
             if(tipo==4){
@@ -442,6 +671,9 @@
                 }
                 if(data==2){
                     return "CREDITO FISCAL";
+                }
+                if(data==null){
+                    return "---- ----";
                 }
             }
 
@@ -454,6 +686,62 @@
                 }
                 if(data==3){
                     return "Otros";
+                }
+                if(data==null){
+                    return "---- ----";
+                }
+            }
+
+            if(tipo==6){
+                if(data==1){
+                    return "SI";
+                }
+                if(data==2){
+                    return "NO";
+                }
+                if(data==null){
+                    return "---- ----";
+                }
+            }
+
+            if(tipo==7){
+                if(data==3){
+                    return "3 meses";
+                }
+                if(data==6){
+                    return "6 meses";
+                }
+                if(data==12){
+                    return "12 meses";
+                }
+                if(data==18){
+                    return "18 meses";
+                }
+                if(data==24){
+                    return "24 meses";
+                }
+                if(data==null){
+                    return "---- ----";
+                }
+            }
+
+            if(tipo==8){
+                var leng =31;
+                for(var x=0;x<31;x++){
+                    if(data==x){
+                        return "Dia "+x;
+                    }
+                }
+                if(data==null){
+                    return "---- ----";
+                }
+            }
+
+            if(tipo==9){
+                if(data==null){
+                    return "NO";
+                }else{
+                    return "SI";
                 }
             }
 

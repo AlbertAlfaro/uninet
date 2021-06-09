@@ -20,7 +20,7 @@ class ClientesController extends Controller
     }
     public function index(){
 
-        $obj = Cliente::all();
+        $obj = Cliente::where('activo',1)->where('id_sucursal',Auth::user()->id_sucursal)->get();
 
         return view('clientes.index',compact('obj'));
     }
@@ -518,6 +518,8 @@ class ClientesController extends Controller
                             'clientes.nombre_dueno',
                             'clientes.numero_registro',
                             'clientes.giro',
+                            'clientes.internet',
+                            'clientes.tv',
                             'clientes.colilla',
                             'clientes.tipo_documento',
                             'clientes.referencia1',
@@ -540,6 +542,36 @@ class ClientesController extends Controller
             $cliente-> toArray()  
         );
 
+    }
+
+    public function internet_details($id){
+
+        $internet = Internet::where('id_cliente',$id)->get();
+
+        return response()->json(
+            $internet-> toArray()  
+        );
+
+
+    }
+
+    public function tv_details($id){
+
+        $tv = Tv::where('id_cliente',$id)->get();
+
+        return response()->json(
+            $tv-> toArray()  
+        );
+
+    }
+
+    public function destroy($id){
+        Cliente::where('id',$id)->update(['activo' =>0]);
+
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Cliente eliminado con id: '.$id);
+        flash()->success("Cliente eliminado exitosamente!")->important();
+        return redirect()->route('clientes.index');
     }
 
     private function correlativo($id,$digitos){

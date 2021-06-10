@@ -6,6 +6,7 @@ use App\Models\Actividades;
 use App\Models\Tecnicos;
 use App\Models\Cliente;
 use App\Models\Correlativo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -97,9 +98,26 @@ class OrdenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $fecha_trabajo="";
+        if($request->fecha_trabajo!=""){
+            $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+
+        }
+        Ordenes::where('id',$request->id_orden)->update([
+            'id_tecnico'=> $request->id_tecnico,
+            'id_actividad'=>$request->id_actividad,
+            'observacion'=>$request->observacion,
+            'recepcion'=>$request->rx,
+            'tx'=>$request->tx,
+            "fecha_trabajo"=>$request->fecha_trabajo
+            ]);
+        flash()->success("Registro editado exitosamente!")->important();
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+    
+        return redirect()->route('ordenes.index');
     }
 
     /**
@@ -110,7 +128,11 @@ class OrdenController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Ordenes::destroy($id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Orden eliminado con  id: '.$id);
+        flash()->success("Registro eliminado exitosamente!")->important();
+        return redirect()->route('ordenes.index');
     }
 
     /// funciones extra

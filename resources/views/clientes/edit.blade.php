@@ -200,8 +200,8 @@ Gestión de Clientes
                                                         <select class="form-control" data-live-search="true" name="id_departamento" id="id_departamento" required>
                                                             <option value="" >Seleccionar...</option>
                                                             
-                                                            @foreach ($obj_departamento as $obj_item)
-                                                                    <option value="{{$obj_item->id}}" @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
+                                                            @foreach ($orden as $obj_item)
+                                                                    <option value="{{$orden->id}}" @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
                                                                     
                                                             @endforeach
                                                             

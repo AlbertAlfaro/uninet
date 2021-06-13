@@ -75,7 +75,7 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Contrato</a>
+                                                <a class="dropdown-item" href="{{ route('clientes.contrato',$obj_item->id)}}">Contratos</a>
                                                 <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Estado de cuenta</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#" onclick="detallesCliente({{$obj_item->id}})">Detalles</a>
@@ -314,6 +314,10 @@
                                                             <td id="fecha_instalacion"></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Costo de instalación:</th>
+                                                            <td id="costo_instalacion"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Primer fecha de factura:</th>
                                                             <td id="fecha_primer_fact"></td>
                                                         </tr>
@@ -400,6 +404,10 @@
                                                             <td id="fecha_instalacion_tv"></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Costo de instalación:</th>
+                                                            <td id="costo_instalacion_tv"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Primer fecha de factura:</th>
                                                             <td id="fecha_primer_fact_tv"></td>
                                                         </tr>
@@ -458,6 +466,7 @@
                        
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary waves-effect">Imprimir</button>
                         <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -516,7 +525,7 @@
                 $("#email").text(validacion(data[0].email,1));
                 $("#fecha_nacimiento").text(validacion(data[0].fecha_nacimiento,2));
                 $("#telefono1").text(validacion(data[0].telefono1,1));
-                $("#telefono2").text(validacion(data.telefono2,1));
+                $("#telefono2").text(validacion(data[0].telefono2,1));
                 $("#dui").text(validacion(data[0].dui,1));
                 $("#nit").text(validacion(data[0].nit,1));
                 $("#departamento").text(validacion(data[0].nombre_departamento,1));
@@ -575,6 +584,7 @@
             success:function(data) {
                 $("#numero_contrato").text(validacion(data[0].numero_contrato,1));
                 $("#fecha_instalacion").text(validacion(data[0].fecha_instalacion,2));
+                $("#costo_instalacion").text('$ '+validacion(data[0].costo_instalacion,1));
                 $("#fecha_primer_fact").text(validacion(data[0].fecha_primer_fact,2));
                 $("#cuota_mensual").text('$ '+validacion(data[0].cuota_mensual,1));
                 $("#prepago").text(validacion(data[0].prepago,6));
@@ -605,6 +615,7 @@
             success:function(data) {
                 $("#numero_contrato_tv").text(validacion(data[0].numero_contrato,1));
                 $("#fecha_instalacion_tv").text(validacion(data[0].fecha_instalacion,2));
+                $("#costo_instalacion_tv").text('$ '+validacion(data[0].costo_instalacion,1));
                 $("#fecha_primer_fact_tv").text(validacion(data[0].fecha_primer_fact,2));
                 $("#cuota_mensual_tv").text('$ '+validacion(data[0].cuota_mensual,1));
                 $("#prepago_tv").text(validacion(data[0].prepago,6));

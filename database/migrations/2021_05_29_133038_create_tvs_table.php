@@ -18,6 +18,7 @@ class CreateTvsTable extends Migration
             $table->integer('id_cliente');
             $table->string('numero_contrato');
             $table->date('fecha_instalacion')->nullable();
+            $table->float('costo_instalacion')->nullable();
             $table->date('fecha_primer_fact')->nullable();
             $table->float('cuota_mensual');
             $table->string('prepago')->nullable();

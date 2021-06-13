@@ -492,8 +492,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
-                                                                <div class="col-md-8">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato *</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control inter" type="text"  id="num_contrato" name="num_contrato" value="{{ $correlativo_contra_inter }}" required readonly>
                                                                     
                                                                 </div>
@@ -518,8 +518,21 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion" name="costo_instalacion" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Primer fecha de facturación</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control datepicker" type="text"  id="fecha_primer_fact" name="fecha_primer_fact" autocomplete="off">
                                                                     
                                                                 </div>
@@ -564,8 +577,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Dia generacion factura *</label>
+                                                                <div class="col-md-7">
                                                                     <select class="form-control inter" name="dia_gene_fact" id="dia_gene_fact" required>
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" >01</option>
@@ -649,8 +662,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" required autocomplete="off">
                                                                     
                                                                 </div>
@@ -689,8 +702,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Modelo </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="modelo" name="modelo" >
                                                                     
                                                                 </div>
@@ -730,8 +743,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Resepción </label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Resepción </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="recepcion" name="recepcion">
                                                                     
                                                                 </div>
@@ -784,8 +797,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato *</label>
-                                                                <div class="col-md-8">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato *</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control tv" type="text"  id="num_contrato_tv" name="num_contrato_tv" value="{{ $correlativo_contra_tv }}" required readonly>
                                                                     
                                                                 </div>
@@ -810,8 +823,21 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Primer fecha de facturación</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control datepicker" type="text"  id="fecha_primer_fact_tv" name="fecha_primer_fact_tv" autocomplete="off">
                                                                     
                                                                 </div>
@@ -856,8 +882,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Dia generacion factura *</label>
+                                                                <div class="col-md-7">
                                                                     <select class="form-control tv" name="dia_gene_fact_tv" id="dia_gene_fact_tv" required>
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" >01</option>
@@ -941,8 +967,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" required autocomplete="off">
                                                                     
                                                                 </div>
@@ -984,8 +1010,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Modelo </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="modelo_tv" name="modelo_tv" >
                                                                     
                                                                 </div>

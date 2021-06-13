@@ -496,8 +496,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato </label>
-                                                                <div class="col-md-8">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="num_contrato" name="num_contrato" value="@if (isset($internet[0]->numero_contrato)==1){{ $internet[0]->numero_contrato }}@endif" readonly>
                                                                     
                                                                 </div>
@@ -522,8 +522,21 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion" name="costo_instalacion" value="@if (isset($internet[0]->costo_instalacion)==1){{ $internet[0]->costo_instalacion }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Primer fecha de facturación</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control datepicker" type="text"  id="fecha_primer_fact" name="fecha_primer_fact" value="@if (isset($internet[0]->fecha_primer_fact)==1){{ $internet[0]->fecha_primer_fact->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
@@ -568,8 +581,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Dia generacion factura *</label>
+                                                                <div class="col-md-7">
                                                                     <select class="form-control inter" name="dia_gene_fact" id="dia_gene_fact" required>
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" @if (isset($internet[0]->dia_gene_fact)==1) @if($internet[0]->dia_gene_fact==1) selected @endif @endif>01</option>
@@ -639,19 +652,20 @@ Gestión de Clientes
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
                                                                 <div class="col-md-8">
                                                                     <div class="custom-control custom-checkbox">
-                                                                        @if (isset($internet[0]->cortesia)==1) @if($internet[0]->cortesia==1)
-                                                                            <input checked type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
-                                                                            <label class="custom-control-label" for="cortesia"></label>
-                                                                        
-                                                                        @else 
-                                                                        <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
-                                                                        <label class="custom-control-label" for="cortesia"></label>
+                                                                        @if (isset($internet[0]->cortesia)==1) 
+                                                                            @if($internet[0]->cortesia==1)
+                                                                                <input checked type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
+                                                                                <label class="custom-control-label" for="cortesia"></label>
+                                                                            
+                                                                            @else 
+                                                                                <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
+                                                                                <label class="custom-control-label" for="cortesia"></label>
 
-                                                                        @endif
+                                                                            @endif
                                                                         
                                                                         @else
-                                                                        <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
-                                                                        <label class="custom-control-label" for="cortesia"></label>
+                                                                            <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
+                                                                            <label class="custom-control-label" for="cortesia"></label>
 
                                                                         @endif
                                                                     </div>
@@ -666,8 +680,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" value="@if (isset($internet[0]->contrato_vence)==1){{ $internet[0]->contrato_vence->format('d/m/Y') }}@endif" required autocomplete="off">
                                                                     
                                                                 </div>
@@ -706,8 +720,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Modelo </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="modelo" name="modelo" value="@if (isset($internet[0]->modelo)==1){{ $internet[0]->modelo }}@endif" >
                                                                     
                                                                 </div>
@@ -747,8 +761,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Resepción </label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Resepción </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="recepcion" name="recepcion" value="@if (isset($internet[0]->recepcion)==1){{ $internet[0]->recepcion }}@endif">
                                                                     
                                                                 </div>
@@ -801,8 +815,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Numero de contrato </label>
-                                                                <div class="col-md-8">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="num_contrato_tv" name="num_contrato_tv" readonly value="@if (isset($tv[0]->numero_contrato)==1){{ $tv[0]->numero_contrato }}@endif">
                                                                     
                                                                 </div>
@@ -827,8 +841,21 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Primer fecha de facturación</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Costo de instalación </label>
+                                                                <div class="col-md-8">
+                                                                    <input class="form-control input-mask text-left tv" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" value="@if (isset($tv[0]->costo_instalacion)==1){{ $tv[0]->costo_instalacion }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Primer fecha de facturación</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control datepicker" type="text"  id="fecha_primer_fact_tv" name="fecha_primer_fact_tv" value="@if (isset($tv[0]->fecha_primer_fact)==1){{ $tv[0]->fecha_primer_fact->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
@@ -873,8 +900,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Dia generacion factura *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Dia generacion factura *</label>
+                                                                <div class="col-md-7">
                                                                     <select class="form-control tv" name="dia_gene_fact_tv" id="dia_gene_fact_tv" required>
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" @if (isset($tv[0]->dia_gene_fact)==1) @if($tv[0]->dia_gene_fact==1) selected @endif @endif>01</option>
@@ -945,19 +972,19 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <div class="custom-control custom-checkbox">
                                                                         @if (isset($tv[0]->cortesia)==1) 
-                                                                        @if($tv[0]->cortesia==1)
-                                                                            <input checked type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia" value="1" >
-                                                                            <label class="custom-control-label" for="cortesia_tv"></label>
-                                                                        
-                                                                        @else 
-                                                                        <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
-                                                                        <label class="custom-control-label" for="cortesia_tv"></label>
+                                                                            @if($tv[0]->cortesia==1)
+                                                                                <input checked type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
+                                                                                <label class="custom-control-label" for="cortesia_tv"></label>
+                                                                            
+                                                                            @else 
+                                                                                <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
+                                                                                <label class="custom-control-label" for="cortesia_tv"></label>
 
-                                                                        @endif
+                                                                            @endif
                                                                         
                                                                         @else
-                                                                        <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
-                                                                        <label class="custom-control-label" for="cortesia_tv"></label>
+                                                                            <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
+                                                                            <label class="custom-control-label" for="cortesia_tv"></label>
 
                                                                         @endif
                                                                     </div>
@@ -972,8 +999,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Fecha vence contrato *</label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" value="@if (isset($tv[0]->contrato_vence)==1){{ $tv[0]->contrato_vence->format('d/m/Y') }}@endif" required autocomplete="off">
                                                                     
                                                                 </div>
@@ -991,15 +1018,15 @@ Gestión de Clientes
 
                                                                     <div class="custom-control custom-checkbox">
                                                                         @if (isset($tv[0]->digital)==1) 
-                                                                        @if($tv[0]->digital==1)
-                                                                            <input checked type="checkbox" class="custom-control-input" id="digital_tv" name="cortesia" value="1" >
-                                                                            <label class="custom-control-label" for="digital_tv"></label>
-                                                                        
-                                                                        @else 
-                                                                        <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
-                                                                        <label class="custom-control-label" for="digital_tv"></label>
+                                                                            @if($tv[0]->digital==1)
+                                                                                <input checked type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
+                                                                                <label class="custom-control-label" for="digital_tv"></label>
+                                                                            
+                                                                            @else 
+                                                                                <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
+                                                                                <label class="custom-control-label" for="digital_tv"></label>
 
-                                                                        @endif
+                                                                            @endif
                                                                         
                                                                         @else
                                                                         <input type="checkbox" class="custom-control-input" id="digital_tv" name="digital_tv" value="1" >
@@ -1030,8 +1057,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-6 col-form-label">Modelo </label>
-                                                                <div class="col-md-6">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Modelo </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="modelo_tv" name="modelo_tv"value="@if (isset($tv[0]->modelo)==1){{ $tv[0]->modelo }}@endif" >
                                                                     
                                                                 </div>

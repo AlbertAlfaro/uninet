@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Fpdf\FpdfClass;
 use App\Models\Cliente;
 use App\Models\Correlativo;
 use App\Models\Departamentos;
@@ -118,6 +119,9 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual);
             $internet->cuota_mensual = $cuota_mensual[1];
+
+            $costo_instalacion = explode(" ",$request->costo_instalacion);
+            $internet->costo_instalacion = $costo_instalacion[1];
             $internet->prepago = $request->prepago;
             $internet->dia_gene_fact = $request->dia_gene_fact;
             if($request->contrato_vence!=""){
@@ -160,6 +164,8 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
             $tv->cuota_mensual = $cuota_mensual[1];
+            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+            $tv->costo_instalacion = $costo_instalacion[1];
             $tv->prepago = $request->prepago_tv;
             $tv->dia_gene_fact = $request->dia_gene_fact_tv;
             if($request->contrato_vence_tv!=""){
@@ -197,6 +203,8 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual);
             $internet->cuota_mensual = $cuota_mensual[1];
+            $costo_instalacion = explode(" ",$request->costo_instalacion);
+            $internet->costo_instalacion = $costo_instalacion[1];
             $internet->prepago = $request->prepago;
             $internet->dia_gene_fact = $request->dia_gene_fact;
             if($request->contrato_vence!=""){
@@ -232,6 +240,8 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
             $tv->cuota_mensual = $cuota_mensual[1];
+            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+            $tv->costo_instalacion = $costo_instalacion[1];
             $tv->prepago = $request->prepago_tv;
             $tv->dia_gene_fact = $request->dia_gene_fact_tv;
             if($request->contrato_vence_tv!=""){
@@ -270,8 +280,9 @@ class ClientesController extends Controller
         //dd($request->all());
 
         $id_cliente = $request->id_cliente;
+      
         if($request->colilla==1){
-            $nternet = 1;
+            $internet = 1;
             $tv = 0;
         }
         if($request->colilla==2){
@@ -345,6 +356,7 @@ class ClientesController extends Controller
         }
 
         $cuota_mensual = explode(" ", $request->cuota_mensual);
+        $costo_instalacion = explode(" ",$request->costo_instalacion);
 
         if($internet==1){
             $isset_internet = Internet::where('id_cliente',$id_cliente)->get();
@@ -353,6 +365,7 @@ class ClientesController extends Controller
                     'fecha_instalacion' => $fecha_instalacion,
                     'fecha_instalacion' => $fecha_primer_fact,
                     'cuota_mensual' => $cuota_mensual[1],
+                    'costo_instalacion' => $costo_instalacion[1],
                     'prepago' => $request->prepago,
                     'dia_gene_fact' => $request->dia_gene_fact,
                     'contrato_vence' => $contrato_vence,
@@ -387,6 +400,8 @@ class ClientesController extends Controller
                 }
                 $cuota_mensual = explode(" ", $request->cuota_mensual);
                 $internet->cuota_mensual = $cuota_mensual[1];
+                $costo_instalacion = explode(" ",$request->costo_instalacion);
+                $internet->costo_instalacion = $costo_instalacion[1];
                 $internet->prepago = $request->prepago;
                 $internet->dia_gene_fact = $request->dia_gene_fact;
                 if($request->contrato_vence!=""){
@@ -433,6 +448,7 @@ class ClientesController extends Controller
         }
 
         $cuota_mensual_tv = explode(" ", $request->cuota_mensual_tv);
+        $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
 
         if($tv==1){
             $isset_tv = Tv::where('id_cliente',$id_cliente)->get();
@@ -442,6 +458,7 @@ class ClientesController extends Controller
                     'fecha_instalacion' => $fecha_instalacion_tv,
                     'fecha_instalacion' => $fecha_primer_fact_tv,
                     'cuota_mensual' => $cuota_mensual_tv[1],
+                    'costo_instalacion' => $costo_instalacion[1],
                     'prepago' => $request->prepago_tv,
                     'dia_gene_fact' => $request->dia_gene_fact_tv,
                     'contrato_vence' => $contrato_vence_tv,
@@ -472,6 +489,8 @@ class ClientesController extends Controller
                 }
                 $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
                 $tv->cuota_mensual = $cuota_mensual[1];
+                $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+                $tv->costo_instalacion = $costo_instalacion[1];
                 $tv->prepago = $request->prepago_tv;
                 $tv->dia_gene_fact = $request->dia_gene_fact_tv;
                 if($request->contrato_vence_tv!=""){
@@ -574,6 +593,244 @@ class ClientesController extends Controller
         return redirect()->route('clientes.index');
     }
 
+    public function contrato($id){
+
+        $contrato_internet= Internet::where('id_cliente',$id)->get();
+        $cliente= Cliente::find($id);
+
+        $fpdf = new FpdfClass();
+        $fpdf->AliasNbPages();
+        $fpdf->AddPage();
+        $fpdf->SetTitle('CONTRATOS | UNINET');
+
+        $fpdf->SetXY(170,26);
+        $fpdf->SetFont('Arial','',15);
+        $fpdf->SetTextColor(194,8,8);
+        $fpdf->Cell(30,10,$contrato_internet[0]->numero_contrato);
+        $fpdf->SetTextColor(0,0,0);
+        $fpdf->SetFont('Arial','B',14);
+        $fpdf->SetXY(58,35);
+        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE INTERNET');
+        //$contrato_internet[0]->numero_contrato
+        $fpdf->SetXY(160,26);
+        $fpdf->SetFont('Arial','',15);
+        $fpdf->SetTextColor(194,8,8);
+        $fpdf->Cell(30,10,utf8_decode('Nº.'));
+        $fpdf->SetTextColor(0,0,0);
+
+        $fpdf->SetFont('Arial','',12);
+        
+        $fpdf->SetXY(15,45);
+        $fpdf->cell(40,10,utf8_decode('Servicio No: '.$contrato_internet[0]->numero_contrato));
+        $fpdf->SetXY(38,45);
+        $fpdf->cell(40,10,'_________');
+
+        $fpdf->SetXY(150,45);
+        $fpdf->cell(30,10,utf8_decode('Fecha: '.date('d/m/Y')));
+        $fpdf->SetXY(164,45);
+        $fpdf->cell(40,10,'___________');
+
+        $fpdf->SetXY(15,53);
+        $fpdf->cell(40,10,utf8_decode('NOMBRE COMPLETO: '.$cliente->nombre));
+        $fpdf->SetXY(60,53);
+        $fpdf->cell(40,10,'_______________________________________________________');
+
+        $fpdf->SetXY(15,61);
+        $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui));
+        $fpdf->SetXY(24,61);
+        $fpdf->cell(40,10,'______________');
+
+        $fpdf->SetXY(85,61);
+        $fpdf->cell(40,10,utf8_decode('NIT: '.$cliente->nit));
+        $fpdf->SetXY(93,61);
+        $fpdf->cell(40,10,'______________');
+
+        $fpdf->SetXY(145,61);
+        $fpdf->cell(40,10,utf8_decode('TEL: '.$cliente->telefono1));
+        $fpdf->SetXY(154,61);
+        $fpdf->cell(40,10,'_______________');
+
+        $fpdf->SetXY(15,69);
+        $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
+        $fpdf->SetXY(44,69);
+        $fpdf->MultiCell(145,8,utf8_decode($cliente->dirreccion));
+        $fpdf->SetXY(43,69);
+        $fpdf->cell(40,10,'______________________________________________________________');
+        $fpdf->SetXY(43,77);
+        $fpdf->cell(40,10,'______________________________________________________________');
+
+        $fpdf->SetXY(15,85);
+        $fpdf->cell(40,10,utf8_decode('CORREO ELECTRONICO: '.$cliente->email));
+        $fpdf->SetXY(67,85);
+        $fpdf->cell(40,10,'____________________________________________________');
+
+        $fpdf->SetFont('Arial','B',14);
+        $fpdf->SetXY(85,93);
+        $fpdf->cell(30,10,utf8_decode('OCUPACIÓN'));
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(15,101);
+        $fpdf->cell(30,10,utf8_decode('EMPLEADO'));
+        $fpdf->SetXY(42,103);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->ocupacion==1){
+
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(57,101);
+        $fpdf->cell(30,10,utf8_decode('COMERCIANTE'));
+        $fpdf->SetXY(92,103);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->ocupacion==2){
+            
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(107,101);
+        $fpdf->cell(30,10,utf8_decode('INDEPENDIENTE'));
+        $fpdf->SetXY(145,103);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->ocupacion==3){
+
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+        }else{
+
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(160,101);
+        $fpdf->cell(30,10,utf8_decode('OTROS'));
+        $fpdf->SetXY(178,103);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->ocupacion==4){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(15,109);
+        $fpdf->cell(30,10,utf8_decode('CONDICIÓN ACTUAL DEL LUGAR DE LA PRESTACIÓN DEL SERVICIO'));
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(15,117);
+        $fpdf->cell(30,10,utf8_decode('CASA PROPIA'));
+        $fpdf->SetXY(47,119);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->condicion_lugar==1){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(60,117);
+        $fpdf->cell(30,10,utf8_decode('ALQUILADA'));
+        $fpdf->SetXY(87,119);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->condicion_lugar==2){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(100,117);
+        $fpdf->cell(30,10,utf8_decode('OTROS'));
+        $fpdf->SetXY(119,119);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->condicion_lugar==3){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(15,125);
+        $fpdf->cell(40,10,utf8_decode('NOMBRE DEL DUEÑO DEL INMUEBLE: '.$cliente->nombre_dueno));
+        $fpdf->SetXY(94,125);
+        $fpdf->cell(40,10,'________________________________________');
+
+        $fpdf->SetFont('Arial','B',14);
+        $fpdf->SetXY(70,133);
+        $fpdf->cell(30,10,utf8_decode('SERVICIOS CONTRATADOS'));
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(15,141);
+        $fpdf->cell(40,10,utf8_decode('VELOCIDAD: '.$contrato_internet[0]->velocidad));
+        $fpdf->SetXY(41,141);
+        $fpdf->cell(40,10,'_____________ INTERNET');
+
+        $fpdf->SetXY(100,143);
+        $fpdf->SetFont('ZapfDingbats');
+        $fpdf->cell(10,5,chr(52),1,1,'C');
+
+        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetXY(112,141);
+        $fpdf->cell(40,10,'$ '.$contrato_internet[0]->cuota_mensual);
+        $fpdf->SetXY(116,141);
+        $fpdf->cell(40,10,'_______ TOTAL MENSUAL $ '.$contrato_internet[0]->cuota_mensual);
+        $fpdf->SetXY(173,141);
+        $fpdf->cell(40,10,'_______');
+
+        $fpdf->SetXY(15,149);
+        $fpdf->cell(40,10,utf8_decode('COSTOS POR INSTALACIÓN $ '.$contrato_internet[0]->costo_instalacion));
+        $fpdf->SetXY(77,149);
+        $fpdf->cell(40,10,'__________ (PRECIO INCLUYE IVA, CES)');
+
+        $fpdf->SetXY(15,157);
+        $fpdf->cell(40,10,'FECHA DE INICIO DE CONTRATO: '.$contrato_internet[0]->fecha_primer_fact->format('d/m/Y'));
+        $fpdf->SetXY(84,157);
+        $fpdf->cell(40,10,'___________');
+        $fpdf->SetXY(15,165);
+        $fpdf->cell(40,10,'FECHA FINALIZACION DEL CONTRATO: '.$contrato_internet[0]->contrato_vence->format('d/m/Y'));
+        $fpdf->SetXY(96,165);
+        $fpdf->cell(40,10,'___________');
+
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->SetXY(15,175);
+        $fpdf->MultiCell(180,5,utf8_decode('El presente contrato es un plaza de '.$contrato_internet[0]->periodo.' meses apartir de la fecha de instalación del servicio por escrito y pudiendo prorrogarse con el consentimiento del mismo. Si el cliente desea dar por finalizada la relación del servicio debe comunicarse a TECNNITEL con quince dias de anticipación.'));
+        $fpdf->SetFont('Arial','B',11);
+        $fpdf->SetXY(60,190);
+        $fpdf->cell(40,10,utf8_decode('PENALIDAD POR TERMINACIÓN ANTICIPADA'));
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->SetXY(15,198);
+        $fpdf->MultiCell(180,5,utf8_decode('Si el cliente desea dar por terminado el presente contrato de este servicio de manera anticipada por voluntad propia, se verá en la obligación de canelar todos los meses pendientes del plazo contratado por el mismo valor y hacer la entrega de los aparatos y accesorios que fueron entregados al cliente en COMODATO que TECNNITEL ha proporcionado para la prestación de estos servicios. La protección de estos componentes queda bajo la responsabilidad del cliente quien respondera por daños o extravíos de los equipos entregados. En caso de daño o extravío el cliente debera cancelar su valor económico a TECNNITEL. Si hubiere un elemento con falla por causa de fabricacion: TECNNITEL lo reemplazara previa recuperación del elemento dañado.'));
+    
+        $fpdf->Output();
+        exit;
+        
+    }
+
+
     private function correlativo($id,$digitos){
         //id correlativo 
         /*
@@ -631,3 +888,4 @@ class ClientesController extends Controller
     }
     
 }
+

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ordenes extends Model
 {
     use HasFactory;
+    protected $dates = ['fecha_trabajo'];
     public function get_cliente()
     {
         return $this->hasOne('App\Models\Cliente','id','id_cliente');

@@ -109,7 +109,7 @@ Gestión de Clientes
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Fecha de Nacimiento</label>
                                                     <div class="col-md-8">
                                                         
-                                                        <input class="form-control datepicker" type="text"  id="fecha_nacimiento" name="fecha_nacimiento" value="@if($cliente->fecha_nacimiento!="") {{ $cliente->fecha_nacimiento->format('d/m/Y') }} @endif" autocomplete="off">
+                                                        <input class="form-control datepicker" type="text"  id="fecha_nacimiento" name="fecha_nacimiento" value="@if($cliente->fecha_nacimiento!='') {{ $cliente->fecha_nacimiento->format('d/m/Y') }} @endif" autocomplete="off">
                                                     </div>
                                                 </div>
                 

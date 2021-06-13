@@ -22,6 +22,8 @@ class CreateOrdenesTable extends Migration
             $table->integer('id_actividad');
             $table->string('observacion')->nullable();
             $table->string('recepcion')->nullable();
+            $table->string('tx')->nullable();
+            $table->string('snr')->nullable();
             $table->date('fecha_trabajo')->nullable();
             $table->string('tipo_servicio');
             $table->timestamps();

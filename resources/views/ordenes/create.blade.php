@@ -143,7 +143,7 @@ Ordenes
                     source: "{{URL::to('autocomplete')}}",
                     select: function(event, ui) {
                         $('#id_cliente').val(ui.item.id);
-                        $('#nombre').val(ui.item.value);
+                        $('#nombre').val(ui.item.nombre);
                     }
                 });
             });

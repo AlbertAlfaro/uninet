@@ -109,7 +109,7 @@ Gestión de Clientes
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Fecha de Nacimiento</label>
                                                     <div class="col-md-8">
                                                         
-                                                        <input class="form-control datepicker" type="text"  id="fecha_nacimiento" name="fecha_nacimiento" value="@if($cliente->fecha_nacimiento!="") {{ $cliente->fecha_nacimiento->format('d/m/Y') }} @endif" autocomplete="off">
+                                                        <input class="form-control datepicker" type="text"  id="fecha_nacimiento" name="fecha_nacimiento" value="@if($cliente->fecha_nacimiento!='') {{ $cliente->fecha_nacimiento->format('d/m/Y') }} @endif" autocomplete="off">
                                                     </div>
                                                 </div>
                 
@@ -200,8 +200,8 @@ Gestión de Clientes
                                                         <select class="form-control" data-live-search="true" name="id_departamento" id="id_departamento" required>
                                                             <option value="" >Seleccionar...</option>
                                                             
-                                                            @foreach ($orden as $obj_item)
-                                                                    <option value="{{$orden->id}}" @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
+                                                            @foreach ($obj_departamento as $obj_item)
+                                                                    <option value="{{$obj_item->id}}" @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
                                                                     
                                                             @endforeach
                                                             

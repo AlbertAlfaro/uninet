@@ -53,6 +53,12 @@
                         @can('Ordenes')
                         <li><a href="{{url('ordenes')}}">Gestión de Ordenes</a></li>
                         @endcan
+                        @can('Suspensiones')
+                        <li><a href="{{url('suspensiones')}}">Gestión de Suspensiones</a></li>
+                        @endcan
+                        @can('Reconexiones')
+                        <li><a href="{{url('reconexiones')}}">Gestión de Reconexiones</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

@@ -87,6 +87,26 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('ordenes/destroy/{id}',[App\Http\Controllers\OrdenController::class ,'destroy'])->middleware('permission:destroy_orden')->name('ordenes.distroy');
     Route::get('autocomplete',[App\Http\Controllers\OrdenController::class ,'busqueda_cliente'])->middleware('permission:create_orden')->name('autocomplete');
 
+    //grupo suspensiones
+    Route::get('suspensiones',[App\Http\Controllers\SuspensionController::class ,'index'])->middleware('permission:Suspensiones')->name('suspensiones.index');
+    Route::get('suspensiones/create',[App\Http\Controllers\SuspensionController::class ,'create'])->middleware('permission:create_suspension')->name('suspensiones.create');
+    Route::post('suspensiones/store',[App\Http\Controllers\SuspensionController::class ,'store'])->middleware('permission:create_suspension')->name('suspensiones.store');
+    Route::get('suspensiones/edit/{id}',[App\Http\Controllers\SuspensionController::class ,'edit'])->middleware('permission:edit_suspension')->name('suspensiones.edit');
+    Route::post('suspensiones/update/{id}',[App\Http\Controllers\SuspensionController::class ,'update'])->middleware('permission:edit_suspension')->name('suspensiones.update');
+    Route::get('suspensiones/destroy/{id}',[App\Http\Controllers\SuspensionController::class ,'destroy'])->middleware('permission:destroy_suspension')->name('suspensiones.distroy');
+    Route::get('autocomplete',[App\Http\Controllers\SuspensionController::class ,'busqueda_cliente'])->middleware('permission:create_suspension')->name('autocomplete');
+
+    //grupo reconexiones
+    Route::get('reconexiones',[App\Http\Controllers\ReconexionController::class ,'index'])->middleware('permission:Reconexiones')->name('reconexiones.index');
+    Route::get('reconexiones/create',[App\Http\Controllers\ReconexionController::class ,'create'])->middleware('permission:create_reconexion')->name('reconexiones.create');
+    Route::post('reconexiones/store',[App\Http\Controllers\ReconexionController::class ,'store'])->middleware('permission:create_reconexion')->name('reconexiones.store');
+    Route::get('reconexiones/edit/{id}',[App\Http\Controllers\ReconexionController::class ,'edit'])->middleware('permission:edit_reconexion')->name('reconexiones.edit');
+    Route::post('reconexiones/update/{id}',[App\Http\Controllers\ReconexionController::class ,'update'])->middleware('permission:edit_reconexion')->name('reconexiones.update');
+    Route::get('reconexiones/destroy/{id}',[App\Http\Controllers\ReconexionController::class ,'destroy'])->middleware('permission:destroy_reconexion')->name('reconexiones.distroy');
+    Route::get('autocomplete',[App\Http\Controllers\ReconexionController::class ,'busqueda_cliente'])->middleware('permission:create_reconexion')->name('autocomplete');
+
+
+
 });
 
 

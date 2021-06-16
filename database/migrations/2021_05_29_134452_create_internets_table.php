@@ -34,6 +34,7 @@ class CreateInternetsTable extends Migration
             $table->string('recepcion')->nullable();
             $table->string('trasmision')->nullable();
             $table->string('ip')->nullable();
+            $table->integer('identificador');
             $table->timestamps();
         });
     }

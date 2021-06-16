@@ -30,6 +30,7 @@ class CreateTvsTable extends Migration
             $table->string('marca')->nullable();
             $table->string('serie')->nullable();
             $table->string('modelo')->nullable();
+            $table->integer('identificador');
             $table->timestamps();
         });
     }

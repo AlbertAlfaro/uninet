@@ -1164,7 +1164,7 @@ Gestión de Clientes
         });
 
         $('#periodo').on('change', function() {
-            var fecha = $("#fecha_primer_fact").val();
+            var fecha = $("#fecha_instalacion").val();
             var meses = $("#periodo").val();
             if(fecha!="" && meses!=""){
                 sumarmeses(fecha, meses);
@@ -1172,7 +1172,7 @@ Gestión de Clientes
             }
         });
         $('#periodo_tv').on('change', function() {
-            var fecha = $("#fecha_primer_fact_tv").val();
+            var fecha = $("#fecha_instalacion_tv").val();
             var meses = $("#periodo_tv").val();
             if(fecha!="" && meses!=""){
                 sumarmesestv(fecha, meses);

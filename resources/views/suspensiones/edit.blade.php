@@ -9,6 +9,9 @@ Suspensiones
 
     <link href="{{ URL::asset('assets/libs/twitter-bootstrap-wizard/twitter-bootstrap-wizard.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+
+    <link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
+
 @endsection
 
 @section('content')
@@ -96,7 +99,7 @@ Suspensiones
                                     <div class="form-group row col-md-8">
                                         <label for="example-text-input" class="col-md-2  col-form-label">Observaciones</label>
                                         <div class="col-md-10">
-                                            <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="300" required>{{$suspension->observaciones}}</textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="300" >{{$suspension->observaciones}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +120,7 @@ Suspensiones
                         </p>
 
                         <div class="mt-4">
-                            <a href="{{Route('ordenes.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            <a href="{{Route('suspensiones.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>
@@ -138,6 +141,9 @@ Suspensiones
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 
+    <!-- Sweet Alerts js -->
+    <script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
+
     <script src="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script> 
     
     <script type="text/javascript">
@@ -155,6 +161,33 @@ Suspensiones
             language: "es",
             autoclose: true
         });
+
+        function suspender_cliente(id){
+            Swal.fire({
+                title: 'Estas seguro de suspender el Cliente?',
+                text: '',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                    'Suspendido',
+                    'Cliente suspendido',
+                    'success'
+                    )
+                    window.location.href = "suspender"+id;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                    'Cancelado',
+                    'El Cliente no fue suspendido :)',
+                    'error'
+                    )
+                    
+                }
+                })      
+        }
     </script>
 
     

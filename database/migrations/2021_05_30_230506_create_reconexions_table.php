@@ -22,6 +22,10 @@ class CreateReconexionsTable extends Migration
             $table->string('observacion')->nullable();
             $table->date('fecha_trabajo')->nullable();
             $table->string('tipo_servicio');
+            $table->integer('contrato')->nullable();
+            $table->string('n_contrato')->nullable();
+            $table->string('rx')->nullable();
+            $table->string('tx')->nullable();
             $table->timestamps();
         });
     }

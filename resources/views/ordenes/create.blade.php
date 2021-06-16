@@ -51,7 +51,7 @@ Ordenes
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">tipo de Servicio *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Tipo de Servicio *</label>
                                         <div class="col-md-8">
                                             <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
                                                 <option value="" >Seleccionar...</option>
@@ -75,7 +75,7 @@ Ordenes
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Tecnico *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Técnico *</label>
                                         <div class="col-md-8">
                                             <select class="form-control" data-live-search="true" name="id_tecnico" id="id_tecnico" required>
                                                 <option value="" >Seleccionar...</option>        
@@ -91,7 +91,7 @@ Ordenes
                                     <div class="form-group row col-md-8">
                                         <label for="example-text-input" class="col-md-2  col-form-label">Observaciones</label>
                                         <div class="col-md-10">
-                                            <textarea id="observacion" name="observacion" class="form-control" rows="2" required></textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control" rows="2"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@ Ordenes
         $( document ).ready(function() {
             $(function() {
                 $("#busqueda").autocomplete({
-                    source: "{{URL::to('autocomplete')}}",
+                    source: "{{URL::to('ordenes/autocomplete')}}",
                     select: function(event, ui) {
                         $('#id_cliente').val(ui.item.id);
                         $('#nombre').val(ui.item.nombre);

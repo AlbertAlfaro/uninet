@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Suspensiones
+Reconexiones
 @endsection
 @section('css')
     <!-- DataTables -->
@@ -12,7 +12,7 @@ Suspensiones
 
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Suspensiones @endslot
+    @slot('pagetitle') Reconexiones @endslot
     @slot('title') Crear @endslot
     
 @endcomponent
@@ -22,13 +22,13 @@ Suspensiones
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title">Gestión de Suspensiones</h4>
+                    <h4 class="card-title">Gestión de Reconexiones</h4>
                     <p class="card-title-desc">
-                        Usted se encuentra en el modulo de Gestión de suspensiones Creacion.
+                        Usted se encuentra en el modulo de Gestión de Reconexiones Creacion.
                     </p>
                     <hr>
 
-                    <form action="{{Route('suspensiones.store')}}" method="post" id="form">
+                    <form action="{{Route('reconexiones.store')}}" method="post" id="form">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
@@ -64,21 +64,6 @@ Suspensiones
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Motivo *</label>
-                                        <div class="col-md-8">
-                                            
-                                            <select class="form-control" name="motivo" id="motivo" required>
-                                                <option value="" >Seleccionar...</option>
-                                                <option value="Por mora" >Por Mora</option>
-                                                <option value="Por motivo de Viaje" >Por motivo de viaje</option>
-                                                <option value="Por cambio de domicilio" >Por cambio de domicilio </option>
-                                                <option value="Ya no desea el servicio" >Ya no desea servicio </option>
-                                                <option value="Por cambio de nombre" >Por cambio de nombre </option>
-                                                <option value="Ya no puede pagarlo" >Ya no puede pagarlo </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row col-md-4">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Tecnico *</label>
                                         <div class="col-md-8">
                                             <select class="form-control" data-live-search="true" name="id_tecnico" id="id_tecnico" required>
@@ -87,6 +72,15 @@ Suspensiones
                                                     <option value="{{$obj_item->id}}">{{$obj_item->nombre}}</option>          
                                                 @endforeach            
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-4">
+                                        <label class="col-md-4 col-form-label" for="defaultCheck1">Con contrato</label>
+                                        <div class="col-md-8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input jqcheck" id="contrato" name="contrato"  >
+                                                <label class="custom-control-label" for="contrato"></label>
+                                            </div>
                                         </div>
                                     </div>
         
@@ -106,7 +100,7 @@ Suspensiones
                         </p>
 
                         <div class="mt-4">
-                            <a href="{{Route('suspensiones.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            <a href="{{Route('reconexiones.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>
@@ -144,16 +138,26 @@ Suspensiones
         $( document ).ready(function() {
             $(function() {
                 $("#busqueda").autocomplete({
-                    source: "{{URL::to('autocomplete')}}",
+                    source: "{{URL::to('reconexiones/autocomplete')}}",
                     select: function(event, ui) {
                         $('#id_cliente').val(ui.item.id);
                         $('#nombre').val(ui.item.nombre);
                     }
                 });
             });
+        
+            $('.jqcheck').change(function(){
+                if( $('#contrato').is(':checked'))
+                {
+                    $('#contrato').val("1");
+                }else
+                {
+                    $('#contrato').val("0");
+                }
+            });
+        
+    
         });
 
     </script>
-
-    
 @endsection

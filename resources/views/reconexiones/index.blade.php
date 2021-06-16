@@ -36,8 +36,8 @@
 							<tr>
 								<th>Numero</th>
 								<th>Cliente</th>
-								<th>Tipo reconexion</th>
-                                <th>Motivo</th>
+								<th>Sevicio</th>
+                                <th>Tecnico</th>
 								<th>Acciones</th>
 							
 							</tr>
@@ -48,7 +48,7 @@
 									<td>{{$obj_item->numero}}</td>
 									<td>{{$obj_item->get_cliente->nombre}}</td>
 									<td>{{$obj_item->tipo_servicio}}</td>
-                                    <td>{{$obj_item->observacion}}</td>
+                                    <td>{{$obj_item->get_tecnico->nombre}}</td>
                                     <td>
                                         <div class="btn-group mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>
@@ -104,7 +104,7 @@
                     'Registro eliminado',
                     'success'
                     )
-                    window.location.href = "suspensiones/destroy/"+id;
+                    window.location.href = "reconexiones/destroy/"+id;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

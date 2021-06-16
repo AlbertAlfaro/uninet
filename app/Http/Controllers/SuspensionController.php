@@ -45,6 +45,11 @@ class SuspensionController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'tipo_servicio'=>'required',
+
+        ]);
+
         $suspension = new Suspensiones();
         $suspension->id_cliente = $request->id_cliente;
         $suspension->numero = $this->correlativo(9,6);
@@ -195,5 +200,21 @@ class SuspensionController extends Controller
         }
         $valor_txt=$valor_txt.$ult_doc;
         return $valor_txt;
+    }
+
+    private function suspender_cliente($id){
+
+        $suspension = Suspensiones::find($id);
+        $servicio = $suspension->tipo_servicio;
+        if($servicio=="Internet")
+        {
+            Cliente::where('id',$suspension->id_cliente)->update(['internet' =>'2']);
+            
+        }
+        if($servicio=="Tv")
+        {
+            Cliente::where('id',$suspension->id_cliente)->update(['tv' =>'2']);
+        }
+        
     }
 }

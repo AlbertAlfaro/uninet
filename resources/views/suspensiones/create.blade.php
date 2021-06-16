@@ -144,7 +144,7 @@ Suspensiones
         $( document ).ready(function() {
             $(function() {
                 $("#busqueda").autocomplete({
-                    source: "{{URL::to('autocomplete')}}",
+                    source: "{{URL::to('suspensiones/autocomplete')}}",
                     select: function(event, ui) {
                         $('#id_cliente').val(ui.item.id);
                         $('#nombre').val(ui.item.nombre);

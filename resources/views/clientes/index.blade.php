@@ -61,6 +61,7 @@
                                         @if($obj_item->internet==1) <div class="col-md-9 badge badge-pill badge-success">Activo</div> @endif
                                         @if($obj_item->internet==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div> @endif
                                         @if($obj_item->internet==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido</div> @endif
+                                        @if($obj_item->internet==3) <div class="col-md-9 badge badge-pill badge-warning">Vencido</div> @endif
                                     </td>
                                     <td>
                                         @if($obj_item->tv==1) <div class="col-md-8 badge badge-pill badge-success ">Activo</div>  @endif
@@ -75,7 +76,7 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Contrato</a>
+                                                <a class="dropdown-item" href="{{ route('clientes.contrato',$obj_item->id)}}">Contrato</a>
                                                 <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Estado de cuenta</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#" onclick="detallesCliente({{$obj_item->id}})">Detalles</a>
@@ -314,6 +315,10 @@
                                                             <td id="fecha_instalacion"></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Costo de instalación:</th>
+                                                            <td id="costo_instalacion"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Primer fecha de factura:</th>
                                                             <td id="fecha_primer_fact"></td>
                                                         </tr>
@@ -400,6 +405,10 @@
                                                             <td id="fecha_instalacion_tv"></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Costo de instalación:</th>
+                                                            <td id="costo_instalacion_tv"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Primer fecha de factura:</th>
                                                             <td id="fecha_primer_fact_tv"></td>
                                                         </tr>
@@ -458,6 +467,7 @@
                        
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary waves-effect">Imprimir</button>
                         <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -516,7 +526,7 @@
                 $("#email").text(validacion(data[0].email,1));
                 $("#fecha_nacimiento").text(validacion(data[0].fecha_nacimiento,2));
                 $("#telefono1").text(validacion(data[0].telefono1,1));
-                $("#telefono2").text(validacion(data.telefono2,1));
+                $("#telefono2").text(validacion(data[0].telefono2,1));
                 $("#dui").text(validacion(data[0].dui,1));
                 $("#nit").text(validacion(data[0].nit,1));
                 $("#departamento").text(validacion(data[0].nombre_departamento,1));
@@ -542,20 +552,20 @@
                 $("#telefo3").text(validacion(data[0].telefo3,1));
 
                 // para servicios
-                if(data[0].internet==1){
+                if(data[0].internet!=0){
                     $("#tv").hide();
                     $("#internet").show();
                     internet_details(id);
                 }
 
-                if(data[0].tv==1){
+                if(data[0].tv!=0){
                     $("#internet").hide();
                     $("#tv").show();
                     tv_details(id);
 
                 }
 
-                if(data[0].internet==1 && data[0].tv==1 ){
+                if(data[0].internet!=0 && data[0].tv!=0 ){
                     $("#internet").show();
                     $("#tv").show();
                 }
@@ -575,13 +585,14 @@
             success:function(data) {
                 $("#numero_contrato").text(validacion(data[0].numero_contrato,1));
                 $("#fecha_instalacion").text(validacion(data[0].fecha_instalacion,2));
+                $("#costo_instalacion").text('$ '+validacion(data[0].costo_instalacion,1));
                 $("#fecha_primer_fact").text(validacion(data[0].fecha_primer_fact,2));
                 $("#cuota_mensual").text('$ '+validacion(data[0].cuota_mensual,1));
                 $("#prepago").text(validacion(data[0].prepago,6));
                 $("#dia_gene_fact").text(validacion(data[0].dia_gene_fact,8));
                 $("#periodo").text(validacion(data[0].periodo,7));
                 $("#cortesia").text(validacion(data[0].cortesia,9));
-                $("#contrato_vence").text(validacion(data[0].contrato_vence,2));
+                $("#contrato_vence").text(validacion(data[0].contrato_vence,10));
                 $("#velocidad").text(validacion(data[0].velocidad,1));
                 $("#marca").text(validacion(data[0].marca,1));
                 $("#modelo").text(validacion(data[0].modelo,1));
@@ -605,13 +616,14 @@
             success:function(data) {
                 $("#numero_contrato_tv").text(validacion(data[0].numero_contrato,1));
                 $("#fecha_instalacion_tv").text(validacion(data[0].fecha_instalacion,2));
+                $("#costo_instalacion_tv").text('$ '+validacion(data[0].costo_instalacion,1));
                 $("#fecha_primer_fact_tv").text(validacion(data[0].fecha_primer_fact,2));
                 $("#cuota_mensual_tv").text('$ '+validacion(data[0].cuota_mensual,1));
                 $("#prepago_tv").text(validacion(data[0].prepago,6));
                 $("#dia_gene_fact_tv").text(validacion(data[0].dia_gene_fact,8));
                 $("#periodo_tv").text(validacion(data[0].periodo,7));
                 $("#cortesia_tv").text(validacion(data[0].cortesia,9));
-                $("#contrato_vence_tv").text(validacion(data[0].contrato_vence,2));
+                $("#contrato_vence_tv").text(validacion(data[0].contrato_vence,10));
                 $("#digital_tv").text(validacion(data[0].digital,9));
                 $("#marca_tv").text(validacion(data[0].marca,1));
                 $("#modelo_tv").text(validacion(data[0].modelo,1));
@@ -623,6 +635,18 @@
             }
         });
 
+        }
+
+        function validarFechaMenorActual(date){
+            var x=new Date();
+            var fecha = date.split("/");
+            x.setFullYear(fecha[2],fecha[1]-1,fecha[0]);
+            var today = new Date();
+        
+            if (x >= today)
+                return false;
+            else
+                return true;
         }
 
         function validacion(data,tipo){
@@ -639,6 +663,8 @@
                 if(data!=null){
 
                     var f = new Date(data);
+                  
+                    
                     return f.getDate()+"/"+("0"+(f.getMonth()+1)).slice(-2)+"/"+f.getFullYear();
                 }else{
 
@@ -742,6 +768,28 @@
                     return "NO";
                 }else{
                     return "SI";
+                }
+            }
+
+            if(tipo==10){
+                if(data!=null){
+
+                    var f = new Date(data);
+                    var fecha = f.getDate()+"/"+("0"+(f.getMonth()+1)).slice(-2)+"/"+f.getFullYear();
+                    if(validarFechaMenorActual(fecha)==true){
+                        $("#contrato_vence").addClass('text-danger');
+                        $("#contrato_vence_tv").addClass('text-danger');
+                        return f.getDate()+"/"+("0"+(f.getMonth()+1)).slice(-2)+"/"+f.getFullYear()+" CONTRATO VENCIDO";
+                    }else{
+
+                        $("#contrato_vence").removeClass('text-danger');
+                        $("#contrato_vence_tv").removeClass('text-danger');
+                        return f.getDate()+"/"+("0"+(f.getMonth()+1)).slice(-2)+"/"+f.getFullYear();
+                    }
+                }else{
+
+                    return "---- ----";
+
                 }
             }
 

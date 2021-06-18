@@ -108,6 +108,15 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('reconexiones/destroy/{id}',[App\Http\Controllers\ReconexionController::class ,'destroy'])->middleware('permission:destroy_reconexion')->name('reconexiones.distroy');
     Route::get('reconexiones/autocomplete',[App\Http\Controllers\ReconexionController::class ,'busqueda_cliente'])->middleware('permission:create_reconexion')->name('reconexiones.autocomplete');
 
+    //Traslados
+    Route::get('traslados',[App\Http\Controllers\TrasladoController::class ,'index'])->middleware('permission:Traslados')->name('traslados.index');
+    Route::get('traslados/create',[App\Http\Controllers\TrasladoController::class ,'create'])->middleware('permission:create_traslado')->name('traslados.create');
+    Route::post('traslados/store',[App\Http\Controllers\TrasladoController::class ,'store'])->middleware('permission:create_traslado')->name('traslados.store');
+    Route::get('traslados/edit/{id}',[App\Http\Controllers\TrasladoController::class ,'edit'])->middleware('permission:edit_traslado')->name('traslados.edit');
+    Route::post('traslados/update/{id}',[App\Http\Controllers\TrasladoController::class ,'update'])->middleware('permission:edit_traslado')->name('traslados.update');
+    Route::get('traslados/destroy/{id}',[App\Http\Controllers\TrasladoController::class ,'destroy'])->middleware('permission:destroy_traslado')->name('traslados.distroy');
+    Route::get('traslados/autocomplete',[App\Http\Controllers\TrasladoController::class ,'busqueda_cliente'])->middleware('permission:create_traslado')->name('traslados.autocomplete');
+
 
 
 });

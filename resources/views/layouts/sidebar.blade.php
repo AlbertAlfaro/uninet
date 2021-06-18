@@ -59,6 +59,9 @@
                         @can('Reconexiones')
                         <li><a href="{{url('reconexiones')}}">Gestión de Reconexiones</a></li>
                         @endcan
+                        @can('Traslados')
+                        <li><a href="{{url('traslados')}}">Gestión de Traslados</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

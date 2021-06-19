@@ -47,13 +47,13 @@ class ClientesController extends Controller
 
         //dd($request->all());
        //Guarando el registro de cliente
-       $cliente = new Cliente();
+        $cliente = new Cliente();
         $cliente->codigo = $this->correlativo(3,6);
         $cliente->nombre = $request->nombre;
         $cliente->email = $request->email;
         $cliente->dui = $request->dui;
         $cliente->nit = $request->nit;
-        if($request->fecha_nacimiento!=""){
+        if($request->fecha_nacimiento!=""){ 
             
             $cliente->fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento);
         }
@@ -138,6 +138,7 @@ class ClientesController extends Controller
             $internet->recepcion = $request->recepcion;
             $internet->trasmision = $request->trasmision;
             $internet->ip = $request->ip;
+            $internet->identificador = 1;
             $internet->save();
             $this->setCorrelativo(5);
 
@@ -178,6 +179,7 @@ class ClientesController extends Controller
             $tv->marca = $request->marca_tv;
             $tv->serie = $request->serie_tv;
             $tv->modelo = $request->modelo_tv;
+            $tv->identificador = 2;
             $tv->save();
             $this->setCorrelativo(4);
 
@@ -221,6 +223,7 @@ class ClientesController extends Controller
             $internet->recepcion = $request->recepcion;
             $internet->trasmision = $request->trasmision;
             $internet->ip = $request->ip;
+            $internet->identificador = 1;
             $internet->save();
             $this->setCorrelativo(5);
 
@@ -254,6 +257,7 @@ class ClientesController extends Controller
             $tv->marca = $request->marca_tv;
             $tv->serie = $request->serie_tv;
             $tv->modelo = $request->modelo_tv;
+            $tv->identificador = 2;
             $tv->save();
             $this->setCorrelativo(4);
 
@@ -595,9 +599,9 @@ class ClientesController extends Controller
 
     public function contrato($id){
         $cliente = Cliente::find($id);
-        $contrato_tv= Tv::select('numero_contrato','fecha_instalacion','contrato_vence','identificador')->where('id_cliente',$id);
-        
-        $contratos= Internet::select('numero_contrato','fecha_instalacion','contrato_vence','identificador')
+        $contrato_tv= Tv::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador')->where('id_cliente',$id);
+
+        $contratos= Internet::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador')
                             ->where('id_cliente',$id)
                             ->unionAll($contrato_tv)
                             ->get();
@@ -620,8 +624,19 @@ class ClientesController extends Controller
         
     }
 
+    public function contrato_vista($id,$identificador){
+        if($identificador==1){
+            $this->contrato_internet($id);
+        }
+        if($identificador==2){
+            $this->contrato_tv($id);
+
+        }
+
+    }
+
     private function contrato_internet($id){
-        $contrato_internet= Internet::where('id_cliente',$id)->get();
+        $contrato_internet= Internet::where('id',$id)->get();
         $cliente= Cliente::find($id);
 
         $fpdf = new FpdfClass('P','mm', 'Letter');
@@ -976,7 +991,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
     }
 
     private function contrato_tv($id){
-        $contrato_internet= Tv::where('id_cliente',$id)->get();
+        $contrato_internet= Tv::where('id',$id)->get();
         $cliente= Cliente::find($id);
 
         $fpdf = new FpdfClass('P','mm', 'Legal');

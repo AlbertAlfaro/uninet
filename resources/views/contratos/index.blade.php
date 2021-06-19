@@ -72,7 +72,7 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#" target="_blank">Ver contrato</a>
+                                                <a class="dropdown-item" href="{{ url('contrato/vista/'.$obj_item->id.'/'.$obj_item->identificador) }}" target="_blank">Ver contrato</a>
                                                 
                                                 
                                             </div>

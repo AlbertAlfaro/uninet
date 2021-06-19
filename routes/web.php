@@ -88,7 +88,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('ordenes/update/{id}',[App\Http\Controllers\OrdenController::class ,'update'])->middleware('permission:edit_orden')->name('ordenes.update');
     Route::get('ordenes/destroy/{id}',[App\Http\Controllers\OrdenController::class ,'destroy'])->middleware('permission:destroy_orden')->name('ordenes.distroy');
     Route::get('ordenes/autocomplete',[App\Http\Controllers\OrdenController::class ,'busqueda_cliente'])->middleware('permission:create_orden')->name('ordenes.autocomplete');
-
+    Route::get('ordenes/imprimir/{id}',[App\Http\Controllers\OrdenController::class ,'imprimir'])->middleware('permission:Ordenes')->name('ordenes.imprimir');
     //grupo suspensiones
     Route::get('suspensiones',[App\Http\Controllers\SuspensionController::class ,'index'])->middleware('permission:Suspensiones')->name('suspensiones.index');
     Route::get('suspensiones/create',[App\Http\Controllers\SuspensionController::class ,'create'])->middleware('permission:create_suspension')->name('suspensiones.create');

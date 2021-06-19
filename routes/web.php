@@ -80,6 +80,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
 
     Route::get('cliente/contrato/{id}',[App\Http\Controllers\ClientesController::class ,'contrato'])->middleware('permission:contrato_cliente')->name('clientes.contrato');
+    Route::get('contrato/vista/{id}/{identificador}',[App\Http\Controllers\ClientesController::class ,'contrato_vista'])->middleware('permission:contrato_cliente')->name('contrato.vista');
     //grupo ordenes
     Route::get('ordenes',[App\Http\Controllers\OrdenController::class ,'index'])->middleware('permission:Ordenes')->name('ordenes.index');
     Route::get('ordenes/create',[App\Http\Controllers\OrdenController::class ,'create'])->middleware('permission:create_orden')->name('ordenes.create');

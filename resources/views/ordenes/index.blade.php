@@ -36,8 +36,11 @@
 							<tr>
 								<th>Numero</th>
 								<th>Cliente</th>
+                                <th>Fecha</th>
 								<th>Tipo de Orden</th>
                                 <th>Actividad</th>
+                                <th>Técnico</th>
+                                <th>Fecha Realizado</th>
 								<th>Acciones</th>
 							
 							</tr>
@@ -47,8 +50,17 @@
 								<tr class="filas">
 									<td>{{$obj_item->numero}}</td>
 									<td>{{$obj_item->get_cliente->nombre}}</td>
+                                    <td>{{$obj_item->create_at}}</td>
 									<td>{{$obj_item->tipo_servicio}}</td>
                                     <td>{{$obj_item->get_actividad->actividad}}</td>
+                                    <td>{{$obj_item->get_tecnico->nombre}}</td>
+                                    <td>
+                                    @if($obj_item->fecha_trabajo==NULL)
+                                        <div class="col-md-8 badge badge-pill badge-danger ">Pendiente</div>
+                                    @else
+                                        {{$obj_item->fecha_trabajo->format('d/m/Y')}}
+                                    @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>
@@ -56,6 +68,7 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ route('ordenes.imprimir',$obj_item->id)}}">Imprimir</a>
                                                 <a class="dropdown-item" href="{{ route('ordenes.edit',$obj_item->id)}}">Editar</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>

@@ -13,4 +13,9 @@ class Suspensiones extends Model
     {
         return $this->hasOne('App\Models\Cliente','id','id_cliente');
     }
+    public function get_tecnico()
+    {
+        return $this->hasOne('App\Models\Tecnicos','id','id_tecnico');
+    }
 }
+

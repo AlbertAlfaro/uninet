@@ -8,18 +8,18 @@
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle') Clientes @endslot
-    @slot('title') Gestión de reconexiones @endslot
+    @slot('title') Gestión de traslados @endslot
 @endcomponent
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Gestión de reconexiones</h4>
+                <h4 class="card-title">Gestión de traslados</h4>
 				<p class="card-title-desc">
-                    Usted se encuentra en el modulo Gestión de reconexiones.
+                    Usted se encuentra en el modulo Gestión de traslados.
 				</p>
                 <div class="text-right">
-                    <a href="{{ route('reconexiones.create') }}">
+                    <a href="{{ route('traslados.create') }}">
                         <button type="button" class="btn btn-primary waves-effect waves-light">
                             Agregar <i class="uil uil-arrow-right ml-2"></i> 
                         </button>
@@ -45,7 +45,7 @@
 							</tr>
 						</thead>
 							<tbody>
-								@foreach ($reconexiones as $obj_item)
+								@foreach ($traslados as $obj_item)
 								<tr class="filas">
 									<td>{{$obj_item->numero}}</td>
 									<td>{{$obj_item->get_cliente->nombre}}</td>
@@ -66,7 +66,7 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('reconexiones.edit',$obj_item->id)}}">Editar</a>
+                                                <a class="dropdown-item" href="{{ route('traslados.edit',$obj_item->id)}}">Editar</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
                                                 

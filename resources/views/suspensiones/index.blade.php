@@ -36,8 +36,10 @@
 							<tr>
 								<th>Numero</th>
 								<th>Cliente</th>
-								<th>Tipo suspension</th>
-                                <th>Motivo</th>
+                                <th>Fecha</th>
+								<th>Servicio</th>
+                                <th>Técnico</th>
+                                <th>Fecha Realizado</th>
 								<th>Acciones</th>
 							
 							</tr>
@@ -47,8 +49,16 @@
 								<tr class="filas">
 									<td>{{$obj_item->numero}}</td>
 									<td>{{$obj_item->get_cliente->nombre}}</td>
+                                    <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
 									<td>{{$obj_item->tipo_servicio}}</td>
-                                    <td>{{$obj_item->motivo}}</td>
+                                    <td>{{$obj_item->get_tecnico->nombre}}</td>
+                                    <td>
+                                    @if($obj_item->fecha_trabajo==NULL)
+                                        <div class="col-md-8 badge badge-pill badge-danger ">Pendiente</div>
+                                    @else
+                                        {{$obj_item->fecha_trabajo->format('d/m/Y')}}
+                                    @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>

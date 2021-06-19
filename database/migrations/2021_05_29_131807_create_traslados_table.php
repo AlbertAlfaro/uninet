@@ -20,6 +20,9 @@ class CreateTrasladosTable extends Migration
             $table->integer('id_usuario');
             $table->integer('id_tecnico');
             $table->string('nueva_direccion')->nullable();
+            $table->integer('id_municipio');
+            $table->string('rx')->nullable();
+            $table->string('tx')->nullable();
             $table->date('fecha_trabajo')->nullable();
             $table->string('observacion')->nullable();
             $table->string('tipo_servicio');

@@ -17,4 +17,8 @@ class Ordenes extends Model
     {
         return $this->hasOne('App\Models\Actividades','id','id_actividad');
     }
+    public function get_tecnico()
+    {
+        return $this->hasOne('App\Models\Tecnicos','id','id_tecnico');
+    }
 }

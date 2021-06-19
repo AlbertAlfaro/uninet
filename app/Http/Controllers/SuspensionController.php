@@ -57,6 +57,7 @@ class SuspensionController extends Controller
         $suspension->motivo = $request->motivo;
         $suspension->id_tecnico = $request->id_tecnico;
         $suspension->observaciones = $request->observacion;
+        $suspension->suspendido = 0;
         $suspension->id_usuario=Auth::user()->id;
         $suspension->save();
         $this->setCorrelativo(9);
@@ -114,7 +115,7 @@ class SuspensionController extends Controller
             ]);
         flash()->success("Registro editado exitosamente!")->important();
         $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+        $obj_controller_bitacora->create_mensaje('Suspension editada con el número: '. $request->numero);
     
         return redirect()->route('suspensiones.index');
     }
@@ -202,19 +203,26 @@ class SuspensionController extends Controller
         return $valor_txt;
     }
 
-    private function suspender_cliente($id){
+    public function suspender($id){
 
         $suspension = Suspensiones::find($id);
         $servicio = $suspension->tipo_servicio;
         if($servicio=="Internet")
         {
             Cliente::where('id',$suspension->id_cliente)->update(['internet' =>'2']);
-            
+
         }
         if($servicio=="Tv")
         {
             Cliente::where('id',$suspension->id_cliente)->update(['tv' =>'2']);
         }
-        
+        Suspensiones::where('id',$id)->update(['suspendido' =>'1']);
+        //1= Cliente  activo
+        //2=Cliente suspendido
+        //0=Cliente sin servicio
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Servicio suspendido con la suspensión: '.$suspension->numero);
+        flash()->success("Registro suspendido exitosamente!")->important();
+        return redirect()->route('suspensiones.index');
     }
 }

@@ -161,33 +161,6 @@ Suspensiones
             language: "es",
             autoclose: true
         });
-
-        function suspender_cliente(id){
-            Swal.fire({
-                title: 'Estas seguro de suspender el Cliente?',
-                text: '',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
-                }).then((result) => {
-                if (result.value) {
-                    Swal.fire(
-                    'Suspendido',
-                    'Cliente suspendido',
-                    'success'
-                    )
-                    window.location.href = "suspender"+id;
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire(
-                    'Cancelado',
-                    'El Cliente no fue suspendido :)',
-                    'error'
-                    )
-                    
-                }
-                })      
-        }
     </script>
 
     

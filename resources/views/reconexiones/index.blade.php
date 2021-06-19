@@ -66,6 +66,10 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
+                                                @if($obj_item->activado==0)
+                                                <a class="dropdown-item" href="#" onclick="activar({{$obj_item->id}})">Activar</a>
+                                                @endif
+                                                <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('reconexiones.edit',$obj_item->id)}}">Editar</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
@@ -114,7 +118,7 @@
                     'Registro eliminado',
                     'success'
                     )
-                    window.location.href = "reconexiones/destroy/"+id;
+                    window.location.href = "reconexiones/activar/"+id;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',
@@ -124,6 +128,32 @@
                     
                 }
                 })      
+        }
+        function activar(id){
+            Swal.fire({
+                title: 'Estas seguro de Activar el Servicio?',
+                text: 'No podras desaser esta accion',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                    'Activado!',
+                    'Servicio activado',
+                    'success'
+                    )
+                    window.location.href = "reconexiones/activar/"+id;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                    'Cancelado',
+                    'El servicio no fue Activado :)',
+                    'error'
+                    )
+                    
+                }
+            })      
         }
     </script>
 @endsection

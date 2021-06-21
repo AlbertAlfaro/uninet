@@ -66,6 +66,10 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
+                                                @if($obj_item->suspendido==0)
+                                                <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}})">Suspender</a>
+                                                @endif
+                                                <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('suspensiones.edit',$obj_item->id)}}">Editar</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
@@ -124,6 +128,32 @@
                     
                 }
                 })      
+        }
+        function suspender(id){
+            Swal.fire({
+                title: 'Estas seguro de Suspender el Servicio?',
+                text: 'No podras desaser esta accion',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                    'Suspendido!',
+                    'Servicio suspendido',
+                    'success'
+                    )
+                    window.location.href = "suspensiones/suspender/"+id;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                    'Cancelado',
+                    'El registro no fue Suspendido :)',
+                    'error'
+                    )
+                    
+                }
+            })      
         }
     </script>
 @endsection

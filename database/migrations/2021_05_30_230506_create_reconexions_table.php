@@ -26,6 +26,7 @@ class CreateReconexionsTable extends Migration
             $table->string('n_contrato')->nullable();
             $table->string('rx')->nullable();
             $table->string('tx')->nullable();
+            $table->string('activado');
             $table->timestamps();
         });
     }

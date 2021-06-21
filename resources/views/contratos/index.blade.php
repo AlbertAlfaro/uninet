@@ -21,7 +21,7 @@
 					Usted se encuentra en el modulo Clientes.
 				</p>
                 <div class="button-items text-right">
-					<a href="{{route("clientes.index")}}"> 
+					<a href="{{route('clientes.index')}}"> 
 						<button type="button" class="btn btn-primary waves-effect waves-light">
 							Regresar <i class="fa fa-undo" aria-hidden="true"></i>
 

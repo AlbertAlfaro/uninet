@@ -23,6 +23,7 @@ class CreateSuspensionesTable extends Migration
             $table->date('fecha_trabajo')->nullable();
             $table->string('observaciones')->nullable();
             $table->string('tipo_servicio');
+            $table->integer('suspendido');
             $table->timestamps();
         });
     }

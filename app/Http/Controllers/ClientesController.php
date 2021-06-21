@@ -139,6 +139,7 @@ class ClientesController extends Controller
             $internet->trasmision = $request->trasmision;
             $internet->ip = $request->ip;
             $internet->identificador = 1;
+            $internet->activo = 1;
             $internet->save();
             $this->setCorrelativo(5);
 
@@ -180,6 +181,7 @@ class ClientesController extends Controller
             $tv->serie = $request->serie_tv;
             $tv->modelo = $request->modelo_tv;
             $tv->identificador = 2;
+            $tv->activo = 1;
             $tv->save();
             $this->setCorrelativo(4);
 
@@ -224,6 +226,7 @@ class ClientesController extends Controller
             $internet->trasmision = $request->trasmision;
             $internet->ip = $request->ip;
             $internet->identificador = 1;
+            $internet->activo = 1;
             $internet->save();
             $this->setCorrelativo(5);
 
@@ -258,6 +261,7 @@ class ClientesController extends Controller
             $tv->serie = $request->serie_tv;
             $tv->modelo = $request->modelo_tv;
             $tv->identificador = 2;
+            $tv->activo = 1;
             $tv->save();
             $this->setCorrelativo(4);
 
@@ -272,8 +276,8 @@ class ClientesController extends Controller
 
     public function edit($id){
         $cliente = Cliente::find($id);
-        $tv = Tv::where('id_cliente',$id)->get();
-        $internet = Internet::where('id_cliente',$id)->get();
+        $tv = Tv::where('id_cliente',$id)->where('activo',1)->get();
+        $internet = Internet::where('id_cliente',$id)->where('activo',1)->get();
         $obj_departamento = Departamentos::all();
 
         return view('clientes.edit', compact('cliente','tv','internet','obj_departamento'));
@@ -569,7 +573,14 @@ class ClientesController extends Controller
 
     public function internet_details($id){
 
-        $internet = Internet::where('id_cliente',$id)->get();
+        $internet_1 = Internet::where('id_cliente',$id)->where('activo',1)->get();
+        $internet_2 = Internet::where('id_cliente',$id)->where('activo',2)->get();
+
+        if(count($internet_1)!=0){
+            $internet = $internet_1;
+        }else{
+            $internet = $internet_2;
+        }
 
         return response()->json(
             $internet-> toArray()  
@@ -580,7 +591,14 @@ class ClientesController extends Controller
 
     public function tv_details($id){
 
-        $tv = Tv::where('id_cliente',$id)->get();
+        $tv_1 = Tv::where('id_cliente',$id)->where('activo',1)->get();
+        $tv_2 = Tv::where('id_cliente',$id)->where('activo',2)->get();
+
+        if(count($tv_1)!=0){
+            $tv = $tv_1;
+        }else{
+            $tv = $tv_2;
+        }
 
         return response()->json(
             $tv-> toArray()  
@@ -599,29 +617,265 @@ class ClientesController extends Controller
 
     public function contrato($id){
         $cliente = Cliente::find($id);
-        $contrato_tv= Tv::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador')->where('id_cliente',$id);
+        $contrato_tv= Tv::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')->where('id_cliente',$id);
 
-        $contratos= Internet::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador')
+        $contratos= Internet::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
                             ->where('id_cliente',$id)
                             ->unionAll($contrato_tv)
                             ->get();
 
+        $inter_activos = Internet::where('id_cliente',$id)->where('activo',1)->get();
+        $tv_activos = Tv::where('id_cliente',$id)->where('activo',1)->get();
 
-        return view('contratos.index',compact('contratos','cliente'));
-        /*if($cliente->internet==1 && $cliente->tv==1){
-            return "AUN NO FUNCIONO";
-        }
-        if($cliente->internet!=0){
-            $this->contrato_internet($id);
-
-        }
-        if($cliente->tv!=0){
-            $this->contrato_tv($id);
-            
-            
-        } */
+        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos'));
         
         
+    }
+
+    public function contrato_activo($id,$identificador){
+        
+        if($identificador==1){
+            $internet = Internet::find($id);
+            $id_cliente = $internet->id_cliente;
+            if($internet->activo==0){
+                $internet_con = Internet::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+                //return $internet_con;
+                if($internet_con==0){
+                    
+                    Internet::where('id',$id)->update(['activo'=>1]);
+                    Cliente::where('id',$id_cliente)->update(['internet'=>1]);
+                    $obj_controller_bitacora=new BitacoraController();	
+                    $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a activo');
+                }else{
+
+                    flash()->error("Error no es permitido tener 2 contratos del mismo tipo activos")->important();
+                    return redirect()->route('clientes.contrato',$id_cliente);
+
+                }
+            }else{
+                Internet::where('id',$id)->update(['activo'=>0]);
+                Cliente::where('id',$id_cliente)->update(['internet'=>0]);
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a inactivo');
+
+            }
+        }else{
+
+            $tv = Tv::find($id);
+            $id_cliente = $tv->id_cliente;
+            if($tv->activo==0){
+                $tv_con = Tv::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+
+                if($tv_con==0){
+
+                    Tv::where('id',$id)->update(['activo'=>1]);
+                    Cliente::where('id',$id_cliente)->update(['tv'=>1]);
+                    $obj_controller_bitacora=new BitacoraController();	
+                    $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a activo');
+                }else{
+                    flash()->error("Error no es permitido tener 2 contratos del mismo tipo activos")->important();
+                    return redirect()->route('clientes.contrato',$id_cliente);
+
+                }
+                
+            }else{
+                Tv::where('id',$id)->update(['activo'=>0]);
+                Cliente::where('id',$id_cliente)->update(['tv'=>0]);
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a inactivo');
+
+            }
+
+
+        }
+
+        flash()->success("Estado cambiado exitosamente")->important();
+        return redirect()->route('clientes.contrato',$id_cliente);
+
+
+    }
+
+    public function contrato_create($id){
+        $correlativo_contra_tv = $this->correlativo(4,6);
+        $correlativo_contra_inter = $this->correlativo(5,6);
+        $cliente = Cliente::find($id);
+        $inter_activos = Internet::where('id_cliente',$id)->where('activo',1)->get();
+        $tv_activos = Tv::where('id_cliente',$id)->where('activo',1)->get();
+        return view('contratos.create',compact('correlativo_contra_tv','correlativo_contra_inter','cliente','id','inter_activos','tv_activos'));
+        
+    }
+    public function contrato_store(Request $request){
+
+        $id_cliente = $request->id_cliente;
+        if($request->colilla==1){
+            Cliente::where('id',$id_cliente)->update(['internet'=>1]);
+
+            $internet = new Internet();
+            $internet->id_cliente = $id_cliente;
+            $internet->numero_contrato = $this->correlativo(5,6);
+            if($request->fecha_instalacion!=""){
+                $internet->fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion);
+
+            }
+            if($request->fecha_primer_fact!=""){
+                $internet->fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact);
+
+            }
+            $cuota_mensual = explode(" ", $request->cuota_mensual);
+            $internet->cuota_mensual = $cuota_mensual[1];
+
+            $costo_instalacion = explode(" ",$request->costo_instalacion);
+            $internet->costo_instalacion = $costo_instalacion[1];
+            $internet->prepago = $request->prepago;
+            $internet->dia_gene_fact = $request->dia_gene_fact;
+            if($request->contrato_vence!=""){
+                $internet->contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence);
+
+            }
+            $internet->periodo = $request->periodo;
+            $internet->cortesia = $request->cortesia;
+            $internet->velocidad = $request->velocidad;
+            $internet->marca = $request->marca;
+            $internet->modelo = $request->modelo;
+            $internet->mac = $request->mac;
+            $internet->serie = $request->serie;
+            $internet->recepcion = $request->recepcion;
+            $internet->trasmision = $request->trasmision;
+            $internet->ip = $request->ip;
+            $internet->identificador = 1;
+            $internet->activo = 1;
+            $internet->save();
+            $this->setCorrelativo(5);
+
+
+            $obj_controller_bitacora=new BitacoraController();	
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+
+
+        }
+
+        //si collilla es igual 2 se guarda en tabla tvs
+        if($request->colilla==2){
+            Cliente::where('id',$id_cliente)->update(['tv'=>1]);
+            $tv = new Tv();
+            $tv->id_cliente = $id_cliente;
+            $tv->numero_contrato = $this->correlativo(4,6);
+            if($request->fecha_instalacion_tv!=""){
+                $tv->fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion_tv);
+
+            }
+            if($request->fecha_primer_fact_tv!=""){
+                $tv->fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact_tv);
+
+            }
+            $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
+            $tv->cuota_mensual = $cuota_mensual[1];
+            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+            $tv->costo_instalacion = $costo_instalacion[1];
+            $tv->prepago = $request->prepago_tv;
+            $tv->dia_gene_fact = $request->dia_gene_fact_tv;
+            if($request->contrato_vence_tv!=""){
+                $tv->contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence_tv);
+
+            }
+            $tv->periodo = $request->periodo_tv;
+            $tv->cortesia = $request->cortesia_tv;
+            $tv->digital = $request->digital_tv;
+            $tv->marca = $request->marca_tv;
+            $tv->serie = $request->serie_tv;
+            $tv->modelo = $request->modelo_tv;
+            $tv->identificador = 2;
+            $tv->activo = 1;
+            $tv->save();
+            $this->setCorrelativo(4);
+
+            $obj_controller_bitacora=new BitacoraController();	
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+
+
+        }
+
+        //si collilla es igual a 3 va guarda en tabla tvs y internets
+        if($request->colilla==3){
+            Cliente::where('id',$id_cliente)->update(['internet'=>1, 'tv'=>1]);
+            $internet = new Internet();
+            $internet->id_cliente = $id_cliente;
+            $internet->numero_contrato = $this->correlativo(5,6);
+            if($request->fecha_instalacion!=""){
+                $internet->fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion);
+
+            }
+            if($request->fecha_primer_fact!=""){
+                $internet->fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact);
+
+            }
+            $cuota_mensual = explode(" ", $request->cuota_mensual);
+            $internet->cuota_mensual = $cuota_mensual[1];
+            $costo_instalacion = explode(" ",$request->costo_instalacion);
+            $internet->costo_instalacion = $costo_instalacion[1];
+            $internet->prepago = $request->prepago;
+            $internet->dia_gene_fact = $request->dia_gene_fact;
+            if($request->contrato_vence!=""){
+                $internet->contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence);
+
+            }
+            $internet->periodo = $request->periodo;
+            $internet->cortesia = $request->cortesia_tv;
+            $internet->velocidad = $request->velocidad;
+            $internet->marca = $request->marca;
+            $internet->modelo = $request->modelo;
+            $internet->mac = $request->mac;
+            $internet->serie = $request->serie;
+            $internet->recepcion = $request->recepcion;
+            $internet->trasmision = $request->trasmision;
+            $internet->ip = $request->ip;
+            $internet->identificador = 1;
+            $internet->activo = 1;
+            $internet->save();
+            $this->setCorrelativo(5);
+
+            $obj_controller_bitacora=new BitacoraController();	
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+
+            $tv = new Tv();
+            $tv->id_cliente = $id_cliente;
+            $tv->numero_contrato = $this->correlativo(4,6);
+            if($request->fecha_instalacion_tv!=""){
+                $tv->fecha_instalacion = Carbon::createFromFormat('d/m/Y', $request->fecha_instalacion_tv);
+
+            }
+            if($request->fecha_primer_fact_tv!=""){
+                $tv->fecha_primer_fact = Carbon::createFromFormat('d/m/Y', $request->fecha_primer_fact_tv);
+
+            }
+            $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
+            $tv->cuota_mensual = $cuota_mensual[1];
+            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+            $tv->costo_instalacion = $costo_instalacion[1];
+            $tv->prepago = $request->prepago_tv;
+            $tv->dia_gene_fact = $request->dia_gene_fact_tv;
+            if($request->contrato_vence_tv!=""){
+                $tv->contrato_vence = Carbon::createFromFormat('d/m/Y', $request->contrato_vence_tv);
+
+            }
+            $tv->periodo = $request->periodo_tv;
+            $tv->cortesia = $request->cortesia_tv;
+            $tv->digital = $request->digital_tv;
+            $tv->marca = $request->marca_tv;
+            $tv->serie = $request->serie_tv;
+            $tv->modelo = $request->modelo_tv;
+            $tv->identificador = 2;
+            $tv->activo = 1;
+            $tv->save();
+            $this->setCorrelativo(4);
+
+            $obj_controller_bitacora=new BitacoraController();	
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+
+        }
+        flash()->success("Contrato creados exitosamente!")->important();
+        return redirect()->route('clientes.contrato',$id_cliente);
+
     }
 
     public function contrato_vista($id,$identificador){
@@ -637,7 +891,8 @@ class ClientesController extends Controller
 
     private function contrato_internet($id){
         $contrato_internet= Internet::where('id',$id)->get();
-        $cliente= Cliente::find($id);
+        $id_cliente = $contrato_internet[0]->id_cliente;
+        $cliente= Cliente::find($id_cliente);
 
         $fpdf = new FpdfClass('P','mm', 'Letter');
         
@@ -992,85 +1247,86 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
     private function contrato_tv($id){
         $contrato_internet= Tv::where('id',$id)->get();
-        $cliente= Cliente::find($id);
+        $id_cliente = $contrato_internet[0]->id_cliente;
+        $cliente= Cliente::find($id_cliente);
 
-        $fpdf = new FpdfClass('P','mm', 'Legal');
+        $fpdf = new FpdfClass('P','mm', 'Letter');
         
         $fpdf->AliasNbPages();
         $fpdf->AddPage();
         $fpdf->SetTitle('CONTRATOS | UNINET');
 
-        $fpdf->SetXY(175,26);
+        $fpdf->SetXY(175,22);
         $fpdf->SetFont('Arial','',15);
         $fpdf->SetTextColor(194,8,8);
         $fpdf->Cell(30,10,$contrato_internet[0]->numero_contrato);
         $fpdf->SetTextColor(0,0,0);
         $fpdf->SetFont('Arial','B',12);
-        $fpdf->SetXY(80,33);
-        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE TV');
+        $fpdf->SetXY(65,28);
+        $fpdf->cell(30,10,utf8_decode('CONTRATO DE SERVICIO DE TELEVISIÓN'));
         //$contrato_internet[0]->numero_contrato
-        $fpdf->SetXY(165,26);
-        $fpdf->SetFont('Arial','',15);
+        $fpdf->SetXY(165,22);
+        $fpdf->SetFont('Arial','',14);
         $fpdf->SetTextColor(194,8,8);
         $fpdf->Cell(30,10,utf8_decode('Nº.'));
         $fpdf->SetTextColor(0,0,0);
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
         
-        $fpdf->SetXY(15,41);
+        $fpdf->SetXY(15,35);
         $fpdf->cell(40,10,utf8_decode('Servicio No: '.$contrato_internet[0]->numero_contrato));
-        $fpdf->SetXY(38,41);
+        $fpdf->SetXY(38,35);
         $fpdf->cell(40,10,'_________');
 
-        $fpdf->SetXY(155,41);
+        $fpdf->SetXY(156,35);
         $fpdf->cell(30,10,utf8_decode('Fecha: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y')));
-        $fpdf->SetXY(169,41);
-        $fpdf->cell(40,10,'_____________');
+        $fpdf->SetXY(169,35);
+        $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(15,49);
+        $fpdf->SetXY(15,41);
         $fpdf->cell(40,10,utf8_decode('NOMBRE COMPLETO: '.$cliente->nombre));
-        $fpdf->SetXY(60,49);
-        $fpdf->cell(40,10,'___________________________________________________________');
-
-        $fpdf->SetXY(15,57);
-        $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui));
-        $fpdf->SetXY(24,57);
-        $fpdf->cell(40,10,'______________');
-
-        $fpdf->SetXY(85,57);
-        $fpdf->cell(40,10,utf8_decode('NIT: '.$cliente->nit));
-        $fpdf->SetXY(93,57);
-        $fpdf->cell(40,10,'______________');
-
-        $fpdf->SetXY(150,57);
-        $fpdf->cell(40,10,utf8_decode('TEL: '.$cliente->telefono1));
-        $fpdf->SetXY(159,57);
-        $fpdf->cell(40,10,'_________________');
-
-        $fpdf->SetXY(15,65);
-        $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
-        $fpdf->SetXY(44,65);
-        $fpdf->SetFont('Arial','',11);
-        $fpdf->MultiCell(145,8,utf8_decode($cliente->dirreccion));
-        $fpdf->SetXY(43,65);
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetXY(57,41);
         $fpdf->cell(40,10,'__________________________________________________________________');
 
+        $fpdf->SetXY(15,47);
+        $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui));
+        $fpdf->SetXY(24,47);
+        $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(15,73);
+        $fpdf->SetXY(85,47);
+        $fpdf->cell(40,10,utf8_decode('NIT: '.$cliente->nit));
+        $fpdf->SetXY(93,47);
+        $fpdf->cell(40,10,'______________');
+
+        $fpdf->SetXY(153,47);
+        $fpdf->cell(40,10,utf8_decode('TEL: '.$cliente->telefono1));
+        $fpdf->SetXY(163,47);
+        $fpdf->cell(40,10,'_________________');
+
+        $fpdf->SetXY(15,53);
+        $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
+        $fpdf->SetXY(44,54);
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->MultiCell(145,8,utf8_decode($cliente->dirreccion));
+        $fpdf->SetXY(42,53);
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->cell(40,10,'_________________________________________________________________________');
+
+
+        $fpdf->SetXY(15,59);
         $fpdf->cell(40,10,utf8_decode('CORREO ELECTRONICO: '.$cliente->email));
-        $fpdf->SetXY(67,73);
-        $fpdf->cell(40,10,'________________________________________________________');
+        $fpdf->SetXY(62,59);
+        $fpdf->cell(40,10,'________________________________________________________________');
 
         $fpdf->SetFont('Arial','B',12);
-        $fpdf->SetXY(89,81);
+        $fpdf->SetXY(89,65);
         $fpdf->cell(30,10,utf8_decode('OCUPACIÓN'));
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(15,89);
+        $fpdf->SetXY(15,71);
         $fpdf->cell(30,10,utf8_decode('EMPLEADO'));
-        $fpdf->SetXY(42,91);
+        $fpdf->SetXY(42,73);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->ocupacion==1){
 
@@ -1081,9 +1337,9 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(57,89);
+        $fpdf->SetXY(57,71);
         $fpdf->cell(30,10,utf8_decode('COMERCIANTE'));
-        $fpdf->SetXY(92,91);
+        $fpdf->SetXY(92,73);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->ocupacion==2){
             
@@ -1095,9 +1351,9 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(107,89);
+        $fpdf->SetXY(107,71);
         $fpdf->cell(30,10,utf8_decode('INDEPENDIENTE'));
-        $fpdf->SetXY(145,91);
+        $fpdf->SetXY(145,73);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->ocupacion==3){
 
@@ -1110,9 +1366,9 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(160,89);
+        $fpdf->SetXY(160,71);
         $fpdf->cell(30,10,utf8_decode('OTROS'));
-        $fpdf->SetXY(178,91);
+        $fpdf->SetXY(178,73);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->ocupacion==4){
             $fpdf->cell(10,5,chr(52),1,1,'C');
@@ -1122,16 +1378,16 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         }
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(15,97);
+        $fpdf->SetXY(15,77);
         $fpdf->cell(30,10,utf8_decode('CONDICIÓN ACTUAL DEL LUGAR DE LA PRESTACIÓN DEL SERVICIO'));
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(15,105);
+        $fpdf->SetXY(15,83);
         $fpdf->cell(30,10,utf8_decode('CASA PROPIA'));
-        $fpdf->SetXY(47,107);
+        $fpdf->SetXY(47,85);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->condicion_lugar==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
@@ -1141,11 +1397,11 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         }
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(60,105);
+        $fpdf->SetXY(60,83);
         $fpdf->cell(30,10,utf8_decode('ALQUILADA'));
-        $fpdf->SetXY(87,107);
+        $fpdf->SetXY(87,85);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->condicion_lugar==2){
             $fpdf->cell(10,5,chr(52),1,1,'C');
@@ -1155,11 +1411,11 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         }
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(100,105);
+        $fpdf->SetXY(100,83);
         $fpdf->cell(30,10,utf8_decode('OTROS'));
-        $fpdf->SetXY(119,107);
+        $fpdf->SetXY(119,85);
         $fpdf->SetFont('ZapfDingbats');
         if($cliente->condicion_lugar==3){
             $fpdf->cell(10,5,chr(52),1,1,'C');
@@ -1169,126 +1425,126 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         }
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(15,113);
+        $fpdf->SetXY(15,89);
         $fpdf->cell(40,10,utf8_decode('NOMBRE DEL DUEÑO DEL INMUEBLE: '.$cliente->nombre_dueno));
-        $fpdf->SetXY(94,113);
-        $fpdf->cell(40,10,'____________________________________________');
+        $fpdf->SetXY(88,89);
+        $fpdf->cell(40,10,'___________________________________________________');
 
         $fpdf->SetFont('Arial','B',12);
-        $fpdf->SetXY(70,121);
+        $fpdf->SetXY(70,95);
         $fpdf->cell(30,10,utf8_decode('SERVICIOS CONTRATADOS'));
 
-        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetFont('Arial','',11);
 
-        $fpdf->SetXY(15,129);
+        $fpdf->SetXY(15,101);
         $fpdf->cell(40,10,utf8_decode('CANALES: '));
-        $fpdf->SetXY(36,129);
-        $fpdf->cell(40,10,utf8_decode('________________ TELEVICIÓN'));
+        $fpdf->SetXY(39,101);
+        $fpdf->cell(40,10,utf8_decode('_____________ TELEVISIÓN'));
 
-        $fpdf->SetXY(103,131);
+        $fpdf->SetXY(95,103);
         $fpdf->SetFont('ZapfDingbats');
         $fpdf->cell(10,5,chr(52),1,1,'C');
 
-        $fpdf->SetFont('Arial','',12);
-        $fpdf->SetXY(112,129);
-        $fpdf->cell(40,10,'  $ '.$contrato_internet[0]->cuota_mensual);
-        $fpdf->SetXY(116,129);
-        $fpdf->cell(40,10,'______ TOTAL MENSUAL $ '.$contrato_internet[0]->cuota_mensual);
-        $fpdf->SetXY(173,129);
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->SetXY(112,101);
+        $fpdf->cell(40,10,'$ '.$contrato_internet[0]->cuota_mensual);
+        $fpdf->SetXY(114,101);
+        $fpdf->cell(40,10,'_______ TOTAL MENSUAL $ '.$contrato_internet[0]->cuota_mensual);
+        $fpdf->SetXY(165,101);
         $fpdf->cell(40,10,'_______');
 
-        $fpdf->SetXY(15,137);
+        $fpdf->SetXY(15,107);
         $fpdf->cell(40,10,utf8_decode('COSTOS POR INSTALACIÓN $ '.$contrato_internet[0]->costo_instalacion));
-        $fpdf->SetXY(77,137);
+        $fpdf->SetXY(68,107);
         $fpdf->cell(40,10,'__________ (PRECIO INCLUYE IVA, CES)');
 
-        $fpdf->SetXY(15,145);
+        $fpdf->SetXY(15,113);
         $fpdf->cell(40,10,utf8_decode('FECHA INICIO DE CONTRATO: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y').'    FINALIZACIÓN DEL CONTRATO: '.$contrato_internet[0]->contrato_vence->format('d/m/Y')));
-        $fpdf->SetXY(78,145);
+        $fpdf->SetXY(72,113);
         $fpdf->cell(40,10,'___________                                                        __________');
 
-        $fpdf->SetFont('Arial','',11);
-        $fpdf->SetXY(15,158);
+        $fpdf->SetFont('Arial','',10);
+        $fpdf->SetXY(15,121);
         $fpdf->MultiCell(186,5,utf8_decode('El presente contrato es una plaza de '.$contrato_internet[0]->periodo.' meses a partir de la fecha de instalación del servicio por escrito y pudiendo prorrogarse con el consentimiento del mismo. Si el cliente desea dar por finalizada la relación del servicio debe comunicarse a TECNNITEL con quince días de anticipación.'));
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->SetXY(60,174);
+        $fpdf->SetXY(60,135);
         $fpdf->cell(40,10,utf8_decode('PENALIDAD POR TERMINACIÓN ANTICIPADA'));
-        $fpdf->SetFont('Arial','',11);
-        $fpdf->SetXY(15,182);
+        $fpdf->SetFont('Arial','',10);
+        $fpdf->SetXY(15,142);
         $fpdf->MultiCell(186,5,utf8_decode('Si el cliente desea dar por terminado el presente contrato de este servicio de manera anticipada por voluntad propia, se verá en la obligación de cancelar todos los meses pendientes del plazo contratado por el mismo valor y hacer la entrega de los aparatos y accesorios que fueron entregados al cliente en COMODATO que TECNNITEL ha proporcionado para la prestación de estos servicios. La protección de estos componentes queda bajo la responsabilidad del cliente quien responderá por daños o extravíos de los equipos entregados. En caso de daño o extravío el cliente deberá cancelar su valor económico a TECNNITEL. Si hubiere un elemento con falla por causa de fabricación: TECNNITEL lo reemplazará previa recuperación del elemento dañado.'));
         
-        $fpdf->SetFont('Arial','',12);
-
-        $fpdf->SetXY(55,224);
-        $fpdf->cell(30,10,utf8_decode('ONU'));
-        $fpdf->SetXY(69,226);
-        $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
-            $fpdf->cell(10,5,chr(52),1,1,'C');
-            
-        }else{
-            $fpdf->cell(10,5,'',1,1,'C');
-
-        }
-
-        $fpdf->SetFont('Arial','',12);
-
-        $fpdf->SetXY(120,224);
-        $fpdf->cell(30,10,utf8_decode('ONU CON WIFI'));
-        $fpdf->SetXY(155,226);
-        $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
-            $fpdf->cell(10,5,chr(52),1,1,'C');
-            
-        }else{
-            $fpdf->cell(10,5,'',1,1,'C');
-
-        }
-
-        $fpdf->SetFont('Arial','',12);
-
-        $fpdf->SetXY(33,232);
-        $fpdf->cell(30,10,utf8_decode('CABLE DE RED'));
-        $fpdf->SetXY(69,234);
-        $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
-            $fpdf->cell(10,5,chr(52),1,1,'C');
-            
-        }else{
-            $fpdf->cell(10,5,'',1,1,'C');
-
-        }
-
-        $fpdf->SetFont('Arial','',12);
-
-        $fpdf->SetXY(133,232);
-        $fpdf->cell(30,10,utf8_decode('ROUTER'));
-        $fpdf->SetXY(155,234);
-        $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
-            $fpdf->cell(10,5,chr(52),1,1,'C');
-            
-        }else{
-            $fpdf->cell(10,5,'',1,1,'C');
-
-        }
-
         $fpdf->SetFont('Arial','',11);
-        $fpdf->SetXY(15,243);
+
+        $fpdf->SetXY(55,176);
+        $fpdf->cell(30,10,utf8_decode('ONU'));
+        $fpdf->SetXY(69,178);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->uu==1){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(120,176);
+        $fpdf->cell(30,10,utf8_decode('ONU CON WIFI'));
+        $fpdf->SetXY(155,178);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->uu==1){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(33,182);
+        $fpdf->cell(30,10,utf8_decode('CABLE DE RED'));
+        $fpdf->SetXY(69,184);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->uu==1){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',12);
+
+        $fpdf->SetXY(133,182);
+        $fpdf->cell(30,10,utf8_decode('ROUTER'));
+        $fpdf->SetXY(155,184);
+        $fpdf->SetFont('ZapfDingbats');
+        if($cliente->uu==1){
+            $fpdf->cell(10,5,chr(52),1,1,'C');
+            
+        }else{
+            $fpdf->cell(10,5,'',1,1,'C');
+
+        }
+
+        $fpdf->SetFont('Arial','',10);
+        $fpdf->SetXY(15,190);
         $fpdf->MultiCell(186,5,utf8_decode('El presente contrato de servicio contiene los términos y las condiciones de contratación de TECNNITEL los cuales he recibido de parte del mismo en este acto, y constituyen los aplicables de manera general a la prestación de SERVICIO DE INTERNET presentados por TECNNITEL.'));
         
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->SetXY(33,260);
+        $fpdf->SetXY(33,203);
         $fpdf->cell(40,10,utf8_decode('CONDICIONES APLICABLES AL SERVICIO DE DIFUSIÓN POR SUSCRIPCIÓN'));
         //segunda pagina
-        $fpdf->SetFont('Arial','',11);
-        $fpdf->SetXY(15,268);
-        $fpdf->MultiCell(186,5,utf8_decode('Es mediante el cual TECNNITEL  se obliga a prestar al cliente por medio de fibra óptica: el servicio de DIFUSIÓN POR SUSCRIPCIÓN que será prestado de forma continua las veinticuatro horas y los trescientos sesenta y cinco días del año durante la vigencia del presente contrato: salvo en caso de mora por parte del cliente o por caso fortuito o de fuerza mayor. En caso de que exista interrupción del servicio de cualquier índole técnica y que perdure como un máximo de veinticuatro horas el cliente deberá ser recompensado con un descuento aplicado a la próxima factura TECNNITEL no es responsable por causa que no estén bajo su control, y que con lleven en alguna interrupción en el servicio de transmisión de la señal.'));
-        $fpdf->SetXY(15,306);
-        $fpdf->cell(40,10,utf8_decode('Este contrato no incluye servicios adicionales como el servicio de PAGAR POR VER (PPV)'));
-        $fpdf->SetXY(15,318);
+        $fpdf->SetFont('Arial','',10);
+        $fpdf->SetXY(15,211);
+        $fpdf->MultiCell(186,5,utf8_decode('Es mediante el cual TECNNITEL  se obliga a prestar al cliente por medio de fibra óptica: el servicio de DIFUSIÓN POR SUSCRIPCIÓN que será prestado de forma continua las veinticuatro horas y los trescientos sesenta y cinco días del año durante la vigencia del presente contrato: salvo en caso de mora por parte del cliente o por caso fortuito o de fuerza mayor. En caso de que exista interrupción del servicio de cualquier índole técnica y que perdure como un máximo de veinticuatro horas el cliente deberá ser recompensado con un descuento aplicado a la próxima factura TECNNITEL no es responsable por causa que no estén bajo su control, y que con lleven en alguna interrupción en el servicio de transmisión de la señal.
+Este contrato no incluye servicios adicionales como el servicio de PAGAR POR VER (PPV)'));
+        $fpdf->SetXY(15,252);
+        $fpdf->SetFont('Arial','',9);
         $fpdf->MultiCell(186,5,utf8_decode('1. OBLIGACIONES ESPECIALES DEL CLIENTE CON RELACION AL SERVICIO DE DIFUSIÓN POR SUSCRIPCIÓN: El cliente se obliga especialmente. A) a no manipular la fibra óptica en ningún otro equipo ya que su ruptura ocasionara el corte de la señal y sub distribuir el servicio a terceras personas B) No conectar equipos adicionales a los consignados en este contrato. C) No alterar, remover ni cambiar total o parcialmente el equipo o los elementos entregados para la prestación de este servicio. D) No contratar ni permitir que personas no autorizadas por TECNNITEL, realicen labores de reparación en los equipos. E), EL cliente autoriza a TECNNITEL el sitio a Instalar los equipos y componentes necesarios para la prestación del servicio, 2. CARGOS ESPECIALES Y TARIFAS EN CASO DE MORA: el cliente acepta que en caso de mora que exceda los diez días por falta de pago TECNNITEL suspenderá el servicio; la reconexión se hará efectiva una vez el cliente cancele la deuda en su totalidad más la cancelación de tres dólares Americanos en concepto de cargo por rehabilitación de servicio. 3. CARGOS Y TARIFAS EN CASO DE TRASLADO DEL DOMICILIO DEL SERVICIO DE DIFUSIÓN POR SUSCRIPCIÓN: En caso de traslado de domicilio el cliente deberá notificar inmediatamente a TECNNITEL para programar la reconexión del servicio en el nuevo domicilio, entendiendo que el nuevo domicilio deberá estar dentro de la red de cobertura del servicio de TECNNITEL. Un cargo de quince dólares deberá ser cancelado por el cliente correspondiente a reconexión por traslado de domicilio, valor que se hará por anticipado. LIMITACIONES Y RESTRICCIONES DE MATERIAL PARA PROVEER DEL SERVICIO DE DIFUSIÓN POR SUSCRIPCIÓN.
         PAGO DE CUOTA: El cliente se compromete a pagar la cuota mensual y puntual únicamente en la oficina de TECNNITEL según la fecha de contratación.'));
         // Logo
@@ -1296,39 +1552,39 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fecha_instalacion = $contrato_internet[0]->fecha_instalacion;
         $corte_fecha = explode("-", $fecha_instalacion);
         $corte_dia = explode(" ", $corte_fecha[2]);
-        $fpdf->Image('assets/images/LOGO.png',15,100,60,25); //(x,y,w,h)
-        $fpdf->SetXY(110,100);
-        $fpdf->SetFont('Arial','B',20);
+        $fpdf->Image('assets/images/LOGO.png',15,83,60,25); //(x,y,w,h)
+        $fpdf->SetXY(120,86);
+        $fpdf->SetFont('Arial','B',18);
         $fpdf->cell(40,10,utf8_decode('PAGARÉ SIN PROTESTO'));
 
         $fpdf->SetFont('Arial','',12);
-        $fpdf->SetXY(143,110);
+        $fpdf->SetXY(143,92);
         $fpdf->cell(40,10,utf8_decode('Apopa '.$corte_dia[0].' de '.$this->spanishMes($corte_fecha[1]).' de '.$corte_fecha[0].'.'));
 
-        $fpdf->SetXY(168,118);
+        $fpdf->SetXY(168,98);
         $fpdf->cell(40,10,utf8_decode('Por: U$ '.($contrato_internet[0]->cuota_mensual*$contrato_internet[0]->periodo)));
 
-        $fpdf->SetFont('Arial','',11);
-        $fpdf->SetXY(15,130);
+        $fpdf->SetFont('Arial','',10);
+        $fpdf->SetXY(15,106);
         $fpdf->MultiCell(186,5,utf8_decode('Por este pagaré, YO, '.$cliente->nombre.', me obligo a pagar incondicionalmente a TECNNITEL, la cantidad de '.($contrato_internet[0]->cuota_mensual*$contrato_internet[0]->periodo).' U$ Dólares, reconociendo, en caso de mora, el interés del (DIEZ%) 10 por ciento mensual sobre saldo Insoluto. 
 La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales de TECNNITEL, el día '.$corte_dia[0].' de '.$this->spanishMes($corte_fecha[1]).' del año '.$corte_fecha[0]).'.');
 
-        $fpdf->SetXY(15,160);
+        $fpdf->SetXY(15,132);
         $fpdf->MultiCell(186,5,utf8_decode('En caso de acción judica y de ejecución, señalo la ciudad de apopa como domicilio especial, siendo a mi cargo, cualquier gasto que la sociedad acreedora antes mencionada hiciere en el cobro de la presente obligación, inclusive los llamados personales y facultó a la sociedad para que designe al depositario judicial de los bienes que se me embarguen a quien revelo de la obligación.'));
-        $fpdf->SetXY(50,184);
-        $fpdf->SetFont('Arial','B',12);
-        $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui).'                            NIT: '.$cliente->nit);
-        $fpdf->SetXY(65,200);
-        $fpdf->SetFont('Arial','',12);
-        $fpdf->cell(40,10,utf8_decode('FIRMA DEL CLIENTE: _________________________________'));
+        $fpdf->SetXY(50,150);
+        $fpdf->SetFont('Arial','B',11);
+        $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui).'                       NIT: '.$cliente->nit);
+        $fpdf->SetXY(110,158);
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->cell(40,10,utf8_decode('FIRMA DEL CLIENTE: ______________________'));
 
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->SetXY(26,218);
+        $fpdf->SetXY(26,166);
         $fpdf->cell(40,10,utf8_decode('TERMINOS Y CONTRATACIONES GENERALES DE CONTRATACIÓN DE TECNNITEL'));
-        $fpdf->SetXY(15,228);
-        $fpdf->SetFont('Arial','',11);
+        $fpdf->SetXY(15,174);
+        $fpdf->SetFont('Arial','',10);
         $fpdf->MultiCell(186,5,utf8_decode('Los terminos y condiciones indicados en el mismo por parte de TECNNITEL de Nacionalidad Salvadoreña de este domicilio, en adelante denominada "EI PROVEEDOR". Las condiciones particulares en cuanto a plazo, tarifas y especificaciones de equipo para la prestación de servicios a cada CLIENTE, se encuentran todas detalladas en el presente CONTRATO DE SERVICIO que El CLIENTE suscribe con EI PROVEEDOR, los cuales forman parte Integrante del presente documento CONDICIONES GENERAL APLICABLES 1. PLAZO; el plazo obligatorio de vigencia aplicable a la prestación de los servicios del proveedor que entrará en vigencia se estipula en el presente contrato que El CLIENTE suscribe con EL PROVEEDOR y contará a partir de la fecha de suscripción. Una vez transcurrido el plazo obligatorio antes indicado, el plazo de contrato de cada servicio continuará por tiempo indefinido TERMINACION: anticipada; en caso de que EL CLIENTE solicite la terminación dentro del plazo obligatorio ant Indicado, deberá pagar a El PROVEEDOR, todos y cada unos de los cargos pendientes del pago a la fecha de terminación efectiva del servicio de que se traten y además le obliga a pagar en concepto de penalidad por terminación anticipadas las cantidades señaladas en El CONTRATO DE SERVICIO que corresponda. B) Suspensión por mo EL PROVEEDOR podrá suspender cualquiera de los servicios contratados por Incumplimientos de las obligaciones EI CLIENTE este podrá dar por terminado el plazo de vigencia del presente CONTRATO DE SERVICIO corresponda.'));
-        $fpdf->SetXY(38,320);
+        $fpdf->SetXY(38,249);
         $fpdf->setFillColor(0,0,0); 
         $fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);

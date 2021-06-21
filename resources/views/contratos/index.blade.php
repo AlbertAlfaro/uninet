@@ -27,12 +27,14 @@
 
 						</button>
 					</a>
-					<a href="#"> 
-						<button type="button" class="btn btn-primary waves-effect waves-light">
-							Agregar <i class="uil uil-arrow-right ml-2"></i>
+                    @if(count($inter_activos)==0 || count($tv_activos)==0)
+                        <a href="{{ route('contrato.create',$id) }}"> 
+                            <button type="button" class="btn btn-primary waves-effect waves-light">
+                                Agregar <i class="uil uil-arrow-right ml-2"></i>
 
-						</button>
-					</a>
+                            </button>
+                        </a>
+                    @endif
 					
 				</div>
 				<br>
@@ -60,11 +62,15 @@
 									<td>{{$obj_item->fecha_instalacion->format('d/m/Y')}}</td>
                                     <td>{{$obj_item->contrato_vence->format('d/m/Y')}}</td>
                                     <td>
-                                        @if($obj_item->identificador==1) <div class="col-md-9 badge badge-pill badge-success">INTERNET  </div>@endif
-                                        @if($obj_item->identificador==2) <div class="col-md-9 badge badge-pill badge-secondary">TELEVISIÓN </div> @endif
+                                        @if($obj_item->identificador==1) <div class="col-md-9 badge badge-pill badge-primary">Internet </div>@endif
+                                        @if($obj_item->identificador==2) <div class="col-md-9 badge badge-pill badge-light">Televisión </div> @endif
                                     
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo  </div>@endif
+                                        @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo  </div>@endif
+                                        @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
+                                    </td>
                                     <td>
                                         <div class="btn-group mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>
@@ -73,7 +79,15 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="{{ url('contrato/vista/'.$obj_item->id.'/'.$obj_item->identificador) }}" target="_blank">Ver contrato</a>
-                                                
+                                                @php
+                                                    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+                                                    $fecha_entrada = strtotime($obj_item->contrato_vence);
+                                                        
+                                                                                                                                                        
+                                                @endphp 
+                                                @if($fecha_actual<$fecha_entrada )
+                                                    <a class="dropdown-item" href="{{ url('contrato/activo/'.$obj_item->id.'/'.$obj_item->identificador) }}" >Cambiar estado</a>
+                                                @endif
                                                 
                                             </div>
                                         </div>

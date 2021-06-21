@@ -123,7 +123,7 @@
                                     <span class="d-none d-sm-block">Referencias</span>    
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" id="li_servicios">
                                 <a class="nav-link" data-toggle="tab" href="#navtabs-messages" role="tab">
                                     <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
                                     <span class="d-none d-sm-block">Servicios</span>    
@@ -553,12 +553,15 @@
 
                 // para servicios
                 if(data[0].internet!=0){
+                    $("#li_servicios").show();
                     $("#tv").hide();
                     $("#internet").show();
                     internet_details(id);
                 }
 
                 if(data[0].tv!=0){
+                    $("#li_servicios").show();
+                    $("#navtabs-messages").show();
                     $("#internet").hide();
                     $("#tv").show();
                     tv_details(id);
@@ -566,9 +569,13 @@
                 }
 
                 if(data[0].internet!=0 && data[0].tv!=0 ){
+                    $("#li_servicios").show();
+                    
                     $("#internet").show();
                     $("#tv").show();
                 }
+                
+
 
 
             }

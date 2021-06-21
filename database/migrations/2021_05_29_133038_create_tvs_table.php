@@ -31,6 +31,7 @@ class CreateTvsTable extends Migration
             $table->string('serie')->nullable();
             $table->string('modelo')->nullable();
             $table->integer('identificador');
+            $table->integer('activo');
             $table->timestamps();
         });
     }

@@ -80,7 +80,10 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
 
     Route::get('cliente/contrato/{id}',[App\Http\Controllers\ClientesController::class ,'contrato'])->middleware('permission:contrato_cliente')->name('clientes.contrato');
-    Route::get('contrato/vista/{id}/{identificador}',[App\Http\Controllers\ClientesController::class ,'contrato_vista'])->middleware('permission:contrato_cliente')->name('contrato.vista');
+    Route::get('contrato/activo/{id}/{identificador}',[App\Http\Controllers\ClientesController::class ,'contrato_activo'])->middleware('permission:contrato_activo')->name('contrato.activo');
+    Route::get('contrato/vista/{id}/{identificador}',[App\Http\Controllers\ClientesController::class ,'contrato_vista'])->middleware('permission:contrato_vista')->name('contrato.vista');
+    Route::get('contrato/create/{id}',[App\Http\Controllers\ClientesController::class ,'contrato_create'])->middleware('permission:contrato_create')->name('contrato.create');
+    Route::post('contrato/store',[App\Http\Controllers\ClientesController::class ,'contrato_store'])->middleware('permission:contrato_store')->name('contrato.store');
     //grupo ordenes
     Route::get('ordenes',[App\Http\Controllers\OrdenController::class ,'index'])->middleware('permission:Ordenes')->name('ordenes.index');
     Route::get('ordenes/create',[App\Http\Controllers\OrdenController::class ,'create'])->middleware('permission:create_orden')->name('ordenes.create');

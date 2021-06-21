@@ -49,7 +49,7 @@ Gestión de Clientes
                                     </a>
                                 </li>
     
-                                <li class="nav-item">
+                                <li class="nav-item" id="li_servicio">
                                     <a href="#progress-bank-detail" class="nav-link" data-toggle="tab">
                                         <span class="step-number mr-2">03</span>
                                         Servicio
@@ -474,12 +474,16 @@ Gestión de Clientes
                                                             <select class="form-control" name="colilla" id="colilla" required>
                                                                 <option value="" >Seleccionar...</option>
                                                                 @if($cliente->internet==1)
+                                                                
                                                                     <option value="1" @if($cliente->colilla==1) selected @endif>Internet</option>
                                                                 @endif
                                                                 @if($cliente->tv==1)
                                                                     <option value="2" @if($cliente->colilla==2) selected @endif>TV</option>
                                                                 @endif
-                                                                <option value="3" @if($cliente->colilla==3) selected @endif>Ambos</option>
+                                                                @if($cliente->internet!=3 && $cliente->tv!=3)
+
+                                                                    <option value="3" @if($cliente->colilla==3) selected @endif>Ambos</option>
+                                                                @endif
 
                                                             </select>
                                                         </div>
@@ -1200,26 +1204,34 @@ Gestión de Clientes
 
             }
         });
-
-        if('{{ $cliente->colilla }}'==1){
+        var x=0;
+        if('{{ $cliente->colilla }}'==1 && '{{ $cliente->internet }}'==1){
             $("#tv").hide();
             $("#internet").show();
             required_op(2,'.tv');
             required_op(1,'.inter');
+            x=1;
 
         }
-        if('{{ $cliente->colilla }}'==2){
+        if('{{ $cliente->colilla }}'==2 && '{{ $cliente->tv }}'==1){
             $("#internet").hide();
             $("#tv").show();
             required_op(1,'.tv');
             required_op(2,'.inter');
+            x=1;
 
         }
-        if('{{ $cliente->colilla }}'==3){
+        if('{{ $cliente->colilla }}'==3 && '{{ $cliente->internet }}'==1 && '{{ $cliente->tv }}'==1){
             $("#tv").show();
             $("#internet").show();
             required_op(1,'.tv');
             required_op(1,'.inter');
+            x=1;
+
+        }
+
+        if(x==0){
+            $("#li_servicio").hide();
 
         }
 

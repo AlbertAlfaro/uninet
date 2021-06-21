@@ -66,6 +66,26 @@
                     
                 </li>
                 @endcan
+                <!-- configuracion -->
+                @can('Configuracion')
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="uil-wrench"></i>
+                        <span>Configuracion</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        @can('Tecnicos')
+                        <li><a href="{{url('tecnicos')}}">Tecnicos</a></li>
+                        @endcan
+                        @can('Actividades')
+                        <li><a href="{{url('actividades')}}">Actividades</a></li>
+                        @endcan
+                    </ul>
+                    
+                </li>
+                @endcan
+                <!-- endconfiguracion-->
+
                 @can('Administracion')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -89,25 +109,6 @@
                     
                 </li>
                 @endcan
-                <!-- configuracion -->
-                @can('Configuracion')
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="uil-wrench"></i>
-                        <span>Configuracion</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        @can('Tecnicos')
-                        <li><a href="{{url('tecnicos')}}">Tecnicos</a></li>
-                        @endcan
-                        @can('Actividades')
-                        <li><a href="{{url('actividades')}}">Actividades</a></li>
-                        @endcan
-                    </ul>
-                    
-                </li>
-                @endcan
-                <!-- endconfiguracion-->
 
             </ul>
         </div>

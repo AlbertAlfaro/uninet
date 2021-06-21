@@ -27,6 +27,10 @@ class CreateInternetsTable extends Migration
             $table->string('periodo')->nullable();
             $table->string('cortesia')->nullable();
             $table->string('velocidad')->nullable();
+            $table->integer('onu');
+            $table->integer('onu_wifi');
+            $table->integer('cable_red');
+            $table->integer('router');
             $table->string('marca')->nullable();
             $table->string('modelo')->nullable();
             $table->string('mac')->nullable();

@@ -711,8 +711,107 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Accesorios entregados </label>
                                                                 <div class="col-md-8">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                @if (isset($internet[0]->onu)==1) 
+                                                                                    @if($internet[0]->onu==1)
+                                                                                        <input checked type="checkbox" class="custom-control-input" id="onu" name="onu" value="1" >
+                                                                                        <label class="custom-control-label" for="onu">ONU</label>
+                                                                                    
+                                                                                    @else 
+                                                                                        <input type="checkbox" class="custom-control-input" id="onu" name="onu" value="1" >
+                                                                                        <label class="custom-control-label" for="onu">ONU</label>
+
+                                                                                    @endif
+                                                                                
+                                                                                @else
+                                                                                    <input type="checkbox" class="custom-control-input" id="onu" name="onu" value="1" >
+                                                                                    <label class="custom-control-label" for="onu">ONU</label>
+
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                @if (isset($internet[0]->onu_wifi)==1) 
+                                                                                    @if($internet[0]->onu_wifi==1)
+                                                                                        <input checked type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
+                                                                                        <label class="custom-control-label" for="onu_wifi">ONU CON WIFI</label>
+                                                                                    
+                                                                                    @else 
+                                                                                        <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
+                                                                                        <label class="custom-control-label" for="onu_wifi">ONU CON WIFI</label>
+
+                                                                                    @endif
+                                                                                
+                                                                                @else
+                                                                                    <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
+                                                                                    <label class="custom-control-label" for="onu_wifi">ONU CON WIFI</label>
+
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                @if (isset($internet[0]->cable_red)==1) 
+                                                                                    @if($internet[0]->cable_red==1)
+                                                                                        <input checked type="checkbox" class="custom-control-input" id="cable_red" name="cable_red" value="1" >
+                                                                                        <label class="custom-control-label" for="cable_red">CABLE DE RED</label>
+                                                                                    
+                                                                                    @else 
+                                                                                        <input type="checkbox" class="custom-control-input" id="cable_red" name="cable_red" value="1" >
+                                                                                        <label class="custom-control-label" for="cable_red">CABLE DE RED</label>
+
+                                                                                    @endif
+                                                                                
+                                                                                @else
+                                                                                    <input type="checkbox" class="custom-control-input" id="cable_red" name="cable_red" value="1" >
+                                                                                    <label class="custom-control-label" for="onu_wifi">CABLE DE RED</label>
+
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="custom-control custom-checkbox">
+
+                                                                                @if (isset($internet[0]->router)==1) 
+                                                                                    @if($internet[0]->router==1)
+                                                                                        <input checked type="checkbox" class="custom-control-input" id="router" name="router" value="1" >
+                                                                                        <label class="custom-control-label" for="router">ROUTER</label>
+                                                                                    
+                                                                                    @else 
+                                                                                        <input type="checkbox" class="custom-control-input" id="router" name="router" value="1" >
+                                                                                        <label class="custom-control-label" for="router">ROUTER</label>
+
+                                                                                    @endif
+                                                                                
+                                                                                @else
+                                                                                    <input type="checkbox" class="custom-control-input" id="router" name="router" value="1" >
+                                                                                    <label class="custom-control-label" for="router">ROUTER</label>
+
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+
+                                     
+
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="form-group row col-md-12">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Marca </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="marca" name="marca" value="@if (isset($internet[0]->marca)==1){{ $internet[0]->marca }}@endif">
                                                                     
                                                                 </div>
@@ -724,8 +823,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Modelo </label>
-                                                                <div class="col-md-7">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Modelo </label>
+                                                                <div class="col-md-8">
                                                                     <input class="form-control" type="text"  id="modelo" name="modelo" value="@if (isset($internet[0]->modelo)==1){{ $internet[0]->modelo }}@endif" >
                                                                     
                                                                 </div>
@@ -751,8 +850,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Mac </label>
-                                                                <div class="col-md-8">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Mac </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="mac" name="mac" value="@if (isset($internet[0]->mac)==1){{ $internet[0]->mac }}@endif">
                                                                     
                                                                 </div>
@@ -765,8 +864,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Resepción </label>
-                                                                <div class="col-md-7">
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Resepción </label>
+                                                                <div class="col-md-8">
                                                                     <input class="form-control" type="text"  id="recepcion" name="recepcion" value="@if (isset($internet[0]->recepcion)==1){{ $internet[0]->recepcion }}@endif">
                                                                     
                                                                 </div>
@@ -793,8 +892,8 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Ip </label>
-                                                                <div class="col-md-8">
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Ip </label>
+                                                                <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="ip" name="ip" value="@if (isset($internet[0]->ip)==1){{ $internet[0]->ip }}@endif">
                                                                     
                                                                 </div>
@@ -1226,6 +1325,17 @@ Gestión de Clientes
             $("#internet").show();
             required_op(1,'.tv');
             required_op(1,'.inter');
+            x=1;
+
+        }
+        if('{{ $cliente->internet }}'==1 && '{{ $cliente->tv }}'==1){
+            $("#tv").show();
+            $("#internet").show();
+            colilla
+            $("#colilla option[value=3]").attr("selected",true);
+            required_op(1,'.tv');
+            required_op(1,'.inter');
+
             x=1;
 
         }

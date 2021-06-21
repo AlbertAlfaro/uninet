@@ -47,6 +47,7 @@ class ClientesController extends Controller
 
         //dd($request->all());
        //Guarando el registro de cliente
+
         $cliente = new Cliente();
         $cliente->codigo = $this->correlativo(3,6);
         $cliente->nombre = $request->nombre;
@@ -106,6 +107,7 @@ class ClientesController extends Controller
         //Si colill es igual a 1 se guarda en tabla internets
         if($request->colilla==1){
 
+
             $internet = new Internet();
             $internet->id_cliente = $id_cliente;
             $internet->numero_contrato = $this->correlativo(5,6);
@@ -131,6 +133,10 @@ class ClientesController extends Controller
             $internet->periodo = $request->periodo;
             $internet->cortesia = $request->cortesia;
             $internet->velocidad = $request->velocidad;
+            $internet->onu = $request->onu;
+            $internet->onu_wifi = $request->onu_wifi;
+            $internet->cable_red = $request->cable_red;
+            $internet->router = $request->router;
             $internet->marca = $request->marca;
             $internet->modelo = $request->modelo;
             $internet->mac = $request->mac;
@@ -218,6 +224,10 @@ class ClientesController extends Controller
             $internet->periodo = $request->periodo;
             $internet->cortesia = $request->cortesia_tv;
             $internet->velocidad = $request->velocidad;
+            $internet->onu = $request->onu;
+            $internet->onu_wifi = $request->onu_wifi;
+            $internet->cable_red = $request->cable_red;
+            $internet->router = $request->router;
             $internet->marca = $request->marca;
             $internet->modelo = $request->modelo;
             $internet->mac = $request->mac;
@@ -380,6 +390,10 @@ class ClientesController extends Controller
                     'periodo' => $request->periodo,
                     'cortesia' => $request->cortesia,
                     'velocidad' => $request->velocidad,
+                    'onu' => $request->onu,
+                    'onu_wifi' => $request->onu_wifi,
+                    'cable_red' => $request->cable_red,
+                    'router' => $request->router,
                     'marca' => $request->marca,
                     'modelo' => $request->modelo,
                     'mac' => $request->mac,
@@ -419,6 +433,10 @@ class ClientesController extends Controller
                 $internet->periodo = $request->periodo;
                 $internet->cortesia = $request->cortesia;
                 $internet->velocidad = $request->velocidad;
+                $internet->onu = $request->onu;
+                $internet->onu_wifi = $request->onu_wifi;
+                $internet->cable_red = $request->cable_red;
+                $internet->router = $request->router;
                 $internet->marca = $request->marca;
                 $internet->modelo = $request->modelo;
                 $internet->mac = $request->mac;
@@ -735,6 +753,10 @@ class ClientesController extends Controller
             $internet->periodo = $request->periodo;
             $internet->cortesia = $request->cortesia;
             $internet->velocidad = $request->velocidad;
+            $internet->onu = $request->onu;
+            $internet->onu_wifi = $request->onu_wifi;
+            $internet->cable_red = $request->cable_red;
+            $internet->router = $request->router;
             $internet->marca = $request->marca;
             $internet->modelo = $request->modelo;
             $internet->mac = $request->mac;
@@ -822,6 +844,10 @@ class ClientesController extends Controller
             $internet->periodo = $request->periodo;
             $internet->cortesia = $request->cortesia_tv;
             $internet->velocidad = $request->velocidad;
+            $internet->onu = $request->onu;
+            $internet->onu_wifi = $request->onu_wifi;
+            $internet->cable_red = $request->cable_red;
+            $internet->router = $request->router;
             $internet->marca = $request->marca;
             $internet->modelo = $request->modelo;
             $internet->mac = $request->mac;
@@ -1125,7 +1151,7 @@ class ClientesController extends Controller
         $fpdf->cell(30,10,utf8_decode('ONU'));
         $fpdf->SetXY(69,178);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->onu==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{
@@ -1139,7 +1165,7 @@ class ClientesController extends Controller
         $fpdf->cell(30,10,utf8_decode('ONU CON WIFI'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->onu_wifi==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{
@@ -1153,7 +1179,7 @@ class ClientesController extends Controller
         $fpdf->cell(30,10,utf8_decode('CABLE DE RED'));
         $fpdf->SetXY(69,184);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->cable_red==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{
@@ -1167,7 +1193,7 @@ class ClientesController extends Controller
         $fpdf->cell(30,10,utf8_decode('ROUTER'));
         $fpdf->SetXY(155,184);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->router==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{

@@ -299,8 +299,52 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Marca </label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Accesorios entregados </label>
                                                     <div class="col-md-8">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="onu" name="onu" value="1" >
+                                                                    <label class="custom-control-label" for="onu">ONU</label>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-6">
+
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
+                                                                    <label class="custom-control-label" for="onu_wifi">ONU con wifi</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="cable_red" name="cable_red" value="1" >
+                                                                    <label class="custom-control-label" for="cable_red">CABLE DE RED</label>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-6">
+
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="router" name="router" value="1" >
+                                                                    <label class="custom-control-label" for="router">ROUTER</label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        
+                                                        
+                                                    </div>
+                                                </div>
+                
+                                            </div>
+            
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="form-group row col-md-12">
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Marca </label>
+                                                    <div class="col-md-7">
                                                         <input class="form-control" type="text"  id="marca" name="marca" >
                                                         
                                                     </div>
@@ -312,8 +356,8 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Modelo </label>
-                                                    <div class="col-md-7">
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Modelo </label>
+                                                    <div class="col-md-8">
                                                         <input class="form-control" type="text"  id="modelo" name="modelo" >
                                                         
                                                     </div>
@@ -339,8 +383,8 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Mac </label>
-                                                    <div class="col-md-8">
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Mac </label>
+                                                    <div class="col-md-7">
                                                         <input class="form-control" type="text"  id="mac" name="mac" >
                                                         
                                                     </div>
@@ -353,8 +397,8 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Resepción </label>
-                                                    <div class="col-md-7">
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Resepción </label>
+                                                    <div class="col-md-8">
                                                         <input class="form-control" type="text"  id="recepcion" name="recepcion">
                                                         
                                                     </div>
@@ -381,8 +425,8 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Ip </label>
-                                                    <div class="col-md-8">
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Ip </label>
+                                                    <div class="col-md-7">
                                                         <input class="form-control" type="text"  id="ip" name="ip">
                                                         
                                                     </div>

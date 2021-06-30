@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,13 +85,35 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('contrato/vista/{id}/{identificador}',[App\Http\Controllers\ClientesController::class ,'contrato_vista'])->middleware('permission:contrato_vista')->name('contrato.vista');
     Route::get('contrato/create/{id}',[App\Http\Controllers\ClientesController::class ,'contrato_create'])->middleware('permission:contrato_create')->name('contrato.create');
     Route::post('contrato/store',[App\Http\Controllers\ClientesController::class ,'contrato_store'])->middleware('permission:contrato_store')->name('contrato.store');
+
+    //Ordenes por cliente
+    Route::get('cliente/ordenes/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_index'])->middleware('permission:Ordenes')->name('cliente.ordenes.index');
+    Route::get('cliente/ordenes/create/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_create'])->middleware('permission:create_orden')->name('cliente.ordenes.create');
+    Route::get('cliente/ordenes/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'ordenes_edit'])->middleware('permission:edit_orden')->name('cliente.ordenes.edit');
+
+    //Suspenciones por cliente
+    Route::get('cliente/suspensiones/{id}',[App\Http\Controllers\ClientesController::class ,'suspensiones_index'])->middleware('permission:Ordenes')->name('cliente.suspensiones.index');
+    Route::get('cliente/suspensiones/create/{id}',[App\Http\Controllers\ClientesController::class ,'suspensiones_create'])->middleware('permission:create_suspension')->name('cliente.suspensiones.create');
+    Route::get('cliente/suspensiones/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'suspensiones_edit'])->middleware('permission:edit_suspension')->name('cliente.suspensiones.edit');
+
+     //Reconexiones por cliente
+     Route::get('cliente/reconexiones/{id}',[App\Http\Controllers\ClientesController::class ,'reconexiones_index'])->middleware('permission:Reconexiones')->name('cliente.reconexiones.index');
+     Route::get('cliente/reconexiones/create/{id}',[App\Http\Controllers\ClientesController::class ,'reconexiones_create'])->middleware('permission:create_reconexion')->name('cliente.reconexiones.create');
+     Route::get('cliente/reconexiones/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'reconexiones_edit'])->middleware('permission:edit_reconexion')->name('cliente.reconexiones.edit');
+
+      //Traslados por cliente
+    Route::get('cliente/traslados/{id}',[App\Http\Controllers\ClientesController::class ,'traslados_index'])->middleware('permission:Traslados')->name('cliente.traslados.index');
+    Route::get('cliente/traslados/create/{id}',[App\Http\Controllers\ClientesController::class ,'traslados_create'])->middleware('permission:create_traslado')->name('cliente.traslados.create');
+    Route::get('cliente/traslados/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'traslados_edit'])->middleware('permission:edit_traslado')->name('cliente.traslados.edit');
+
+     
     //grupo ordenes
     Route::get('ordenes',[App\Http\Controllers\OrdenController::class ,'index'])->middleware('permission:Ordenes')->name('ordenes.index');
     Route::get('ordenes/create',[App\Http\Controllers\OrdenController::class ,'create'])->middleware('permission:create_orden')->name('ordenes.create');
     Route::post('ordenes/store',[App\Http\Controllers\OrdenController::class ,'store'])->middleware('permission:create_orden')->name('ordenes.store');
     Route::get('ordenes/edit/{id}',[App\Http\Controllers\OrdenController::class ,'edit'])->middleware('permission:edit_orden')->name('ordenes.edit');
     Route::post('ordenes/update/{id}',[App\Http\Controllers\OrdenController::class ,'update'])->middleware('permission:edit_orden')->name('ordenes.update');
-    Route::get('ordenes/destroy/{id}',[App\Http\Controllers\OrdenController::class ,'destroy'])->middleware('permission:destroy_orden')->name('ordenes.distroy');
+    Route::get('ordenes/destroy/{id}/{id_cliente}',[App\Http\Controllers\OrdenController::class ,'destroy'])->middleware('permission:destroy_orden')->name('ordenes.distroy');
     Route::get('ordenes/autocomplete',[App\Http\Controllers\OrdenController::class ,'busqueda_cliente'])->middleware('permission:create_orden')->name('ordenes.autocomplete');
     Route::get('ordenes/imprimir/{id}',[App\Http\Controllers\OrdenController::class ,'imprimir'])->middleware('permission:Ordenes')->name('ordenes.imprimir');
     //grupo suspensiones
@@ -99,7 +122,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('suspensiones/store',[App\Http\Controllers\SuspensionController::class ,'store'])->middleware('permission:create_suspension')->name('suspensiones.store');
     Route::get('suspensiones/edit/{id}',[App\Http\Controllers\SuspensionController::class ,'edit'])->middleware('permission:edit_suspension')->name('suspensiones.edit');
     Route::post('suspensiones/update/{id}',[App\Http\Controllers\SuspensionController::class ,'update'])->middleware('permission:edit_suspension')->name('suspensiones.update');
-    Route::get('suspensiones/destroy/{id}',[App\Http\Controllers\SuspensionController::class ,'destroy'])->middleware('permission:destroy_suspension')->name('suspensiones.distroy');
+    Route::get('suspensiones/destroy/{id}/{id_cliente}',[App\Http\Controllers\SuspensionController::class ,'destroy'])->middleware('permission:destroy_suspension')->name('suspensiones.distroy');
     Route::get('suspensiones/autocomplete',[App\Http\Controllers\SuspensionController::class ,'busqueda_cliente'])->middleware('permission:create_suspension')->name('suspensiones.autocomplete');
     Route::get('suspensiones/suspender/{id}',[App\Http\Controllers\SuspensionController::class ,'suspender'])->middleware('permission:edit_suspension')->name('suspensiones.suspender');
 
@@ -109,9 +132,9 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('reconexiones/store',[App\Http\Controllers\ReconexionController::class ,'store'])->middleware('permission:create_reconexion')->name('reconexiones.store');
     Route::get('reconexiones/edit/{id}',[App\Http\Controllers\ReconexionController::class ,'edit'])->middleware('permission:edit_reconexion')->name('reconexiones.edit');
     Route::post('reconexiones/update/{id}',[App\Http\Controllers\ReconexionController::class ,'update'])->middleware('permission:edit_reconexion')->name('reconexiones.update');
-    Route::get('reconexiones/destroy/{id}',[App\Http\Controllers\ReconexionController::class ,'destroy'])->middleware('permission:destroy_reconexion')->name('reconexiones.distroy');
+    Route::get('reconexiones/destroy/{id}/{id_cliente}',[App\Http\Controllers\ReconexionController::class ,'destroy'])->middleware('permission:destroy_reconexion')->name('reconexiones.distroy');
     Route::get('reconexiones/autocomplete',[App\Http\Controllers\ReconexionController::class ,'busqueda_cliente'])->middleware('permission:create_reconexion')->name('reconexiones.autocomplete');
-    Route::get('reconexiones/activar/{id}',[App\Http\Controllers\ReconexionController::class ,'activar'])->middleware('permission:create_reconexion')->name('reconexiones.activar');
+    Route::get('reconexiones/activar/{id}/{id_cliente}',[App\Http\Controllers\ReconexionController::class ,'activar'])->middleware('permission:create_reconexion')->name('reconexiones.activar');
 
 
     //Traslados
@@ -120,7 +143,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('traslados/store',[App\Http\Controllers\TrasladoController::class ,'store'])->middleware('permission:create_traslado')->name('traslados.store');
     Route::get('traslados/edit/{id}',[App\Http\Controllers\TrasladoController::class ,'edit'])->middleware('permission:edit_traslado')->name('traslados.edit');
     Route::post('traslados/update/{id}',[App\Http\Controllers\TrasladoController::class ,'update'])->middleware('permission:edit_traslado')->name('traslados.update');
-    Route::get('traslados/destroy/{id}',[App\Http\Controllers\TrasladoController::class ,'destroy'])->middleware('permission:destroy_traslado')->name('traslados.distroy');
+    Route::get('traslados/destroy/{id}/{id_cliente}',[App\Http\Controllers\TrasladoController::class ,'destroy'])->middleware('permission:destroy_traslado')->name('traslados.distroy');
     Route::get('traslados/autocomplete',[App\Http\Controllers\TrasladoController::class ,'busqueda_cliente'])->middleware('permission:create_traslado')->name('traslados.autocomplete');
 
 

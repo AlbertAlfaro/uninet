@@ -41,6 +41,8 @@ Actividades
                                             
                                         <input class="form-control" type="text"  id="id_orden" name="id_orden" value="{{$orden->id}}" style="display: none" required>
                                         <input type="text" name="numero" id="numero" class="form-control" value="{{$orden->numero}}" placeholder="" >
+                                        <input type="text" name="go_to" id="go_to" class="form-control" value="{{$id_cliente}}" hidden >
+                                       
                                         
                                         </div>
                                     </div>
@@ -128,7 +130,11 @@ Actividades
                         </p>
 
                         <div class="mt-4">
+                            @if($id_cliente==0)
                             <a href="{{Route('ordenes.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @else
+                            <a href="{{Route('cliente.ordenes.index',$id_cliente)}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @endif
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

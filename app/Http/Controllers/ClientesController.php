@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Fpdf\FpdfClass;
+use App\Models\Actividades;
 use App\Models\Cliente;
 use App\Models\Correlativo;
 use App\Models\Departamentos;
 use App\Models\Internet;
 use App\Models\Municipios;
+use App\Models\Ordenes;
+use App\Models\Reconexion;
+use App\Models\Suspensiones;
+use App\Models\Tecnicos;
+use App\Models\Traslados;
 use App\Models\Tv;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -932,7 +938,7 @@ class ClientesController extends Controller
         $fpdf->Cell(30,10,$contrato_internet[0]->numero_contrato);
         $fpdf->SetTextColor(0,0,0);
         $fpdf->SetFont('Arial','B',12);
-        $fpdf->SetXY(65,28);
+        $fpdf->SetXY(65,26);
         $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE INTERNET');
         //$contrato_internet[0]->numero_contrato
         $fpdf->SetXY(165,22);
@@ -943,43 +949,45 @@ class ClientesController extends Controller
 
         $fpdf->SetFont('Arial','',11);
         
-        $fpdf->SetXY(15,35);
+        $fpdf->SetXY(15,30);
         $fpdf->cell(40,10,utf8_decode('Servicio No: '.$contrato_internet[0]->numero_contrato));
-        $fpdf->SetXY(38,35);
+        $fpdf->SetXY(38,30);
         $fpdf->cell(40,10,'_________');
 
-        $fpdf->SetXY(156,35);
+        $fpdf->SetXY(156,30);
         $fpdf->cell(30,10,utf8_decode('Fecha: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y')));
-        $fpdf->SetXY(169,35);
+        $fpdf->SetXY(169,30);
         $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(15,41);
+        $fpdf->SetXY(15,36);
         $fpdf->cell(40,10,utf8_decode('NOMBRE COMPLETO: '.$cliente->nombre));
-        $fpdf->SetXY(57,41);
+        $fpdf->SetXY(57,36);
         $fpdf->cell(40,10,'__________________________________________________________________');
 
-        $fpdf->SetXY(15,47);
+        $fpdf->SetXY(15,42);
         $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui));
-        $fpdf->SetXY(24,47);
+        $fpdf->SetXY(24,42);
         $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(85,47);
+        $fpdf->SetXY(85,42);
         $fpdf->cell(40,10,utf8_decode('NIT: '.$cliente->nit));
-        $fpdf->SetXY(93,47);
+        $fpdf->SetXY(93,42);
         $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(153,47);
+        $fpdf->SetXY(153,42);
         $fpdf->cell(40,10,utf8_decode('TEL: '.$cliente->telefono1));
-        $fpdf->SetXY(163,47);
+        $fpdf->SetXY(163,42);
         $fpdf->cell(40,10,'_________________');
 
-        $fpdf->SetXY(15,53);
+        $fpdf->SetXY(15,48);
         $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
-        $fpdf->SetXY(44,54);
+        $fpdf->SetXY(44,50);
         $fpdf->SetFont('Arial','',11);
-        $fpdf->MultiCell(145,8,utf8_decode($cliente->dirreccion));
+        $fpdf->MultiCell(145,5,utf8_decode($cliente->dirreccion));
+        $fpdf->SetXY(42,48);
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->cell(40,10,'_________________________________________________________________________');
         $fpdf->SetXY(42,53);
-        $fpdf->SetFont('Arial','',11);
         $fpdf->cell(40,10,'_________________________________________________________________________');
 
 
@@ -1694,6 +1702,124 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         }
         $valor_txt=$valor_txt.$ult_doc;
         return $valor_txt;
+    }
+
+    //Funciones de Ordenes cliente 
+    public function ordenes_index($id){
+        $ordenes = Ordenes::where('id_cliente',$id)->get();
+        $id_cliente =$id;
+        $cliente = Cliente::find($id);
+        $nombre_cliente = $cliente->nombre;
+        return view('ordenes.index',compact('ordenes','id_cliente','nombre_cliente'));
+    }
+
+    public function ordenes_create($id){
+        $obj_actividades = Actividades::all(); 
+        $obj_tecnicos = Tecnicos::all();
+        $id_cliente = $id;
+        $cliente = Cliente::find($id);
+        $cod_cliente = $cliente->codigo;
+        $nombre_cliente = $cliente->nombre;
+        return view('ordenes.create', compact('obj_actividades','obj_tecnicos','id_cliente','cod_cliente','nombre_cliente'));
+    }
+
+    public function ordenes_edit($id,$id_cliente){
+        $orden = Ordenes::find($id);
+        $obj_actividades = Actividades::all();
+        $obj_tecnicos = Tecnicos::all();
+        
+        return view("ordenes.edit",compact('orden','obj_actividades','obj_tecnicos','id_cliente'));
+    }
+
+
+    //funciones para suspenciones cliente 
+
+    public function suspensiones_index($id){
+        $suspensiones = Suspensiones::where('id_cliente',$id)->get();
+        $id_cliente =$id;
+        $cliente = Cliente::find($id);
+        $nombre_cliente = $cliente->nombre;
+        return view('suspensiones.index',compact('suspensiones','id_cliente','nombre_cliente'));
+    }
+
+    public function suspensiones_create($id){
+        $obj_tecnicos = Tecnicos::all();
+        $id_cliente=$id;
+        $cliente = Cliente::find($id);
+        $cod_cliente = $cliente->codigo;
+        $nombre_cliente = $cliente->nombre;
+        return view('suspensiones.create', compact('obj_tecnicos','id_cliente','cod_cliente','nombre_cliente'));
+    }
+
+    public function suspensiones_edit($id,$id_cliente){
+        $suspension = Suspensiones::find($id);
+        $obj_tecnicos = Tecnicos::all();
+        return view("suspensiones.edit",compact('suspension','obj_tecnicos','id_cliente'));
+        
+        
+    }
+
+
+    //funciones para reconexiones cliente 
+
+    public function reconexiones_index($id){
+        $reconexiones = Reconexion::where('id_cliente',$id)->get();
+        $id_cliente =$id;
+        $cliente = Cliente::find($id);
+        $nombre_cliente = $cliente->nombre;
+      
+        return view('reconexiones.index',compact('reconexiones','id_cliente','nombre_cliente'));
+    }
+
+    public function reconexiones_create($id){
+        $obj_tecnicos = Tecnicos::all();
+        $id_cliente=$id;
+        $cliente = Cliente::find($id);
+        $cod_cliente = $cliente->codigo;
+        $nombre_cliente = $cliente->nombre;
+       
+        return view('reconexiones.create', compact('obj_tecnicos','id_cliente','cod_cliente','nombre_cliente'));
+    }
+
+    public function reconexiones_edit($id,$id_cliente){
+        $reconexion = Reconexion::find($id);
+        $obj_tecnicos = Tecnicos::all();
+        return view("reconexiones.edit",compact('reconexion','obj_tecnicos','id_cliente'));
+        
+        
+    }
+
+    //traslados para reconexiones cliente 
+
+    public function traslados_index($id){
+        $traslados = Traslados::where('id_cliente',$id)->get();
+        $id_cliente =$id;
+        $cliente = Cliente::find($id);
+        $nombre_cliente = $cliente->nombre;
+      
+        return view('traslados.index',compact('traslados','id_cliente','nombre_cliente'));
+    }
+
+    public function traslados_create($id){
+        $obj_tecnicos = Tecnicos::all();
+        $obj_departamentos = Departamentos::all();
+        $id_cliente=$id;
+        $cliente = Cliente::find($id);
+        $cod_cliente = $cliente->codigo;
+        $nombre_cliente = $cliente->nombre;
+       
+        return view('traslados.create', compact('obj_tecnicos','id_cliente','cod_cliente','nombre_cliente','obj_departamentos'));
+      
+    }
+
+    public function traslados_edit($id,$id_cliente){
+
+        $traslado = Traslados::find($id);
+        $obj_tecnicos = Tecnicos::all();
+        $obj_departamentos = Departamentos::all();
+        return view("traslados.edit",compact('traslado','obj_tecnicos','obj_departamentos','id_cliente'));
+        
+        
     }
     
 }

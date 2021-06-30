@@ -19,6 +19,7 @@
 					Usted se encuentra en el modulo Gestión de clientes.
 				</p>
                 <div class="text-right">
+                  
                     <a href="{{ route('clientes.create') }}">
                         <button type="button" class="btn btn-primary waves-effect waves-light">
                             Agregar <i class="uil uil-arrow-right ml-2"></i> 
@@ -32,10 +33,10 @@
                 
                 @include('flash::message')
                 <div class="table-responsive">
-
 					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
+                                
                                 <th>Codigo</th>
 								<th>Nombre</th>
                                 <th>Telefono</th>
@@ -70,18 +71,24 @@
                                     </td>
                                     
                                     <td>
-                                        <div class="btn-group mr-1 mt-2">
+                                        <div class="btn-group dropup mr-1 mt-2">
                                             <button type="button" class="btn btn-primary">Acciones</button>
                                             <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('clientes.contrato',$obj_item->id)}}">Contrato</a>
-                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Estado de cuenta</a>
-                                                <div class="dropdown-divider"></div>
+                                
                                                 <a class="dropdown-item" href="#" onclick="detallesCliente({{$obj_item->id}})">Detalles</a>
                                                 <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Editar</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="{{ route('clientes.contrato',$obj_item->id)}}">Contrato</a>
+                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Estado de cuenta</a>
+                                                <a class="dropdown-item" href="{{ route('cliente.ordenes.index',$obj_item->id)}}">Ordenes</a>
+                                                <a class="dropdown-item" href="{{ route('cliente.suspensiones.index',$obj_item->id)}}">Suspenciones</a>
+                                                <a class="dropdown-item" href="{{ route('cliente.reconexiones.index',$obj_item->id)}}">Reconexiones</a>
+                                                <a class="dropdown-item" href="{{ route('cliente.traslados.index',$obj_item->id)}}">Traslados</a>
+                                                
                                             </div>
                                         </div>
 
@@ -92,7 +99,7 @@
 							</tbody>
 					
 					</table>
-				</div>
+                </div>
                 
                 
             </div>
@@ -108,7 +115,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
+                        
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
@@ -488,6 +495,8 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+
+        
         function eliminar(id){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',

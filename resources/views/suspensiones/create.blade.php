@@ -34,11 +34,13 @@ Suspensiones
                             <div class="col-md-12">
 
                                 <div class="row">
+                                    @if($id_cliente==0)
                                     <div class="form-group row col-md-4">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
                                         <div class="col-md-8">
                                             
-                                            <input hidden  type="text" name="id_cliente" id="id_cliente" required>
+                                            <input hidden  type="text" name="id_cliente" id="id_cliente" value="{{ $id_cliente }}" required>
+                                            <input hidden  type="text" name="di" id="di" value="0" required>
                                             <input type="text" name="busqueda" id="busqueda" class="form-control" placeholder="Digita la busqueda ..." aria-describedby="helpId">
                                         
                                         </div>
@@ -50,6 +52,27 @@ Suspensiones
                                             <input class="form-control" type="text"  id="nombre" name="nombre" required>
                                         </div>
                                     </div>
+                                    @else
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
+                                        <div class="col-md-8">
+                                            
+                                            <input hidden  type="text" name="id_cliente" id="id_cliente" value="{{ $id_cliente }}" required>
+                                            <input hidden  type="text" name="di" id="di" value="1" required>
+                                            <input type="text" name="busqueda" id="busqueda" class="form-control" value="{{ $cod_cliente }}" placeholder="Digita la busqueda ..." aria-describedby="helpId" disabled>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre</label>
+                                        <div class="col-md-8">
+                                            
+                                            <input class="form-control" type="text"  id="nombre" name="nombre"value="{{ $nombre_cliente }}" disabled required>
+                                            
+                                        </div>
+                                    </div>
+
+                                    @endif
                                     <div class="form-group row col-md-4">
                                         <label for="example-text-input" class="col-md-4 col-form-label">tipo de Servicio *</label>
                                         <div class="col-md-8">
@@ -106,7 +129,12 @@ Suspensiones
                         </p>
 
                         <div class="mt-4">
+                           
+                            @if($id_cliente==0)
                             <a href="{{Route('suspensiones.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @else
+                            <a href="{{Route('cliente.suspensiones.index',$id_cliente)}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @endif
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

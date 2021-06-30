@@ -983,7 +983,9 @@ class ClientesController extends Controller
         $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
         $fpdf->SetXY(44,50);
         $fpdf->SetFont('Arial','',11);
-        $fpdf->MultiCell(145,5,utf8_decode($cliente->dirreccion));
+        $direccion = $cliente->dirreccion.', '.$cliente->get_municipio->nombre.', '.$cliente->get_municipio->get_departamento->nombre;
+        $direccion = substr($direccion,0,172);
+        $fpdf->MultiCell(158,5,utf8_decode($direccion));
         $fpdf->SetXY(42,48);
         $fpdf->SetFont('Arial','',11);
         $fpdf->cell(40,10,'_________________________________________________________________________');

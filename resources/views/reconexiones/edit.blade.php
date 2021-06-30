@@ -105,20 +105,6 @@ Reconexiones
                                             <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="300" required>{{$reconexion->observacion}}</textarea>
                                         </div>
                                     </div>
-                                    <div class="form-group row col-md-4">
-                                        <label class="col-md-4 col-form-label" for="defaultCheck1">Actividar Cliente</label>
-                                        <div class="col-md-8">
-                                            <div class="custom-control custom-checkbox">
-                                                @if($reconexion->contrato==1)
-                                                <input checked type="checkbox" class="custom-control-input jqcheck" id="contrato" name="contrato" value="1" >
-                                                <label class="custom-control-label" for="contrato"></label>
-                                                @else
-                                                <input type="checkbox" class="custom-control-input jqcheck" id="contrato" name="contrato" value="0" >
-                                                 <label class="custom-control-label" for="contrato"></label>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">

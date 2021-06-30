@@ -39,6 +39,7 @@ Traslados
                                         <div class="col-md-8">
                                             <input class="form-control" type="text"  id="id_traslado" name="id_traslado" value="{{$traslado->id}}" style="display: none" required>
                                             <input type="text" name="numero" id="numero" class="form-control" value="{{$traslado->numero}}" placeholder="" >
+                                            <input type="text" name="go_to" id="go_to" class="form-control" value="{{$id_cliente}}" hidden >
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +184,12 @@ Traslados
                         </p>
 
                         <div class="mt-4">
+                            @if($id_cliente==0)
                             <a href="{{Route('traslados.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @else
+                            <a href="{{Route('cliente.traslados.index',$id_cliente)}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @endif
+                           
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

@@ -23,7 +23,8 @@ class ReconexionController extends Controller
     public function index()
     {
         $reconexiones = Reconexion::all();
-        return view('reconexiones/index',compact('reconexiones'));
+        $id_cliente =0;
+        return view('reconexiones/index',compact('reconexiones','id_cliente'));
     }
 
     /**
@@ -34,7 +35,8 @@ class ReconexionController extends Controller
     public function create()
     {
         $obj_tecnicos = Tecnicos::all();
-        return view('reconexiones.create', compact('obj_tecnicos'));
+        $id_cliente =0;
+        return view('reconexiones.create', compact('obj_tecnicos','id_cliente'));
     }
 
     /**
@@ -67,7 +69,13 @@ class ReconexionController extends Controller
             $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$request->id_cliente);
     
             flash()->success("Registro creado exitosamente!")->important();
-            return redirect()->route('reconexiones.index');
+
+            if($request->di==0){
+
+                return redirect()->route('reconexiones.index');
+            }else{
+                return redirect()->route('cliente.reconexiones.index',$request->id_cliente);
+            }
         //}
     }
 
@@ -92,7 +100,8 @@ class ReconexionController extends Controller
     {
         $reconexion = Reconexion::find($id);
         $obj_tecnicos = Tecnicos::all();
-        return view("reconexiones.edit",compact('reconexion','obj_tecnicos'));
+        $id_cliente=0;
+        return view("reconexiones.edit",compact('reconexion','obj_tecnicos','id_cliente'));
     }
 
     /**
@@ -123,7 +132,13 @@ class ReconexionController extends Controller
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Reconexion editada: '. $request->numero);
     
-        return redirect()->route('reconexiones.index');
+       
+        if($request->go_to==0){
+
+            return redirect()->route('reconexiones.index');
+        }else{
+            return redirect()->route('cliente.reconexiones.index',$request->go_to);
+        }
     }
 
     /**
@@ -132,13 +147,19 @@ class ReconexionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$id_cliente)
     {
         Reconexion::destroy($id);
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Reconexion eliminada con  id: '.$id);
         flash()->success("Registro eliminado exitosamente!")->important();
         return redirect()->route('reconexiones.index');
+        if($id_cliente==0){
+
+            return redirect()->route('reconexiones.index');
+        }else{
+            return redirect()->route('cliente.reconexiones.index',$id_cliente);
+        }
     }
 
         // Autocomplete de Cliente
@@ -209,7 +230,7 @@ class ReconexionController extends Controller
             return $valor_txt;
         }
     
-        public function activar($id){
+        public function activar($id,$id_cliente){
     
             $reconexion = Reconexion::find($id);
             $servicio = $reconexion->tipo_servicio;
@@ -229,7 +250,14 @@ class ReconexionController extends Controller
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Servicio Activado con la reconexión: '.$reconexion->numero);
             flash()->success("Registro activado exitosamente!")->important();
-            return redirect()->route('reconexiones.index');
+           
+
+            if($id_cliente==0){
+
+                return redirect()->route('reconexiones.index');
+            }else{
+                return redirect()->route('cliente.reconexiones.index',$id_cliente);
+            }
             
         }
         public function imprimir($id)

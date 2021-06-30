@@ -2,6 +2,8 @@
 @section('title') clientes @endsection
 @section('css')
     <!-- DataTables -->
+    <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/libs/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
@@ -14,17 +16,37 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Gestión de traslados</h4>
+                @if($id_cliente==0)
+                    <h4 class="card-title">Gestión de traslados</h4>
+                @else
+                    <h4 class="card-title">Gestión de traslados de {{ $nombre_cliente }}</h4>
+                @endif
 				<p class="card-title-desc">
                     Usted se encuentra en el modulo Gestión de traslados.
 				</p>
                 <div class="text-right">
+                    @if($id_cliente!=0)
+                    <a href="{{route('clientes.index')}}"> 
+						<button type="button" class="btn btn-primary waves-effect waves-light">
+							Regresar <i class="fa fa-undo" aria-hidden="true"></i>
+
+						</button>
+					</a>
+                    <a href="{{ route('cliente.traslados.create',$id_cliente) }}">
+                        <button type="button" class="btn btn-primary waves-effect waves-light">
+                            Agregar <i class="uil uil-arrow-right ml-2"></i> 
+                        </button>
+
+                    </a>
+                    @else
                     <a href="{{ route('traslados.create') }}">
                         <button type="button" class="btn btn-primary waves-effect waves-light">
                             Agregar <i class="uil uil-arrow-right ml-2"></i> 
                         </button>
 
                     </a>
+                    @endif
+                   
 
                 </div>
 				<br>
@@ -66,9 +88,17 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
+<<<<<<< HEAD
                                                 <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
+=======
+                                               
+                                                @if($id_cliente==0)
+>>>>>>> 23006bfc771d4578e84ea406d8b5ee6d7dcb4320
                                                 <a class="dropdown-item" href="{{ route('traslados.edit',$obj_item->id)}}">Editar</a>
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
+                                                @else
+                                                <a class="dropdown-item" href="{{ route('cliente.traslados.edit',[$obj_item->id,$id_cliente])}}">Editar</a>
+                                                @endif
+                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{ $id_cliente }})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
                                                 
                                             </div>
@@ -100,7 +130,7 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
-        function eliminar(id){
+        function eliminar(id,id_cliente){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',
                 text: 'No podras desaser esta accion',
@@ -115,7 +145,7 @@
                     'Registro eliminado',
                     'success'
                     )
-                    window.location.href = "reconexiones/destroy/"+id;
+                    window.location.href = "{{ url('traslados/destroy') }}/"+id+"/"+id_cliente;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

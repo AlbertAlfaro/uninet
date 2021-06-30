@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Fpdf\FpdfActividads;
 use App\Fpdf\FpdfClass;
 use App\Models\Ordenes;
 use App\Models\Actividades;
@@ -8,7 +9,10 @@ use App\Models\Tecnicos;
 use App\Models\Cliente;
 use App\Models\Correlativo;
 use App\Models\Internet;
+<<<<<<< HEAD
 use App\Models\Tv;
+=======
+>>>>>>> 23006bfc771d4578e84ea406d8b5ee6d7dcb4320
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +32,8 @@ class OrdenController extends Controller
     public function index()
     {
         $ordenes = Ordenes::all();
-        return view('ordenes/index',compact('ordenes'));
+        $id_cliente =0;
+        return view('ordenes/index',compact('ordenes','id_cliente'));
     }
 
     /**
@@ -39,7 +44,8 @@ class OrdenController extends Controller
     public function create()
     {   $obj_actividades = Actividades::all();
         $obj_tecnicos = Tecnicos::all();
-        return view('ordenes.create', compact('obj_actividades','obj_tecnicos'));
+        $id_cliente=0;
+        return view('ordenes.create', compact('obj_actividades','obj_tecnicos','id_cliente'));
     }
 
 
@@ -66,7 +72,12 @@ class OrdenController extends Controller
         $obj_controller_bitacora->create_mensaje('Orden creada: '.$request->id_cliente);
 
         flash()->success("Registro creado exitosamente!")->important();
-        return redirect()->route('ordenes.index');
+        if($request->di==0){
+
+            return redirect()->route('ordenes.index');
+        }else{
+            return redirect()->route('cliente.ordenes.index',$request->id_cliente);
+        }
     }
 
     /**
@@ -91,7 +102,8 @@ class OrdenController extends Controller
         $orden = Ordenes::find($id);
         $obj_actividades = Actividades::all();
         $obj_tecnicos = Tecnicos::all();
-        return view("ordenes.edit",compact('orden','obj_actividades','obj_tecnicos'));
+        $id_cliente = 0;
+        return view("ordenes.edit",compact('orden','obj_actividades','obj_tecnicos','id_cliente'));
     }
 
     /**
@@ -119,8 +131,14 @@ class OrdenController extends Controller
         flash()->success("Registro editado exitosamente!")->important();
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+       
+        if($request->go_to==0){
+
+            return redirect()->route('ordenes.index');
+        }else{
+            return redirect()->route('cliente.ordenes.index',$request->go_to);
+        }
     
-        return redirect()->route('ordenes.index');
     }
 
     /**
@@ -129,13 +147,18 @@ class OrdenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$id_cliente)
     {
         Ordenes::destroy($id);
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Orden eliminado con  id: '.$id);
         flash()->success("Registro eliminado exitosamente!")->important();
-        return redirect()->route('ordenes.index');
+        if($id_cliente==0){
+
+            return redirect()->route('ordenes.index');
+        }else{
+            return redirect()->route('cliente.ordenes.index',$id_cliente);
+        }
     }
 
     /// funciones extra

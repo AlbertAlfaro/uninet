@@ -41,7 +41,7 @@ Reconexiones
                                             
                                         <input class="form-control" type="text"  id="id_reconexion" name="id_reconexion" value="{{$reconexion->id}}" style="display: none" required>
                                         <input type="text" name="numero" id="numero" class="form-control" value="{{$reconexion->numero}}" placeholder="" >
-                                        
+                                        <input type="text" name="go_to" id="go_to" class="form-control" value="{{$id_cliente}}" hidden >
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-4">
@@ -137,7 +137,12 @@ Reconexiones
                         </p>
 
                         <div class="mt-4">
+                            @if($id_cliente==0)
                             <a href="{{Route('reconexiones.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @else
+                            <a href="{{Route('cliente.reconexiones.index',$id_cliente)}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @endif
+                           
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

@@ -25,7 +25,8 @@ class TrasladoController extends Controller
     public function index()
     {
         $traslados = Traslados::all();
-        return view('traslados/index',compact('traslados'));
+        $id_cliente=0;
+        return view('traslados/index',compact('traslados','id_cliente'));
     }
 
     /**
@@ -37,7 +38,8 @@ class TrasladoController extends Controller
     {
         $obj_tecnicos = Tecnicos::all();
         $obj_departamentos = Departamentos::all();
-        return view('traslados.create', compact('obj_tecnicos','obj_departamentos'));
+        $id_cliente=0;
+        return view('traslados.create', compact('obj_tecnicos','obj_departamentos','id_cliente'));
 
         
     }
@@ -74,7 +76,13 @@ class TrasladoController extends Controller
         $obj_controller_bitacora->create_mensaje('Traslado creado: '.$request->id_cliente);
 
         flash()->success("Registro creado exitosamente!")->important();
-        return redirect()->route('traslados.index');
+       
+        if($request->di==0){
+
+            return redirect()->route('traslados.index');
+        }else{
+            return redirect()->route('cliente.traslados.index',$request->id_cliente);
+        }
     }
 
     /**
@@ -99,7 +107,8 @@ class TrasladoController extends Controller
         $traslado = Traslados::find($id);
         $obj_tecnicos = Tecnicos::all();
         $obj_departamentos = Departamentos::all();
-        return view("traslados.edit",compact('traslado','obj_tecnicos','obj_departamentos'));
+        $id_cliente=0;
+        return view("traslados.edit",compact('traslado','obj_tecnicos','obj_departamentos','id_cliente'));
     }
 
     /**
@@ -129,7 +138,13 @@ class TrasladoController extends Controller
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Traslado editada con el id: '. $request->numero);
     
-        return redirect()->route('traslados.index');
+    
+        if($request->go_to==0){
+
+            return redirect()->route('traslados.index');
+        }else{
+            return redirect()->route('cliente.traslados.index',$request->go_to);
+        }
     }
 
     /**
@@ -138,9 +153,16 @@ class TrasladoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$id_cliente)
     {
         //
+
+        if($id_cliente==0){
+
+            return redirect()->route('traslados.index');
+        }else{
+            return redirect()->route('cliente.traslados.index',$id_cliente);
+        }
     }
 
     

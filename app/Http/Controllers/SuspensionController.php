@@ -24,9 +24,10 @@ class SuspensionController extends Controller
         $this->middleware('auth');
     }
     public function index()
-    {
+    {   
+        $id_cliente=0;
         $suspensiones = Suspensiones::all();
-        return view('suspensiones/index',compact('suspensiones'));
+        return view('suspensiones/index',compact('suspensiones','id_cliente'));
     }
 
     /**
@@ -36,8 +37,9 @@ class SuspensionController extends Controller
      */
     public function create()
     {
+        $id_cliente=0;
         $obj_tecnicos = Tecnicos::all();
-        return view('suspensiones.create', compact('obj_tecnicos'));
+        return view('suspensiones.create', compact('obj_tecnicos','id_cliente'));
     }
 
     /**
@@ -69,7 +71,13 @@ class SuspensionController extends Controller
         $obj_controller_bitacora->create_mensaje('Suspension creada: '.$request->id_cliente);
 
         flash()->success("Registro creado exitosamente!")->important();
-        return redirect()->route('suspensiones.index');
+        
+        if($request->di==0){
+
+            return redirect()->route('suspensiones.index');
+        }else{
+            return redirect()->route('cliente.suspensiones.index',$request->id_cliente);
+        }
     }
 
     /**
@@ -93,7 +101,8 @@ class SuspensionController extends Controller
     {
         $suspension = Suspensiones::find($id);
         $obj_tecnicos = Tecnicos::all();
-        return view("suspensiones.edit",compact('suspension','obj_tecnicos'));
+        $id_cliente=0;
+        return view("suspensiones.edit",compact('suspension','obj_tecnicos','id_cliente'));
     }
 
     /**
@@ -120,7 +129,13 @@ class SuspensionController extends Controller
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Suspension editada con el número: '. $request->numero);
     
-        return redirect()->route('suspensiones.index');
+      
+        if($request->go_to==0){
+
+            return redirect()->route('suspensiones.index');
+        }else{
+            return redirect()->route('cliente.suspensiones.index',$request->go_to);
+        }
     }
 
     /**
@@ -129,13 +144,20 @@ class SuspensionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$id_cliente)
     {
         Suspensiones::destroy($id);
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Suspension eliminada con  id: '.$id);
         flash()->success("Registro eliminado exitosamente!")->important();
-        return redirect()->route('suspensiones.index');
+
+        if($id_cliente==0){
+
+            return redirect()->route('suspensiones.index');
+        }else{
+            return redirect()->route('cliente.suspensiones.index',$id_cliente);
+        }
+       
     }
 
     // Autocomplete de Cliente

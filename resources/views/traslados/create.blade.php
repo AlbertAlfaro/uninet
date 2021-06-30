@@ -31,12 +31,14 @@ Traslados
                     <form action="{{Route('traslados.store')}}" method="post" id="form">
                         @csrf
                         <div class="row"> 
+                            @if($id_cliente==0)
                             <div class="col-md-4">
                                 <div class="row">
                                     <div class="form-group row col-md-12">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
                                         <div class="col-md-8">
                                             <input hidden  type="text" name="id_cliente" id="id_cliente" required>
+                                            <input hidden  type="text" name="di" id="di" value="0" required>
                                             <input type="text" name="busqueda" id="busqueda" class="form-control" placeholder="Digita la busqueda ..." aria-describedby="helpId">
                                         </div>
                                     </div>
@@ -53,6 +55,32 @@ Traslados
                                     </div>
                                 </div>
                             </div>
+                            @else
+
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="form-group row col-md-12">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
+                                        <div class="col-md-8">
+                                            <input hidden  type="text" name="id_cliente" id="id_cliente" value="{{ $id_cliente }}" required>
+                                            <input hidden  type="text" name="di" id="di" value="1" required>
+                                            <input type="text" name="busqueda" id="busqueda" class="form-control" value="{{ $cod_cliente }}" placeholder="Digita la busqueda ..." aria-describedby="helpId" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="form-group row col-md-12">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" type="text"  id="nombre" name="nombre" value="{{ $nombre_cliente }}" disabled required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                             
                             <div class="col-md-4">
                                 <div class="row">
@@ -146,7 +174,12 @@ Traslados
                         </p>
 
                         <div class="mt-4">
+                            @if($id_cliente==0)
                             <a href="{{Route('traslados.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @else
+                            <a href="{{Route('cliente.traslados.index',$id_cliente)}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @endif
+                           
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

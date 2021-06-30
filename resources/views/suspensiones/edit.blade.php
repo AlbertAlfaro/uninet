@@ -44,6 +44,7 @@ Suspensiones
                                             
                                         <input class="form-control" type="text"  id="id_suspension" name="id_suspension" value="{{$suspension->id}}" style="display: none" required>
                                         <input type="text" name="numero" id="numero" class="form-control" value="{{$suspension->numero}}" placeholder="" >
+                                        <input type="text" name="go_to" id="go_to" class="form-control" value="{{$id_cliente}}" hidden >
                                         
                                         </div>
                                     </div>
@@ -107,7 +108,7 @@ Suspensiones
                                     <div class="form-group row col-md-4">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Fecha de Trabajo *</label>
                                         <div class="col-md-8">
-                                            <input class="form-control datepicker" type="text"  id="fecha_trabajo" name="fecha_trabajo" value="@if($suspension->fecha_trabajo!='') {{ $suspension->fecha_trabajo->format('d/m/Y') }} @endif" autocomplete="off">
+                                            <input class="form-control datepicker" type="text"  id="fecha_trabajo" name="fecha_trabajo" required value="@if($suspension->fecha_trabajo!='') {{ $suspension->fecha_trabajo->format('d/m/Y') }} @endif" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +121,12 @@ Suspensiones
                         </p>
 
                         <div class="mt-4">
+                            @if($id_cliente==0)
                             <a href="{{Route('suspensiones.index')}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @else
+                            <a href="{{Route('cliente.suspensiones.index',$id_cliente)}}"><button type="button" class="btn btn-secondary w-md">Regresar</button></a>
+                            @endif
+                           
                             <button type="submit" class="btn btn-primary w-md" id="guardar">Guardar</button>
                         </div>
                     </form>

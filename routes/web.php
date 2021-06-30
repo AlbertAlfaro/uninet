@@ -102,6 +102,8 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('suspensiones/destroy/{id}',[App\Http\Controllers\SuspensionController::class ,'destroy'])->middleware('permission:destroy_suspension')->name('suspensiones.distroy');
     Route::get('suspensiones/autocomplete',[App\Http\Controllers\SuspensionController::class ,'busqueda_cliente'])->middleware('permission:create_suspension')->name('suspensiones.autocomplete');
     Route::get('suspensiones/suspender/{id}',[App\Http\Controllers\SuspensionController::class ,'suspender'])->middleware('permission:edit_suspension')->name('suspensiones.suspender');
+    Route::get('suspensiones/imprimir/{id}',[App\Http\Controllers\SuspensionController::class ,'imprimir'])->middleware('permission:Suspensiones')->name('suspensiones.imprimir');
+
 
     //grupo reconexiones
     Route::get('reconexiones',[App\Http\Controllers\ReconexionController::class ,'index'])->middleware('permission:Reconexiones')->name('reconexiones.index');
@@ -112,6 +114,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('reconexiones/destroy/{id}',[App\Http\Controllers\ReconexionController::class ,'destroy'])->middleware('permission:destroy_reconexion')->name('reconexiones.distroy');
     Route::get('reconexiones/autocomplete',[App\Http\Controllers\ReconexionController::class ,'busqueda_cliente'])->middleware('permission:create_reconexion')->name('reconexiones.autocomplete');
     Route::get('reconexiones/activar/{id}',[App\Http\Controllers\ReconexionController::class ,'activar'])->middleware('permission:create_reconexion')->name('reconexiones.activar');
+    Route::get('reconexiones/imprimir/{id}',[App\Http\Controllers\ReconexionController::class ,'imprimir'])->middleware('permission:Reconexiones')->name('reconexiones.imprimir');
 
 
     //Traslados
@@ -122,6 +125,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('traslados/update/{id}',[App\Http\Controllers\TrasladoController::class ,'update'])->middleware('permission:edit_traslado')->name('traslados.update');
     Route::get('traslados/destroy/{id}',[App\Http\Controllers\TrasladoController::class ,'destroy'])->middleware('permission:destroy_traslado')->name('traslados.distroy');
     Route::get('traslados/autocomplete',[App\Http\Controllers\TrasladoController::class ,'busqueda_cliente'])->middleware('permission:create_traslado')->name('traslados.autocomplete');
+    Route::get('traslados/imprimir/{id}',[App\Http\Controllers\TrasladoController::class ,'imprimir'])->middleware('permission:Traslados')->name('traslados.imprimir');
 
 
 

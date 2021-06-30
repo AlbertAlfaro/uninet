@@ -66,6 +66,7 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
                                                 <a class="dropdown-item" href="{{ route('traslados.edit',$obj_item->id)}}">Editar</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>

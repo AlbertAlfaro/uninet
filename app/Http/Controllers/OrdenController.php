@@ -1,10 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-<<<<<<< HEAD
 use App\Fpdf\FpdfActividads;
-=======
->>>>>>> 1acc0806ff6d8560b5678ac010a6fd9d94ccbaac
 use App\Fpdf\FpdfClass;
 use App\Models\Ordenes;
 use App\Models\Actividades;

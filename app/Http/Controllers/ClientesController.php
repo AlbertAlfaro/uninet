@@ -939,7 +939,7 @@ class ClientesController extends Controller
         $fpdf->SetTextColor(0,0,0);
         $fpdf->SetFont('Arial','B',12);
         $fpdf->SetXY(65,26);
-        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE INTERNET');
+        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE TELEVISIÓN');
         //$contrato_internet[0]->numero_contrato
         $fpdf->SetXY(165,22);
         $fpdf->SetFont('Arial','',14);
@@ -1298,8 +1298,8 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->Cell(30,10,$contrato_internet[0]->numero_contrato);
         $fpdf->SetTextColor(0,0,0);
         $fpdf->SetFont('Arial','B',12);
-        $fpdf->SetXY(65,28);
-        $fpdf->cell(30,10,utf8_decode('CONTRATO DE SERVICIO DE TELEVISIÓN'));
+        $fpdf->SetXY(65,26);
+        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE TELEVISIÓN');
         //$contrato_internet[0]->numero_contrato
         $fpdf->SetXY(165,22);
         $fpdf->SetFont('Arial','',14);
@@ -1309,43 +1309,47 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',11);
         
-        $fpdf->SetXY(15,35);
+        $fpdf->SetXY(15,30);
         $fpdf->cell(40,10,utf8_decode('Servicio No: '.$contrato_internet[0]->numero_contrato));
-        $fpdf->SetXY(38,35);
+        $fpdf->SetXY(38,30);
         $fpdf->cell(40,10,'_________');
 
-        $fpdf->SetXY(156,35);
+        $fpdf->SetXY(156,30);
         $fpdf->cell(30,10,utf8_decode('Fecha: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y')));
-        $fpdf->SetXY(169,35);
+        $fpdf->SetXY(169,30);
         $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(15,41);
+        $fpdf->SetXY(15,36);
         $fpdf->cell(40,10,utf8_decode('NOMBRE COMPLETO: '.$cliente->nombre));
-        $fpdf->SetXY(57,41);
+        $fpdf->SetXY(57,36);
         $fpdf->cell(40,10,'__________________________________________________________________');
 
-        $fpdf->SetXY(15,47);
+        $fpdf->SetXY(15,42);
         $fpdf->cell(40,10,utf8_decode('DUI: '.$cliente->dui));
-        $fpdf->SetXY(24,47);
+        $fpdf->SetXY(24,42);
         $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(85,47);
+        $fpdf->SetXY(85,42);
         $fpdf->cell(40,10,utf8_decode('NIT: '.$cliente->nit));
-        $fpdf->SetXY(93,47);
+        $fpdf->SetXY(93,42);
         $fpdf->cell(40,10,'______________');
 
-        $fpdf->SetXY(153,47);
+        $fpdf->SetXY(153,42);
         $fpdf->cell(40,10,utf8_decode('TEL: '.$cliente->telefono1));
-        $fpdf->SetXY(163,47);
+        $fpdf->SetXY(163,42);
         $fpdf->cell(40,10,'_________________');
 
-        $fpdf->SetXY(15,53);
+        $fpdf->SetXY(15,48);
         $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
-        $fpdf->SetXY(44,54);
+        $fpdf->SetXY(44,50);
         $fpdf->SetFont('Arial','',11);
-        $fpdf->MultiCell(145,8,utf8_decode($cliente->dirreccion));
+        $direccion = $cliente->dirreccion.', '.$cliente->get_municipio->nombre.', '.$cliente->get_municipio->get_departamento->nombre;
+        $direccion = substr($direccion,0,172);
+        $fpdf->MultiCell(158,5,utf8_decode($direccion));
+        $fpdf->SetXY(42,48);
+        $fpdf->SetFont('Arial','',11);
+        $fpdf->cell(40,10,'_________________________________________________________________________');
         $fpdf->SetXY(42,53);
-        $fpdf->SetFont('Arial','',11);
         $fpdf->cell(40,10,'_________________________________________________________________________');
 
 
@@ -1517,7 +1521,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(30,10,utf8_decode('ONU'));
         $fpdf->SetXY(69,178);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->onu==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{
@@ -1531,7 +1535,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(30,10,utf8_decode('ONU CON WIFI'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->onu_wifi==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{
@@ -1545,7 +1549,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(30,10,utf8_decode('CABLE DE RED'));
         $fpdf->SetXY(69,184);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->cable_red==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{
@@ -1559,7 +1563,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(30,10,utf8_decode('ROUTER'));
         $fpdf->SetXY(155,184);
         $fpdf->SetFont('ZapfDingbats');
-        if($cliente->uu==1){
+        if($contrato_internet[0]->router==1){
             $fpdf->cell(10,5,chr(52),1,1,'C');
             
         }else{

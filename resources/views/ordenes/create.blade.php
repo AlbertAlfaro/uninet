@@ -74,7 +74,7 @@ Ordenes
 
                                     @endif
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Tipo de Servicio *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Tipo Servicio *</label>
                                         <div class="col-md-8">
                                             <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
                                                 <option value="" >Seleccionar...</option>

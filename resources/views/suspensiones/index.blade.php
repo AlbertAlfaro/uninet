@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') clientes @endsection
+@section('title') Suspensiones @endsection
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -93,12 +93,9 @@
                                                 <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}})">Suspender</a>
                                                 @endif
                                                 <div class="dropdown-divider"></div>
-<<<<<<< HEAD
                                                 <a class="dropdown-item" href="{{ route('suspensiones.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
-=======
                                                
                                                 @if($id_cliente==0)
->>>>>>> 23006bfc771d4578e84ea406d8b5ee6d7dcb4320
                                                 <a class="dropdown-item" href="{{ route('suspensiones.edit',$obj_item->id)}}">Editar</a>
                                                 @else
                                                 <a class="dropdown-item" href="{{ route('cliente.suspensiones.edit',[$obj_item->id,$id_cliente])}}">Editar</a>

@@ -9,10 +9,7 @@ use App\Models\Tecnicos;
 use App\Models\Cliente;
 use App\Models\Correlativo;
 use App\Models\Internet;
-<<<<<<< HEAD
 use App\Models\Tv;
-=======
->>>>>>> 23006bfc771d4578e84ea406d8b5ee6d7dcb4320
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

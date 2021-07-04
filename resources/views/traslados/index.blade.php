@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') clientes @endsection
+@section('title') Traslados @endsection
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -88,12 +88,10 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-<<<<<<< HEAD
+                                                <a class="dropdown-item" href="#" onclick="update_direc({{$obj_item->id}})">Actualizar Dirección</a>
+                                                <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
-=======
-                                               
                                                 @if($id_cliente==0)
->>>>>>> 23006bfc771d4578e84ea406d8b5ee6d7dcb4320
                                                 <a class="dropdown-item" href="{{ route('traslados.edit',$obj_item->id)}}">Editar</a>
                                                 @else
                                                 <a class="dropdown-item" href="{{ route('cliente.traslados.edit',[$obj_item->id,$id_cliente])}}">Editar</a>

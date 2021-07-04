@@ -136,12 +136,12 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('reconexiones/update/{id}',[App\Http\Controllers\ReconexionController::class ,'update'])->middleware('permission:edit_reconexion')->name('reconexiones.update');
     Route::get('reconexiones/destroy/{id}/{id_cliente}',[App\Http\Controllers\ReconexionController::class ,'destroy'])->middleware('permission:destroy_reconexion')->name('reconexiones.distroy');
     Route::get('reconexiones/autocomplete',[App\Http\Controllers\ReconexionController::class ,'busqueda_cliente'])->middleware('permission:create_reconexion')->name('reconexiones.autocomplete');
-<<<<<<< HEAD
+
     Route::get('reconexiones/activar/{id}',[App\Http\Controllers\ReconexionController::class ,'activar'])->middleware('permission:create_reconexion')->name('reconexiones.activar');
     Route::get('reconexiones/imprimir/{id}',[App\Http\Controllers\ReconexionController::class ,'imprimir'])->middleware('permission:Reconexiones')->name('reconexiones.imprimir');
-=======
+
     Route::get('reconexiones/activar/{id}/{id_cliente}',[App\Http\Controllers\ReconexionController::class ,'activar'])->middleware('permission:create_reconexion')->name('reconexiones.activar');
->>>>>>> 23006bfc771d4578e84ea406d8b5ee6d7dcb4320
+
 
 
     //Traslados

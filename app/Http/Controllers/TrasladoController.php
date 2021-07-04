@@ -68,6 +68,7 @@ class TrasladoController extends Controller
         $traslado->id_municipio = $request->id_municipio;
         $traslado->nueva_direccion = $request->nuevadirec;
         $traslado->observacion = $request->observacion;
+        $traslado->update_direc = 0;
         $traslado->id_usuario=Auth::user()->id;
         $traslado->save();
         $this->setCorrelativo(7);
@@ -155,8 +156,10 @@ class TrasladoController extends Controller
      */
     public function destroy($id,$id_cliente)
     {
-        //
-
+        Traslados::destroy($id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Traslado eliminada con  id: '.$id);
+        flash()->success("Registro eliminado exitosamente!")->important();
         if($id_cliente==0){
 
             return redirect()->route('traslados.index');

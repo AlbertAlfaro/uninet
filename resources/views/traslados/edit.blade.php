@@ -59,7 +59,7 @@ Traslados
                             <div class="col-md-4">
                                 <div class="row">
                                     <div class="form-group row col-md-12">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">tipo de Servicio *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Tipo Servicio *</label>
                                         <div class="col-md-8">
                                             <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
                                                 <option value="" >Seleccionar...</option>
@@ -74,7 +74,7 @@ Traslados
                             <div class="col-md-4">
                                 <div class="row">
                                     <div class="form-group row col-md-12">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Tecnico *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Técnico *</label>
                                         <div class="col-md-8">
                                             <select class="form-control" data-live-search="true" name="id_tecnico" id="id_tecnico" required>
                                                 <option value="" >Seleccionar...</option>        

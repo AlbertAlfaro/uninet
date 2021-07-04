@@ -26,6 +26,7 @@ class CreateTrasladosTable extends Migration
             $table->date('fecha_trabajo')->nullable();
             $table->string('observacion')->nullable();
             $table->string('tipo_servicio');
+            $table->integer('update_direc');
             $table->timestamps();
         });
     }

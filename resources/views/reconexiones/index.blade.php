@@ -94,7 +94,7 @@
                                                 <a class="dropdown-item" href="#" onclick="activar({{$obj_item->id}},{{ $id_cliente }})">Activar</a>
                                                 @endif
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('reconexiones.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
+                                                <a class="dropdown-item" href="{{ route('reconexiones.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
                                                
                                                 @if($id_cliente==0)
                                                 <a class="dropdown-item" href="{{ route('reconexiones.edit',$obj_item->id)}}">Editar</a>

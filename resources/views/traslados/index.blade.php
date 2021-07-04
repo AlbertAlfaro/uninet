@@ -90,7 +90,7 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#" onclick="update_direc({{$obj_item->id}})">Actualizar Dirección</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
+                                                <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
                                                 @if($id_cliente==0)
                                                 <a class="dropdown-item" href="{{ route('traslados.edit',$obj_item->id)}}">Editar</a>
                                                 @else

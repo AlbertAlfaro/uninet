@@ -91,7 +91,7 @@
                                             </button>
                                             <div class="dropdown-menu">
 
-                                                <a class="dropdown-item" href="{{ route('ordenes.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
+                                                <a class="dropdown-item" href="{{ route('ordenes.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
                                                 @if($id_cliente==0)
                                                 <a class="dropdown-item" href="{{ route('ordenes.edit',$obj_item->id)}}">Editar</a>
                                                 @else

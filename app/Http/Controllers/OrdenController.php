@@ -264,7 +264,7 @@ class OrdenController extends Controller
         /*
         colilla roja=internet=1
         colilla verde=cable=2
-        colilla amarilla=paquete=3
+        colilla amarilla=Ambos=3
         */
         if($orden->get_cliente->colilla=="1"){$colilla="Roja";}
         if($orden->get_cliente->colilla=="2"){$colilla="Verde";}
@@ -369,27 +369,27 @@ class OrdenController extends Controller
         $fpdf->SetXY(40,96);
         $fpdf->MultiCell(165, 5, substr(utf8_decode($orden->observacion),0,255), 'B', 'L');
         
-        $fpdf->SetXY(10,111);
+        $fpdf->SetXY(10,115);
         $fpdf->Cell(30,5,utf8_decode("Fecha realizado:"),0,0,'L');
-        $fpdf->SetXY(40,111);
+        $fpdf->SetXY(40,115);
         if($orden->fecha_trabajo!=''){$fpdf->Cell(30,5,utf8_decode($orden->fecha_trabajo->format('d/m/Y')),'B',0,'L');}
         else{$fpdf->Cell(30,5,' / / ','B',0,'L');}
-        $fpdf->SetXY(70,111);
+        $fpdf->SetXY(70,115);
         $fpdf->Cell(30,5,utf8_decode("Servicio:".$orden->tipo_servicio),0,0,'L');
 
-        $fpdf->SetXY(10,120);
-        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
-        $fpdf->SetXY(90,120);
-        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
-        $fpdf->SetXY(165,120);
-        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(10,125);
-        $fpdf->Cell(40,5,utf8_decode("Cliente"),0,0,'C');
+        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(90,125);
-        $fpdf->Cell(40,5,utf8_decode("Técnico"),0,0,'C');
+        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(165,125);
-        $fpdf->Cell(40,5,utf8_decode("Autorizado"),0,0,'C');
+        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(10,130);
+        $fpdf->Cell(40,5,utf8_decode("Cliente"),0,0,'C');
+        $fpdf->SetXY(90,130);
+        $fpdf->Cell(40,5,utf8_decode("Técnico"),0,0,'C');
+        $fpdf->SetXY(165,130);
+        $fpdf->Cell(40,5,utf8_decode("Autorizado"),0,0,'C');
+        $fpdf->SetXY(10,135);
         $fpdf->Cell(40,5,utf8_decode("Creado por: ".Auth::user()->name),0,0,'L');
         $fpdf->Line(10,140,205,140,225,140);
   

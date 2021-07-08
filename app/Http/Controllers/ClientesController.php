@@ -450,6 +450,7 @@ class ClientesController extends Controller
                 $internet->recepcion = $request->recepcion;
                 $internet->trasmision = $request->trasmision;
                 $internet->ip = $request->ip;
+                $internet->identificador = 1;
                 $internet->save();
                 $this->setCorrelativo(5);
 
@@ -535,6 +536,7 @@ class ClientesController extends Controller
                 $tv->marca = $request->marca_tv;
                 $tv->serie = $request->serie_tv;
                 $tv->modelo = $request->modelo_tv;
+                $internet->identificador = 2;
                 $tv->save();
                 $this->setCorrelativo(4);
 

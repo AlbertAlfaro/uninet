@@ -83,7 +83,7 @@ Gestión de Clientes
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Nombre *</label>
                                                     <div class="col-md-8">
                                                         
-                                                        <input class="form-control" type="text"  id="nombre" name="nombre" value="{{ $cliente->nombre }}" required>
+                                                        <input class="form-control" type="text"  id="nombre" name="nombre" onkeyup="mayus(this);" value="{{ $cliente->nombre }}" required>
                                                     </div>
                                                 </div>
                 
@@ -684,9 +684,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato </label>
                                                                 <div class="col-md-7">
-                                                                    <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" value="@if (isset($internet[0]->contrato_vence)==1){{ $internet[0]->contrato_vence->format('d/m/Y') }}@endif" required autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="contrato_vence" name="contrato_vence" value="@if (isset($internet[0]->contrato_vence)==1){{ $internet[0]->contrato_vence->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -769,7 +769,7 @@ Gestión de Clientes
                                                                                 
                                                                                 @else
                                                                                     <input type="checkbox" class="custom-control-input" id="cable_red" name="cable_red" value="1" >
-                                                                                    <label class="custom-control-label" for="onu_wifi">CABLE DE RED</label>
+                                                                                    <label class="custom-control-label" for="cable_red">CABLE DE RED</label>
 
                                                                                 @endif
                                                                             </div>
@@ -1104,7 +1104,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
                                                                 <div class="col-md-7">
-                                                                    <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" value="@if (isset($tv[0]->contrato_vence)==1){{ $tv[0]->contrato_vence->format('d/m/Y') }}@endif" required autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" value="@if (isset($tv[0]->contrato_vence)==1){{ $tv[0]->contrato_vence->format('d/m/Y') }}@endif" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -1237,6 +1237,9 @@ Gestión de Clientes
         var id = $("#id_departamento").val();
         filtro(id);
     });
+    function mayus(e) {
+        e.value = e.value.toUpperCase();
+    }
     var id = $("#id_departamento").val();
     filtro(id);
     function filtro(id) {

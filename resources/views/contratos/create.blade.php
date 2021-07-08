@@ -59,7 +59,7 @@ Gestión de contratos
                                         <div class="form-group row col-md-12">
                                             <label for="example-text-input" class="col-md-4 col-form-label">Nombre Cliente</label>
                                             <div class="col-md-8">
-                                                <input class="form-control inter" type="text"  id="nombre" name="nombre" value="{{ $cliente->nombre }}" required readonly>
+                                                <input class="form-control inter" type="text"  id="nombre" name="nombre" onkeyup="mayus(this);" value="{{ $cliente->nombre }}" required readonly>
                                                 
                                             </div>
                                         </div>
@@ -737,6 +737,9 @@ Gestión de contratos
           })
         
         });
+        function mayus(e) {
+            e.value = e.value.toUpperCase();
+        }
 
         required_op(2,'.tv');
         required_op(2,'.inter');

@@ -37,9 +37,9 @@
 						<thead>
 							<tr>
                                 
-                                <th>Codigo</th>
+                                <th>Código</th>
 								<th>Nombre</th>
-                                <th>Telefono</th>
+                                <th>Teléfono</th>
                                 <th>DUI</th>
                                 <th>Departamento</th>
                                 <th>Municipio</th>
@@ -570,7 +570,7 @@
 
                 if(data[0].tv!=0){
                     $("#li_servicios").show();
-                    $("#navtabs-messages").show();
+                   
                     $("#internet").hide();
                     $("#tv").show();
                     tv_details(id);

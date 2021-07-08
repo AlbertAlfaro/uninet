@@ -153,6 +153,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('traslados/destroy/{id}/{id_cliente}',[App\Http\Controllers\TrasladoController::class ,'destroy'])->middleware('permission:destroy_traslado')->name('traslados.distroy');
     Route::get('traslados/autocomplete',[App\Http\Controllers\TrasladoController::class ,'busqueda_cliente'])->middleware('permission:create_traslado')->name('traslados.autocomplete');
     Route::get('traslados/imprimir/{id}',[App\Http\Controllers\TrasladoController::class ,'imprimir'])->middleware('permission:Traslados')->name('traslados.imprimir');
+    Route::get('traslados/update_direc/{id}',[App\Http\Controllers\TrasladoController::class ,'update_direc'])->middleware('permission:edit_traslado')->name('traslados.update_direc');
 
 
 

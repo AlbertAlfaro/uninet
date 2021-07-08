@@ -370,4 +370,18 @@ class TrasladoController extends Controller
         exit;
 
     }
+    public function update_direc($id_traslado)
+    {
+        $traslado = Traslados::find($id_traslado);
+        Cliente::where('id',$traslado->id_cliente)->update([
+            'dirreccion'=>$traslado->nueva_direccion,
+            'id_municipio'=>$traslado->id_municipio
+            ]);
+        Traslados::where('id',$id_traslado)->update(['update_direc' =>'1']);
+        flash()->success("Registro editado exitosamente!")->important();
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Cliente editada con el id: '. $traslado->id_cliente);
+        return redirect()->route('traslados.index');
+         
+    }
 }

@@ -83,7 +83,7 @@ Gestión de Clientes
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Nombre *</label>
                                                     <div class="col-md-8">
                                                         
-                                                        <input class="form-control" type="text"  id="nombre" name="nombre" required>
+                                                        <input class="form-control" type="text"  id="nombre" name="nombre" onkeyup="mayus(this);" required>
                                                     </div>
                                                 </div>
                 
@@ -520,7 +520,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion" name="costo_instalacion" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    <input class="form-control input-mask text-left" type="text"  id="costo_instalacion" name="costo_instalacion" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
                                                                     
                                                                 </div>
                                                             </div>
@@ -662,9 +662,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato </label>
                                                                 <div class="col-md-7">
-                                                                    <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" required autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="contrato_vence" name="contrato_vence" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -869,7 +869,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    <input class="form-control input-mask text-left" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
                                                                     
                                                                 </div>
                                                             </div>
@@ -1011,9 +1011,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato </label>
                                                                 <div class="col-md-7">
-                                                                    <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" required autocomplete="off">
+                                                                    <input class="form-control datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" autocomplete="off">
                                                                     
                                                                 </div>
                                                             </div>
@@ -1131,6 +1131,10 @@ Gestión de Clientes
         var id = $("#id_departamento").val();
         filtro(id);
     });
+
+    function mayus(e) {
+        e.value = e.value.toUpperCase();
+    }
     function filtro(id) {
         // Guardamos el select de cursos
         var municipios = $("#id_municipio");

@@ -59,8 +59,8 @@
 								<tr class="filas">
 									<td>{{$obj_item->numero_contrato}}</td>
 									<td>{{$cliente->nombre}}</td>
-									<td>{{$obj_item->fecha_instalacion->format('d/m/Y')}}</td>
-                                    <td>{{$obj_item->contrato_vence->format('d/m/Y')}}</td>
+									<td>@if (isset($obj_item->fecha_instalacion)==1) {{$obj_item->fecha_instalacion->format('d/m/Y')}} @endif</td>
+                                    <td>@if (isset($obj_item->contrato_vence)==1)  {{$obj_item->contrato_vence->format('d/m/Y')}} @endif</td>
                                     <td>
                                         @if($obj_item->identificador==1) <div class="col-md-9 badge badge-pill badge-primary">Internet </div>@endif
                                         @if($obj_item->identificador==2) <div class="col-md-9 badge badge-pill badge-light">Televisión </div> @endif

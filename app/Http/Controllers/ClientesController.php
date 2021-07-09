@@ -663,7 +663,7 @@ class ClientesController extends Controller
         if($identificador==1){
             $internet = Internet::find($id);
             $id_cliente = $internet->id_cliente;
-            if($internet->activo==0){
+            if($internet->activo==0 || $internet->activo==2){
                 $internet_con = Internet::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
                 //return $internet_con;
                 if($internet_con==0){
@@ -689,7 +689,7 @@ class ClientesController extends Controller
 
             $tv = Tv::find($id);
             $id_cliente = $tv->id_cliente;
-            if($tv->activo==0){
+            if($tv->activo==0 || $tv->activo==2){
                 $tv_con = Tv::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
 
                 if($tv_con==0){

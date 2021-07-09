@@ -93,7 +93,7 @@
                                                 <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}})">Suspender</a>
                                                 @endif
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('suspensiones.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
+                                                <a class="dropdown-item" href="{{ route('suspensiones.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
                                                
                                                 @if($id_cliente==0)
                                                 <a class="dropdown-item" href="{{ route('suspensiones.edit',$obj_item->id)}}">Editar</a>

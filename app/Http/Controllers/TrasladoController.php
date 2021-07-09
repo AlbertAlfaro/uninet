@@ -268,7 +268,7 @@ class TrasladoController extends Controller
         
         $fpdf->AliasNbPages();
         $fpdf->AddPage();
-        $fpdf->SetTitle('ORDEN   | UNINET');
+        $fpdf->SetTitle('TRASLADO   | UNINET');
 
         $fpdf->SetXY(175,22);
         $fpdf->SetFont('Arial','',15);
@@ -342,32 +342,46 @@ class TrasladoController extends Controller
         $fpdf->SetXY(40,96);
         $fpdf->MultiCell(165, 5, substr(utf8_decode($traslado->observacion),0,255), 'B', 'L');
         
-        $fpdf->SetXY(10,111);
+        $fpdf->SetXY(10,115);
         $fpdf->Cell(30,5,utf8_decode("Fecha realizado:"),0,0,'L');
-        $fpdf->SetXY(40,111);
+        $fpdf->SetXY(40,115);
         if($traslado->fecha_trabajo!=''){$fpdf->Cell(30,5,utf8_decode($traslado->fecha_trabajo->format('d/m/Y')),'B',0,'L');}
         else{$fpdf->Cell(30,5,' / / ','B',0,'L');}
-        $fpdf->SetXY(70,111);
+        $fpdf->SetXY(70,115);
         $fpdf->Cell(30,5,utf8_decode("Servicio:".$traslado->tipo_servicio),0,0,'L');
 
-        $fpdf->SetXY(10,120);
-        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
-        $fpdf->SetXY(90,120);
-        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
-        $fpdf->SetXY(165,120);
-        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(10,125);
-        $fpdf->Cell(40,5,utf8_decode("Cliente"),0,0,'C');
+        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(90,125);
-        $fpdf->Cell(40,5,utf8_decode("Técnico"),0,0,'C');
+        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(165,125);
-        $fpdf->Cell(40,5,utf8_decode("Autorizado"),0,0,'C');
+        $fpdf->Cell(40,5,utf8_decode("_________________"),0,0,'L');
         $fpdf->SetXY(10,130);
+        $fpdf->Cell(40,5,utf8_decode("Cliente"),0,0,'C');
+        $fpdf->SetXY(90,130);
+        $fpdf->Cell(40,5,utf8_decode("Técnico"),0,0,'C');
+        $fpdf->SetXY(165,130);
+        $fpdf->Cell(40,5,utf8_decode("Autorizado"),0,0,'C');
+        $fpdf->SetXY(10,135);
         $fpdf->Cell(40,5,utf8_decode("Creado por: ".Auth::user()->name),0,0,'L');
         $fpdf->Line(10,140,205,140,225,140);
   
         $fpdf->Output();
         exit;
 
+    }
+    public function update_direc($id_traslado)
+    {
+        $traslado = Traslados::find($id_traslado);
+        Cliente::where('id',$traslado->id_cliente)->update([
+            'dirreccion'=>$traslado->nueva_direccion,
+            'id_municipio'=>$traslado->id_municipio
+            ]);
+        Traslados::where('id',$id_traslado)->update(['update_direc' =>'1']);
+        flash()->success("Registro editado exitosamente!")->important();
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Cliente editada con el id: '. $traslado->id_cliente);
+        return redirect()->route('traslados.index');
+         
     }
 }

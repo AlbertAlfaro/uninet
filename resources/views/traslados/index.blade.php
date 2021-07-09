@@ -88,9 +88,11 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
+                                                @if($obj_item->update_direc==0)
                                                 <a class="dropdown-item" href="#" onclick="update_direc({{$obj_item->id}})">Actualizar Dirección</a>
+                                                @endif
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Imprimir</a>
+                                                <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
                                                 @if($id_cliente==0)
                                                 <a class="dropdown-item" href="{{ route('traslados.edit',$obj_item->id)}}">Editar</a>
                                                 @else
@@ -153,6 +155,34 @@
                     
                 }
                 })      
+        }
+
+        function update_direc(id_traslado,direccion,id_muni,id_cliente)
+        {
+            Swal.fire({
+                title: 'Estas seguro de actualizar dirección del cliente?',
+                text: 'Verificar si el traslado fue realizado',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                    'Actualizado!',
+                    'Registro actualizado',
+                    'success'
+                    )
+                    window.location.href = "{{ url('traslados/update_direc') }}/"+id_traslado;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                    'Cancelado',
+                    'El registro no fue actualizado',
+                    'error'
+                    )
+                    
+                }
+                })   
         }
     </script>
 @endsection

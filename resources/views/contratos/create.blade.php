@@ -272,9 +272,9 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato</label>
                                                     <div class="col-md-7">
-                                                        <input class="form-control inter datepicker" type="text"  id="contrato_vence" name="contrato_vence" required autocomplete="off">
+                                                        <input class="form-control datepicker" type="text"  id="contrato_vence" name="contrato_vence" autocomplete="off">
                                                         
                                                     </div>
                                                 </div>
@@ -621,9 +621,9 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato *</label>
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato </label>
                                                     <div class="col-md-7">
-                                                        <input class="form-control tv datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" required autocomplete="off">
+                                                        <input class="form-control datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" autocomplete="off">
                                                         
                                                     </div>
                                                 </div>

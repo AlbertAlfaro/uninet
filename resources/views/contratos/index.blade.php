@@ -69,7 +69,8 @@
                                     <td>
                                         @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo  </div>@endif
                                         @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo  </div>@endif
-                                        @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
+                                        @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido  </div>@endif
+                                        @if($obj_item->activo==3) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
                                     </td>
                                     <td>
                                         <div class="btn-group mr-1 mt-2">

@@ -80,6 +80,9 @@
                         @can('Actividades')
                         <li><a href="{{url('actividades')}}">Actividades</a></li>
                         @endcan
+                        @can('Correlativo')
+                        <li><a href="{{url('correlativo')}}">Correlativos</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

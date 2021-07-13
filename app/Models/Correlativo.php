@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Correlativo extends Model
 {
     use HasFactory;
+    protected $dates = ['fecha'];
 }

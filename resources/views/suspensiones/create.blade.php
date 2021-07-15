@@ -27,7 +27,7 @@ Suspensiones
                         Usted se encuentra en el modulo de Gestión de suspensiones Creacion.
                     </p>
                     <hr>
-
+                    @include('flash::message')
                     <form action="{{Route('suspensiones.store')}}" method="post" id="form">
                         @csrf
                         <div class="row">

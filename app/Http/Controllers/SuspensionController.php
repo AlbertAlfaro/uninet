@@ -50,33 +50,83 @@ class SuspensionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'tipo_servicio'=>'required',
+        if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('internet','1')->get();
+            if(count($cliente)>0)
+            {
+                $suspension = new Suspensiones();
+                $suspension->id_cliente = $request->id_cliente;
+                $suspension->numero = $this->correlativo(9,6);
+                $suspension->tipo_servicio = $request->tipo_servicio;
+                $suspension->motivo = $request->motivo;
+                $suspension->id_tecnico = $request->id_tecnico;
+                $suspension->observaciones = $request->observacion;
+                $suspension->suspendido = 0;
+                $suspension->id_usuario=Auth::user()->id;
+                $suspension->save();
+                $this->setCorrelativo(9);
 
-        ]);
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Suspension creada: '.$request->id_cliente);
 
-        $suspension = new Suspensiones();
-        $suspension->id_cliente = $request->id_cliente;
-        $suspension->numero = $this->correlativo(9,6);
-        $suspension->tipo_servicio = $request->tipo_servicio;
-        $suspension->motivo = $request->motivo;
-        $suspension->id_tecnico = $request->id_tecnico;
-        $suspension->observaciones = $request->observacion;
-        $suspension->suspendido = 0;
-        $suspension->id_usuario=Auth::user()->id;
-        $suspension->save();
-        $this->setCorrelativo(9);
+                flash()->success("Registro creado exitosamente!")->important();
+                
+                if($request->di==0){
 
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Suspension creada: '.$request->id_cliente);
-
-        flash()->success("Registro creado exitosamente!")->important();
+                    return redirect()->route('suspensiones.index');
+                }else{
+                    return redirect()->route('cliente.suspensiones.index',$request->id_cliente);
+                }
+            }else
+            {
+                flash()->error("Cliente No posee Internet activo!")->important();
+                if($request->di==0){
         
-        if($request->di==0){
+                    return redirect()->route('suspensiones.create');
+                }else{
+                    return redirect()->route('cliente.suspensiones.create',$request->id_cliente);
+                }
+            }
+        
+        }
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('tv','1')->get();
+            if(count($cliente)>0)
+            {
+                $suspension = new Suspensiones();
+                $suspension->id_cliente = $request->id_cliente;
+                $suspension->numero = $this->correlativo(9,6);
+                $suspension->tipo_servicio = $request->tipo_servicio;
+                $suspension->motivo = $request->motivo;
+                $suspension->id_tecnico = $request->id_tecnico;
+                $suspension->observaciones = $request->observacion;
+                $suspension->suspendido = 0;
+                $suspension->id_usuario=Auth::user()->id;
+                $suspension->save();
+                $this->setCorrelativo(9);
 
-            return redirect()->route('suspensiones.index');
-        }else{
-            return redirect()->route('cliente.suspensiones.index',$request->id_cliente);
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Suspension creada: '.$request->id_cliente);
+
+                flash()->success("Registro creado exitosamente!")->important();
+                
+                if($request->di==0){
+
+                    return redirect()->route('suspensiones.index');
+                }else{
+                    return redirect()->route('cliente.suspensiones.index',$request->id_cliente);
+                }
+            }else
+            {
+                flash()->error("Cliente No posee Tv activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('suspensiones.create');
+                }else{
+                    return redirect()->route('cliente.suspensiones.create',$request->id_cliente);
+                }
+            }
+        
         }
     }
 
@@ -114,27 +164,82 @@ class SuspensionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fecha_trabajo="";
-        if($request->fecha_trabajo!=""){
-            $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
-
+        $suspension=Suspensiones::where('id',$request->id_suspension)->get();
+        if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$suspension[0]->id_cliente)->where('internet','1')->get();
+            if(count($cliente)>0)
+            {
+                $fecha_trabajo=null;
+                if($request->fecha_trabajo!=""){
+                    $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+        
+                }
+                Suspensiones::where('id',$request->id_suspension)->update([
+                    'id_tecnico'=> $request->id_tecnico,
+                    'motivo'=>$request->motivo,
+                    "fecha_trabajo"=>$fecha_trabajo,
+                    "tipo_servicio"=>$request->tipo_servicio,
+                    'observaciones'=>$request->observacion
+                    ]);
+                flash()->success("Registro editado exitosamente!")->important();
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Suspension editada con el número: '. $request->numero);
+            
+              
+                if($request->go_to==0){
+        
+                    return redirect()->route('suspensiones.index');
+                }else{
+                    return redirect()->route('cliente.suspensiones.index',$request->go_to);
+                }
+            }else
+            {
+                flash()->error("Cliente no posee Internet activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('suspensiones.create');
+                }else{
+                    return redirect()->route('cliente.suspensiones.create',$request->id_cliente);
+                }
+            }
         }
-        Suspensiones::where('id',$request->id_suspension)->update([
-            'id_tecnico'=> $request->id_tecnico,
-            'motivo'=>$request->motivo,
-            "fecha_trabajo"=>$fecha_trabajo,
-            'observaciones'=>$request->observacion
-            ]);
-        flash()->success("Registro editado exitosamente!")->important();
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Suspension editada con el número: '. $request->numero);
-    
-      
-        if($request->go_to==0){
-
-            return redirect()->route('suspensiones.index');
-        }else{
-            return redirect()->route('cliente.suspensiones.index',$request->go_to);
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$suspension[0]->id_cliente)->where('tv','1')->get();
+            if(count($cliente)>0)
+            {
+                $fecha_trabajo=null;
+                if($request->fecha_trabajo!=""){
+                    $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+        
+                }
+                Suspensiones::where('id',$request->id_suspension)->update([
+                    'id_tecnico'=> $request->id_tecnico,
+                    'motivo'=>$request->motivo,
+                    "fecha_trabajo"=>$fecha_trabajo,
+                    "tipo_servicio"=>$request->tipo_servicio,
+                    'observaciones'=>$request->observacion
+                    ]);
+                flash()->success("Registro editado exitosamente!")->important();
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Suspension editada con el número: '. $request->numero);
+            
+              
+                if($request->go_to==0){
+        
+                    return redirect()->route('suspensiones.index');
+                }else{
+                    return redirect()->route('cliente.suspensiones.index',$request->go_to);
+                }
+            }else
+            {
+                flash()->error("Cliente no posee TV activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('suspensiones.create');
+                }else{
+                    return redirect()->route('cliente.suspensiones.create',$request->id_cliente);
+                }
+            }
         }
     }
 
@@ -165,10 +270,10 @@ class SuspensionController extends Controller
         $term1 = $request->term;
         $results = array();
             
-        $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->get();
+        $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->orWhere('nombre', 'LIKE', '%'.$term1.'%')->get();
             
         foreach ($queries as $query){
-            $results[] = [ 'id' => $query->id, 'value' => $query->codigo,'nombre' => $query->nombre];
+            $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre];
         }
         return response($results);
     
@@ -235,11 +340,13 @@ class SuspensionController extends Controller
         if($servicio=="Internet")
         {
             Cliente::where('id',$suspension->id_cliente)->update(['internet' =>'2']);
+            Internet::where('id_cliente',$suspension->id_cliente)->update(['activo' =>'2']);
 
         }
         if($servicio=="Tv")
         {
             Cliente::where('id',$suspension->id_cliente)->update(['tv' =>'2']);
+            Tv::where('id_cliente',$suspension->id_cliente)->update(['activo' =>'2']);
         }
         Suspensiones::where('id',$id)->update(['suspendido' =>'1']);
         //1= Cliente  activo
@@ -263,9 +370,9 @@ class SuspensionController extends Controller
         if($suspension->tipo_servicio=="Internet")
         {
            
-            if(Internet::where('id_cliente',$suspension->id_cliente)->where('activo','1')->count()>0)
+            $i= Internet::where('id_cliente',$suspension->id_cliente)->where('activo','1')->get();
+            if(count($i)>0)
             {   
-                $i= Internet::where('id_cliente',$suspension->id_cliente)->where('activo','1')->get();
                 $velocidad=$i[0]->velocidad;
                 $mac=$i[0]->mac;
                 $marca=$i[0]->marca;
@@ -275,10 +382,10 @@ class SuspensionController extends Controller
         }
         if($suspension->tipo_servicio=="Tv")
         {
-           
-            if( $tv=Tv::where('id_cliente',$suspension->id_cliente)->where('activo','1')->count()>0)
+            
+            $tv=Tv::where('id_cliente',$suspension->id_cliente)->where('activo','1')->get();
+            if(count($tv)>0)
             {
-                $tv=Tv::where('id_cliente',$suspension->id_cliente)->where('activo','1')->get();
                 $dia_c=$tv[0]->dia_gene_fact;
             }
             

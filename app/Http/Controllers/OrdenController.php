@@ -53,27 +53,80 @@ class OrdenController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $orden = new Ordenes();
-        $orden->id_cliente = $request->id_cliente;
-        $orden->numero = $this->correlativo(6,6);
-        $orden->tipo_servicio = $request->tipo_servicio;
-        $orden->id_actividad = $request->id_actividad;
-        $orden->id_tecnico = $request->id_tecnico;
-        $orden->observacion = $request->observacion;
-        $orden->id_usuario=Auth::user()->id;
-        $orden->save();
-        $this->setCorrelativo(6);
+    {   
+        if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('internet','1')->get();
+            if(count($cliente)>0)
+            {
+                $orden = new Ordenes();
+                $orden->id_cliente = $request->id_cliente;
+                $orden->numero = $this->correlativo(6,6);
+                $orden->tipo_servicio = $request->tipo_servicio;
+                $orden->id_actividad = $request->id_actividad;
+                $orden->id_tecnico = $request->id_tecnico;
+                $orden->observacion = $request->observacion;
+                $orden->id_usuario=Auth::user()->id;
+                $orden->save();
+                $this->setCorrelativo(6);
+        
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Orden creada: '.$request->id_cliente);
+        
+                flash()->success("Registro creado exitosamente!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('ordenes.index');
+                }else{
+                    return redirect()->route('cliente.ordenes.index',$request->id_cliente);
+                }
 
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Orden creada: '.$request->id_cliente);
+            }else
+            {
+                flash()->error("Cliente No posee Internet activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('ordenes.create');
+                }else{
+                    return redirect()->route('cliente.ordenes.create',$request->id_cliente);
+                }
+            }
+        }
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('Tv','1')->get();
+            if(count($cliente)>0)
+            {
+                $orden = new Ordenes();
+                $orden->id_cliente = $request->id_cliente;
+                $orden->numero = $this->correlativo(6,6);
+                $orden->tipo_servicio = $request->tipo_servicio;
+                $orden->id_actividad = $request->id_actividad;
+                $orden->id_tecnico = $request->id_tecnico;
+                $orden->observacion = $request->observacion;
+                $orden->id_usuario=Auth::user()->id;
+                $orden->save();
+                $this->setCorrelativo(6);
+        
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Orden creada: '.$request->id_cliente);
+        
+                flash()->success("Registro creado exitosamente!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('ordenes.index');
+                }else{
+                    return redirect()->route('cliente.ordenes.index',$request->id_cliente);
+                }
 
-        flash()->success("Registro creado exitosamente!")->important();
-        if($request->di==0){
-
-            return redirect()->route('ordenes.index');
-        }else{
-            return redirect()->route('cliente.ordenes.index',$request->id_cliente);
+            }else
+            {
+                flash()->error("Cliente No posee Tv activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('ordenes.create');
+                }else{
+                    return redirect()->route('cliente.ordenes.create',$request->id_cliente);
+                }
+            }
         }
     }
 
@@ -111,30 +164,90 @@ class OrdenController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
-    {
-        $fecha_trabajo="";
-        if($request->fecha_trabajo!=""){
-            $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+    {   $orden=Ordenes::where('id',$request->id_orden)->get();
+        if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$orden[0]->id_cliente)->where('internet','1')->get();
+            if(count($cliente)>0)
+            {
+                $fecha_trabajo=null;
+                if($request->fecha_trabajo!=""){
+                    $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+        
+                }
+                Ordenes::where('id',$request->id_orden)->update([
+                    'id_tecnico'=> $request->id_tecnico,
+                    'id_actividad'=>$request->id_actividad,
+                    'observacion'=>$request->observacion,
+                    'recepcion'=>$request->rx,
+                    'tx'=>$request->tx,
+                    "fecha_trabajo"=>$fecha_trabajo,
+                    "tipo_servicio"=>$request->tipo_servicio
+                    ]);
+                flash()->success("Registro editado exitosamente!")->important();
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+               
+                if($request->go_to==0){
+        
+                    return redirect()->route('ordenes.index');
+                }else{
+                    return redirect()->route('cliente.ordenes.index',$request->go_to);
+                }
+            }else
+            {
+                flash()->error("Cliente no posee Internet activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('ordenes.index');
+                }else{
+                    return redirect()->route('cliente.ordenes.index',$request->id_cliente);
+                }
+            }
 
-        }
-        Ordenes::where('id',$request->id_orden)->update([
-            'id_tecnico'=> $request->id_tecnico,
-            'id_actividad'=>$request->id_actividad,
-            'observacion'=>$request->observacion,
-            'recepcion'=>$request->rx,
-            'tx'=>$request->tx,
-            "fecha_trabajo"=>$fecha_trabajo
-            ]);
-        flash()->success("Registro editado exitosamente!")->important();
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
-       
-        if($request->go_to==0){
+        
+        } 
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$orden[0]->id_cliente)->where('tv','1')->get();
+            if(count($cliente)>0)
+            {
+                $fecha_trabajo=null;
+                if($request->fecha_trabajo!=""){
+                    $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+        
+                }
+                Ordenes::where('id',$request->id_orden)->update([
+                    'id_tecnico'=> $request->id_tecnico,
+                    'id_actividad'=>$request->id_actividad,
+                    'observacion'=>$request->observacion,
+                    'recepcion'=>$request->rx,
+                    'tx'=>$request->tx,
+                    "fecha_trabajo"=>$fecha_trabajo,
+                    "tipo_servicio"=>$request->tipo_servicio
+                    ]);
+                flash()->success("Registro editado exitosamente!")->important();
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+               
+                if($request->go_to==0){
+        
+                    return redirect()->route('ordenes.index');
+                }else{
+                    return redirect()->route('cliente.ordenes.index',$request->go_to);
+                }
+            }else
+            {
+                flash()->error("Cliente no posee Tv activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('ordenes.index');
+                }else{
+                    return redirect()->route('cliente.ordenes.index',$request->id_cliente);
+                }
+            }
 
-            return redirect()->route('ordenes.index');
-        }else{
-            return redirect()->route('cliente.ordenes.index',$request->go_to);
+        
         }
+        
     
     }
 
@@ -164,10 +277,10 @@ class OrdenController extends Controller
         $term1 = $request->term;
         $results = array();
         
-        $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->get();
+        $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->orWhere('nombre', 'LIKE', '%'.$term1.'%')->get();
         
         foreach ($queries as $query){
-            $results[] = [ 'id' => $query->id, 'value' => $query->codigo,'nombre' => $query->nombre];
+            $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre];
         }
         return response($results);
 
@@ -240,9 +353,9 @@ class OrdenController extends Controller
         if($orden->tipo_servicio=="Internet")
         {
            
-            if(Internet::where('id_cliente',$orden->id_cliente)->where('activo','1')->count()>0)
+            $i= Internet::where('id_cliente',$orden->id_cliente)->where('activo','1')->get();
+            if(count($i)>0)
             {   
-                $i= Internet::where('id_cliente',$orden->id_cliente)->where('activo','1')->get();
                 $velocidad=$i[0]->velocidad;
                 $mac=$i[0]->mac;
                 $marca=$i[0]->marca;
@@ -253,9 +366,9 @@ class OrdenController extends Controller
         if($orden->tipo_servicio=="Tv")
         {
            
-            if( $tv=Tv::where('id_cliente',$orden->id_cliente)->where('activo','1')->count()>0)
+            $tv=Tv::where('id_cliente',$orden->id_cliente)->where('activo','1')->get();
+            if(count($tv)>0)
             {
-                $tv=Tv::where('id_cliente',$orden->id_cliente)->where('activo','1')->get();
                 $dia_c=$tv[0]->dia_gene_fact;
             }
             

@@ -27,7 +27,7 @@ Reconexiones
                         Usted se encuentra en el modulo de Gestión de Reconexiones Creacion.
                     </p>
                     <hr>
-
+                    @include('flash::message')
                     <form action="{{Route('reconexiones.store')}}" method="post" id="form">
                         @csrf
                         <div class="row">

@@ -108,7 +108,7 @@ Suspensiones
                                     <div class="form-group row col-md-4">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Fecha de Trabajo *</label>
                                         <div class="col-md-8">
-                                            <input class="form-control datepicker" type="text"  id="fecha_trabajo" name="fecha_trabajo" required value="@if($suspension->fecha_trabajo!='') {{ $suspension->fecha_trabajo->format('d/m/Y') }} @endif" autocomplete="off">
+                                            <input class="form-control datepicker" type="text"  id="fecha_trabajo" name="fecha_trabajo" value="@if($suspension->fecha_trabajo!='') {{ $suspension->fecha_trabajo->format('d/m/Y') }} @endif" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>

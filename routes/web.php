@@ -158,7 +158,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
 
 });
-
+// PERMISO DE CONFIGRACION
 
 //Usuario1 -> rol-> administrador_cliente-> index_cliente,create_cliente,edit_cliente
 //Usuario2 -> rol-> administrador-> all_permission

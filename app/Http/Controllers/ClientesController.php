@@ -957,7 +957,12 @@ class ClientesController extends Controller
         $fpdf->cell(40,10,'_________');
 
         $fpdf->SetXY(156,30);
-        $fpdf->cell(30,10,utf8_decode('Fecha: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y')));
+        if(isset($contrato_internet[0]->fecha_instalacion)==1){
+            $fecha_instalacion = $contrato_internet[0]->fecha_instalacion->format('d/m/Y');
+        }else{
+            $fecha_instalacion ="";
+        }
+        $fpdf->cell(30,10,utf8_decode('Fecha: '.$fecha_instalacion));
         $fpdf->SetXY(169,30);
         $fpdf->cell(40,10,'______________');
 
@@ -1143,7 +1148,12 @@ class ClientesController extends Controller
         $fpdf->cell(40,10,'__________ (PRECIO INCLUYE IVA, CES)');
 
         $fpdf->SetXY(15,113);
-        $fpdf->cell(40,10,utf8_decode('FECHA INICIO DE CONTRATO: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y').'    FINALIZACIÓN DEL CONTRATO: '.$contrato_internet[0]->contrato_vence->format('d/m/Y')));
+        if(isset($contrato_internet[0]->contrato_vence)==1){
+            $contrato_vence = $contrato_internet[0]->contrato_vence->format('d/m/Y');
+        }else{
+            $contrato_vence ="";
+        }
+        $fpdf->cell(40,10,utf8_decode('FECHA INICIO DE CONTRATO: '.$fecha_instalacion.'    FINALIZACIÓN DEL CONTRATO: '.$contrato_vence));
         $fpdf->SetXY(72,113);
         $fpdf->cell(40,10,'___________                                                        __________');
 
@@ -1317,7 +1327,12 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(40,10,'_________');
 
         $fpdf->SetXY(156,30);
-        $fpdf->cell(30,10,utf8_decode('Fecha: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y')));
+        if(isset($contrato_internet[0]->fecha_instalacion)==1){
+            $fecha_instalacion = $contrato_internet[0]->fecha_instalacion->format('d/m/Y');
+        }else{
+            $fecha_instalacion ="";
+        }
+        $fpdf->cell(30,10,utf8_decode('Fecha: '.$fecha_instalacion));
         $fpdf->SetXY(169,30);
         $fpdf->cell(40,10,'______________');
 
@@ -1503,7 +1518,12 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(40,10,'__________ (PRECIO INCLUYE IVA, CES)');
 
         $fpdf->SetXY(15,113);
-        $fpdf->cell(40,10,utf8_decode('FECHA INICIO DE CONTRATO: '.$contrato_internet[0]->fecha_instalacion->format('d/m/Y').'    FINALIZACIÓN DEL CONTRATO: '.$contrato_internet[0]->contrato_vence->format('d/m/Y')));
+        if(isset($contrato_internet[0]->contrato_vence)==1){
+            $contrato_vence = $contrato_internet[0]->contrato_vence->format('d/m/Y');
+        }else{
+            $contrato_vence ="";
+        }
+        $fpdf->cell(40,10,utf8_decode('FECHA INICIO DE CONTRATO: '.$fecha_instalacion.'    FINALIZACIÓN DEL CONTRATO: '.$contrato_vence));
         $fpdf->SetXY(72,113);
         $fpdf->cell(40,10,'___________                                                        __________');
 

@@ -49,21 +49,32 @@ Route::group(['middleware' => ['permission:Administracion']], function () {
     //rutas bitacora
     Route::get('bitacora',[App\Http\Controllers\BitacoraController::class ,'index'])->middleware('permission:bitacora')->name('bitacora.index');
     
-    //grupo actividades
-    Route::get('actividades',[App\Http\Controllers\ActividadesController::class ,'index'])->middleware('permission:Actividades')->name('actividades.index');
-    Route::get('actividades/create',[App\Http\Controllers\ActividadesController::class ,'create'])->middleware('permission:Actividades')->name('actividades.create');
-    Route::post('actividades/store',[App\Http\Controllers\ActividadesController::class ,'store'])->middleware('permission:Actividades')->name('actividades.store');
-    Route::get('actividades/edit/{id}',[App\Http\Controllers\ActividadesController::class ,'edit'])->middleware('permission:Actividades')->name('actividades.edit');
-    Route::post('actividades/update/{id}',[App\Http\Controllers\ActividadesController::class ,'update'])->middleware('permission:Actividades')->name('actividades.update');
-    Route::get('actividades/destroy/{id}',[App\Http\Controllers\ActividadesController::class ,'destroy'])->middleware('permission:Actividades')->name('actividades.distroy');
+});
 
-    //grupo tecnicos
-    Route::get('tecnicos',[App\Http\Controllers\TecnicosController::class ,'index'])->middleware('permission:Tecnicos')->name('tecnicos.index');
-    Route::get('tecnicos/create',[App\Http\Controllers\TecnicosController::class ,'create'])->middleware('permission:Tecnicos')->name('tecnicos.create');
-    Route::post('tecnicos/store',[App\Http\Controllers\TecnicosController::class ,'store'])->middleware('permission:Tecnicos')->name('tecnicos.store');
-    Route::get('tecnicos/edit/{id}',[App\Http\Controllers\TecnicosController::class ,'edit'])->middleware('permission:Tecnicos')->name('tecnicos.edit');
-    Route::post('tecnicos/update/{id}',[App\Http\Controllers\TecnicosController::class ,'update'])->middleware('permission:Tecnicos')->name('tecnicos.update');
-    Route::get('tecnicos/destroy/{id}',[App\Http\Controllers\TecnicosController::class ,'destroy'])->middleware('permission:Tecnicos')->name('tecnicos.distroy');
+Route::group(['middleware' => ['permission:Configuracion']], function () {
+
+     //grupo actividades
+     Route::get('actividades',[App\Http\Controllers\ActividadesController::class ,'index'])->middleware('permission:Actividades')->name('actividades.index');
+     Route::get('actividades/create',[App\Http\Controllers\ActividadesController::class ,'create'])->middleware('permission:Actividades')->name('actividades.create');
+     Route::post('actividades/store',[App\Http\Controllers\ActividadesController::class ,'store'])->middleware('permission:Actividades')->name('actividades.store');
+     Route::get('actividades/edit/{id}',[App\Http\Controllers\ActividadesController::class ,'edit'])->middleware('permission:Actividades')->name('actividades.edit');
+     Route::post('actividades/update/{id}',[App\Http\Controllers\ActividadesController::class ,'update'])->middleware('permission:Actividades')->name('actividades.update');
+     Route::get('actividades/destroy/{id}',[App\Http\Controllers\ActividadesController::class ,'destroy'])->middleware('permission:Actividades')->name('actividades.distroy');
+ 
+     //grupo tecnicos
+     Route::get('tecnicos',[App\Http\Controllers\TecnicosController::class ,'index'])->middleware('permission:Tecnicos')->name('tecnicos.index');
+     Route::get('tecnicos/create',[App\Http\Controllers\TecnicosController::class ,'create'])->middleware('permission:Tecnicos')->name('tecnicos.create');
+     Route::post('tecnicos/store',[App\Http\Controllers\TecnicosController::class ,'store'])->middleware('permission:Tecnicos')->name('tecnicos.store');
+     Route::get('tecnicos/edit/{id}',[App\Http\Controllers\TecnicosController::class ,'edit'])->middleware('permission:Tecnicos')->name('tecnicos.edit');
+     Route::post('tecnicos/update/{id}',[App\Http\Controllers\TecnicosController::class ,'update'])->middleware('permission:Tecnicos')->name('tecnicos.update');
+     Route::get('tecnicos/destroy/{id}',[App\Http\Controllers\TecnicosController::class ,'destroy'])->middleware('permission:Tecnicos')->name('tecnicos.distroy');
+
+     Route::get('correlativo',[App\Http\Controllers\CorrelativoController::class ,'index'])->middleware('permission:Correlativo')->name('correlativo.index');
+     Route::get('correlativo/edit/{id}',[App\Http\Controllers\CorrelativoController::class ,'edit'])->middleware('permission:correlativo_edit')->name('correlativo.edit');
+     Route::post('correlativo/update',[App\Http\Controllers\CorrelativoController::class ,'update'])->middleware('permission:correlativo_edit')->name('correlativo.update');
+   
+
+
 });
 
 Route::group(['middleware' => ['permission:Clientes']], function () {

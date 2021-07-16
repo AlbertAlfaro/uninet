@@ -189,7 +189,7 @@ Reconexiones
                 {
                     $('#contrato').val("0");
                 }
-            });
+        });
 
         
     </script>

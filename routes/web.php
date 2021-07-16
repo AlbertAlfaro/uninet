@@ -73,7 +73,13 @@ Route::group(['middleware' => ['permission:Configuracion']], function () {
      Route::get('correlativo/edit/{id}',[App\Http\Controllers\CorrelativoController::class ,'edit'])->middleware('permission:correlativo_edit')->name('correlativo.edit');
      Route::post('correlativo/update',[App\Http\Controllers\CorrelativoController::class ,'update'])->middleware('permission:correlativo_edit')->name('correlativo.update');
    
-
+    //grupo cobradores
+    Route::get('cobradores',[App\Http\Controllers\CobradoresController::class ,'index'])->middleware('permission:Cobradores')->name('cobradores.index');
+    Route::get('cobradores/create',[App\Http\Controllers\CobradoresController::class ,'create'])->middleware('permission:create_cobrador')->name('cobradores.create');
+    Route::post('cobradores/store',[App\Http\Controllers\CobradoresController::class ,'store'])->middleware('permission:create_cobrador')->name('cobradores.store');
+    Route::get('cobradores/edit/{id}',[App\Http\Controllers\CobradoresController::class ,'edit'])->middleware('permission:edit_cobrador')->name('cobradores.edit');
+    Route::post('cobradores/update/{id}',[App\Http\Controllers\CobradoresController::class ,'update'])->middleware('permission:edit_cobrador')->name('cobradores.update');
+    Route::get('cobradores/destroy/{id}',[App\Http\Controllers\CobradoresController::class ,'destroy'])->middleware('permission:destroy_cobrador')->name('cobradores.destroy');
 
 });
 

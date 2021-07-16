@@ -83,6 +83,9 @@
                         @can('Correlativo')
                         <li><a href="{{url('correlativo')}}">Correlativos</a></li>
                         @endcan
+                        @can('Cobradores')
+                        <li><a href="{{url('cobradores')}}">Cobradores</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

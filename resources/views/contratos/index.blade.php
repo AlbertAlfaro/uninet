@@ -20,13 +20,37 @@
 				<p class="card-title-desc">
 					Usted se encuentra en el modulo Clientes.
 				</p>
+                @if($id==0)
+                    <div class="row">
+        
+                        <div class="col-md-6">
+                            <label for="estado">Filtro</label>
+                            <select name="filtro" id="filtro" class="form-control">
+                                <option value="Todos" >Todos</option>
+                                <option value="Internet" >Internet</option>
+                                <option value="Televisión" >Televisión</option>
+                                <option value="Activo_" >Activos</option>
+                                <option value="Inactivo" >Inactivos</option>
+                                <option value="Suspendido" >Suspendidos</option>
+                                <option value="Vencido" >Vencidos</option>
+                              
+                            </select>
+        
+                        </div>
+                        
+                
+                    </div>
+            
+                @endif
                 <div class="button-items text-right">
-					<a href="{{route('clientes.index')}}"> 
-						<button type="button" class="btn btn-primary waves-effect waves-light">
-							Regresar <i class="fa fa-undo" aria-hidden="true"></i>
+                    @if($id!=0)
+                        <a href="{{route('clientes.index')}}"> 
+                            <button type="button" class="btn btn-primary waves-effect waves-light">
+                                Regresar <i class="fa fa-undo" aria-hidden="true"></i>
 
-						</button>
-					</a>
+                            </button>
+                        </a>
+                    @endif
                     @if(count($inter_activos)==0 || count($tv_activos)==0)
                         <a href="{{ route('contrato.create',$id) }}"> 
                             <button type="button" class="btn btn-primary waves-effect waves-light">
@@ -39,6 +63,7 @@
 				</div>
 				<br>
                 @include('flash::message')
+                <br>
                 <div class="table-responsive">
 
 					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -58,7 +83,7 @@
 								@foreach ($contratos as $obj_item)
 								<tr class="filas">
 									<td>{{$obj_item->numero_contrato}}</td>
-									<td>{{$cliente->nombre}}</td>
+									<td>{{$obj_item->get_cliente->nombre}}</td>
 									<td>@if (isset($obj_item->fecha_instalacion)==1) {{$obj_item->fecha_instalacion->format('d/m/Y')}} @endif</td>
                                     <td>@if (isset($obj_item->contrato_vence)==1)  {{$obj_item->contrato_vence->format('d/m/Y')}} @endif</td>
                                     <td>
@@ -67,8 +92,8 @@
                                     
                                     </td>
                                     <td>
-                                        @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo  </div>@endif
-                                        @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo  </div>@endif
+                                        @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo<span style="color: #34c38f;">_</span></div>@endif
+                                        @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>@endif
                                         @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido  </div>@endif
                                         @if($obj_item->activo==3) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
                                     </td>
@@ -86,7 +111,7 @@
                                                         
                                                                                                                                                         
                                                 @endphp 
-                                                @if($fecha_actual<$fecha_entrada )
+                                                @if($fecha_actual<$fecha_entrada && $id !=0 )
                                                     <a class="dropdown-item" href="{{ url('contrato/activo/'.$obj_item->id.'/'.$obj_item->identificador) }}" >Cambiar estado</a>
                                                 @endif
                                                 
@@ -120,6 +145,23 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+        
+   
+
+    $( "#filtro" ).change(function() {
+        var seleccion = $("#filtro").val();
+        if(seleccion=="Todos"){
+            $("#datatable_filter label input").val("");
+
+        }else{
+
+            $("#datatable_filter label input").val(seleccion);
+        }
+        $("#datatable_filter label input").keyup();
+    });
+
+
+
         function eliminar(id){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',

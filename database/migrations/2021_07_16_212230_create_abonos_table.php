@@ -1,0 +1,47 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateAbonosTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('abonos', function (Blueprint $table) {
+            $table->id();
+            $table->integer('id_cliente');
+            $table->integer('id_cobrador');
+            $table->integer('id_usuario');
+            $table->string('recibo')->nullable();
+            $table->string('tipo_servicio')->nullable();
+            $table->string('numero_documento')->nullable();
+            $table->string('tipo_documento')->nullable();
+            $table->string('tipo_pago')->nullable();
+            $table->date('mes_servicio')->nullable();
+            $table->date('fecha_aplicado')->nullable();
+            $table->date('fecha_vence')->nullable();
+            $table->float('cargo')->nullable();
+            $table->float('abono')->nullable();
+            $table->float('cesc_cargo')->nullable();
+            $table->float('cesc_abono')->nullable();
+            $table->integer('anulado');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('abonos');
+    }
+}

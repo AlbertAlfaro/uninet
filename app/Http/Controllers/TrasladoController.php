@@ -59,31 +59,85 @@ class TrasladoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $traslado = new Traslados();
-        $traslado->id_cliente = $request->id_cliente;
-        $traslado->numero = $this->correlativo(7,6);
-        $traslado->tipo_servicio = $request->tipo_servicio;
-        $traslado->id_tecnico = $request->id_tecnico;
-        $traslado->id_municipio = $request->id_municipio;
-        $traslado->nueva_direccion = $request->nuevadirec;
-        $traslado->observacion = $request->observacion;
-        $traslado->update_direc = 0;
-        $traslado->id_usuario=Auth::user()->id;
-        $traslado->save();
-        $this->setCorrelativo(7);
-
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Traslado creado: '.$request->id_cliente);
-
-        flash()->success("Registro creado exitosamente!")->important();
-       
-        if($request->di==0){
-
-            return redirect()->route('traslados.index');
-        }else{
-            return redirect()->route('cliente.traslados.index',$request->id_cliente);
+    {   if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('internet','1')->get();
+            if(count($cliente)>0)
+            {
+                $traslado = new Traslados();
+                $traslado->id_cliente = $request->id_cliente;
+                $traslado->numero = $this->correlativo(7,6);
+                $traslado->tipo_servicio = $request->tipo_servicio;
+                $traslado->id_tecnico = $request->id_tecnico;
+                $traslado->id_municipio = $request->id_municipio;
+                $traslado->nueva_direccion = $request->nuevadirec;
+                $traslado->observacion = $request->observacion;
+                $traslado->update_direc = 0;
+                $traslado->id_usuario=Auth::user()->id;
+                $traslado->save();
+                $this->setCorrelativo(7);
+        
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Traslado creado: '.$request->id_cliente);
+        
+                flash()->success("Registro creado exitosamente!")->important();
+               
+                if($request->di==0){
+        
+                    return redirect()->route('traslados.index');
+                }else{
+                    return redirect()->route('cliente.traslados.index',$request->id_cliente);
+                }
+            }else
+            {  
+                flash()->error("Cliente No posee Internet activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('traslados.create');
+                }else{
+                    return redirect()->route('cliente.traslados.create',$request->id_cliente);
+                }
+            }
         }
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('tv','1')->get();
+            if(count($cliente)>0)
+            {
+                $traslado = new Traslados();
+                $traslado->id_cliente = $request->id_cliente;
+                $traslado->numero = $this->correlativo(7,6);
+                $traslado->tipo_servicio = $request->tipo_servicio;
+                $traslado->id_tecnico = $request->id_tecnico;
+                $traslado->id_municipio = $request->id_municipio;
+                $traslado->nueva_direccion = $request->nuevadirec;
+                $traslado->observacion = $request->observacion;
+                $traslado->update_direc = 0;
+                $traslado->id_usuario=Auth::user()->id;
+                $traslado->save();
+                $this->setCorrelativo(7);
+        
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Traslado creado: '.$request->id_cliente);
+        
+                flash()->success("Registro creado exitosamente!")->important();
+               
+                if($request->di==0){
+        
+                    return redirect()->route('traslados.index');
+                }else{
+                    return redirect()->route('cliente.traslados.index',$request->id_cliente);
+                }
+            }else
+            {  
+                flash()->error("Cliente No posee Tv activo!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('traslados.create');
+                }else{
+                    return redirect()->route('cliente.traslados.create',$request->id_cliente);
+                }
+            }
+        }  
+       
     }
 
     /**
@@ -120,32 +174,55 @@ class TrasladoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $fecha_trabajo="";
-        if($request->fecha_trabajo!=""){
-            $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
-
+    {   $traslado=Traslados::where('id',$request->id_traslado)->get();
+        if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$traslado[0]->id_cliente)->where('internet','1')->get();
+            $mensaje="Cliente no posee Internet activo!";
         }
-        Traslados::where('id',$request->id_traslado)->update([
-            'id_tecnico'=> $request->id_tecnico,
-            'id_municipio'=>$request->id_municipio,
-            'nueva_direccion'=>$request->nuevadirec,
-            "fecha_trabajo"=>$fecha_trabajo,
-            "rx"=>$request->rx,
-            "tx"=>$request->tx,
-            'observacion'=>$request->observacion
-            ]);
-        flash()->success("Registro editado exitosamente!")->important();
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Traslado editada con el id: '. $request->numero);
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$traslado[0]->id_cliente)->where('tv','1')->get();
+            $mensaje="Cliente no posee Tv activo!";
+           
+        }    
+        if(count($cliente)>0)
+        {
+            $fecha_trabajo=null;
+            if($request->fecha_trabajo!=""){
+                $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
     
+            }
+            Traslados::where('id',$request->id_traslado)->update([
+                'id_tecnico'=> $request->id_tecnico,
+                'id_municipio'=>$request->id_municipio,
+                'nueva_direccion'=>$request->nuevadirec,
+                "fecha_trabajo"=>$fecha_trabajo,
+                "rx"=>$request->rx,
+                "tx"=>$request->tx,
+                'observacion'=>$request->observacion
+                ]);
+            flash()->success("Registro editado exitosamente!")->important();
+            $obj_controller_bitacora=new BitacoraController();	
+            $obj_controller_bitacora->create_mensaje('Traslado editada con el id: '. $request->numero);
+        
+        
+            if($request->go_to==0){
     
-        if($request->go_to==0){
-
-            return redirect()->route('traslados.index');
-        }else{
-            return redirect()->route('cliente.traslados.index',$request->go_to);
+                return redirect()->route('traslados.index');
+            }else{
+                return redirect()->route('cliente.traslados.index',$request->go_to);
+            }
+        }else
+        {
+            flash()->error($mensaje)->important();
+            if($request->di==0){
+    
+                return redirect()->route('traslados.index');
+            }else{
+                return redirect()->route('cliente.traslados.index',$request->id_cliente);
+            }
         }
+        
+
     }
 
     /**
@@ -168,7 +245,20 @@ class TrasladoController extends Controller
         }
     }
 
-    
+    public function busqueda_cliente(Request $request){
+        $term1 = $request->term;
+        $results = array();
+        
+        $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->orWhere('nombre', 'LIKE', '%'.$term1.'%')->get();
+        
+        foreach ($queries as $query){
+            $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre];
+        }
+        return response($results);
+
+    }
+
+
     private function correlativo($id,$digitos){
         //id correlativo 
         /*

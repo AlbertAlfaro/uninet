@@ -102,7 +102,7 @@ Reconexiones
                                     <div class="form-group row col-md-8">
                                         <label for="example-text-input" class="col-md-2  col-form-label">Observaciones</label>
                                         <div class="col-md-10">
-                                            <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="300" required>{{$reconexion->observacion}}</textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="255" >{{$reconexion->observacion}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@ Reconexiones
                 {
                     $('#contrato').val("0");
                 }
-            });
+        });
 
         
     </script>

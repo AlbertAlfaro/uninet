@@ -27,7 +27,7 @@ Ordenes
                         Usted se encuentra en el modulo de Administracion de Ordenes Creacion.
                     </p>
                     <hr>
-
+                    @include('flash::message')
                     <form action="{{Route('ordenes.store')}}" method="post" id="form">
                         @csrf
                         <div class="row">
@@ -36,7 +36,7 @@ Ordenes
                                 <div class="row">
                                     @if($id_cliente==0)
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Busqueda Cliente *</label>
                                         <div class="col-md-8">
                                             
                                             <input hidden  type="text" name="id_cliente" id="id_cliente" value="{{ $id_cliente }}" required>

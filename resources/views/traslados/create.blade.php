@@ -27,7 +27,7 @@ Traslados
                         Usted se encuentra en el modulo de Gestión de Traslados Creacion.
                     </p>
                     <hr>
-
+                    @include('flash::message')
                     <form action="{{Route('traslados.store')}}" method="post" id="form">
                         @csrf
                         <div class="row"> 
@@ -237,7 +237,7 @@ Traslados
         $( document ).ready(function() {
             $(function() {
                 $("#busqueda").autocomplete({
-                    source: "{{URL::to('reconexiones/autocomplete')}}",
+                    source: "{{URL::to('traslados/autocomplete')}}",
                     select: function(event, ui) {
                         $('#id_cliente').val(ui.item.id);
                         $('#nombre').val(ui.item.nombre);

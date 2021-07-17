@@ -47,36 +47,86 @@ class ReconexionController extends Controller
      */
     public function store(Request $request)
     {   
+        if($request->tipo_servicio=="Internet")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('internet','2')->get();
+            if(count($cliente)>0)
+            {
+                $reconexion = new Reconexion();
+                $reconexion->id_cliente = $request->id_cliente;
+                $reconexion->numero = $this->correlativo(8,6);
+                $reconexion->tipo_servicio = $request->tipo_servicio;
+                $reconexion->id_tecnico = $request->id_tecnico;
+                $reconexion->contrato = $request->input('contrato');
+                $reconexion->observacion = $request->observacion;
+                $reconexion->activado = 0;
+                $reconexion->id_usuario=Auth::user()->id;
+                $reconexion->save();
+                $this->setCorrelativo(8);
         
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$request->id_cliente);
         
-        //valido si el cliente esta suspendido
-        //$contrato_tv= Cliente::select('id')->where('id_cliente',$id);
-        //if()
-        //{   
-            $reconexion = new Reconexion();
-            $reconexion->id_cliente = $request->id_cliente;
-            $reconexion->numero = $this->correlativo(8,6);
-            $reconexion->tipo_servicio = $request->tipo_servicio;
-            $reconexion->id_tecnico = $request->id_tecnico;
-            $reconexion->contrato = $request->input('contrato');
-            $reconexion->observacion = $request->observacion;
-            $reconexion->activado = 0;
-            $reconexion->id_usuario=Auth::user()->id;
-            $reconexion->save();
-            $this->setCorrelativo(8);
+                flash()->success("Registro creado exitosamente!")->important();
     
-            $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$request->id_cliente);
+                if($request->di==0){
     
-            flash()->success("Registro creado exitosamente!")->important();
-
-            if($request->di==0){
-
-                return redirect()->route('reconexiones.index');
-            }else{
-                return redirect()->route('cliente.reconexiones.index',$request->id_cliente);
+                    return redirect()->route('reconexiones.index');
+                }else{
+                    return redirect()->route('cliente.reconexiones.index',$request->id_cliente);
+                }
+                
+            }else
+            {
+                flash()->error("Cliente No posee Internet suspendido!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('reconexiones.create');
+                }else{
+                    return redirect()->route('cliente.reconexiones.create',$request->id_cliente);
+                }
             }
-        //}
+        
+        }
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$request->id_cliente)->where('tv','2')->get();
+            if(count($cliente)>0)
+            {
+                $reconexion = new Reconexion();
+                $reconexion->id_cliente = $request->id_cliente;
+                $reconexion->numero = $this->correlativo(8,6);
+                $reconexion->tipo_servicio = $request->tipo_servicio;
+                $reconexion->id_tecnico = $request->id_tecnico;
+                $reconexion->contrato = $request->input('contrato');
+                $reconexion->observacion = $request->observacion;
+                $reconexion->activado = 0;
+                $reconexion->id_usuario=Auth::user()->id;
+                $reconexion->save();
+                $this->setCorrelativo(8);
+        
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$request->id_cliente);
+        
+                flash()->success("Registro creado exitosamente!")->important();
+    
+                if($request->di==0){
+    
+                    return redirect()->route('reconexiones.index');
+                }else{
+                    return redirect()->route('cliente.reconexiones.index',$request->id_cliente);
+                }
+                
+            }else
+            {
+                flash()->error("Cliente No posee Tv suspendido!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('reconexiones.create');
+                }else{
+                    return redirect()->route('cliente.reconexiones.create',$request->id_cliente);
+                }
+            }
+        
+        }
     }
 
     /**
@@ -113,32 +163,93 @@ class ReconexionController extends Controller
      */
     public function update(Request $request)
     {
-        $fecha_trabajo=null;
-        if($request->fecha_trabajo!=""){
-            $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
-
+        $reconexion=Reconexion::where('id',$request->id_reconexion)->get();
+        if($request->tipo_servicio=="Internet")
+        {   
+            $cliente=Cliente::where('id',$reconexion[0]->id_cliente)->where('internet','2')->get();
+            if(count($cliente)>0)
+            {
+                $fecha_trabajo=null;
+                if($request->fecha_trabajo!=""){
+                    $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+        
+                }
+                Reconexion::where('id',$request->id_reconexion)->update([
+                    'id_tecnico'=> $request->id_tecnico,
+                    'observacion'=>$request->observacion,
+                    'fecha_trabajo'=>$fecha_trabajo,
+                    'tipo_servicio'=>$request->tipo_servicio,
+                    'contrato'=>$request->input('contrato'),
+                    'n_contrato'=>$request->n_contrato,
+                    'rx'=>$request->rx,
+                    'tx'=>$request->tx,
+                    ]);
+        
+                flash()->success("Registro editado exitosamente!")->important();
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Reconexion editada: '. $request->numero);
+            
+               
+                if($request->go_to==0){
+        
+                    return redirect()->route('reconexiones.index');
+                }else{
+                    return redirect()->route('cliente.reconexiones.index',$request->go_to);
+                }
+            }else
+            {
+                flash()->error("Cliente no posee suspension de Internet!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('reconexiones.index');
+                }else{
+                    return redirect()->route('cliente.reconexiones.index',$request->id_cliente);
+                }
+            }
         }
-        Reconexion::where('id',$request->id_reconexion)->update([
-            'id_tecnico'=> $request->id_tecnico,
-            'observacion'=>$request->observacion,
-            'fecha_trabajo'=>$fecha_trabajo,
-            'contrato'=>$request->input('contrato'),
-            'n_contrato'=>$request->n_contrato,
-            'rx'=>$request->rx,
-            'tx'=>$request->tx,
-            ]);
-
-        flash()->success("Registro editado exitosamente!")->important();
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Reconexion editada: '. $request->numero);
-    
-       
-        if($request->go_to==0){
-
-            return redirect()->route('reconexiones.index');
-        }else{
-            return redirect()->route('cliente.reconexiones.index',$request->go_to);
+        if($request->tipo_servicio=="Tv")
+        {   $cliente=Cliente::where('id',$reconexion[0]->id_cliente)->where('tv','2')->get();
+            if(count($cliente)>0)
+            {
+                $fecha_trabajo=null;
+                if($request->fecha_trabajo!=""){
+                    $fecha_trabajo = Carbon::createFromFormat('d/m/Y', $request->fecha_trabajo);
+        
+                }
+                Reconexion::where('id',$request->id_reconexion)->update([
+                    'id_tecnico'=> $request->id_tecnico,
+                    'observacion'=>$request->observacion,
+                    'fecha_trabajo'=>$fecha_trabajo,
+                    'tipo_servicio'=>$request->tipo_servicio,
+                    'contrato'=>$request->input('contrato'),
+                    'n_contrato'=>$request->n_contrato,
+                    'rx'=>$request->rx,
+                    'tx'=>$request->tx,
+                    ]);
+        
+                flash()->success("Registro editado exitosamente!")->important();
+                $obj_controller_bitacora=new BitacoraController();	
+                $obj_controller_bitacora->create_mensaje('Reconexion editada: '. $request->numero);
+            
+               
+                if($request->go_to==0){
+        
+                    return redirect()->route('reconexiones.index');
+                }else{
+                    return redirect()->route('cliente.reconexiones.index',$request->go_to);
+                }
+            }else
+            {
+                flash()->error("Cliente no posee suspension de Tv!")->important();
+                if($request->di==0){
+        
+                    return redirect()->route('reconexiones.index');
+                }else{
+                    return redirect()->route('cliente.reconexiones.index',$request->id_cliente);
+                }
+            }
         }
+
     }
 
     /**
@@ -167,10 +278,10 @@ class ReconexionController extends Controller
             $term1 = $request->term;
             $results = array();
                 
-            $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->get();
+            $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->orWhere('nombre', 'LIKE', '%'.$term1.'%')->get();
                 
             foreach ($queries as $query){
-                $results[] = [ 'id' => $query->id, 'value' => $query->codigo,'nombre' => $query->nombre];
+                $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre];
             }
             return response($results);
         
@@ -244,9 +355,10 @@ class ReconexionController extends Controller
                 Cliente::where('id',$reconexion->id_cliente)->update(['tv' =>'1']);
             }
             Reconexion::where('id',$id)->update(['activado' =>'1']);
+            //0=Cliente sin servicio
             //1= Cliente  activo
             //2=Cliente suspendido
-            //0=Cliente sin servicio
+            //3=Cliente vencido contrato
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Servicio Activado con la reconexión: '.$reconexion->numero);
             flash()->success("Registro activado exitosamente!")->important();
@@ -262,8 +374,8 @@ class ReconexionController extends Controller
         }
         public function imprimir($id)
         {
-            $reconexion= Reconexion::find($id);
             
+            $reconexion= Reconexion::find($id);
             $velocidad="";
             $mac="";
             $marca="";
@@ -272,9 +384,9 @@ class ReconexionController extends Controller
             if($reconexion->tipo_servicio=="Internet")
             {
                
-                if(Internet::where('id_cliente',$reconexion->id_cliente)->where('activo','1')->count()>0)
+                $i= Internet::where('id_cliente',$reconexion->id_cliente)->where('activo','2')->get();
+                if(count($i)>0)
                 {   
-                    $i= Internet::where('id_cliente',$reconexion->id_cliente)->where('activo','1')->get();
                     $velocidad=$i[0]->velocidad;
                     $mac=$i[0]->mac;
                     $marca=$i[0]->marca;
@@ -285,9 +397,9 @@ class ReconexionController extends Controller
             if($reconexion->tipo_servicio=="Tv")
             {
                
-                if( $tv=Tv::where('id_cliente',$reconexion->id_cliente)->where('activo','1')->count()>0)
+                $tv=Tv::where('id_cliente',$reconexion->id_cliente)->where('activo','2')->get();
+                if(count($tv)>0)
                 {
-                    $tv=Tv::where('id_cliente',$reconexion->id_cliente)->where('activo','1')->get();
                     $dia_c=$tv[0]->dia_gene_fact;
                 }
                 

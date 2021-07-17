@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Cobrador extends Model
 {
     use HasFactory;
+    protected $dates = ['fecha'];
 }

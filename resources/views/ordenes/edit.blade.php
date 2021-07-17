@@ -36,7 +36,7 @@ Actividades
 
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Cod. Cliente *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Num. Orden *</label>
                                         <div class="col-md-8">
                                             
                                         <input class="form-control" type="text"  id="id_orden" name="id_orden" value="{{$orden->id}}" style="display: none" required>

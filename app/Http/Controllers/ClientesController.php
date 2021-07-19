@@ -643,9 +643,9 @@ class ClientesController extends Controller
 
     public function contrato($id){
         $cliente = Cliente::find($id);
-        $contrato_tv= Tv::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')->where('id_cliente',$id);
+        $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')->where('id_cliente',$id);
 
-        $contratos= Internet::select('id','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+        $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
                             ->where('id_cliente',$id)
                             ->unionAll($contrato_tv)
                             ->get();
@@ -1848,6 +1848,25 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         return view("traslados.edit",compact('traslado','obj_tecnicos','obj_departamentos','id_cliente'));
         
         
+    }
+
+
+    public function index_contratos(){
+        $id=0;
+        $cliente = Cliente::find($id);
+        $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo');
+
+        $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                            
+                            ->unionAll($contrato_tv)
+                            ->get();
+
+        $inter_activos = Internet::where('activo',1)->get();
+        $tv_activos = Tv::where('activo',1)->get();
+
+        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos'));
+        
+
     }
     
 }

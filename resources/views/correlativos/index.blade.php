@@ -28,10 +28,12 @@
 							<tr>
 								<th>Id</th>
 								<th>Nombre</th>
+                                <th>Resolución</th>
+                                <th>Serie</th>
 								<th>Desde</th>
 								<th>Hasta</th>
                                 <th>Cantidad</th>
-                                <th>Ultimo</th>
+                                <th>Último</th>
                                 <th>Acciones</th>
 							
 							</tr>
@@ -41,6 +43,8 @@
 								<tr class="filas">
 									<td>{{$obj_item->id}}</td>
 									<td>{{$obj_item->nombre}}</td>
+                                    <td>{{$obj_item->resolucion}}</td>
+                                    <td>{{$obj_item->serie}}</td>
 									<td>{{$obj_item->desde}}</td>
                                     <td>{{$obj_item->hasta}}</td>
                                     <td>{{$obj_item->cantidad}}</td>

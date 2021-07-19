@@ -50,6 +50,10 @@
                         @can('index_cliente')
                         <li><a href="{{url('clientes')}}">Gestión de Clientes</a></li>
                         @endcan
+                        @can('contrato_cliente')
+                        <li><a href="{{url('contratos')}}">Gestión de Contratos</a></li>
+                        @endcan
+                        
                         @can('Ordenes')
                         <li><a href="{{url('ordenes')}}">Gestión de Ordenes</a></li>
                         @endcan

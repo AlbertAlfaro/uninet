@@ -178,6 +178,14 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
 
 });
+
+Route::group(['middleware' => ['permission:Facturacion']], function () {
+
+    //grupo factura
+    Route::get('fact_direct',[App\Http\Controllers\FacturacionController::class ,'index'])->middleware('permission:Facturacion')->name('facturacion.index');
+    Route::get('fact_direct/autocomplete',[App\Http\Controllers\FacturacionController::class ,'busqueda_cliente'])->middleware('permission:Facturacion')->name('factura.autocomplete');
+
+});
 // PERMISO DE CONFIGRACION
 
 //Usuario1 -> rol-> administrador_cliente-> index_cliente,create_cliente,edit_cliente

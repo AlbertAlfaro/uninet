@@ -105,7 +105,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
     //contratos general
     Route::get('contratos',[App\Http\Controllers\ClientesController::class ,'index_contratos'])->middleware('permission:contrato_cliente')->name('contrato.index');
-
+    Route::post('contratos/filtro',[App\Http\Controllers\ClientesController::class ,'filtro_contratos'])->middleware('permission:contrato_cliente')->name('contrato.filtro');
     //Ordenes por cliente
     Route::get('cliente/ordenes/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_index'])->middleware('permission:Ordenes')->name('cliente.ordenes.index');
     Route::get('cliente/ordenes/create/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_create'])->middleware('permission:create_orden')->name('cliente.ordenes.create');
@@ -126,6 +126,9 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('cliente/traslados/create/{id}',[App\Http\Controllers\ClientesController::class ,'traslados_create'])->middleware('permission:create_traslado')->name('cliente.traslados.create');
     Route::get('cliente/traslados/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'traslados_edit'])->middleware('permission:edit_traslado')->name('cliente.traslados.edit');
 
+    //Estados de cuenta cliente
+    Route::get('cliente/estado_cuenta/{id}',[App\Http\Controllers\ClientesController::class ,'estado_cuenta'])->middleware('permission:estado_cuenta')->name('cliente.estado_cuenta.index');
+    Route::get('cliente/estado_cuenta_pdf/{id}',[App\Http\Controllers\ClientesController::class ,'estado_cuenta_pdf'])->middleware('permission:estado_cuenta')->name('cliente.estado_cuenta.pdf');
      
     //grupo ordenes
     Route::get('ordenes',[App\Http\Controllers\OrdenController::class ,'index'])->middleware('permission:Ordenes')->name('ordenes.index');
@@ -178,6 +181,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
 
 });
+Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');
 // PERMISO DE CONFIGRACION
 
 //Usuario1 -> rol-> administrador_cliente-> index_cliente,create_cliente,edit_cliente

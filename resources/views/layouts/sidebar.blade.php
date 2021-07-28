@@ -66,6 +66,8 @@
                         @can('Traslados')
                         <li><a href="{{url('traslados')}}">Gestión de Traslados</a></li>
                         @endcan
+
+                        <li><a href="{{url('gen_cobros')}}">Generar cobros</a></li>
                     </ul>
                     
                 </li>

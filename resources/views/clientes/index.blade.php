@@ -68,6 +68,7 @@
                                         @if($obj_item->tv==1) <div class="col-md-8 badge badge-pill badge-success ">Activo</div>  @endif
                                         @if($obj_item->tv==0) <div class="col-md-8 badge badge-pill badge-secondary ">Inactivo</div>  @endif
                                         @if($obj_item->tv==2) <div class="col-md-8 badge badge-pill badge-danger ">Suspendido</div>  @endif
+                                        @if($obj_item->tv==3) <div class="col-md-9 badge badge-pill badge-warning">Vencido</div> @endif
                                     </td>
                                     
                                     <td>
@@ -83,7 +84,7 @@
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('clientes.contrato',$obj_item->id)}}">Contrato</a>
-                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Estado de cuenta</a>
+                                                <a class="dropdown-item" href="{{ route('cliente.estado_cuenta.index',$obj_item->id)}}">Estado de cuenta</a>
                                                 <a class="dropdown-item" href="{{ route('cliente.ordenes.index',$obj_item->id)}}">Ordenes</a>
                                                 <a class="dropdown-item" href="{{ route('cliente.suspensiones.index',$obj_item->id)}}">Suspenciones</a>
                                                 <a class="dropdown-item" href="{{ route('cliente.reconexiones.index',$obj_item->id)}}">Reconexiones</a>

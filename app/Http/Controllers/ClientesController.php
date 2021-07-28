@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Fpdf\FpdfClass;
+use App\Fpdf\FpdfEstadoCuenta;
+use App\Models\Abono;
 use App\Models\Actividades;
 use App\Models\Cliente;
 use App\Models\Correlativo;
@@ -653,10 +655,12 @@ class ClientesController extends Controller
         $inter_activos = Internet::where('id_cliente',$id)->where('activo',1)->get();
         $tv_activos = Tv::where('id_cliente',$id)->where('activo',1)->get();
 
-        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos'));
+        return view('contratos.index',compact('contratos','cliente','id','tv_activos','tipo_servicio'));
         
         
     }
+
+
 
     public function contrato_activo($id,$identificador){
         
@@ -1863,9 +1867,178 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $inter_activos = Internet::where('activo',1)->get();
         $tv_activos = Tv::where('activo',1)->get();
+        $estado=-1;
+        $tipo_servicio="";
 
-        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos'));
+        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos','estado','tipo_servicio'));
         
+
+    }
+    public function filtro_contratos(Request $request){
+       
+        if($request->tipo_servicio=="" && $request->estado==""){
+
+            $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo');
+    
+            $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                ->unionAll($contrato_tv)
+                                ->get();
+        }elseif($request->tipo_servicio=="Internet"){
+            if($request->estado==""){
+
+                $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                    ->get();
+               
+            }else{
+                $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                    ->where('activo',$request->estado)
+                                    ->get();
+                
+            }
+
+        }elseif($request->tipo_servicio==""){
+
+            if($request->estado==""){
+                $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo');
+                $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                    ->unionAll($contrato_tv)
+                                    ->get();
+               
+            }else{
+                $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')->where('activo',$request->estado);
+                $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                    ->unionAll($contrato_tv)
+                                    ->where('activo',$request->estado)
+                                    ->get();
+                
+            }
+
+        }else{
+            if($request->estado==""){
+
+                $contratos= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                    ->get();
+                //echo "entre1";
+            }else{
+                $contratos= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
+                                    ->where('activo',$request->estado)
+                                    ->get();
+                //echo "entre2";
+            }
+
+        }
+        
+
+        $inter_activos = Internet::where('activo',1)->get();
+        $tv_activos = Tv::where('activo',1)->get();
+        $id=0;
+        $estado = $request->estado;
+        $tipo_servicio = $request->tipo_servicio;
+
+        return view('contratos.index',compact('contratos','id','inter_activos','tv_activos','estado','tipo_servicio'));
+
+    }
+
+    public function gen_cobros(){
+        $dia_actual = date('d');
+        $fecha_actual = date('Y-m-d');
+        $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
+        $fecha_vence = date ( 'Y-m-d' , $fecha_vence );
+        $mes_servicio = strtotime ( '-30 day' , strtotime ( $fecha_actual ) ) ;
+        $mes_servicio = date ( 'Y-m-d' , $mes_servicio );
+        $internet = Internet::where('dia_gene_fact',$dia_actual)->where('activo',1)->get();
+        $tv = Tv::where('dia_gene_fact',$dia_actual)->where('activo',1)->get();
+
+        foreach ($internet as $value) {
+                $abono = new Abono();
+                $abono->id_cliente = $value->id_cliente;
+                $abono->tipo_servicio = 1;
+                $abono->mes_servicio = $mes_servicio;
+                $abono->cargo = $value->cuota_mensual;
+                $abono->fecha_vence = $fecha_vence;
+                $abono->anulado = 0;
+                $abono->save();
+        
+        }
+        foreach ($tv as $value) {
+            $abono = new Abono();
+            $abono->id_cliente = $value->id_cliente;
+            $abono->tipo_servicio = 2;
+            $abono->mes_servicio = $mes_servicio;
+            $abono->cargo = $value->cuota_mensual;
+            $abono->fecha_vence = $fecha_vence;
+            $abono->anulado = 0;
+            $abono->save();
+    
+    }
+
+        return "GENERADO";
+
+    }
+
+    public function estado_cuenta($id){
+        $abono_inter = Abono::where('id_cliente',$id)->where('tipo_servicio',1)->get();
+        $abono_tv = Abono::where('id_cliente',$id)->where('tipo_servicio',2)->get();
+
+        return view('estado_cuenta.index',compact('abono_inter','abono_tv','id'));
+
+    }
+
+    public function estado_cuenta_pdf($id){
+
+        $cliente = Cliente::find($id);
+        $estado_cuenta = Abono::where('id_cliente',$id)->get();
+        $fpdf = new FpdfEstadoCuenta('L','mm', 'Letter');
+        
+        $fpdf->AliasNbPages();
+        $fpdf->AddPage();
+        $fpdf->SetTitle('ESTADO DE CUENTA | UNINET');
+
+        $fpdf->SetXY(250,10);
+        $fpdf->SetFont('Arial','',8);
+        $fpdf->Cell(20,10,utf8_decode('PAGINAS: 0001'),0,1,'R');
+
+        $fpdf->SetXY(250,15);
+        $fpdf->SetFont('Arial','',8);
+        $fpdf->Cell(20,10,utf8_decode('GENERADO POR: '.Auth::user()->name).' '.date('d/m/Y h:i:s a'),0,1,'R');
+
+        $fpdf->SetXY(15,25);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,10,utf8_decode('ESTADO DE CUENTA DE '));
+
+        $fpdf->SetXY(15,29);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE SAN MIGUEL'));
+
+        $fpdf->SetXY(15,33);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('CLIENTE: '.$cliente->nombre));
+
+        $fpdf->SetXY(15,40);
+        $fpdf->MultiCell(200,5,utf8_decode('DIRECCIÓN: '.$cliente->dirreccion_cobro),0,'L');
+        if($cliente->internet==1){
+            $inter = "ACTIVO";
+        }else{
+            $inter = "INACTIVO";
+        }
+        if($cliente->tv==1){
+            $tv_tex = "ACTIVO";
+        }else{
+            $tv_tex = "INACTIVO";
+        }
+        $fpdf->SetXY(250,37);
+        $fpdf->Cell(20,10,utf8_decode('INTERNET: '.$inter),0,1,'R');
+        $fpdf->SetXY(250,41);
+        $fpdf->Cell(20,10,utf8_decode('TV: '.$tv_tex),0,1,'R');
+
+        $header=array('N resivo','Tipo servicio','N comprobante','Mes de servicio',utf8_decode('Aplicación'),'Vencimiento','Cargo','Abono', 'Impuesto','Total');
+
+        $fpdf->BasicTable($header,$estado_cuenta);
+
+
+
+        $fpdf->Output();
+        exit;
 
     }
     

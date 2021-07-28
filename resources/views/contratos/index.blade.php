@@ -21,25 +21,42 @@
 					Usted se encuentra en el modulo Clientes.
 				</p>
                 @if($id==0)
+                <form action="{{ route('contrato.filtro') }}" method="post">
+                    {{ csrf_field() }}
                     <div class="row">
         
-                        <div class="col-md-6">
-                            <label for="estado">Filtro</label>
-                            <select name="filtro" id="filtro" class="form-control">
-                                <option value="Todos" >Todos</option>
-                                <option value="Internet" >Internet</option>
-                                <option value="Televisión" >Televisión</option>
-                                <option value="Activo_" >Activos</option>
-                                <option value="Inactivo" >Inactivos</option>
-                                <option value="Suspendido" >Suspendidos</option>
-                                <option value="Vencido" >Vencidos</option>
+                        <div class="col-md-2">
+                            <label for="estado">Tipo servicio</label>
+                            <select name="tipo_servicio" id="tipo_servicio" class="form-control">
+                                <option value="" >Seleccionar... </option>
+                                <option value="Internet" @if($tipo_servicio=='Internet') selected @endif>Internet</option>
+                                <option value="Televisión" @if($tipo_servicio=='Televisión') selected @endif>Televisión</option>
                               
                             </select>
+        
+                        </div>
+                        <div class="col-md-2">
+                            <label for="estado">Estado</label>
+                            <select name="estado" id="estado" class="form-control">
+                                <option value="" >Seleccionar... </option>
+                                <option value="1"  @if($estado==1) selected @endif>Activos</option>
+                                <option value="0" @if($estado==0) selected @endif>Inactivos</option>
+                                <option value="2" @if($estado==2) selected @endif>Suspendidos</option>
+                                <option value="3" @if($estado==3) selected @endif>Vencidos</option>
+                              
+                            </select>
+        
+                        </div>
+                        <div class="col-md-1">
+                            <label for="estado">Acción</label>
+                            <button type="submit" class="form-control btn btn-primary" > Buscar</button>
         
                         </div>
                         
                 
                     </div>
+
+                </form>
             
                 @endif
                 <div class="button-items text-right">

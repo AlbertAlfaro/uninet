@@ -1942,7 +1942,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
     public function gen_cobros(){
         $dia_actual = date('d');
         $fecha_actual = date('Y-m-d');
-        $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
+        $fecha_vence = strtotime ( '+11 day' , strtotime ( $fecha_actual ) ) ;
         $fecha_vence = date ( 'Y-m-d' , $fecha_vence );
         $mes_servicio = strtotime ( '-30 day' , strtotime ( $fecha_actual ) ) ;
         $mes_servicio = date ( 'Y-m-d' , $mes_servicio );
@@ -1984,19 +1984,27 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
     }
 
-    public function estado_cuenta_pdf($id){
+    public function estado_cuenta_pdf($id,$tipo_servicio,$fecha_i,$fecha_f){
 
         $cliente = Cliente::find($id);
-        $estado_cuenta = Abono::where('id_cliente',$id)->get();
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fecha_i);
+        $fecha_fin = Carbon::createFromFormat('Y-m-d', $fecha_f);
+        $estado_cuenta = Abono::select('recibo','tipo_servicio','numero_documento','mes_servicio','fecha_aplicado','fecha_vence','cargo','abono','cesc_cargo','cesc_abono')
+                                ->whereBetween('created_at',[$fecha_inicio,$fecha_fin])
+                                ->where('tipo_servicio',$tipo_servicio)
+                                ->where('id_cliente',$id)
+                                ->get();
+        $internet = Internet::where('id_cliente',$id)->where('activo',1)->get();
+        $tv = Tv::where('id_cliente',$id)->where('activo',1)->get();
         $fpdf = new FpdfEstadoCuenta('L','mm', 'Letter');
-        
         $fpdf->AliasNbPages();
         $fpdf->AddPage();
         $fpdf->SetTitle('ESTADO DE CUENTA | UNINET');
 
         $fpdf->SetXY(250,10);
         $fpdf->SetFont('Arial','',8);
-        $fpdf->Cell(20,10,utf8_decode('PAGINAS: 0001'),0,1,'R');
+     
+        $fpdf->Cell(20,10,utf8_decode('PÁGINAS: 000'.'{nb}'),0,1,'R');
 
         $fpdf->SetXY(250,15);
         $fpdf->SetFont('Arial','',8);
@@ -2004,15 +2012,17 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetXY(15,25);
         $fpdf->SetFont('Arial','B',9);
-        $fpdf->Cell(20,10,utf8_decode('ESTADO DE CUENTA DE '));
+        $por_fecha_i = explode("-", $fecha_i);
+        $por_fecha_f = explode("-", $fecha_f);
+        $fpdf->Cell(20,10,utf8_decode('ESTADO DE CUENTA del '.$por_fecha_i[2].' de '.$this->spanishMes($por_fecha_i[1]).' de '.$por_fecha_i[0].'  al '.$por_fecha_f[2].' de '.$this->spanishMes($por_fecha_f[1]).' de '.$por_fecha_f[0]));
 
         $fpdf->SetXY(15,29);
         $fpdf->SetFont('Arial','B',9);
-        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE SAN MIGUEL'));
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE'));
 
         $fpdf->SetXY(15,33);
         $fpdf->SetFont('Arial','',9);
-        $fpdf->Cell(20,10,utf8_decode('CLIENTE: '.$cliente->nombre));
+        $fpdf->Cell(20,10,utf8_decode('CLIENTE: '.$cliente->codigo.' '.$cliente->nombre));
 
         $fpdf->SetXY(15,40);
         $fpdf->MultiCell(200,5,utf8_decode('DIRECCIÓN: '.$cliente->dirreccion_cobro),0,'L');
@@ -2026,13 +2036,20 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         }else{
             $tv_tex = "INACTIVO";
         }
+        $fpdf->SetXY(250,33);
+        if($tipo_servicio==1){
+            $fpdf->Cell(20,10,utf8_decode('Dia de cobro: '.$internet[0]->dia_gene_fact),0,1,'R');
+
+        }else{
+            $fpdf->Cell(20,10,utf8_decode('Dia de cobro: '.$tv[0]->dia_gene_fact),0,1,'R');
+        }
         $fpdf->SetXY(250,37);
         $fpdf->Cell(20,10,utf8_decode('INTERNET: '.$inter),0,1,'R');
         $fpdf->SetXY(250,41);
         $fpdf->Cell(20,10,utf8_decode('TV: '.$tv_tex),0,1,'R');
 
         $header=array('N resivo','Tipo servicio','N comprobante','Mes de servicio',utf8_decode('Aplicación'),'Vencimiento','Cargo','Abono', 'Impuesto','Total');
-
+        
         $fpdf->BasicTable($header,$estado_cuenta);
 
 

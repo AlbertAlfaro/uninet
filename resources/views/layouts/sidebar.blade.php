@@ -72,6 +72,28 @@
                     
                 </li>
                 @endcan
+                <!-- Facturacion-->
+                @can('Facturacion')
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="uil-users-alt"></i>
+                        <span>Facturación</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        @can('index_cliente')
+                        <li><a href="{{url('fact_direct')}}">Factura directa</a></li>
+                        @endcan
+                        @can('contrato_cliente')
+                        <li><a href="{{url('contratos')}}">Factura Mensual</a></li>
+                        @endcan
+                        
+                        @can('Ordenes')
+                        <li><a href="{{url('ordenes')}}">Gestión de Factura</a></li>
+                        @endcan
+                    </ul>
+                    
+                </li>
+                @endcan
                 <!-- configuracion -->
                 @can('Configuracion')
                 <li>

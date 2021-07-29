@@ -6,6 +6,13 @@
     <link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <style>
+        .datepicker {
+          z-index: 1600 !important; /* has to be larger than 1050 */
+        }
+
+    </style>
 @endsection
 @section('content')
 @component('common-components.breadcrumb')
@@ -29,12 +36,11 @@
                     </select>
                 </div>
                 <div class="button-items text-right">
-                    <a target="_blank" href="{{route('cliente.estado_cuenta.pdf',$id)}}"> 
-                        <button type="button" class="btn btn-primary waves-effect waves-light">
-                            Reporte <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#exampleModal">
+                        Reporte <i class="fas fa-file-pdf" aria-hidden="true"></i>
 
-                        </button>
-                    </a>
+                    </button>
+        
                     <a href="{{route('clientes.index')}}"> 
                         <button type="button" class="btn btn-primary waves-effect waves-light">
                             Regresar <i class="fa fa-undo" aria-hidden="true"></i>
@@ -140,6 +146,41 @@
             </div>
         </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Imprimir estado de cuenta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+                <label for="e">Desde*</label>
+               
+                <input type="text" class="form-control datepicker" id="fecha_i" name="fecha_i" autocomplete="off" required>
+                <span id="error_fecha_i" style="color: red; display:none;">Este valor es requerido.</span>
+            </div>
+            <div class="col-md-6">
+                <label for="e">Hasta*</label>
+                <input type="text" class="form-control datepicker" id="fecha_f" name="fecha_f" autocomplete="off" required>
+                <span id="error_fecha_f" style="color: red; display:none;">Este valor es requerido.</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+            <button type="button" class="btn btn-primary" onclick="imprimir({{ $id }})">Imprimir</button>
+           
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/libs/datatables/datatables.min.js')}}"></script>
@@ -152,6 +193,7 @@
 
     <!-- Range slider init js-->
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
+    <script src="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script> 
 
     <script>
         $(document).ready(function() {
@@ -202,5 +244,51 @@
                 }
                 })      
         }
+
+        $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            language: "es",
+            autoclose: true,
+            todayHighlight: true,
+            container: '#exampleModal'
+        });
+
+        function imprimir(id){
+            var fecha_i = fecha_conversion($("#fecha_i").val());
+            var fecha_f = fecha_conversion($("#fecha_f").val());
+            var tipo_servicio = $("#tipo_estado_cuenta").val();
+
+            if(fecha_i!="" && fecha_f!=""){
+                var url = "{{ url('cliente/estado_cuenta_pdf') }}";
+                window.open(url+'/'+id+'/'+tipo_servicio+'/'+fecha_i+'/'+fecha_f, '_blank');
+
+            }else{
+                if(fecha_i==""){
+                    $("#error_fecha_i").show();
+
+                }else{
+                    $("#error_fecha_i").hide();
+
+                }
+
+                if(fecha_f==""){
+                    $("#error_fecha_f").show();
+
+                }else{
+                    $("#error_fecha_f").hide();
+                }
+                
+            }
+
+
+        }
+
+        function fecha_conversion(fecha){
+            var from = fecha.split("/");
+            var f = new Date(from[2], from[1], from[0]);
+            var date_string = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
+            return date_string;
+        }
+
     </script>
 @endsection

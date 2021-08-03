@@ -81,6 +81,14 @@ Route::group(['middleware' => ['permission:Configuracion']], function () {
     Route::post('cobradores/update/{id}',[App\Http\Controllers\CobradoresController::class ,'update'])->middleware('permission:edit_cobrador')->name('cobradores.update');
     Route::get('cobradores/destroy/{id}',[App\Http\Controllers\CobradoresController::class ,'destroy'])->middleware('permission:destroy_cobrador')->name('cobradores.destroy');
 
+     //grupo sucursal
+     Route::get('sucursales',[App\Http\Controllers\SucursalController::class ,'index'])->middleware('permission:Sucursales')->name('sucursal.index');
+     Route::get('sucursal/create',[App\Http\Controllers\SucursalController::class ,'create'])->middleware('permission:create_sucursal')->name('sucursal.create');
+     Route::post('sucursal/store',[App\Http\Controllers\SucursalController::class ,'store'])->middleware('permission:create_sucursal')->name('sucursal.store');
+     Route::get('cobradosucursalres/edit/{id}',[App\Http\Controllers\SucursalController::class ,'edit'])->middleware('permission:edit_sucursal')->name('sucursal.edit');
+     Route::post('sucursal/update',[App\Http\Controllers\SucursalController::class ,'update'])->middleware('permission:edit_sucursal')->name('sucursal.update');
+     Route::get('sucursal/destroy/{id}',[App\Http\Controllers\SucursalController::class ,'destroy'])->middleware('permission:destroy_sucursal')->name('sucursal.destroy');
+
 });
 
 Route::group(['middleware' => ['permission:Clientes']], function () {
@@ -181,6 +189,15 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
 
 
 });
+Route::group(['middleware' => ['permission:Abonos']], function () {
+
+    //grupo abonos
+    Route::get('abonos/pendientes',[App\Http\Controllers\AbonosController::class ,'index'])->middleware('permission:abonos_pendientes')->name('abonos.pendientes');
+    Route::get('abonos/pedientes_pdf/{id}/{tipo_servicio}/{fecha_i}/{fecha_f}',[App\Http\Controllers\AbonosController::class ,'abonos_pendientes_pdf'])->middleware('permission:abonos_pendientes')->name('abonos.pendientes_pdf');
+});
+
+
+
 
 Route::group(['middleware' => ['permission:Facturacion']], function () {
 

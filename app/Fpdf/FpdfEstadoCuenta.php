@@ -55,18 +55,38 @@ class FpdfEstadoCuenta extends Fpdf{
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
         // Header
         $this->SetFont('Arial','B',9);
-        foreach($header as $col)
-            $this->Cell(26,7,$col,1);
-        $this->Ln();
+        /*foreach($header as $col)
+           $this->Cell(26,7,$col,1);
+          
+
+        $this->Ln();*/
         // Data
+        //$header=array('N resivo','Codigo de cobrador','Tipo servicio','N comprobante','Mes de servicio',utf8_decode('Aplicación'),'Vencimiento','Cargo','Abono', 'Impuesto','Total');
+        $this->Cell(24,7,utf8_decode('N resivo'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('C. Cobrador'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Tipo servicio'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Nº comprobante'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Mes servicio'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Aplicación'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Vencimiento'),1,0,'C');
+        $this->Cell(20,7,utf8_decode('Cargo'),1,0,'C');
+        $this->Cell(20,7,utf8_decode('Abono'),1,0,'C');
+        $this->Cell(20,7,utf8_decode('Impuesto'),1,0,'C');
+        $this->Cell(20,7,utf8_decode('Total'),1,0,'C');
+
+        $this->Ln();
 
         $this->SetFont('Arial','',9);
-        $total_pagar = null;
+        $total_cargo = null;
+        $total_abono =null;
+        $a=0;
+        $c=0;
         $x=0;
         //while($x<60){
         foreach($data as $row)
         {
-            $this->Cell(26,6,$row->recibo,0,0,'C');
+            $this->Cell(24,6,$row->recibo,0,0,'C');
+            $this->Cell(26,6,$row->id_cobrador,0,0,'C');
             if($row->tipo_servicio==1){
                 $servicio = 'Internet';
             }else{
@@ -95,36 +115,114 @@ class FpdfEstadoCuenta extends Fpdf{
                 $this->Cell(26,6,$row->fecha_vence,0);
             }
           
-            $this->Cell(26,6,$row->cargo,0,0,'C');
-            $this->Cell(26,6,$row->abono,0,0,'C');
+            $this->Cell(20,6,number_format($row->cargo,2),0,0,'C');
+            $this->Cell(20,6,number_format($row->abono,2),0,0,'C');
+          
             if($row->cargo!=""){
 
-                $this->Cell(26,6,$row->cesc_cargo,0,0,'C');
+                $this->Cell(20,6,number_format($row->cesc_cargo,2),0,0,'C');
                 $impuesto = $row->cesc_cargo;
                 $c=$row->cargo;
             }
             if($row->abono!=""){
 
-                $this->Cell(26,6,$row->cesc_abono,0,0,'C');
+                $this->Cell(20,6,number_format($row->cesc_abono,2),0,0,'C');
                 $impuesto = $row->cesc_abono;
+                $a=$row->abono;
                 $c=$row->abono;
             }
             $total = $impuesto+$c;
-            $this->Cell(26,6,$total,0,0,'C');
-            $total_pagar+=$total;
-
+            $this->Cell(20,6,number_format($total,2),0,0,'C');
             
+            $total_abono+=$a;
+            $total_cargo+=$total;
             
             $this->Ln();
         }
         //$x++;
    // }
+        $total_pago = $total_cargo-$total_cargo;
         $this->SetFont('Arial','B',9);
         $this->SetX(240);
         $this->Cell(30,6,utf8_decode('TOTAL A COBRAR'),0,0,'C');
         $this->Ln();
         $this->SetX(240);
-        $this->Cell(30,6,$total_pagar,1,0,'C');
+        $this->Cell(30,6,number_format($total_pago,2),1,0,'C');
+    }
+
+    function BasicTable_pendientes($header, $data)
+    {
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+        // Header
+        $this->SetFont('Arial','B',9);
+        /*foreach($header as $col)
+           $this->Cell(26,7,$col,1);
+          
+
+        $this->Ln();*/
+        // Data
+        //$header=array('N resivo','Codigo de cobrador','Tipo servicio','N comprobante','Mes de servicio',utf8_decode('Aplicación'),'Vencimiento','Cargo','Abono', 'Impuesto','Total');
+        $this->Cell(20,7,utf8_decode('ID'),1,0,'C');
+        $this->Cell(85,7,utf8_decode('Cliente'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Mes de servicio'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Tipo servicio'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Vencimiento'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Dias restntes'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Estado'),1,0,'C');
+        $this->Cell(26,7,utf8_decode('Cargo'),1,0,'C');
+      
+
+        $this->Ln();
+
+        $this->SetFont('Arial','',9);
+        $total_cargo = null;
+        $estado = null;
+        //while($x<60){
+        foreach($data as $row)
+        {
+            $this->Cell(20,6,$row->id,0,0,'C');
+            $this->Cell(85,6,utf8_decode('('.$row->get_cliente->codigo.') '.$row->get_cliente->nombre),0,0,'');
+
+            if($row->tipo_servicio==1){
+                $servicio = 'Internet';
+            }else{
+                $servicio = 'Televisión';
+                
+            }
+           
+            if($row->mes_servicio!=""){
+                
+                $this->Cell(26,6,$meses[($row->mes_servicio->format('n'))-1].' del '.$row->mes_servicio->format('Y'),0,0,'C');
+            }else{
+                $this->Cell(26,6,$row->mes_servicio,0);
+            }
+            $this->Cell(26,6,utf8_decode($servicio),0,0,'C');
+            if($row->fecha_vence!=""){
+                
+                $this->Cell(26,6,$row->fecha_vence->format('d/m/Y'),0,0,'C');
+            }else{
+                $this->Cell(26,6,$row->fecha_vence,0);
+            }
+            $dias_restantes =$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d'));
+            $this->Cell(26,6,$dias_restantes,0,0,'C');
+            if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) >0){$estado='A tiempo';}
+            if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) <0){$estado='Vencido';}
+
+            $this->Cell(26,6,$estado,0,0,'C');
+            $this->Cell(26,6,number_format($row->cargo,2),0,0,'C');
+            $total_cargo+=$row->cargo;
+          
+            
+            $this->Ln();
+        }
+
+        $this->SetFont('Arial','B',9);
+        $this->SetX(245);
+        $this->Cell(26,6,utf8_decode('TOTAL'),0,0,'C');
+        $this->Ln();
+        $this->SetX(246);
+        $this->Cell(26,6,number_format($total_cargo,2),1,0,'C');
+  
     }
 
     function FancyTable($header, $data)
@@ -158,6 +256,14 @@ class FpdfEstadoCuenta extends Fpdf{
         // Closing line
         $this->Cell(array_sum($w),0,'','T');
     }
+
+    function dias_pasados($fecha_inicial,$fecha_final){
+    
+        $dias = (strtotime($fecha_inicial)-strtotime($fecha_final))/86400;
+        return $dias;
+        //$dias = abs($dias); $dias = floor($dias);
+    }
+    
 
 
 

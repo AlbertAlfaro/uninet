@@ -31,6 +31,7 @@ class CreateAbonosTable extends Migration
             $table->float('cesc_cargo')->nullable();
             $table->float('cesc_abono')->nullable();
             $table->integer('anulado');
+            $table->integer('pagado');
             $table->timestamps();
         });
     }

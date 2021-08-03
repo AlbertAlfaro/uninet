@@ -1955,8 +1955,10 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                 $abono->tipo_servicio = 1;
                 $abono->mes_servicio = $mes_servicio;
                 $abono->cargo = $value->cuota_mensual;
+                $abono->abono = 0.00;
                 $abono->fecha_vence = $fecha_vence;
                 $abono->anulado = 0;
+                $abono->pagado = 0;
                 $abono->save();
         
         }
@@ -1966,13 +1968,15 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
             $abono->tipo_servicio = 2;
             $abono->mes_servicio = $mes_servicio;
             $abono->cargo = $value->cuota_mensual;
+            $abono->abono = 0.00;
             $abono->fecha_vence = $fecha_vence;
             $abono->anulado = 0;
+            $abono->pagado = 0;
             $abono->save();
     
     }
-
-        return "GENERADO";
+    flash()->success("Cobros generados exitosamente")->important();
+    return back();
 
     }
 
@@ -1989,7 +1993,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $cliente = Cliente::find($id);
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fecha_i);
         $fecha_fin = Carbon::createFromFormat('Y-m-d', $fecha_f);
-        $estado_cuenta = Abono::select('recibo','tipo_servicio','numero_documento','mes_servicio','fecha_aplicado','fecha_vence','cargo','abono','cesc_cargo','cesc_abono')
+        $estado_cuenta = Abono::select('recibo','tipo_servicio','id_cobrador','numero_documento','mes_servicio','fecha_aplicado','fecha_vence','cargo','abono','cesc_cargo','cesc_abono')
                                 ->whereBetween('created_at',[$fecha_inicio,$fecha_fin])
                                 ->where('tipo_servicio',$tipo_servicio)
                                 ->where('id_cliente',$id)
@@ -2048,7 +2052,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->SetXY(250,41);
         $fpdf->Cell(20,10,utf8_decode('TV: '.$tv_tex),0,1,'R');
 
-        $header=array('N resivo','Tipo servicio','N comprobante','Mes de servicio',utf8_decode('Aplicación'),'Vencimiento','Cargo','Abono', 'Impuesto','Total');
+        $header=array('N resivo','Codigo de cobrador','Tipo servicio','N comprobante','Mes de servicio',utf8_decode('Aplicación'),'Vencimiento','Cargo','Abono', 'Impuesto','Total');
         
         $fpdf->BasicTable($header,$estado_cuenta);
 

@@ -76,7 +76,7 @@
                 @can('Facturacion')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="uil-users-alt"></i>
+                        <i class="uil-money-bill"></i>
                         <span>Facturación</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -94,6 +94,23 @@
                     
                 </li>
                 @endcan
+
+                 <!-- Abonos-->
+                 @can('Abonos')
+                 <li>
+                     <a href="javascript: void(0);" class="has-arrow waves-effect">
+                         <i class="uil-money-insert"></i>
+                         <span>Abonos</span>
+                     </a>
+                     <ul class="sub-menu" aria-expanded="false">
+                         @can('abonos_pendientes')
+                         <li><a href="{{url('abonos/pendientes')}}">Pedientes</a></li>
+                         @endcan
+                        
+                     </ul>
+                     
+                 </li>
+                 @endcan
                 <!-- configuracion -->
                 @can('Configuracion')
                 <li>
@@ -113,6 +130,9 @@
                         @endcan
                         @can('Cobradores')
                         <li><a href="{{url('cobradores')}}">Cobradores</a></li>
+                        @endcan
+                        @can('Sucursales')
+                        <li><a href="{{url('sucursales')}}">Sucursales</a></li>
                         @endcan
                     </ul>
                     

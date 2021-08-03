@@ -186,8 +186,9 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
 
     //grupo factura
     Route::get('fact_direct',[App\Http\Controllers\FacturacionController::class ,'index'])->middleware('permission:Facturacion')->name('facturacion.index');
-    Route::get('fact_direct/autocomplete',[App\Http\Controllers\FacturacionController::class ,'busqueda_cliente'])->middleware('permission:Facturacion')->name('factura.autocomplete');
-
+    Route::get('fact_direct/autocomplete',[App\Http\Controllers\FacturacionController::class ,'busqueda_cliente'])->middleware('permission:Facturacion')->name('facturacion.autocomplete');
+    Route::get('fact_direct/cargo/{id}/{servicio}',[App\Http\Controllers\FacturacionController::class ,'cargo'])->middleware('permission:Facturacion')->name('facturacion.cargo');
+    Route::get('convertir/{numero}',[App\Http\Controllers\FacturacionController::class ,'total_texto'])->name('convercion.letra');
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

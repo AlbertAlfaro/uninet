@@ -16,8 +16,8 @@ class CreateAbonosTable extends Migration
         Schema::create('abonos', function (Blueprint $table) {
             $table->id();
             $table->integer('id_cliente');
-            $table->integer('id_cobrador');
-            $table->integer('id_usuario');
+            $table->integer('id_cobrador')->nullable();
+            $table->integer('id_usuario')->nullable();
             $table->string('recibo')->nullable();
             $table->string('tipo_servicio')->nullable();
             $table->string('numero_documento')->nullable();

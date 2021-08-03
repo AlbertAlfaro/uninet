@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Cobrador;
 use App\Models\Cliente;
+use App\Models\Internet;
+use App\Models\Tv;
+use App\Models\Abono;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -97,12 +100,26 @@ class FacturacionController extends Controller
             $term1 = $request->term;
             $results = array();
             
-            $queries = Cliente::Where('codigo', 'LIKE', '%'.$term1.'%')->orWhere('nombre', 'LIKE', '%'.$term1.'%')->get();
+            $queries = Cliente::
+            select(
+                'Cliente.*',
+                'Abono.id',
+                'Abono.tipo_servicio',
+                'Abono.numero_documento',
+                'Abono.mes_servicio',
+                'Abono.cargo',
+                'Abono.abono'
+                )->
+            join('Abono','Cliente.id','=','Abono.id_cliente')->
+            Where('Cliente.codigo', 'LIKE', '%'.$term1.'%')->
+            orWhere('Cliente.nombre', 'LIKE', '%'.$term1.'%')->
+            Where('Abono.abono','')->
+            get();
             
             foreach ($queries as $query){
                 $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre,'tipo_documento'=>$query->tipo_documento];
             }
-            return response($results);
+            return response($results);       
     
         }
 }

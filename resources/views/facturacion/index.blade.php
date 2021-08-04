@@ -305,6 +305,7 @@ th, td {
           <div class="col-md-4" >
             <label for="example-text-input" class="col-form-label">Buscar Cliente</label>     
             <input type="text" name="busqueda" id="busqueda" class="form-control" placeholder="Digita la busqueda ..." aria-describedby="helpId">
+            <input type="hidden" name="id_cliente" id="id_cliente" class="form-control"  aria-describedby="helpId">
           </div>
           <div class="col-md-3" >
             <label for="example-text-input" class=" col-form-label">Cobrador</label>              
@@ -327,7 +328,7 @@ th, td {
         <div class="row  ">
           <div class="col-md-3" >
             <label for="example-text-input" class=" col-form-label">Tipo de pago</label>              
-            <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
+            <select class="form-control" name="tipo_pago" id="tipo_pago" required>
               <option value="" >Seleccionar...</option>
               <option value="EFEC" >EFECTIVO</option>
               <option value="TRANS" >TRANSFERENCIA</option>
@@ -345,6 +346,7 @@ th, td {
             <button type="button" id="preventa" style="margin-left:3%;" name="preventa" class="btn btn-primary pull-right usage"><i class="fa fa-save"></i> F8 Guardar</button>
             <button type="button" id="borrar_preven" style="margin-left:3%;" name="borrar_preven" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
             <a class="btn btn-danger pull-right" style="margin-left:3%;" href="dashboard.php" id='salir'><i class="fa fa-mail-reply"></i> Salir</a>
+            <input type="hidden" id="items" name="items">
           </div>
         </div><br>
                 <!--CODIGO DE PRUEBA -->
@@ -370,10 +372,10 @@ th, td {
                                     <thead>
                                       <tr class="row100 head">
                                         <th hidden class="success cell100 column10">Id</th>
-                                        <th class='success  cell100 column30 text-center'>Mes de servicio</th>
-                                        <th class='success  cell100 column30 text-center'>Vencimiento</th>
-                                        <th class='success  cell100 column20 text-center'>Cuota</th>
-                                        <th class='success  cell100 column20 text-center'>Acci&oacute;n</th>
+                                        <th class='success  cell100 column30'>Mes de servicio</th>
+                                        <th class='success  cell100 column30'>Vencimiento</th>
+                                        <th class='success  cell100 column20'>Cuota</th>
+                                        <th class='success  cell100 column20'>Acci&oacute;n</th>
                                       </tr>
                                     </thead>
                                   </table>
@@ -548,8 +550,11 @@ th, td {
                     source: "{{URL::to('fact_direct/autocomplete')}}",
                     select: function(event, ui) {
                         $('#id_cliente').val(ui.item.id);
-                        $('#busqueda').val(ui.item.nombre);   
+                        //$('#busqueda').val(ui.item.nombre);   
                         $("#tipo_documento").val(ui.item.tipo_documento);
+                        $("#nomcli").val(ui.item.nombre);
+                        $("#dircli").val(ui.item.direc);
+                        $("#nitcli").val(ui.item.nit);
                         cargo(ui.item.id);
                     }
                 });
@@ -594,9 +599,9 @@ th, td {
               tr_add = '';
               $.each( data, function( i, value ) {
                 tr_add += "<tr class='row100 head' id=''>";
-                tr_add += "<td class='cell100 column30 text-center'>"+data[i].mes_servicio+"</td>";
-                tr_add += "<td class='cell100 column30 text-center descp'>"+data[i].fecha_vence+"</td>";
-                tr_add += "<td class='cell100 column20 text-center' id='precio'><div class='col-xs-2'><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:60px;'></div></td>";
+                tr_add += "<td class='cell100 column30 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'>"+data[i].mes_servicio+"</td>";
+                tr_add += "<td class='cell100 column30 descp text-center'>"+data[i].fecha_vence+"</td>";
+                tr_add += "<td class='cell100 column20 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:60px;'></div></td>";
                 tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                 tr_add += '</tr>';
                 //numero de filas 
@@ -607,7 +612,7 @@ th, td {
               totales();
              //scrolltable();
           }
-        });
+        }); 
 
       }
       function totales() {
@@ -880,6 +885,175 @@ $(document).on("click", ".Delete", function() {
   $(this).parents("tr").remove();
   totales();
 });
+$(document).on("click","#pagar",function(){
+	
+});
+$(document).on("keyup","#efectivo",function(){
+  total_efectivo();
+});
+function total_efectivov(){
+	var efectivo=parseFloat($('#efectivov').val());
+	var totalfinal=parseFloat($('#tot_fdo').val());
+	var facturado= totalfinal.toFixed(2);
+	$('#facturadov').val(facturado);
+	if (isNaN(parseFloat(efectivo))){
+		efectivo=0;
+	}
+	if (isNaN(parseFloat(totalfinal))){
+		totalfinal=0;
+	}
+	var cambio=efectivo-totalfinal;
+	var cambio=round(cambio, 2);
+	var	cambio_mostrar=cambio.toFixed(2);
+	$('#cambiov').val(cambio_mostrar);
+}
+$(document).on("click","#submit1",function(){
+	guardar();
+});
+function guardar() {
+  //Obtener los valores a guardar de cada item facturado
+  sel_vendedor=1;
+  var i = 0;
+  var StringDatos = "";
+  var id = '1';
+  var id_empleado = 0;
+  var id_cliente = $("#id_cliente").val();
+  var items = $("#items").val();
+  var msg = "";
+  //IMPUESTOS
+  error=false;
+
+
+  var total_percepcion = $('#total_percepcion').text();
+	var id_factura =$('#id_factura').val();
+  var subtotal = $('#total_gravado_iva').text();/*total gravado mas iva subtotal*/
+  var suma_gravada= $('#total_gravado_sin_iva').text();/*total sumas sin iva*/
+  var sumas= $('#total_gravado').text();/*total sumas sin iva + exentos*/
+  var iva = $('#total_iva').text(); /*porcentaje de iva de la factura*/
+  var retencion = $('#total_retencion').text();/*total retencion cuando un cliente retiene 1 o 10 %*/
+  var venta_exenta =$('#total_exenta').text();/*total venta exenta*/
+  var total = $('#totalfactura').val();
+  var tipo_pago=$('#tipo_pago').val();
+	var id_cobrador =$('#id_cobrador').val();
+
+  var tipo_impresion= $('#tipo_impresion').val();
+
+
+  var id_prod = 0;
+  var verificaempleado = 'noverificar';
+  var verifica = [];
+  var array_json = new Array();
+  $("#inventable tr").each(function(index) {
+      var id = $(this).find("#id_cargo").val();
+      var cargo = $(this).find("#cargo").val();
+
+      if (cargo) {
+        var obj = new Object();
+        obj.id = id;
+        obj.precio = cargo;
+        //convert object to json string
+        text = JSON.stringify(obj);
+        array_json.push(text);
+        i = i + 1;
+      }
+      else
+      {
+        error=true
+      }
+  });
+  json_arr = '[' + array_json + ']';
+  if (i==0) {
+    error=true
+  }
+
+  var dataString = 'cuantos=' + i ;
+  dataString += '&id_cliente=' + id_cliente + '&total=' + total;
+  dataString += '&id_cobrador=' + id_cobrador + '&json_arr=' + json_arr;
+  dataString += '&retencion=' + retencion;
+  dataString += '&total_percepcion=' + total_percepcion;
+  dataString += '&iva=' + iva;
+  dataString += '&items=' + items;
+  dataString += '&subtotal=' + subtotal;
+  dataString += '&sumas=' + sumas;
+  dataString += '&venta_exenta=' + venta_exenta;
+  dataString += '&suma_gravada=' + suma_gravada;
+  dataString += '&tipo_impresion=' + tipo_impresion;
+	dataString += '&id_factura=' + id_factura;
+
+
+  
+	if (tipo_pago == "") {
+    msg = 'No a seleccionado un tipo de pago!';
+    sel_vendedor = 0;
+  }
+
+  if (id_cliente == "") {
+    msg = 'No hay un Cliente!';
+    sel_vendedor = 0;
+  }
+
+  if (tipo_impresion == "") {
+    msg = 'No hay un tipo de impresion seleccionada!';
+    sel_vendedor = 0;
+  }
+
+  if (i == 0) {
+    msg = 'No hay cargos generados. !';
+    sel_vendedor = 0;
+  }
+  if (id_cobrador == "") {
+    msg = 'No hay cobrador seleccionado!';
+    sel_vendedor = 0;
+  }
+
+  if (sel_vendedor == 1) {
+    $("#inventable tr").remove();
+    $.ajax({
+      type: 'POST',
+      url: urlprocess,
+      data: dataString,
+      dataType: 'json',
+      success: function(datax) {
+        if (datax.typeinfo == "Success")
+				{
+					$(".usage").attr("disabled", true);
+					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
+					{
+						if(tipo_impresion == "CCF")
+						{
+							$("#nitcli").attr('readOnly', false);
+							$("#nrccli").attr('readOnly', false);
+						}
+						$("#nomcli").attr('readOnly', false);
+						$("#numdoc").attr('readOnly', false);
+						$("#dircli").attr('readOnly', false);
+ 					 	$("#numdoc").focus();
+					}
+					else
+					{
+ 					 	$("#efectivov").focus();
+						$('#numdoc').val(datax.ultimo);
+					}
+					$("#tot_fdo").val(total);
+						 //activa_modal(datax.numdoc,datax.numdoc,id_cliente);
+					 $('#id_factura').val(datax.id_factura);
+					 ultimo=parseInt(datax.ultimo);
+					 if(ultimo!=0)
+					 {
+						 //$('#num_doc_fact').val(ultimo);
+					 }
+					 $('#corr_in').val(datax.numdoc);
+        }
+				else {
+					display_notify(datax.typeinfo, datax.msg);
+				}
+      }
+    });
+  } else {
+    console.log(msg);
+  }
+}
+
 
     </script> 
 @endsection

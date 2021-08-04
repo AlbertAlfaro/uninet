@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Internet;
 use App\Models\Tv;
 use App\Models\Abono;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -104,13 +105,13 @@ class FacturacionController extends Controller
         orWhere('nombre', 'LIKE', '%'.$term1.'%')->
         get();    
         foreach ($queries as $query){
-            $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre,'tipo_documento'=>$query->tipo_documento];
+            $results[] = [ 'id' => $query->id, 'value' => "(".$query->codigo.") ".$query->nombre,'nombre' => $query->nombre,'tipo_documento'=>$query->tipo_documento,'direc'=>$query->dirreccion,'nit'=>$query->nit];
         }
         return response($results);       
     
     }   
     public function cargo($id_cliente,$servicio)
-    {
+    {    $results = array();
         if($servicio==0 || $servicio==1)
         {
             if($servicio==1)//1=internet
@@ -125,11 +126,15 @@ class FacturacionController extends Controller
     
             }
             if($servi)
-            {
-                $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->get();
+            {  $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->get();
+               foreach ($abono as $query){
+                  $results[] = [ 'id' => $query->id, 'cargo' => $query->cargo,'mes_servicio' => $query->mes_servicio->format('m/Y'),'fecha_vence'=>$query->fecha_vence->format('d/m/Y')];
+              }
+              return response($results);   
+               /*$abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->get();
                 return response()->json(
                     $abono-> toArray()  
-                );
+                );*/
             }else
             {
                 return $mensaje;

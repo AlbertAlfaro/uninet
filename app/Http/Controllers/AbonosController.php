@@ -46,10 +46,25 @@ class AbonosController extends Controller
         $cliente = Cliente::find($id); 
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fecha_i);
         $fecha_fin = Carbon::createFromFormat('Y-m-d', $fecha_f);
-        $estado_cuenta = Abono::select('id','id_cliente','id_cobrador','tipo_servicio','mes_servicio','cargo','fecha_vence','cargo','abono','cesc_cargo','cesc_abono')
-                                ->whereBetween('created_at',[$fecha_inicio,$fecha_fin])
-                                ->where('tipo_servicio',$tipo_servicio)
-                                ->where('pagado',0)
+        $estado_cuenta = Abono::select(
+                                    'abonos.id',
+                                    'abonos.id_cliente',
+                                    'abonos.id_cobrador',
+                                    'abonos.tipo_servicio',
+                                    'abonos.mes_servicio',
+                                    'abonos.cargo',
+                                    'abonos.fecha_vence',
+                                    'abonos.cargo',
+                                    'abonos.abono',
+                                    'abonos.cesc_cargo',
+                                    'abonos.cesc_abono',
+                                    'clientes.id_sucursal'
+                                    )
+                                ->join('clientes','abonos.id_cliente','=','clientes.id')
+                                ->whereBetween('abonos.created_at',[$fecha_inicio,$fecha_fin])
+                                ->where('abonos.tipo_servicio',$tipo_servicio)
+                                ->where('abonos.pagado',0)
+                                ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
                                 ->get();
         $internet = Internet::where('activo',1)->get();
         $tv = Tv::where('activo',1)->get();

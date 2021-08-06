@@ -70,6 +70,25 @@ Usuarios
                                     </div>
                                     
                                 </div>
+
+                                <div class="row">
+                                    <div class="form-group row col-md-6">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Sucursal *</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control select2" name="id_sucursal" id="id_sucursal" required>
+                                                <option value="" >Seleccionar...</option>
+                                                
+                                                   @foreach ($sucursal as $sucursal_item)
+                                                        <option value="{{$sucursal_item->id}}">{{$sucursal_item->nombre}}</option>
+                                                        
+                                                    @endforeach
+                                                    
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                                
                                
                                 <div class="row">

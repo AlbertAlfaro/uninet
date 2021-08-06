@@ -15,8 +15,16 @@ class AbonosController extends Controller
 {
     public function index(){
         $id=0;
-        $abono_inter = Abono::where('tipo_servicio',1)->where('pagado',0)->get();
-        $abono_tv = Abono::where('tipo_servicio',2)->where('pagado',0)->get();
+        $abono_inter = Abono::join('clientes','abonos.id_cliente','=','clientes.id')
+                            ->where('abonos.tipo_servicio',1)
+                            ->where('abonos.pagado',0)
+                            ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
+                            ->get();
+        $abono_tv = Abono::join('clientes','abonos.id_cliente','=','clientes.id')
+                            ->where('abonos.tipo_servicio',2)
+                            ->where('abonos.pagado',0)
+                            ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
+                            ->get();
 
         return view('abonos.index',compact('abono_inter','abono_tv','id'));
     }
@@ -67,7 +75,7 @@ class AbonosController extends Controller
 
         $fpdf->SetXY(15,29);
         $fpdf->SetFont('Arial','B',9);
-        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE USULUTAN'));
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE '.Auth::user()->get_sucursal->nombre));
         $fpdf->Ln();
     
         //$fpdf->SetXY(250,33); 

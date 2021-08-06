@@ -8,288 +8,278 @@
     <link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   
     <style>
     
 
-      /*//////////////////////////////////////////////////////////////////
-      [ FONT ]*/
-      
-      
-      @font-face {
-        font-family: Lato-Regular;
-        src: url('fonts/apache/Lato/Lato-Regular.ttf');
-      }
-      
-      @font-face {
-        font-family: Lato-Bold;
-        src: url('fonts/apache/Lato/Lato-Bold.ttf');
-      
-      }
-      
-      /*//////////////////////////////////////////////////////////////////
-      [ RESTYLE TAG ]*/
-      * {
-        margin: 0px;
-        padding: 0px;
-        box-sizing: border-box;
-      }
-      
-      /* ------------------------------------ */
-      button {
-        outline: none !important;
-        border: none;
-        background: transparent;
-      }
-      
-      button:hover {
-        cursor: pointer;
-      }
-      
-      
-      /*//////////////////////////////////////////////////////////////////
-      [ Scroll bar ]*/
-      .js-pscroll {
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .table100 .ps__rail-y {
-        width: 9px;
-        background-color: transparent;
-        opacity: 1 !important;
-        right: 5px;
-      }
-      
-      .table100 .ps__rail-y::before {
-        content: "";
-        display: block;
-        position: absolute;
-        background-color: #ebebeb;
-        border-radius: 5px;
-        width: 100%;
-        height: calc(100% - 30px);
-        left: 0;
-        top: 15px;
-      }
-      
-      .table100 .ps__rail-y .ps__thumb-y {
-        width: 100%;
-        right: 0;
-        background-color: transparent;
-        opacity: 1 !important;
-      }
-      
-      .table100 .ps__rail-y .ps__thumb-y::before {
-        content: "";
-        display: block;
-        position: absolute;
-        background-color: #cccccc;
-        border-radius: 5px;
-        width: 100%;
-        height: calc(100% - 30px);
-        left: 0;
-        top: 15px;
-      }
-      
-      
-      /*//////////////////////////////////////////////////////////////////
-      [ Table ]*/
-      
-      .limiter {
-        width: 1366px;
-        margin: 0 auto;
-      }
-      
-      .container-table100 {
-        width: 100%;
-        min-height: 100vh;
-        background: #fff;
-      
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        padding: 33px 30px;
-      }
-      
-      .wrap-table100 {
-        width: 1170px;
-      }
-      
-      /*//////////////////////////////////////////////////////////////////
-      [ Table ]*/
-      .table100 {
-        background-color: #fff;
-      }
-      
-      table {
-        width: 100%;
-      }
-      
-      th, td {
-        font-weight: unset;
-        padding-right: 10px;
-      }
-      
-      
-      
-      .table100-head th {
-        padding-top: 10px;
-        padding-bottom: 5px;
-      }
-      
-      .table100-body td {
-        padding-top: 5px;
-        padding-bottom: 5px;
-      }
-      
-      /*==================================================================
-      [ Fix header ]*/
-      .table100 {
-        position: relative;
-        padding-top: 40px;
-      }
-      
-      .table100-head {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 0;
-      }
-      
-      .table100-body {
-        height: 280px;
-        max-height: 2800px;
-        overflow: auto;
-      
-      }
-      
-      
-      
-      /*==================================================================
-      [ Ver1 ]*/
-      
-      .table100.ver1 th {
-        font-family: Lato-Bold;
-        font-size: 15px;
-        color: #fff;
-        line-height: 1.4;
-         background-color:#3F729B;
-      /*  background-color: #428bca;*/
-      
-      }
-      
-      .table100.ver1 td {
-        font-family: Lato-Bold;
-        font-size: 13px;
-        line-height: 1.4;
-      }
-      
-      
-      .table100.ver1 .table100-body tr:nth-child(odd) {
-        background-color: #fafafa;
-      }
-      .table100.ver1 .table100-body tr:nth-child(even) {
-        background-color: #D0E4F5;
-      }
-      
-      /*---------------------------------------------*/
-      
-      .table100.ver1 {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
-        -moz-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
-        -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
-        -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
-        -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
-      }
-      
-      .table100.ver1 .ps__rail-y {
-        right: 5px;
-      }
-      
-      .table100.ver1 .ps__rail-y::before {
-        background-color: #ebebeb;
-      }
-      
-      .table100.ver1 .ps__rail-y .ps__thumb-y::before {
-        background-color: #cccccc;
-      }
-      
-      .table100-body td {
-        padding-top: 5px;
-        padding-left: 5px;
-        padding-bottom: 5px;
-        color: #3F729B;
-      }
-      
-      .table101-body tbody tr:first-child td {
-           background-color: #f5f5f5;
-         }
-      .table101-body td {
-        padding-top: 5px;
-        padding-left: 5px;
-        padding-bottom: 5px;
-      
-      }
-      .table101-body tbody tr{
-        border-top: 2px solid;
-        border-color: #f5f5f5;
-      }
-      .table101.ver1 {
-        font-family: Lato-Regular;
-        font-size: 12px;
-        color: #808080;
-        line-height: 1.4;
-        border-right: 2px solid;
-      
-      }
-      .table101.ver1.rightt  td{
-        font-family: Lato-Regular;
-        font-size: 12px;
-        color:#000;
-      }
-      .rightt td{
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-right: 2px solid;
-        color: #3F729B;
-        border-color: #f5f5f5;
-      }
-      .leftt {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-left: 2px solid;
-        border-color: #f5f5f5;
-      }
-      .text-green{
-       color:#43a047;
-      }
-      .text-bluegrey{
-        color:#607d8b;
-      }
-      .textlogin{
-        color: #FF8800;
-        
-      }
+/*//////////////////////////////////////////////////////////////////
+[ FONT ]*/
 
-      .my-custom-scrollbar {
-      position: relative;
-      height: 300px;
-      overflow: auto;
-      }
-      .table-wrapper-scroll-y {
-      display: block;
-      }
-      
-      </style>
-@endsection
+
+@font-face {
+  font-family: Lato-Regular;
+  src: url('fonts/apache/Lato/Lato-Regular.ttf');
+}
+
+@font-face {
+  font-family: Lato-Bold;
+  src: url('fonts/apache/Lato/Lato-Bold.ttf');
+
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+/* ------------------------------------ */
+button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Scroll bar ]*/
+.js-pscroll {
+  position: relative;
+  overflow: hidden;
+}
+
+.table100 .ps__rail-y {
+  width: 9px;
+  background-color: transparent;
+  opacity: 1 !important;
+  right: 5px;
+}
+
+.table100 .ps__rail-y::before {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #ebebeb;
+  border-radius: 5px;
+  width: 100%;
+  height: calc(100% - 30px);
+  left: 0;
+  top: 15px;
+}
+
+.table100 .ps__rail-y .ps__thumb-y {
+  width: 100%;
+  right: 0;
+  background-color: transparent;
+  opacity: 1 !important;
+}
+
+.table100 .ps__rail-y .ps__thumb-y::before {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #cccccc;
+  border-radius: 5px;
+  width: 100%;
+  height: calc(100% - 30px);
+  left: 0;
+  top: 15px;
+}
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+
+.limiter {
+  width: 1366px;
+  margin: 0 auto;
+}
+
+.container-table100 {
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}
+
+.wrap-table100 {
+  width: 1170px;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+.table100 {
+  background-color: #fff;
+}
+
+table {
+  width: 100%;
+}
+
+th, td {
+  font-weight: unset;
+  padding-right: 10px;
+}
+
+
+
+.table100-head th {
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.table100-body td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/*==================================================================
+[ Fix header ]*/
+.table100 {
+  position: relative;
+  padding-top: 40px;
+}
+
+.table100-head {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.table100-body {
+  height: 280px;
+  max-height: 2800px;
+  overflow: auto;
+
+}
+
+
+
+/*==================================================================
+[ Ver1 ]*/
+
+.table100.ver1 th {
+  font-family: Lato-Bold;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.4;
+   background-color:#3F729B;
+/*  background-color: #428bca;*/
+
+}
+
+.table100.ver1 td {
+  font-family: Lato-Bold;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+.table100.ver1 .table100-body tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+.table100.ver1 .table100-body tr:nth-child(even) {
+  background-color: #D0E4F5;
+}
+
+/*---------------------------------------------*/
+
+.table100.ver1 {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+}
+
+.table100.ver1 .ps__rail-y {
+  right: 5px;
+}
+
+.table100.ver1 .ps__rail-y::before {
+  background-color: #ebebeb;
+}
+
+.table100.ver1 .ps__rail-y .ps__thumb-y::before {
+  background-color: #cccccc;
+}
+
+.table100-body td {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  color: #3F729B;
+}
+
+.table101-body tbody tr:first-child td {
+     background-color: #f5f5f5;
+   }
+.table101-body td {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+
+}
+.table101-body tbody tr{
+  border-top: 2px solid;
+  border-color: #f5f5f5;
+}
+.table101.ver1 {
+  font-family: Lato-Regular;
+  font-size: 12px;
+  color: #808080;
+  line-height: 1.4;
+  border-right: 2px solid;
+
+}
+.table101.ver1.rightt  td{
+  font-family: Lato-Regular;
+  font-size: 12px;
+  color:#000;
+}
+.rightt td{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-right: 2px solid;
+  color: #3F729B;
+  border-color: #f5f5f5;
+}
+.leftt {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-left: 2px solid;
+  border-color: #f5f5f5;
+}
+.text-green{
+ color:#43a047;
+}
+.text-bluegrey{
+  color:#607d8b;
+}
+.textlogin{
+  color: #FF8800;
+  
+}
+
+</style>
+    @endsection
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle') Facturación @endslot
@@ -360,123 +350,153 @@
           </div>
         </div>
         <br>
-        <div class="row">
-          <div class="col-md-8">
-            <div class="table-responsive">
-              <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table id="inventable1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                  <thead class="bg-primary" style="color:white;">
-                    <tr>
-                      <th>Concepto</th>
-                      <th>Mes de servicio</th>
-                      <th>Vencimiento</th>
-                      <th>Cuota</th>
-                      <th>Acción</th>
-                    </tr>
-  
-                    <tbody id="inventable">
-                              
-                    </tbody>
-                  </thead>
-                </table>
+                <!--CODIGO DE PRUEBA -->
+                       <!--load datables estructure html-->
+                  <header>
+                    <section>
+                      <input type='hidden' name='porc_iva' id='porc_iva' value='<?php echo "IVA"; ?>'>
+                      <input type='hidden' name='monto_retencion1' id='monto_retencion1' value='<?php  ?>'>
+                      <input type='hidden' name='monto_retencion10' id='monto_retencion10' value='<?php ?>'>
+                      <input type='hidden' name='monto_percepcion' id='monto_percepcion' value='100'>
+                      <input type='hidden' name='porc_retencion1' id='porc_retencion1' value=0>
+                      <input type='hidden' name='porc_retencion10' id='porc_retencion10' value=0>
+                      <input type='hidden' name='porc_percepcion' id='porc_percepcion' value=0>
+                      <input type='hidden' name='porcentaje_descuento' id='porcentaje_descuento' value=0>
 
-              </div>
-            </div>
-          
+                      <div class="">
+                        <div class="row">
+                          <div class="col-md-9">
+                            <div class="wrap-table1001">
+                              <div class="table100 ver1 m-b-10">
+                                <div class="table100-head">
+                                  <table id="inventable1">
+                                    <thead>
+                                      <tr class="row100 head">
+                                        <th hidden class="success cell100 column10">Id</th>
+                                        <th class='success  cell100 column30'>Mes de servicio</th>
+                                        <th class='success  cell100 column30'>Vencimiento</th>
+                                        <th class='success  cell100 column20'>Cuota</th>
+                                        <th class='success  cell100 column20'>Acci&oacute;n</th>
+                                      </tr>
+                                    </thead>
+                                  </table>
+                                </div>
+                                <div class="table100-body js-pscroll">
+                                  <table>
+                                    <tbody id="inventable"></tbody>
+                                  </table>
+                                </div>
+                                <div class="table101-body">
+                                  <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class='cell100 column50 text-bluegrey'  id='totaltexto'>&nbsp;</td>
+                                        <td class='cell100 column15 leftt  text-bluegrey ' >CANT. PROD:</td>
+                                        <td class='cell100 column10 text-right text-danger' id='totcant'>0.00</td>
+                                        <td class="cell100 column10  leftt text-bluegrey ">TOTALES $:</td>
+                                        <td class='cell100 column15 text-right text-green' id='total_gravado'>0.00</td>
 
-            <hr>
-            <div class="table-responsive">
-              <table id="inventable1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                <tbody>
-                  <tr>
-                      <td class='cell100 column50 text-bluegrey'  id='totaltexto'>&nbsp;</td>
-                      <td class='cell100 column15 leftt  text-bluegrey ' >CANT. PROD:</td>
-                      <td class='cell100 column10 text-right text-danger' id='totcant'>0.00</td>
-                      <td class="cell100 column10  leftt text-bluegrey ">TOTALES $:</td>
-                      <td class='cell100 column15 text-right text-green' id='total_gravado'>0.00</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="cell100 column15 leftt text-bluegrey ">SUMAS (SIN IVA) $:</td>
+                                        <td  class="cell100 column10 text-right text-green" id='total_gravado_sin_iva'>0.00</td>
+                                        <td class="cell100 column15  leftt  text-bluegrey ">IVA  $:</td>
+                                        <td class="cell100 column10 text-right text-green " id='total_iva'>0.00</td>
+                                        <td class="cell100 column15  leftt text-bluegrey ">SUBTOTAL  $:</td>
+                                        <td class="cell100 column10 text-right  text-green" id='total_gravado_iva'>0.00</td>
+                                        <td class="cell100 column15 leftt  text-bluegrey ">VENTA EXENTA $:</td>
+                                        <td class="cell100 column10  text-right text-green" id='total_exenta'>0.00</td>
+                                      </tr>
+                                      <tr>
+                                        <td class="cell100 column15 leftt text-bluegrey ">PERCEPCION $:</td>
+                                        <td class="cell100 column10 text-right  text-green"  id='total_percepcion'>0.00</td>
+                                        <td class="cell100 column15  leftt  text-bluegrey ">RETENCION $:</td>
+                                        <td class="cell100 column10 text-right text-green" id='total_retencion'>0.00</td>
+                                        <td class="cell100 column15 leftt text-bluegrey ">DESCUENTO $:</td>
+                                        <td class="cell100 column10  text-right text-green"  id='total_final'>0.00</td>
+                                        <td class="cell100 column15 leftt  text-bluegrey">A PAGAR $:</td>
+                                        <td class="cell100 column10  text-right text-green"  id='monto_pago'>0.00</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="wrap-table1001">
+                              <div class="table100 ver1 m-b-10">
+                                <div class="table100-head">
+                                  <table id="inventable1">
+                                    <thead>
+                                      <tr class="row100 head">
+                                        <th class="success cell100 column100 text-center">PAGO Y CAMBIO</th>
+                                        </tr>
+                                    </thead>
+                                  </table>
+                                </div>
+                                <div class="table101-body">
+                                  <table>
+                                    <tbody>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>CORRELATIVO:</td>
+                                        <td class='cell100 column30'><input type="text" id="corr_in" class="txt_box2"  value="" readOnly></td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>TOTAL: $</td>
+                                        <td class='cell100 column30'><input type="text" id="tot_fdo" class="txt_box2"   value="" readOnly></td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>NUM. DOCUMENTO: </td>
+                                        <td class='cell100 column30'><input type="text" id="numdoc" class="txt_box2"   value="" readOnly></td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>CLIENTE: </td>
+                                        <td class='cell100 column30'><input type="text" id="nomcli" class="txt_box2"  value="" readOnly></td>
+                                      </tr>
+									                    <tr>
+                                        <td class='cell100 column70 text-success'>DIRECCION: </td>
+                                        <td class='cell100 column30'><input type="text" id="dircli" class="txt_box2"  value="" readOnly></td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>NIT: </td>
+                                        <td class='cell100 column30'><input type="text" id="nitcli" class="txt_box2"    value="" readOnly></td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>NRC: </td>
+                                        <td class='cell100 column30'><input type="text" id="nrccli" class="txt_box2"   value="" readOnly></td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>EFECTIVO: $</td>
+                                        <td class='cell100 column30'> <input type="text" id="efectivov" class="txt_box2"   value=""> </td>
+                                      </tr>
+                                      <tr>
+                                        <td class='cell100 column70 text-success'>CAMBIO: $</td>
+                                        <td class='cell100 column30'><input type="text" id="cambiov" class="txt_box2"   value="" readOnly></td>
+                                      </tr>
 
-                    </tr>
-                    <tr>
-                      <td class="cell100 column15 leftt text-bluegrey ">SUMAS (SIN IVA) $:</td>
-                      <td  class="cell100 column10 text-right text-green" id='total_gravado_sin_iva'>0.00</td>
-                      <td class="cell100 column15  leftt  text-bluegrey ">IVA  $:</td>
-                      <td class="cell100 column10 text-right text-green " id='total_iva'>0.00</td>
-                      <td class="cell100 column15  leftt text-bluegrey ">SUBTOTAL  $:</td>
-                      <td class="cell100 column10 text-right  text-green" id='total_gravado_iva'>0.00</td>
-                      <td class="cell100 column15 leftt  text-bluegrey ">VENTA EXENTA $:</td>
-                      <td class="cell100 column10  text-right text-green" id='total_exenta'>0.00</td>
-                    </tr>
-                    <tr>
-                      <td class="cell100 column15 leftt text-bluegrey ">PERCEPCION $:</td>
-                      <td class="cell100 column10 text-right  text-green"  id='total_percepcion'>0.00</td>
-                      <td class="cell100 column15  leftt  text-bluegrey ">RETENCION $:</td>
-                      <td class="cell100 column10 text-right text-green" id='total_retencion'>0.00</td>
-                      <td class="cell100 column15 leftt text-bluegrey ">DESCUENTO $:</td>
-                      <td class="cell100 column10  text-right text-green"  id='total_final'>0.00</td>
-                      <td class="cell100 column15 leftt  text-bluegrey">A PAGAR $:</td>
-                      <td class="cell100 column10  text-right text-green"  id='monto_pago'>0.00</td>
-                    </tr>
-                  </tbody>
+                                    </tbody>
+                                  </table>
+                                </div>
 
-              </table>
-            </div>
-          </div>
-          <div class="col-md-4">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <?php
 
-            <div class="table-responsive">
-              <table id="inventable1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        echo "<input type='hidden' name='id_empleado' id='id_empleado' >";
+                        echo "<input type='hidden' name='numero_doc' id='numero_doc' >";
+                        echo "<input type='hidden' name='id_factura' id='id_factura' >";
+                        echo "<input type='hidden' name='urlprocess' id='urlprocess' value=''>"; ?>
+                        <input type='hidden' name='totalfactura' id='totalfactura' value='0'>
+                        <input type="hidden" id="imprimiendo" name="imprimiendo" value="0">
+                      </div>
+                      <!--div class="table-responsive m-t"-->
+                   </section>
 
-                <thead class="bg-primary" style="color:white;">
-                  <tr>
-                    <th  colspan="2" class="text-center">PAGO Y CAMBIO</th>
-                  
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class='text-success'>CORRELATIVO:</td>
-                    <td><input type="text" id="corr_in" class="form-control"  value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>TOTAL: $</td>
-                    <td ><input type="text" id="tot_fdo" class="form-control"   value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>NUM. DOCUMENTO: </td>
-                    <td><input type="text" id="numdoc" class="form-control"   value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>CLIENTE: </td>
-                    <td><input type="text" id="nomcli" class="form-control"  value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>DIRECCION: </td>
-                    <td class='cell100 column30'><input type="text" id="dircli" class="form-control"  value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>NIT: </td>
-                    <td class='cell100 column30'><input type="text" id="nitcli" class="form-control"    value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>NRC: </td>
-                    <td class='cell100 column30'><input type="text" id="nrccli" class="form-control"   value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>EFECTIVO: $</td>
-                    <td class='cell100 column30'> <input type="text" id="efectivov" class="form-control"   value=""> </td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>CAMBIO: $</td>
-                    <td><input type="text" id="cambiov" class="form-control"   value="" readOnly></td>
-                  </tr>
-
-                </tbody>
-
-              </table>
-            </div>
-            
-          </div>
-        </div>             
+                  </div>
+                <!--FIN CODIGO DE PRUEBA -->                
                 
       </div>
     </div>
@@ -580,7 +600,6 @@
               tr_add = '';
               $.each( data, function( i, value ) {
                 tr_add += "<tr class='row100 head' id=''>";
-                  tr_add += "<td class='cell100 column30 '>TEXTO DE EJEMPLO</td>";
                 tr_add += "<td class='cell100 column30 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'>"+data[i].mes_servicio+"</td>";
                 tr_add += "<td class='cell100 column30 descp text-center'>"+data[i].fecha_vence+"</td>";
                 tr_add += "<td class='cell100 column20 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:60px;'></div></td>";
@@ -837,13 +856,13 @@
         'total': total_final_mostrar
       });*/
       $.ajax({
-          type: 'GET',
-          url: 'convertir/'+total_final_mostrar,
-          success: function(data) {
-              //Asi pones el total en latras
-              $("#totaltexto").html(data.letras);
-          }
-      });
+            type: 'GET',
+            url: 'convertir/'+total_final_mostrar,
+            success: function(data) {
+                //Asi pones el total en latras
+                $("#totaltexto").html(data.letras);
+            }
+          });
       $('#monto_pago').html(total_final_mostrar);
 
       $('#totalfactura').val(total_final_mostrar);

@@ -73,6 +73,28 @@ Usuarios
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="form-group row col-md-6">
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Sucursal *</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control select2" name="id_sucursal" id="id_sucursal" required>
+                                                <option value="">Seleccionar...</option>
+                                                
+                                                    @foreach ($sucursal as $sucursal_item)
+                                                        @if($user->id_sucursal==$sucursal_item->id)
+                                                            <option value="{{$sucursal_item->id}}" selected>{{$sucursal_item->nombre}}</option>
+                                                        @else
+                                                            <option value="{{$sucursal_item->id}}">{{$sucursal_item->nombre}}</option>
+                                                        @endif
+                                                        
+                                                    @endforeach
+                                                    
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="form-group row col-md-6">
                                         <label for="example-text-input" class="col-md-4 col-form-label">Cotraseña</label>

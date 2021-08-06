@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Correlativo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CorrelativoController extends Controller
 {
@@ -13,7 +14,7 @@ class CorrelativoController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-        $correlativo = Correlativo::all();
+        $correlativo = Correlativo::where('id_sucursal',Auth::user()->id_sucursal)->get();
         return view('correlativos.index',compact('correlativo'));
     }
     public function edit($id){

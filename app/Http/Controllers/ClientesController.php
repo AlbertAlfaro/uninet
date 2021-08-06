@@ -2022,7 +2022,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetXY(15,29);
         $fpdf->SetFont('Arial','B',9);
-        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE'));
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE '.Auth::user()->get_sucursal->nombre));
 
         $fpdf->SetXY(15,33);
         $fpdf->SetFont('Arial','',9);

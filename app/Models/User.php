@@ -42,4 +42,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function get_sucursal()
+    {
+        return $this->hasOne('App\Models\sucursal','id', 'id_sucursal');
+    }
 }

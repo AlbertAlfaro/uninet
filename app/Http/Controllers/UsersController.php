@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
-
+use App\Models\sucursal;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -23,7 +22,8 @@ class UsersController extends Controller
 
     public function create(){
         $roles = Role::all();
-        return view('users.create',compact('roles'));
+        $sucursal = sucursal::all();
+        return view('users.create',compact('roles','sucursal'));
     }
 
     public function store(Request $request){
@@ -31,6 +31,7 @@ class UsersController extends Controller
         $usuario->name = $request->name;
         $usuario->email = $request->email;
         $usuario->id_rol = $request->id_role;
+        $usuario->id_sucursal = $request->id_sucursal;
         $usuario->password = Hash::make($request->password);
         $usuario->save();
         $id = User::latest('id')->first();
@@ -48,7 +49,8 @@ class UsersController extends Controller
     public function edit($id){
         $user = User::find($id);
         $roles = Role::all();
-        return view("users.edit",compact('user','roles'));
+        $sucursal = sucursal::all();
+        return view("users.edit",compact('user','roles','sucursal'));
     }
 
     public function update(Request $request){
@@ -59,6 +61,7 @@ class UsersController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'id_rol' => $request->id_role,
+                    'id_sucursal' => $request->id_sucursal,
                     'password' => Hash::make($request->password),
             ]);
         }else{
@@ -68,6 +71,7 @@ class UsersController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'id_rol' => $request->id_role,
+                    'id_sucursal' => $request->id_sucursal,
             ]);
 
 

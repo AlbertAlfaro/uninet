@@ -353,9 +353,8 @@
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
-            <button type="button" id="preventa" style="margin-left:3%;" name="preventa" class="btn btn-primary pull-right usage"><i class="fa fa-save"></i> F8 Guardar</button>
-            <button type="button" id="borrar_preven" style="margin-left:3%;" name="borrar_preven" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
-            <a class="btn btn-danger pull-right" style="margin-left:3%;" href="dashboard.php" id='salir'><i class="fa fa-mail-reply"></i> Salir</a>
+            <button type="button" id="addmes" style="margin-left:3%;" name="addmes" class="btn btn-primary pull-right usage"><i class="fa fa-save"></i> Mes Anticipado</button>
+            <button type="button" id="clean" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
             <input type="hidden" id="items" name="items">
           </div>
         </div>
@@ -368,6 +367,7 @@
                   <thead class="bg-primary" style="color:white;">
                     <tr>
                       <th>Concepto</th>
+                      <th>N° recibo</th>
                       <th>Mes de servicio</th>
                       <th>Vencimiento</th>
                       <th>Cuota</th>
@@ -384,16 +384,16 @@
             </div>
           
 
-            <hr>
+            <hr><br>
             <div class="table-responsive">
               <table id="inventable1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <tbody>
                   <tr>
-                      <td class='cell100 column50 text-bluegrey'  id='totaltexto'>&nbsp;</td>
-                      <td class='cell100 column15 leftt  text-bluegrey ' >CANT. PROD:</td>
-                      <td class='cell100 column10 text-right text-danger' id='totcant'>0.00</td>
-                      <td class="cell100 column10  leftt text-bluegrey ">TOTALES $:</td>
-                      <td class='cell100 column15 text-right text-green' id='total_gravado'>0.00</td>
+                      <td class=' text-bluegrey' colspan="4" id='totaltexto'>&nbsp;</td>
+                      <td class=' leftt  text-bluegrey ' >CANT. PROD:</td>
+                      <td class=' text-right text-danger' id='totcant'>0</td>
+                      <td class=" leftt text-bluegrey ">TOTALES $:</td>
+                      <td class=' text-right text-green' id='total_gravado'>0.00</td>
 
                     </tr>
                     <tr>
@@ -434,16 +434,16 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class='text-success'>CORRELATIVO:</td>
-                    <td><input type="text" id="corr_in" class="form-control"  value="" readOnly></td>
-                  </tr>
-                  <tr>
                     <td class='text-success'>TOTAL: $</td>
                     <td ><input type="text" id="tot_fdo" class="form-control"   value="" readOnly></td>
                   </tr>
                   <tr>
                     <td class='text-success'>NUM. DOCUMENTO: </td>
                     <td><input type="text" id="numdoc" class="form-control"   value="" readOnly></td>
+                  </tr>
+                  <tr>
+                    <td class='text-success'>NUM. RECIBO: </td>
+                    <td><input type="text" id="numreci" class="form-control"   value="" readOnly></td>
                   </tr>
                   <tr>
                     <td class='text-success'>CLIENTE: </td>
@@ -456,10 +456,6 @@
                   <tr>
                     <td class='text-success'>NIT: </td>
                     <td class='cell100 column30'><input type="text" id="nitcli" class="form-control"    value="" readOnly></td>
-                  </tr>
-                  <tr>
-                    <td class='text-success'>NRC: </td>
-                    <td class='cell100 column30'><input type="text" id="nrccli" class="form-control"   value="" readOnly></td>
                   </tr>
                   <tr>
                     <td class='text-success'>EFECTIVO: $</td>
@@ -476,7 +472,16 @@
             </div>
             
           </div>
-        </div>             
+        </div>  
+        
+        <input type='text' name='id_empleado' id='id_empleado' >
+        <input type='text' name='numero_doc' id='numero_doc' >
+        <input type='text' name='id_factura' id='id_factura' >
+        <input type='text' name='totalfactura' id='totalfactura' value='0'>  
+
+      
+
+
                 
       </div>
     </div>
@@ -537,6 +542,7 @@
                         $("#dircli").val(ui.item.direc);
                         $("#nitcli").val(ui.item.nit);
                         cargo(ui.item.id);
+                        tipo_documentoload();
                     }
                 });
                 
@@ -550,6 +556,7 @@
                 {
                     $('#exenta').val("0");
                     totales();
+                    alert("descheque");
                 }
             });
 
@@ -562,41 +569,47 @@
             var servicio=$('#tipo_servicio').val();
             alert(servicio);
             $.ajax({
-            type:'GET',
-            url:'{{ url("fact_direct/cargo") }}/'+id_cliente+'/'+servicio,
-            success:function(data) {
-              console.log(data);
-              var precio_venta = 10;
-              var exento = 0;
-              var preciop_s_iva = 0;
+              type:'GET',
+              url:'{{ url("fact_direct/cargo") }}/'+id_cliente+'/'+servicio,
+              success:function(data){
+                if(data.length > 0)
+                {
+                  console.log(data);
+                  var precio_venta = 10;
+                  var exento = 0;
+                  var preciop_s_iva = 0;
 
-              var tipo_impresion=$('#tipo_impresion').val();
-              var filas = parseInt($("#filas").val());
-        
-              //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
-              var subtotal =0; //subt(0, 1);
-              //subt_mostrar = subtotal.toFixed(2);
-              //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
-              tr_add = '';
-              $.each( data, function( i, value ) {
-                tr_add += "<tr class='row100 head' id=''>";
-                  tr_add += "<td class='cell100 column30 '>TEXTO DE EJEMPLO</td>";
-                tr_add += "<td class='cell100 column30 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'>"+data[i].mes_servicio+"</td>";
-                tr_add += "<td class='cell100 column30 descp text-center'>"+data[i].fecha_vence+"</td>";
-                tr_add += "<td class='cell100 column20 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:60px;'></div></td>";
-                tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
-                tr_add += '</tr>';
-                //numero de filas 
-                filas++;
-              });
-              $("#inventable").append(tr_add);
-              $('#items').val(filas);
-              totales();
-             //scrolltable();
+                  var tipo_impresion=$('#tipo_documento').val();
+                  var filas = parseInt($("#filas").val());
+          
+                  //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
+                  var subtotal =0; //subt(0, 1);
+                  //subt_mostrar = subtotal.toFixed(2);
+                  //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
+                  tr_add = '';
+                  $.each( data, function( i, value ) {
+                    tr_add += "<tr class='row100 head' id=''>";
+                    tr_add += "<td class='cell100 column30 '>TEXTO DE EJEMPLO</td>";
+                    tr_add += "<td class='cell100 column10 '>00001</td>";
+                    tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
+                    tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
+                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;'></div></td>";
+                    tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+                    tr_add += '</tr>';
+                    //numero de filas 
+                    filas++;
+                  });
+                  $("#inventable").append(tr_add);
+                  $('#items').val(filas);
+                  totales();
+                  //scrolltable();
+                }else
+                {
+                  alert("Este cliente no posee cargos pendientes");
+                }
+              }
+            }); 
           }
-        }); 
-
-      }
       function totales() {
         //impuestos
         var iva =0.13;   //$('#porc_iva').val();
@@ -831,8 +844,8 @@
       $('#total_final').html(total_descuento_mostrar);
       $('#totalfactura').val(total_final_mostrar);
 
-      $('#totcant').html(totalcantidad);
-      $('#items').val(filas);
+      $('#totcant').html(filas);
+      
       /*$('#totaltexto').load(urlprocess, {
         'total': total_final_mostrar
       });*/
@@ -847,7 +860,9 @@
       $('#monto_pago').html(total_final_mostrar);
 
       $('#totalfactura').val(total_final_mostrar);
+      
     }
+    $("#tot_fdo").val(total_final_mostrar);
 
 }
 
@@ -861,17 +876,101 @@ $(document).on('change', '#tipo_documento', function(event) {
     actualiza_subtotal(tr);
   });*/
   totales();
+  tipo_documentoload();
+});
+function tipo_documentoload()
+{
+  var tipo_documento=$('#tipo_documento').val();
+  if(tipo_documento!="")
+  {
+    $.ajax({
+    type:'GET',
+    url:'{{ url("facturacion/documento/") }}/'+tipo_documento,
+    success:function(data) {
+      $('#numdoc').val(data);       
+     
+    }
+  });
+  }else
+  {
+    $('#numdoc').val('');
+  }
+}
+$(document).on('change', '#id_cobrador', function(event) {
+  var id_cobrador=$('#id_cobrador').val();
+  if(id_cobrador!="")
+  {
+    $.ajax({
+    type:'GET',
+    url:'{{ url("facturacion/recibo/") }}/'+id_cobrador,
+    success:function(data) {
+      $('#numreci').val(data);       
+     
+    }
+    });
+  }else
+  {
+    $('#numreci').val('');
+  }
+  
 });
 
 $(document).on("click", ".Delete", function() {
   $(this).parents("tr").remove();
   totales();
 });
-$(document).on("click","#pagar",function(){
-	
+$(document).on("click","#addmes",function(){
+	/*var tipo_ser=$('#tipo_servicio').val();
+  var id_cliente=$('#id_cliente').val();
+  if(tipo_ser!="" && id_cliente!="")
+  {
+    var filas = $("#inventable tr").length;
+    /*if(filas>0)
+    {
+
+    }else
+    {
+      $.ajax({
+        type:'GET',
+        url:'{{ url("facturacion/addmes/") }}/'+id_cliente+'/'+tipo_ser,
+        success:function(data) {
+          console.log(data);
+          var precio_venta = 10;
+          var exento = 0;
+          var preciop_s_iva = 0;
+
+          var tipo_impresion=$('#tipo_documento').val();
+          var filas = parseInt($("#filas").val());
+          //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
+          var subtotal =0; //subt(0, 1);
+          //subt_mostrar = subtotal.toFixed(2);
+          //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
+          tr_add = '';
+          $.each( data, function( i, value ) {
+            tr_add += "<tr class='row100 head' id=''>";
+            tr_add += "<td class='cell100 column30 '>TEXTO DE EJEMPLO</td>";
+            tr_add += "<td class='cell100 column10 '>00001</td>";
+            tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
+            tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
+            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;'></div></td>";
+            tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+            tr_add += '</tr>';
+            //numero de filas 
+            filas++;
+          });
+          $("#inventable").append(tr_add);
+          $('#items').val(filas);
+          totales();        
+        }
+      });
+    }
+  }else
+  {
+    console.log("Cliente o tipos de servicio vacios");
+  }*/
 });
-$(document).on("keyup","#efectivo",function(){
-  total_efectivo();
+$(document).on("keyup","#efectivov",function(){
+  total_efectivov();
 });
 function total_efectivov(){
 	var efectivo=parseFloat($('#efectivov').val());
@@ -915,10 +1014,13 @@ function guardar() {
   var retencion = $('#total_retencion').text();/*total retencion cuando un cliente retiene 1 o 10 %*/
   var venta_exenta =$('#total_exenta').text();/*total venta exenta*/
   var total = $('#totalfactura').val();
+  
   var tipo_pago=$('#tipo_pago').val();
 	var id_cobrador =$('#id_cobrador').val();
-
-  var tipo_impresion= $('#tipo_impresion').val();
+  var tipo_servicio =$('#tipo_servicio').val();
+  var tipo_impresion= $('#tipo_documento').val();
+  var numreci= $('#numreci').val();
+  var numdoc= $('#numdoc').val();
 
 
   var id_prod = 0;
@@ -928,11 +1030,14 @@ function guardar() {
   $("#inventable tr").each(function(index) {
       var id = $(this).find("#id_cargo").val();
       var cargo = $(this).find("#cargo").val();
-
+      var mes_ser = $(this).find("#mes_ser").val();
+      var fecha_ven = $(this).find("#fecha_ven").val();
       if (cargo) {
         var obj = new Object();
         obj.id = id;
         obj.precio = cargo;
+        obj.mes_ser = mes_ser;
+        obj.fecha_ven = fecha_ven;
         //convert object to json string
         text = JSON.stringify(obj);
         array_json.push(text);
@@ -950,11 +1055,15 @@ function guardar() {
 
   var dataString = 'cuantos=' + i ;
   dataString += '&id_cliente=' + id_cliente + '&total=' + total;
+  dataString += '&tipo_servicio=' + tipo_servicio;
+  dataString += '&tipo_pago=' + tipo_pago;
+  dataString += '&numreci=' + numreci;
+  dataString += '&numdoc=' + numdoc;
   dataString += '&id_cobrador=' + id_cobrador + '&json_arr=' + json_arr;
   dataString += '&retencion=' + retencion;
   dataString += '&total_percepcion=' + total_percepcion;
   dataString += '&iva=' + iva;
-  dataString += '&items=' + items;
+  //dataString += '&items=' + items;
   dataString += '&subtotal=' + subtotal;
   dataString += '&sumas=' + sumas;
   dataString += '&venta_exenta=' + venta_exenta;
@@ -989,12 +1098,13 @@ function guardar() {
   }
 
   if (sel_vendedor == 1) {
-    $("#inventable tr").remove();
+    //$("#inventable tr").remove(); "{{ url('/grocery/post') }}"
     $.ajax({
-      type: 'POST',
-      url: urlprocess,
+      type: 'GET',
+      url: "{{ url('/fact_direct/abono') }}",
       data: dataString,
-      dataType: 'json',
+			dataType: 'json',
+      //dataType: 'json',
       success: function(datax) {
         if (datax.typeinfo == "Success")
 				{
@@ -1004,7 +1114,7 @@ function guardar() {
 						if(tipo_impresion == "CCF")
 						{
 							$("#nitcli").attr('readOnly', false);
-							$("#nrccli").attr('readOnly', false);
+							//$("#nrccli").attr('readOnly', false);
 						}
 						$("#nomcli").attr('readOnly', false);
 						$("#numdoc").attr('readOnly', false);
@@ -1024,10 +1134,10 @@ function guardar() {
 					 {
 						 //$('#num_doc_fact').val(ultimo);
 					 }
-					 $('#corr_in').val(datax.numdoc);
+					 //$('#corr_in').val(datax.numdoc);
         }
 				else {
-					display_notify(datax.typeinfo, datax.msg);
+				//display_notify(datax.typeinfo, datax.msg);
 				}
       }
     });

@@ -214,6 +214,10 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('fact_direct/autocomplete',[App\Http\Controllers\FacturacionController::class ,'busqueda_cliente'])->middleware('permission:Facturacion')->name('facturacion.autocomplete');
     Route::get('fact_direct/cargo/{id}/{servicio}',[App\Http\Controllers\FacturacionController::class ,'cargo'])->middleware('permission:Facturacion')->name('facturacion.cargo');
     Route::get('convertir/{numero}',[App\Http\Controllers\FacturacionController::class ,'total_texto'])->name('convercion.letra');
+    Route::get('fact_direct/abono',[App\Http\Controllers\FacturacionController::class ,'guardar'])->name('facturacion.abono');
+    Route::get('facturacion/recibo/{id_cobrador}',[App\Http\Controllers\FacturacionController::class ,'num_recibo'])->name('correlativo.recibo');
+    Route::get('facturacion/documento/{tipo_docu}',[App\Http\Controllers\FacturacionController::class ,'correlativo'])->name('correlativo.documento');
+    //Route::get('facturacion/addmes/{id_cliente}/{tipo_ser}',[App\Http\Controllers\FacturacionController::class ,'ultimo_mes'])->name('facturacion.addmes');
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

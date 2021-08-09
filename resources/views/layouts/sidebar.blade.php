@@ -111,6 +111,32 @@
                      
                  </li>
                  @endcan
+
+                 @can('Reportes')
+                 <li>
+                     <a href="javascript: void(0);" class="has-arrow waves-effect">
+                         <i class="uil-file"></i>
+                         <span>Reportes</span>
+                     </a>
+                     <ul class="sub-menu" aria-expanded="false">
+                         @can('reporte_cliente')
+                         <li><a href="{{url('reportes/Clientes')}}">Clientes</a></li>
+                         @endcan
+                         @can('reporte_cliente')
+                         <li><a href="{{url('reportes/facturas')}}">Facturas</a></li>
+                         @endcan
+                         @can('reporte_cliente')
+                         <li><a href="{{url('reportes/tecnicos')}}">Tecnicos</a></li>
+                         @endcan
+                         @can('reporte_cliente')
+                         <li><a href="{{url('reportes/actividades')}}">Actividades</a></li>
+                         @endcan
+                        
+                     </ul>
+                     
+                     
+                 </li>
+                 @endcan
                 <!-- configuracion -->
                 @can('Configuracion')
                 <li>

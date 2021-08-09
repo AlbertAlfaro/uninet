@@ -40,7 +40,7 @@
                             <select name="estado" id="estado" class="form-control">
                                 <option value="" >Seleccionar... </option>
                                 <option value="1"  @if($estado==1) selected @endif>Activos</option>
-                                <option value="0" @if($estado==0) selected @endif>Inactivos</option>
+                                <option value="0" @if($estado=='0') selected @endif>Inactivos</option>
                                 <option value="2" @if($estado==2) selected @endif>Suspendidos</option>
                                 <option value="3" @if($estado==3) selected @endif>Vencidos</option>
                               
@@ -98,45 +98,47 @@
 						</thead>
 							<tbody>
 								@foreach ($contratos as $obj_item)
-								<tr class="filas">
-									<td>{{$obj_item->numero_contrato}}</td>
-									<td>{{$obj_item->get_cliente->nombre}}</td>
-									<td>@if (isset($obj_item->fecha_instalacion)==1) {{$obj_item->fecha_instalacion->format('d/m/Y')}} @endif</td>
-                                    <td>@if (isset($obj_item->contrato_vence)==1)  {{$obj_item->contrato_vence->format('d/m/Y')}} @endif</td>
-                                    <td>
-                                        @if($obj_item->identificador==1) <div class="col-md-9 badge badge-pill badge-primary">Internet </div>@endif
-                                        @if($obj_item->identificador==2) <div class="col-md-9 badge badge-pill badge-light">Televisión </div> @endif
-                                    
-                                    </td>
-                                    <td>
-                                        @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo<span style="color: #34c38f;">_</span></div>@endif
-                                        @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>@endif
-                                        @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido  </div>@endif
-                                        @if($obj_item->activo==3) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group mr-1 mt-2">
-                                            <button type="button" class="btn btn-primary">Acciones</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ url('contrato/vista/'.$obj_item->id.'/'.$obj_item->identificador) }}" target="_blank">Ver contrato</a>
-                                                @php
-                                                    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-                                                    $fecha_entrada = strtotime($obj_item->contrato_vence);
+                                    @if(Auth::user()->id_sucursal==$obj_item->get_cliente->id_sucursal)
+                                        <tr class="filas">
+                                            <td>{{$obj_item->numero_contrato}}</td>
+                                            <td>{{$obj_item->get_cliente->nombre}}</td>
+                                            <td>@if (isset($obj_item->fecha_instalacion)==1) {{$obj_item->fecha_instalacion->format('d/m/Y')}} @endif</td>
+                                            <td>@if (isset($obj_item->contrato_vence)==1)  {{$obj_item->contrato_vence->format('d/m/Y')}} @endif</td>
+                                            <td>
+                                                @if($obj_item->identificador==1) <div class="col-md-9 badge badge-pill badge-primary">Internet </div>@endif
+                                                @if($obj_item->identificador==2) <div class="col-md-9 badge badge-pill badge-light">Televisión </div> @endif
+                                            
+                                            </td>
+                                            <td>
+                                                @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo<span style="color: #34c38f;">_</span></div>@endif
+                                                @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>@endif
+                                                @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido  </div>@endif
+                                                @if($obj_item->activo==3) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-group mr-1 mt-2">
+                                                    <button type="button" class="btn btn-primary">Acciones</button>
+                                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="mdi mdi-chevron-down"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="{{ url('contrato/vista/'.$obj_item->id.'/'.$obj_item->identificador) }}" target="_blank">Ver contrato</a>
+                                                        @php
+                                                            $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+                                                            $fecha_entrada = strtotime($obj_item->contrato_vence);
+                                                                
+                                                                                                                                                                
+                                                        @endphp 
+                                                        @if($fecha_actual<$fecha_entrada && $id !=0 )
+                                                            <a class="dropdown-item" href="{{ url('contrato/activo/'.$obj_item->id.'/'.$obj_item->identificador) }}" >Cambiar estado</a>
+                                                        @endif
                                                         
-                                                                                                                                                        
-                                                @endphp 
-                                                @if($fecha_actual<$fecha_entrada && $id !=0 )
-                                                    <a class="dropdown-item" href="{{ url('contrato/activo/'.$obj_item->id.'/'.$obj_item->identificador) }}" >Cambiar estado</a>
-                                                @endif
-                                                
-                                            </div>
-                                        </div>
-                                    </td>
-											
-								</tr>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                                    
+                                        </tr>
+                                    @endif
 								@endforeach
 							</tbody>
 					

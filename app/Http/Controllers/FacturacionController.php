@@ -167,12 +167,16 @@ class FacturacionController extends Controller
       ]);
     }
     public function guardar(Request $request)
-    {
+    {   
         if ($request->cuantos >0)
-        {
+        { 
+            
+            
+            //comienza lo de abonos
             $array = json_decode($request->json_arr, true);
             if($request->tipo_impresion==1){$tipo="FAC";}
             if($request->tipo_impresion==2){$tipo="CRE";}
+
             foreach ($array as $fila)
             {   $abono = new Abono();
                 $abono->id_cliente=$request->id_cliente;
@@ -189,11 +193,15 @@ class FacturacionController extends Controller
                 $abono->cargo=0;
                 $abono->abono=$fila['precio'];
                 $abono->anulado=0;
-                $abono->pagado=0;
+                $abono->pagado=1;
                 $abono->save();
                 if($abono)
                 {
-                    Abono::where('id',$fila['id'])->update(['pagado' =>'1']);
+                    if($fila['id']!=0)
+                    {
+                        Abono::where('id',$fila['id'])->update(['pagado' =>'1']);
+                    }
+                    
                 }
                 
             }
@@ -259,16 +267,54 @@ class FacturacionController extends Controller
 
         return $this->get_correlativo($ultimo,5);
     }
-    /*
-    public function ultimo_mes($id_cliente, $tipo_ser)
-    {
-        $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->get();
-        $abono1=$abono->last();
-        $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio->format('d/m/Y')."+ 1 month"));
-        $fecha_vence=date("d-m-Y", strtotime($mes_servicio."+ 10 days"));
-        //$results[] = [ 'id' => $abono1->id, 'cargo' => $abono1->cargo,'mes_servicio' =>$mes_servicio->format('m/Y'),'fecha_vence'=>$fecha_vence,'mes_ser'=>$mes_servicio];
-        return response($abono1);
-        //nota: me traigo el precio de lo que pago por la ultima mensualidad
-    }*/
+    
+    public function ultimo_mes($id_cliente, $tipo_ser,$filas)
+    {   //nota: me falta validar si tiene el servicio o no y segun la logica por lo menos debe tener un abono realizado para ver el ultimo mes 
+        //1=internet y 0=television
+        if($tipo_ser==1){$contrato= Internet::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        if($tipo_ser==0){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        $results2 = array();
+        if(count($contrato)!=0)
+        {
+            $precio=$contrato[0]->cuota_mensual;
+            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('pagado','1')->get();
+            $abono1=$abono->last();
+            $results2 = array();
+            if($filas==0)
+            {
+             
+                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
+                $fecha_vence=date("d-m-Y", strtotime($mes_servicio."+ 10 days"));
+                $results2[] = [ 
+                    'id' => $abono1->id,
+                    'cargo' => $precio,
+                    'mes_servicio' =>$mes_servicio,
+                    'fecha_vence'=>$fecha_vence,
+                    'mes_ser'=>$mes_servicio,
+                ];
+                return response($results2);
+                //nota: me traigo el precio de lo que pago por la ultima mensualidad
+            }
+            if($filas>0)
+            {   $filas =$filas+1;
+                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                $fecha_vence=date("d-m-Y", strtotime($mes_servicio."+ 10 days"));
+                $results2[] = [ 
+                    'id' => $abono1->id,
+                    'cargo' => $precio,
+                    'mes_servicio' =>$mes_servicio,
+                    'fecha_vence'=>$fecha_vence,
+                    'mes_ser'=>$mes_servicio,
+                ];
+                return response($results2);
+                //nota: me traigo el precio de lo que pago por la ultima mensualidad
+            }
+        }else
+        {
+
+            return response($results2);
+        }
+
+    }
 
 }

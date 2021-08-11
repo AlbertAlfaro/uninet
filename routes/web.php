@@ -217,7 +217,7 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('fact_direct/abono',[App\Http\Controllers\FacturacionController::class ,'guardar'])->name('facturacion.abono');
     Route::get('facturacion/recibo/{id_cobrador}',[App\Http\Controllers\FacturacionController::class ,'num_recibo'])->name('correlativo.recibo');
     Route::get('facturacion/documento/{tipo_docu}',[App\Http\Controllers\FacturacionController::class ,'correlativo'])->name('correlativo.documento');
-    //Route::get('facturacion/addmes/{id_cliente}/{tipo_ser}',[App\Http\Controllers\FacturacionController::class ,'ultimo_mes'])->name('facturacion.addmes');
+    Route::get('facturacion/addmes/{id_cliente}/{tipo_ser}/{filas}',[App\Http\Controllers\FacturacionController::class ,'ultimo_mes'])->name('facturacion.addmes');
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

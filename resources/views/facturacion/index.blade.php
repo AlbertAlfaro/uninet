@@ -474,7 +474,6 @@
           </div>
         </div>  
         
-        <input type='text' name='id_empleado' id='id_empleado' >
         <input type='text' name='numero_doc' id='numero_doc' >
         <input type='text' name='id_factura' id='id_factura' >
         <input type='text' name='totalfactura' id='totalfactura' value='0'>  
@@ -1075,7 +1074,7 @@ function guardar() {
 	dataString += '&id_factura=' + id_factura;
 
 
-  
+  alert(dataString);
 	if (tipo_pago == "") {
     msg = 'No a seleccionado un tipo de pago!';
     sel_vendedor = 0;
@@ -1101,14 +1100,21 @@ function guardar() {
   }
 
   if (sel_vendedor == 1) {
-    //$("#inventable tr").remove(); "{{ url('/grocery/post') }}"
+    $("#inventable tr").remove();
     $.ajax({
       type: 'GET',
       url: "{{ url('/fact_direct/abono') }}",
       data: dataString,
-			//dataType: 'json',
       success: function(datax) {
         console.log(datax);
+        $("#nomcli").val('');
+				$("#numdoc").val('');
+				$("#dircli").val('');
+ 				$("#numreci").val('');
+        $("#tot_fdo").val('');
+        $("#nitcli").val('');
+        $("#efectivov").val('');
+        $("#cambiov").val('');
         /*if (datax.typeinfo == "Success")
 				{
 					$(".usage").attr("disabled", true);

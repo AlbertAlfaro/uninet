@@ -135,7 +135,8 @@ class FacturacionController extends Controller
                 if($abono)
                 {
                     foreach ($abono as $query){
-                        $results[] = [ 'id' => $query->id, 'cargo' => $query->cargo,'mes_servicio' => $query->mes_servicio->format('m/Y'),'fecha_vence'=>$query->fecha_vence->format('d/m/Y'),'mes_ser'=>$query->mes_servicio->format('Y/m/d')];
+                        $cargo_sin_iva=$query->cargo/1.13;
+                        $results[] = [ 'id' => $query->id, 'cargo' => $query->cargo,'mes_servicio' => $query->mes_servicio->format('m/Y'),'fecha_vence'=>$query->fecha_vence->format('d/m/Y'),'mes_ser'=>$query->mes_servicio->format('Y/m/d'),'cargo_sin_iva'=>$cargo_sin_iva];
                     }
                 }else
                 {
@@ -224,7 +225,8 @@ class FacturacionController extends Controller
                         $abono->fecha_aplicado=date('Y/m/d');
                         $abono->fecha_vence=Carbon::createFromFormat('d/m/Y', $fila['fecha_ven']);
                         $abono->cargo=0;
-                        $abono->abono=$fila['precio'];
+                        $abono->abono=$fila['cuota'];
+                        $abono->precio=$fila['precio'];
                         $abono->anulado=0;
                         $abono->pagado=1;
                         $abono->save();
@@ -323,12 +325,15 @@ class FacturacionController extends Controller
                 $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
                 $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
                 $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
+                $cargo_sin_iva=$precio/1.13;
+
                 $results2[] = [ 
                     'id' => $abono1->id,
                     'cargo' => $precio,
                     'mes_servicio' =>$mes_servicio,
                     'fecha_vence'=>$fecha_vence,
                     'mes_ser'=>$mes_ser,
+                    'cargo_sin_iva'=>$cargo_sin_iva,
                 ];
                 return response($results2);
                 
@@ -338,12 +343,14 @@ class FacturacionController extends Controller
                 $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
                 $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
                 $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
+                $cargo_sin_iva=$precio/1.13;
                 $results2[] = [ 
                     'id' => $abono1->id,
                     'cargo' => $precio,
                     'mes_servicio' =>$mes_servicio,
                     'fecha_vence'=>$fecha_vence,
                     'mes_ser'=>$mes_ser,
+                    'cargo_sin_iva'=>$cargo_sin_iva,
                 ];
                 return response($results2);
             }

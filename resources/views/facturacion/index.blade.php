@@ -737,11 +737,8 @@
           $('#total_final').html(total_descuento_mostrar);
           $('#totalfactura').val(total_final_mostrar);
 
-          //$('#totcant').html(totalcantidad);
+          
           $('#items').val(filas);
-          /*$('#totaltexto').load('fact_direct/totaltexto', {
-            'total': total_final_mostrar
-          });*/
           $.ajax({
             type: 'GET',
             url: 'convertir/'+total_final_mostrar,
@@ -758,11 +755,6 @@
     else
     {
       $("#inventable tr").each(function() {
-        //subt_cant = $(this).find("#cant").val();
-        /*
-        if (isNaN(subt_cant) || subt_cant == "") {
-          subt_cant = 0;
-        }*/
         subt_gravado=0;
         subt_exento=0;
        
@@ -773,8 +765,6 @@
           
           subt_gravado= $(this).find("#cargo").val();
         }
-
-        //totalcantidad += parseFloat(subt_cant);
 
         total_gravado += parseFloat(subt_gravado);
 

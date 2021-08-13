@@ -226,3 +226,15 @@ Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_co
 //Usuario1 -> rol-> administrador_cliente-> index_cliente,create_cliente,edit_cliente
 //Usuario2 -> rol-> administrador-> all_permission
 //Usuario3 -> rol-> cliente-> index_factura,pay_factura
+
+Route::group(['middleware' => ['permission:Productos']], function () {
+    //grupo users
+            //ruta      //controlador al que apunta la ruta        //nombre de la funcion   //permiso               //nombre de la ruta
+    Route::get('productos',[App\Http\Controllers\ProductoController::class ,'index'])->middleware('permission:Productos')->name('productos.index');
+    Route::get('productos/create',[App\Http\Controllers\ProductoController::class ,'create'])->middleware('permission:create_producto')->name('productos.create');
+    Route::post('productos/store',[App\Http\Controllers\ProductoController::class ,'store'])->middleware('permission:create_producto')->name('productos.store');
+    Route::get('productos/edit/{id}',[App\Http\Controllers\ProductoController::class ,'edit'])->middleware('permission:edit_producto')->name('productos.edit');
+    Route::post('productos/update/{id}',[App\Http\Controllers\ProductoController::class ,'update'])->middleware('permission:edit_producto')->name('productos.update');
+    Route::get('productos/destroy/{id}',[App\Http\Controllers\ProductoController::class ,'destroy'])->middleware('permission:destroy_producto')->name('productos.distroy');
+    
+});

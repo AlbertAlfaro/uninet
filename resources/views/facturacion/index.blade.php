@@ -367,7 +367,6 @@
                   <thead class="bg-primary" style="color:white;">
                     <tr>
                       <th>Concepto</th>
-                      <th>N° recibo</th>
                       <th>Mes de servicio</th>
                       <th>Vencimiento</th>
                       <th>Cuota</th>
@@ -474,7 +473,6 @@
           </div>
         </div>  
         
-        <input type='text' name='id_empleado' id='id_empleado' >
         <input type='text' name='numero_doc' id='numero_doc' >
         <input type='text' name='id_factura' id='id_factura' >
         <input type='text' name='totalfactura' id='totalfactura' value='0'>  
@@ -589,11 +587,10 @@
                   tr_add = '';
                   $.each( data, function( i, value ) {
                     tr_add += "<tr class='row100 head' id=''>";
-                    tr_add += "<td class='cell100 column30 '>TEXTO DE EJEMPLO</td>";
-                    tr_add += "<td class='cell100 column10 '>00001</td>";
+                    tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data[i].cargo+"'>TEXTO DE EJEMPLO</td>";
                     tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
                     tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
-                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;'></div></td>";
+                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;' readOnly></div></td>";
                     tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                     tr_add += '</tr>';
                     //numero de filas 
@@ -664,11 +661,12 @@
             subt_exento=0;
 
             if (ex==1) {
-              subt_exento=parseFloat($(this).find("#cargo").val()/1.13); 
+              subt_exento=$(this).find("#cargo_sin_iva").val(); 
               
             }
             else {
-              subt_gravado= parseFloat($(this).find("#cargo").val()/1.13);
+              //subt_gravado= parseFloat($(this).find("#cargo").val()/1.13);
+              subt_gravado= $(this).find("#cargo").val();
             }
 
             //totalcantidad += parseFloat(subt_cant);
@@ -769,7 +767,7 @@
         subt_exento=0;
        
         if (ex==1) {
-          subt_exento=parseFloat($(this).find("#cargo").val()/1.13);
+          subt_exento=$(this).find("#cargo_sin_iva").val();
         }
         else {
           
@@ -871,11 +869,11 @@ function round(value, decimals) {
   return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 $(document).on('change', '#tipo_documento', function(event) {
-  /*$('#inventable tr').each(function(index) {
+  
+  $('#inventable tr').each(function(index) {
     var tr = $(this);
     actualiza_subtotal(tr);
-  });*/
-  totales();
+  });
   tipo_documentoload();
 });
 function tipo_documentoload()
@@ -895,6 +893,34 @@ function tipo_documentoload()
   {
     $('#numdoc').val('');
   }
+}
+function actualiza_subtotal(tr) {
+  var iva = 0.13;
+  var cargo = parseFloat(tr.find('#cargo_sin_iva').val());
+
+  var tipo_impresion = $('#tipo_documento').val();
+
+  if (tipo_impresion==2) {//2=CCF
+
+    if (isNaN(cargo) || cargo == "") {
+      cargo = 0;
+    }
+    var subt_mostrar = cargo.toFixed(4);
+    //var subt_mostrar = round(cargo,2);
+    tr.find("#cargo").val(subt_mostrar);
+    totales();
+  }else
+  {
+    var precio = tr.find('#cuota').val();
+    if (isNaN(precio) || precio == "") {
+      precio = 0;
+    }
+    var subt_mostrar = round(precio,2);
+    tr.find("#cargo").val(subt_mostrar);
+    totales();
+
+  }
+
 }
 $(document).on('change', '#id_cobrador', function(event) {
   var id_cobrador=$('#id_cobrador').val();
@@ -920,21 +946,21 @@ $(document).on("click", ".Delete", function() {
   totales();
 });
 $(document).on("click","#addmes",function(){
-	/*var tipo_ser=$('#tipo_servicio').val();
+	var tipo_ser=$('#tipo_servicio').val();
   var id_cliente=$('#id_cliente').val();
+
+ 
+ // Añades los meses
   if(tipo_ser!="" && id_cliente!="")
   {
     var filas = $("#inventable tr").length;
-    /*if(filas>0)
-    {
-
-    }else
-    {
-      $.ajax({
-        type:'GET',
-        url:'{{ url("facturacion/addmes/") }}/'+id_cliente+'/'+tipo_ser,
-        success:function(data) {
-          console.log(data);
+    $.ajax({
+      type:'GET',
+      url:'{{ url("facturacion/addmes/") }}/'+id_cliente+'/'+tipo_ser+'/'+filas,
+      success:function(data) {
+        console.log(data);
+        if(data.length>0)
+        {
           var precio_venta = 10;
           var exento = 0;
           var preciop_s_iva = 0;
@@ -948,11 +974,10 @@ $(document).on("click","#addmes",function(){
           tr_add = '';
           $.each( data, function( i, value ) {
             tr_add += "<tr class='row100 head' id=''>";
-            tr_add += "<td class='cell100 column30 '>TEXTO DE EJEMPLO</td>";
-            tr_add += "<td class='cell100 column10 '>00001</td>";
-            tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
+            tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data[i].cargo+"'>TEXTO DE EJEMPLO</td>";
+            tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='0'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
             tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
-            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;'></div></td>";
+            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;' readOnly></div></td>";
             tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
             tr_add += '</tr>';
             //numero de filas 
@@ -960,14 +985,16 @@ $(document).on("click","#addmes",function(){
           });
           $("#inventable").append(tr_add);
           $('#items').val(filas);
-          totales();        
-        }
-      });
-    }
+          totales();  
+        }else{
+          alert('Cliente no tiene este servicio activo');
+        }    
+      }
+    });
   }else
   {
     console.log("Cliente o tipos de servicio vacios");
-  }*/
+  }
 });
 $(document).on("keyup","#efectivov",function(){
   total_efectivov();
@@ -1030,18 +1057,21 @@ function guardar() {
   $("#inventable tr").each(function(index) {
       var id = $(this).find("#id_cargo").val();
       var cargo = $(this).find("#cargo").val();
+      var cuota = $(this).find("#cuota").val();//cuota mensual
       var mes_ser = $(this).find("#mes_ser").val();
       var fecha_ven = $(this).find("#fecha_ven").val();
       if (cargo) {
         var obj = new Object();
         obj.id = id;
         obj.precio = cargo;
+        obj.cuota = cuota;
         obj.mes_ser = mes_ser;
         obj.fecha_ven = fecha_ven;
         //convert object to json string
         text = JSON.stringify(obj);
         array_json.push(text);
         i = i + 1;
+        
       }
       else
       {
@@ -1052,7 +1082,7 @@ function guardar() {
   if (i==0) {
     error=true
   }
-
+ 
   var dataString = 'cuantos=' + i ;
   dataString += '&id_cliente=' + id_cliente + '&total=' + total;
   dataString += '&tipo_servicio=' + tipo_servicio;
@@ -1071,8 +1101,6 @@ function guardar() {
   dataString += '&tipo_impresion=' + tipo_impresion;
 	dataString += '&id_factura=' + id_factura;
 
-
-  
 	if (tipo_pago == "") {
     msg = 'No a seleccionado un tipo de pago!';
     sel_vendedor = 0;
@@ -1098,15 +1126,22 @@ function guardar() {
   }
 
   if (sel_vendedor == 1) {
-    //$("#inventable tr").remove(); "{{ url('/grocery/post') }}"
+    $("#inventable tr").remove();
     $.ajax({
       type: 'GET',
       url: "{{ url('/fact_direct/abono') }}",
       data: dataString,
-			dataType: 'json',
-      //dataType: 'json',
       success: function(datax) {
-        if (datax.typeinfo == "Success")
+        console.log(datax);
+        $("#nomcli").val('');
+				$("#numdoc").val('');
+				$("#dircli").val('');
+ 				$("#numreci").val('');
+        $("#tot_fdo").val('');
+        $("#nitcli").val('');
+        $("#efectivov").val('');
+        $("#cambiov").val('');
+        /*if (datax.typeinfo == "Success")
 				{
 					$(".usage").attr("disabled", true);
 					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
@@ -1138,7 +1173,7 @@ function guardar() {
         }
 				else {
 				//display_notify(datax.typeinfo, datax.msg);
-				}
+				}*/
       }
     });
   } else {

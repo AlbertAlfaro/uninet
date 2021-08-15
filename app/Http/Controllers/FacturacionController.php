@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Internet;
 use App\Models\Tv;
 use App\Models\Abono;
+use App\Models\Factura;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -134,7 +135,8 @@ class FacturacionController extends Controller
                 if($abono)
                 {
                     foreach ($abono as $query){
-                        $results[] = [ 'id' => $query->id, 'cargo' => $query->cargo,'mes_servicio' => $query->mes_servicio->format('m/Y'),'fecha_vence'=>$query->fecha_vence->format('d/m/Y'),'mes_ser'=>$query->mes_servicio->format('Y/m/d')];
+                        $cargo_sin_iva=$query->cargo/1.13;
+                        $results[] = [ 'id' => $query->id, 'cargo' => $query->cargo,'mes_servicio' => $query->mes_servicio->format('m/Y'),'fecha_vence'=>$query->fecha_vence->format('d/m/Y'),'mes_ser'=>$query->mes_servicio->format('Y/m/d'),'cargo_sin_iva'=>$cargo_sin_iva];
                     }
                 }else
                 {
@@ -167,39 +169,83 @@ class FacturacionController extends Controller
       ]);
     }
     public function guardar(Request $request)
-    {
+    {   
         if ($request->cuantos >0)
-        {
-            $array = json_decode($request->json_arr, true);
-            if($request->tipo_impresion==1){$tipo="FAC";}
-            if($request->tipo_impresion==2){$tipo="CRE";}
-            foreach ($array as $fila)
-            {   $abono = new Abono();
-                $abono->id_cliente=$request->id_cliente;
-                $abono->id_cobrador=$request->id_cobrador;
-                $abono->id_usuario=Auth::user()->id;
-                $abono->recibo = $request->numreci;
-                $abono->tipo_servicio=$request->tipo_servicio;
-                $abono->numero_documento=$tipo."-".$request->numdoc;
-                $abono->tipo_documento=$request->tipo_impresion;
-                $abono->tipo_pago=$request->tipo_pago;
-                $abono->mes_servicio=$fila['mes_ser'];
-                $abono->fecha_aplicado=date('Y/m/d');
-                $abono->fecha_vence=Carbon::createFromFormat('d/m/Y', $fila['fecha_ven']);
-                $abono->cargo=0;
-                $abono->abono=$fila['precio'];
-                $abono->anulado=0;
-                $abono->pagado=0;
-                $abono->save();
-                if($abono)
-                {
-                    Abono::where('id',$fila['id'])->update(['pagado' =>'1']);
-                }
+        { 
+            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
+            {
                 
+                return "Este documento ya fue impreso";
+            }else
+            { // AHORITA NO GUARDA LOS ABONOS CUANDO SON MESES ANTICIPOS
+                if($request->tipo_impresion==1){$tipo="FACTURA";}
+                if($request->tipo_impresion==2){$tipo="CREDITO FISCAL";}
+                $factura = new Factura();
+                $factura->id_usuario=Auth::user()->id;
+                $factura->id_cliente=$request->id_cliente;
+                $factura->id_cobrador=$request->id_cobrador;
+                $factura->sumas=$request->sumas;
+                $factura->iva=$request->iva;
+                $factura->subtotal=$request->subtotal;
+                $factura->suma_gravada=$request->suma_gravada;
+                $factura->venta_exenta=$request->venta_exenta;
+                $factura->total=$request->total;
+                $factura->tipo_pago=$request->tipo_pago;
+                $factura->tipo=$tipo;
+                $correlativo=Correlativo::find($request->tipo_impresion);
+                $factura->serie=$correlativo->serie;
+                $factura->tipo_documento=$request->tipo_impresion;
+                $factura->numero_documento=$request->numdoc;
+                $factura->impresa=0;
+                $factura->cuota=1;
+                $factura->anulada=0;
+                $factura->id_sucursal=Auth::user()->id_sucursal;
+                $factura->save();
+                $ultima_factura = Factura::all()->last();
+                $id_factura =$ultima_factura->id;
+                if($factura)
+                {  
+                    //comienza lo de abonos
+                    $array = json_decode($request->json_arr, true);
+                    foreach ($array as $fila)
+                    {   
+                        if($request->tipo_impresion==1){$tipo="FAC";}
+                        if($request->tipo_impresion==2){$tipo="CRE";}
+                        $abono = new Abono();
+                        $abono->id_factura=$id_factura;
+                        $abono->id_cliente=$request->id_cliente;
+                        $abono->id_cobrador=$request->id_cobrador;
+                        $abono->id_usuario=Auth::user()->id;
+                        $abono->recibo = $request->numreci;
+                        $abono->tipo_servicio=$request->tipo_servicio;
+                        $abono->numero_documento=$tipo."-".$request->numdoc;
+                        $abono->tipo_documento=$request->tipo_impresion;
+                        $abono->tipo_pago=$request->tipo_pago;
+                        $abono->mes_servicio=$fila['mes_ser'];
+                        $abono->fecha_aplicado=date('Y/m/d');
+                        $abono->fecha_vence=Carbon::createFromFormat('d/m/Y', $fila['fecha_ven']);
+                        $abono->cargo=0;
+                        $abono->abono=$fila['cuota'];
+                        $abono->precio=$fila['precio'];
+                        $abono->anulado=0;
+                        $abono->pagado=1;
+                        $abono->save();
+                        if($abono)
+                        {
+                            if($fila['id']!=0)
+                            {
+                                Abono::where('id',$fila['id'])->update(['pagado' =>'1']);
+                            }
+                        }
+                    }
+                    Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
+                    $this->setCorrelativo($request->tipo_impresion);
+                    return "Guradado con exito";
+                }else
+                {
+                    return "no se puedo guardar la fctura";
+                }
             }
-            Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
-            $this->setCorrelativo($request->tipo_impresion);
-            return "Guradado con exito";
             
         }else{
             return "No hay abonos para ingresar";
@@ -259,16 +305,61 @@ class FacturacionController extends Controller
 
         return $this->get_correlativo($ultimo,5);
     }
-    /*
-    public function ultimo_mes($id_cliente, $tipo_ser)
-    {
-        $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->get();
-        $abono1=$abono->last();
-        $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio->format('d/m/Y')."+ 1 month"));
-        $fecha_vence=date("d-m-Y", strtotime($mes_servicio."+ 10 days"));
-        //$results[] = [ 'id' => $abono1->id, 'cargo' => $abono1->cargo,'mes_servicio' =>$mes_servicio->format('m/Y'),'fecha_vence'=>$fecha_vence,'mes_ser'=>$mes_servicio];
-        return response($abono1);
-        //nota: me traigo el precio de lo que pago por la ultima mensualidad
-    }*/
+    
+    public function ultimo_mes($id_cliente, $tipo_ser,$filas)
+    {   /*nota:segun la logica por lo menos debe tener un abono realizado para ver el ultimo mes
+        y asi para los que siguen, si tiene cuotas pendientes no quitaras y usar el boton anticipo de meses*/ 
+        //1=internet y 0=television
+        if($tipo_ser==1){$contrato= Internet::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        if($tipo_ser==0){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        $results2 = array();
+        if(count($contrato)!=0)
+        {
+            $precio=$contrato[0]->cuota_mensual;
+            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('pagado','1')->get();
+            $abono1=$abono->last();
+            $results2 = array();
+            if($filas==0)
+            {
+             
+                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
+                $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
+                $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
+                $cargo_sin_iva=$precio/1.13;
+
+                $results2[] = [ 
+                    'id' => $abono1->id,
+                    'cargo' => $precio,
+                    'mes_servicio' =>$mes_servicio,
+                    'fecha_vence'=>$fecha_vence,
+                    'mes_ser'=>$mes_ser,
+                    'cargo_sin_iva'=>$cargo_sin_iva,
+                ];
+                return response($results2);
+                
+            }
+            if($filas>0)
+            {   $filas =$filas+1;
+                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
+                $cargo_sin_iva=$precio/1.13;
+                $results2[] = [ 
+                    'id' => $abono1->id,
+                    'cargo' => $precio,
+                    'mes_servicio' =>$mes_servicio,
+                    'fecha_vence'=>$fecha_vence,
+                    'mes_ser'=>$mes_ser,
+                    'cargo_sin_iva'=>$cargo_sin_iva,
+                ];
+                return response($results2);
+            }
+        }else
+        {
+
+            return response($results2);
+        }
+
+    }
 
 }

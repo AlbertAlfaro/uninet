@@ -116,7 +116,10 @@ class FacturacionController extends Controller
     
     }   
     public function cargo($id_cliente,$servicio)
-    {    $results = array();
+    {   $results = array();
+        $xdatos['typeinfo']='';
+        $xdatos['msg']='';
+        $xdatos['results']=[];
         if($servicio==0 || $servicio==1)
         {
             if($servicio==1)//1=internet
@@ -133,25 +136,32 @@ class FacturacionController extends Controller
             }
             if($servi>0)
             {   $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->get();
-                if($abono)
+                if($abono->count()>0)
                 {
                     foreach ($abono as $query){
                         $cargo_sin_iva=$query->cargo/1.13;
                         $results[] = [ 'id' => $query->id, 'cargo' => $query->cargo,'mes_servicio' => $query->mes_servicio->format('m/Y'),'fecha_vence'=>$query->fecha_vence->format('d/m/Y'),'mes_ser'=>$query->mes_servicio->format('Y/m/d'),'cargo_sin_iva'=>$cargo_sin_iva];
                     }
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['results']=$results;
                 }else
                 {
-                    $results=[];
+                    $xdatos['typeinfo']='Warning';
+                    $xdatos['msg']='Cliente no posee cargos generados';
+                    
                 }
            
-              return response($results);   
+              return response($xdatos);   
                /*$abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->get();
                 return response()->json(
                     $abono-> toArray()  
                 );*/
             }else
-            {
-                return $mensaje;
+            {   
+                $xdatos['typeinfo']='Warning';
+                $xdatos['msg']=$mensaje;
+                $xdatos['cabtidad']=0;
+                return $xdatos;
             
             }
         }else

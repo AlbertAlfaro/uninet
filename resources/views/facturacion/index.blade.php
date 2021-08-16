@@ -508,7 +508,7 @@
     <script>
 
       //ejemplo utilizando el toastr
-
+      /*
       toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -525,16 +525,56 @@
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
-      }
+      }*/
 
-      toastr.success("Hello World!");
+      //toastr.success("Hello World!");
 
-      toastr.error("Hello World!");
+      //toastr.error("Hello World!");
+      
+      //toastr.warning("Hello World!");
 
       //pagina para obtener los codigos de arriba
       //https://codeseven.github.io/toastr/demo.html
 
-      //
+      function display_notify(typeinfo,msg,process)
+      {
+	      // Use toastr for notifications get an parameter from other function
+	      var infotype=typeinfo;
+	      var msg=msg;
+        toastr.options = {
+          "closeButton": false,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": false,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+	      if (infotype=='Success'){
+		      toastr.success(msg,infotype);
+		      /*if (process=='insert'){
+			      cleanvalues();
+		      }*/
+	      }
+	      if (infotype=='Info'){
+		      toastr.info(msg,infotype);
+	      }
+	      if (infotype=='Warning'){
+		      toastr.warning(msg,infotype);
+	      }
+	      if (infotype=='Error'){
+		      toastr.error(msg,infotype);
+	      }
+
+      }
 
 
       function eliminar(id,id_cliente){
@@ -570,6 +610,11 @@
                 $("#busqueda").autocomplete({
                     source: "{{URL::to('fact_direct/autocomplete')}}",
                     select: function(event, ui) {
+                        //limpiando datos
+                        $("#inventable tr").remove();
+                        totales();
+                        $('input[type="text"]').val('');
+                        //------------------------------
                         $('#id_cliente').val(ui.item.id);
                         //$('#busqueda').val(ui.item.nombre);   
                         $("#tipo_documento").val(ui.item.tipo_documento);
@@ -606,9 +651,9 @@
               type:'GET',
               url:'{{ url("fact_direct/cargo") }}/'+id_cliente+'/'+servicio,
               success:function(data){
-                if(data.length > 0)
+                if(data.typeinfo=="Success")
                 {
-                  console.log(data);
+                  console.log(data.results);
                   var precio_venta = 10;
                   var exento = 0;
                   var preciop_s_iva = 0;
@@ -621,12 +666,12 @@
                   //subt_mostrar = subtotal.toFixed(2);
                   //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
                   tr_add = '';
-                  $.each( data, function( i, value ) {
+                  $.each( data.results, function( i, value ) {
                     tr_add += "<tr class='row100 head' id=''>";
-                    tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data[i].cargo+"'>TEXTO DE EJEMPLO</td>";
-                    tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
-                    tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
-                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;' readOnly></div></td>";
+                    tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>TEXTO DE EJEMPLO</td>";
+                    tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data.results[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
+                    tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
+                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
                     tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                     tr_add += '</tr>';
                     //numero de filas 
@@ -636,9 +681,11 @@
                   $('#items').val(filas);
                   totales();
                   //scrolltable();
+                  
                 }else
                 {
-                  alert("Este cliente no posee cargos pendientes");
+                  
+                  display_notify(data.typeinfo,data.msg,'');
                 }
               }
             }); 
@@ -901,6 +948,18 @@ $(document).on('change', '#tipo_documento', function(event) {
     actualiza_subtotal(tr);
   });
   tipo_documentoload();
+});
+$(document).on('change', '#tipo_servicio', function(event) {
+  $("#inventable tr").remove();
+  totales();
+  $('input[type="text"]').val('');
+  /*numdoc campos a limpiar
+  numreci
+  nomcli
+  dircli
+  nitcli
+  efectivov
+  cambiov*/
 });
 function tipo_documentoload()
 {

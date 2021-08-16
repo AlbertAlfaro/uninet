@@ -31,16 +31,13 @@
                                 <option value="" >Seleccionar... </option>
                                 <option value="1" >Contratos a vencer</option>
                                 <option value="2" >Pago de servicio</option>
-                                <option value="3" >Contratos</option>
-                                <option value="4" >General</option>
+                                <option value="3" >General</option>
+                               
                                 
                               
                             </select>
                         </div>
-                        <div class="col-md-2" style="display:none;" id="div_meses_f">
-                            <label for="estado">Meses faltantes *</label>
-                            <input type="number" class="form-control" name="meses_f" id="meses_f" autocomplete="off">
-                        </div>
+                       
                         <div class="col-md-2" style="display:none;" id="div_fecha_i">
                             <label for="estado">Desdes </label>
                             <input type="text" class="form-control datepicker" name="fecha_i" id="fecha_i" autocomplete="off">
@@ -51,7 +48,7 @@
                         </div>
                         <div class="col-md-2" style="display:none;" id="div_dia">
                             <label for="estado">Fecha *</label>
-                            <input type="text" class="form-control datepicker" name="dia" id="dia" value="{{ date('d/m/Y') }}" autocomplete="off">
+                            <input type="text" class="form-control datepicker" name="fecha" id="fecha" value="{{ date('d/m/Y') }}" autocomplete="off">
                         </div>
 
                         <div class="col-md-2" style="display: none;" id="div_estado_pago">
@@ -100,10 +97,9 @@
        var tipo_reporte = $("#tipo_reporte").val();
 
        if(tipo_reporte==1){
-           $("#div_meses_f").show();
+           $("#div_fecha_i").show();
+           $("#div_fecha_f").show();
 
-           $("#div_fecha_i").hide();
-           $("#div_fecha_f").hide();
            $("#div_dia").hide();
            $("#div_estado_pago").hide();
 
@@ -114,7 +110,7 @@
 
            $("#div_fecha_i").hide();
            $("#div_fecha_f").hide();
-           $("#div_meses_f").hide();
+         
 
        }
 
@@ -123,7 +119,7 @@
            $("#div_fecha_f").show();
 
            $("#div_dia").hide();
-           $("#div_meses_f").hide();
+        
            $("#div_estado_pago").hide();
 
        }
@@ -133,7 +129,7 @@
            $("#div_fecha_f").show();
 
            $("#div_dia").hide();
-           $("#div_meses_f").hide();
+         
            $("#div_estado_pago").hide();
 
        }
@@ -143,11 +139,34 @@
            $("#div_fecha_f").hide();
 
            $("#div_dia").hide();
-           $("#div_meses_f").hide();
+         
            $("#div_estado_pago").hide();
 
        }
       
+    });
+
+    $( "#estado_pago" ).change(function() {
+        var estado_pago = $("#estado_pago").val();
+
+        if(estado_pago==1){
+            $("#fecha").prop( "disabled", false );
+           
+
+        }
+
+        if(estado_pago==2){
+            $("#fecha").prop( "disabled", true );
+           
+
+        }
+
+        if(estado_pago==3){
+            $("#fecha").prop( "disabled", true );
+           
+
+        }
+
     });
 
 

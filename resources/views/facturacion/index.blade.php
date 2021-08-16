@@ -293,7 +293,7 @@
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle') Facturación @endslot
-    @slot('title') Factura directa @endslot
+    @slot('title') Factura Abono @endslot
 @endcomponent
 <div class="row">
     <div class="col-12">
@@ -565,7 +565,6 @@
 
       function cargo(id_cliente){
             var servicio=$('#tipo_servicio').val();
-            alert(servicio);
             $.ajax({
               type:'GET',
               url:'{{ url("fact_direct/cargo") }}/'+id_cliente+'/'+servicio,

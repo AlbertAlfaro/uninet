@@ -121,16 +121,17 @@ class FacturacionController extends Controller
         {
             if($servicio==1)//1=internet
             {
-                $servi=Cliente::where('id',$id_cliente)->where('internet','1')->get();
+                $servi=Cliente::where('id',$id_cliente)->where('internet','1')->count();
                 $mensaje="Cliente no posee Internet activo!";
     
-            }elseif($servicio==0)//0=television
+            }
+            if($servicio==0)//0=television
             {
-                $servi=Cliente::where('id',$id_cliente)->where('tv','1')->get(); 
+                $servi=Cliente::where('id',$id_cliente)->where('tv','1')->count();
                 $mensaje="Cliente no posee Tv activo!";
     
             }
-            if($servi)
+            if($servi>0)
             {   $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->get();
                 if($abono)
                 {

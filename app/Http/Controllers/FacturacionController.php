@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Luecano\NumeroALetras\NumeroALetras;
-
+use App\Models\Producto;
 
 class FacturacionController extends Controller
 {
@@ -362,4 +362,26 @@ class FacturacionController extends Controller
 
     }
 
+    //------------COMIENZA LAS FUNCIONES DE LA FACTURA MANUAL
+    public function index2()
+    {
+        $obj_cobrador = Cobrador::all();
+        return view('facturacion/index2', compact('obj_cobrador'));
+
+
+    }
+    public function busqueda_cliente2(Request $request){
+        $term1 = $request->term;
+        $results = array();
+        $queries = Producto::
+        Where('nombre', 'LIKE', '%'.$term1.'%')->
+        Where('id_sucursal',Auth::user()->id_sucursal)->
+        get();    
+        foreach ($queries as $query){
+            $precio_sin_iva=$query->precio/1.13;
+            $results[] = [ 'id' => $query->id, 'value' => $query->nombre,'nombre' => $query->nombre,'precio'=>$query->precio,'precio_sin_iva'=>$precio_sin_iva];
+        }
+        return response($results);       
+    
+    } 
 }

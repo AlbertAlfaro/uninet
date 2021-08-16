@@ -218,6 +218,12 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('facturacion/recibo/{id_cobrador}',[App\Http\Controllers\FacturacionController::class ,'num_recibo'])->name('correlativo.recibo');
     Route::get('facturacion/documento/{tipo_docu}',[App\Http\Controllers\FacturacionController::class ,'correlativo'])->name('correlativo.documento');
     Route::get('facturacion/addmes/{id_cliente}/{tipo_ser}/{filas}',[App\Http\Controllers\FacturacionController::class ,'ultimo_mes'])->name('facturacion.addmes');
+    //FACTURA DIRECTA
+    Route::get('facturacion',[App\Http\Controllers\FacturacionController::class ,'index2'])->middleware('permission:Facturacion')->name('facturacion.index2');
+    Route::get('facturacion/autocomplete',[App\Http\Controllers\FacturacionController::class ,'busqueda_cliente2'])->middleware('permission:Facturacion')->name('facturacion.autocomplete2');
+
+
+
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

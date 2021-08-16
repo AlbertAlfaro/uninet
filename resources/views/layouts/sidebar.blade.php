@@ -94,11 +94,11 @@
                         <span>Facturación</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        @can('index_cliente')
-                        <li><a href="{{url('fact_direct')}}">Factura directa</a></li>
+                        @can('Facturacion')
+                        <li><a href="{{url('fact_direct')}}">Factura Abonos</a></li>
                         @endcan
-                        @can('contrato_cliente')
-                        <li><a href="{{url('contratos')}}">Factura Mensual</a></li>
+                        @can('Facturacion')
+                        <li><a href="{{url('facturacion')}}">Factura Menual</a></li>
                         @endcan
                         
                         @can('Ordenes')

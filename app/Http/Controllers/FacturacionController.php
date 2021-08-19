@@ -120,22 +120,24 @@ class FacturacionController extends Controller
         $xdatos['typeinfo']='';
         $xdatos['msg']='';
         $xdatos['results']=[];
-        if($servicio==0 || $servicio==1)
+        if($servicio==2 || $servicio==1)
         {
             if($servicio==1)//1=internet
             {
                 $servi=Cliente::where('id',$id_cliente)->where('internet','1')->count();
                 $mensaje="Cliente no posee Internet activo!";
+                $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->where('tipo_servicio',1)->get();
     
             }
-            if($servicio==0)//0=television
+            if($servicio==2)//2=television
             {
                 $servi=Cliente::where('id',$id_cliente)->where('tv','1')->count();
                 $mensaje="Cliente no posee Tv activo!";
+                $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->where('tipo_servicio',2)->get();
     
             }
             if($servi>0)
-            {   $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->get();
+            {   
                 if($abono->count()>0)
                 {
                     foreach ($abono as $query){
@@ -320,9 +322,12 @@ class FacturacionController extends Controller
     public function ultimo_mes($id_cliente, $tipo_ser,$filas)
     {   /*nota:segun la logica por lo menos debe tener un abono realizado para ver el ultimo mes
         y asi para los que siguen, si tiene cuotas pendientes no quitaras y usar el boton anticipo de meses*/ 
-        //1=internet y 0=television
+        //1=internet y 2=television
+        $xdatos['typeinfo']='';
+        $xdatos['msg']='';
+        $xdatos['results']=[];
         if($tipo_ser==1){$contrato= Internet::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
-        if($tipo_ser==0){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        if($tipo_ser==2){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
         $results2 = array();
         if(count($contrato)!=0)
         {
@@ -335,40 +340,51 @@ class FacturacionController extends Controller
              
                 $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
                 $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
-                $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
+                $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
                 $cargo_sin_iva=$precio/1.13;
-
+                $mes=explode("-", $mes_servicio);
                 $results2[] = [ 
                     'id' => $abono1->id,
                     'cargo' => $precio,
-                    'mes_servicio' =>$mes_servicio,
+                    'mes_servicio' =>$mes[1].'/'.$mes[2],
                     'fecha_vence'=>$fecha_vence,
                     'mes_ser'=>$mes_ser,
                     'cargo_sin_iva'=>$cargo_sin_iva,
                 ];
-                return response($results2);
+                $xdatos['typeinfo']='Success';
+                $xdatos['msg']='ok';
+                $xdatos['results']=$results2;
+                return response($xdatos);
                 
             }
             if($filas>0)
             {   $filas =$filas+1;
                 $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
                 $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
-                $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
+                $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
                 $cargo_sin_iva=$precio/1.13;
+                $mes=explode("-", $mes_servicio);
                 $results2[] = [ 
                     'id' => $abono1->id,
                     'cargo' => $precio,
-                    'mes_servicio' =>$mes_servicio,
+                    'mes_servicio' =>$mes[1].'/'.$mes[2],
                     'fecha_vence'=>$fecha_vence,
                     'mes_ser'=>$mes_ser,
                     'cargo_sin_iva'=>$cargo_sin_iva,
                 ];
-                return response($results2);
+                $xdatos['typeinfo']='Success';
+                $xdatos['msg']='ok';
+                $xdatos['results']=$results2;
+                return response($xdatos);
             }
         }else
         {
-
-            return response($results2);
+            $xdatos['typeinfo']='Warning';
+            $xdatos['msg']='Cliente no posee servicio Activo.';
+            $xdatos['results']=$results2;
+            return response($xdatos);
         }
 
     }

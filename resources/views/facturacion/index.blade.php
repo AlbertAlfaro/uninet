@@ -628,24 +628,23 @@
                 
             });
             $('.jqcheck').change(function(){
-                if( $('#exenta').is(':checked'))
-                {
-                    $('#exenta').val("1");
-                    $('#inventable tr').each(function(index) {
-                      var tr = $(this);
-                      actualiza_subtotal(tr);
-                    });
-                    //totales();
-                }else
-                {
-                    $('#exenta').val("0");
-                    $('#inventable tr').each(function(index) {
-                      var tr = $(this);
-                      actualiza_subtotal(tr);
-                    });
-                    //totales();
-                    alert("descheque");
-                }
+              if( $('#exenta').is(':checked'))
+              {
+                $('#exenta').val("1");
+                $('#inventable tr').each(function(index) {
+                  var tr = $(this);
+                  actualiza_subtotal(tr);
+                });
+                //totales();
+              }else
+              {
+                $('#exenta').val("0");
+                $('#inventable tr').each(function(index) {
+                  var tr = $(this);
+                  actualiza_subtotal(tr);
+                });
+                //totales();                
+              }
             });
 
             
@@ -679,7 +678,7 @@
                     tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>MENSUALIDAD</td>";
                     tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data.results[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
                     tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
-                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
+                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
                     tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                     tr_add += '</tr>';
                     //numero de filas 
@@ -960,7 +959,7 @@ $(document).on('change', '#tipo_documento', function(event) {
     var tr = $(this);
     actualiza_subtotal(tr);
   });
-  tipo_documentoload();
+  //tipo_documentoload();
 });
 $(document).on('change', '#tipo_servicio', function(event) {
   $("#inventable tr").remove();
@@ -1092,7 +1091,7 @@ $(document).on("click","#addmes",function(){
             tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>TEXTO DE EJEMPLO</td>";
             tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='0'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
             tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
-            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
+            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
             tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
             tr_add += '</tr>';
             //numero de filas 
@@ -1251,19 +1250,18 @@ function guardar() {
       url: "{{ url('/fact_direct/abono') }}",
       data: dataString,
       success: function(datax) {
-        console.log(datax);
-        $("#nomcli").val('');
-				$("#numdoc").val('');
-				$("#dircli").val('');
- 				$("#numreci").val('');
-        $("#tot_fdo").val('');
-        $("#nitcli").val('');
-        $("#efectivov").val('');
-        $("#cambiov").val('');
-        /*if (datax.typeinfo == "Success")
+        if (datax.typeinfo == "Success")
 				{
-					$(".usage").attr("disabled", true);
-					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
+          $("#nomcli").val('');
+				  $(" #numdoc").val('');
+				  $("#dircli").val('');
+ 				  $("#numreci").val('');
+          $("#tot_fdo").val('');
+          $("#nitcli").val('');
+          $("#efectivov").val('');
+          $("#cambiov").val('');
+					//$(".usage").attr("disabled", true);
+					/*if(tipo_impresion == "CCF" || tipo_impresion == "COF")
 					{
 						if(tipo_impresion == "CCF")
 						{
@@ -1288,11 +1286,12 @@ function guardar() {
 					 {
 						 //$('#num_doc_fact').val(ultimo);
 					 }
-					 //$('#corr_in').val(datax.numdoc);
+					 //$('#corr_in').val(datax.numdoc); */
+          display_notify(datax.typeinfo, datax.msg);
         }
-				else {
-				//display_notify(datax.typeinfo, datax.msg);
-				}*/
+				else{
+				  display_notify(datax.typeinfo, datax.msg);
+				}
       }
     });
   } else {

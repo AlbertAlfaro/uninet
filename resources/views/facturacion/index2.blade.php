@@ -505,7 +505,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js" integrity="sha512-byagY9YdfRsmvM/9ld4XQ9mvd9uNhNOaMzvCYpPw1CLuoIXAdWR8/6rHjRwuWy0Pi+JGWjDHiE7tVGhtPd21ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-      function eliminar(id,id_cliente){
+    function eliminar(id,id_cliente){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',
                 text: 'No podras desaser esta accion',
@@ -549,68 +549,52 @@
                 });
                 
             });
-            $(function() {
-                $("#busqueda_producto").autocomplete({
-                    source: "{{URL::to('facturacion/autocomplete')}}",
-                    select: function(event, ui) {
-                      console.log(ui.item.id);
-                      /*var precio_venta = data.precio_venta;
-                      var exento = data.exento;
-                      var preciop_s_iva = parseFloat(data.preciop_s_iva);
+            $(function(){
+              $("#busqueda_producto").autocomplete({
+                source: "{{URL::to('facturacion/autocomplete')}}",
+                select: function(event, ui) {
+                  console.log(ui.item.id);
+                  var precio_venta = data.precio_venta;
+                  var exento = data.exento;
+                  var preciop_s_iva = parseFloat(data.preciop_s_iva);
 
-			                var tipo_impresion=$('#tipo_impresion').val();
+			            var tipo_impresion=$('#tipo_impresion').val();
 
-                      var filas = parseInt($("#filas").val());
-                      var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
-                      var subtotal = subt(data.preciop, 1);
-                      subt_mostrar = subtotal.toFixed(2);
-                      var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='txt_box decimal2 "+categoria+" cant' id='cant' name='cant' value='' style='width:60px;'></div></td>";
-                      tr_add = '';
-                      tr_add += "<tr  class='row100 head' id='" + filas + "'>";
-                      tr_add += "<td hidden class='cell100 column10 text-success id_pps'><input type='hidden' id='unidades' name='unidades' value='" + data.unidadp + "'>" + id_prod + "</td>";
-                      tr_add += "<td class='cell100 column30 text-success'>" + descrip_only + exento+ '</td>';
-                      tr_add += "<td class='cell100 column10 text-success descp'><input type'text' id='dsd' class='form-control' value='" + data.descripcionp + "' class='txt_box' readonly></td>";
-                      tr_add += "<td class='cell100 column10 text-success rank_s'>" + data.select_rank + "</td>";
-                      tr_add += "<td hidden class='cell100 column10 text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + data.preciop + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + data.preciop + "'></td>";
-                      if(tipo_impresion=="CCF")
-                      {
-                        tr_add += "<td class='ccell100 column10'>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+"0.00"+"'>" + "<input type='text'  class='decimal txt_box form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" +"0.00"+ "'readOnly></td>";
+                  var filas = parseInt($("#filas").val());
+                  var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
+                  var subtotal = subt(data.preciop, 1);
+                  subt_mostrar = subtotal.toFixed(2);
+                  var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='txt_box decimal2 "+categoria+" cant' id='cant' name='cant' value='' style='width:60px;'></div></td>";
+                  tr_add = '';
+                  tr_add += "<tr  class='row100 head' id='" + filas + "'>";
+                  tr_add += "<td hidden class='cell100 column10 text-success id_pps'><input type='hidden' id='unidades' name='unidades' value='" + data.unidadp + "'>" + id_prod + "</td>";
+                  tr_add += "<td class=' text-success'>" + descrip_only + exento+ '</td>';
+                  tr_add += "<td class=' text-success descp'><input type'text' id='dsd' class='form-control' value='" + data.descripcionp + "' class='txt_box' readonly></td>";
+                  tr_add += "<td class=' text-success rank_s'>" + data.select_rank + "</td>";
+                  tr_add += "<td hidden class='text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + data.preciop + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + data.preciop + "'></td>";
+                  if(tipo_impresion=="CCF")
+                  {
+                    tr_add += "<td class='ccell100 column10'>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+"0.00"+"'>" + "<input type='text'  class='decimal txt_box form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" +"0.00"+ "'readOnly></td>";
+                  }
+                  else
+                  {
+                     tr_add += "<td class='ccell100 column10'>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+"0.00"+"'>" + "<input type='text'  class='decimal txt_box form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + "0.00" + "'readOnly></td>";
 
-                      }
-                      else
-                      {
-                        tr_add += "<td class='ccell100 column10'>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+"0.00"+"'>" + "<input type='text'  class='decimal txt_box form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + "0.00" + "'readOnly></td>";
+                  }
+                  tr_add += '<td class="cell100 column10 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+                  tr_add += '</tr>';
+                  //numero de filas
+                  filas++;
 
-                      }
-                      tr_add += '<td class="cell100 column10 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
-                      tr_add += '</tr>';
-                      //numero de filas
-                      filas++;
-
-                      $("#inventable").append(tr_add);
-                      $(".decimal2").numeric({negative:false,decimal:false});
-                      $(".86").numeric({negative:false,decimalPlaces:4});
-                      $('#items').val(filas);
-                      $('#inventable #'+filas).find("#cant").focus();
-                      totales();
-    
-                      */
-                    }
-                  });                
-                });
-            $('.jqcheck').change(function(){
-                if( $('#exenta').is(':checked'))
-                {
-                    $('#exenta').val("1");
-                    totales();
-                }else
-                {
-                    $('#exenta').val("0");
-                    totales();
-                    alert("descheque");
+                  $("#inventable").append(tr_add);
+                  $(".decimal2").numeric({negative:false,decimal:false});
+                  $(".86").numeric({negative:false,decimalPlaces:4});
+                  $('#items').val(filas);
+                  $('#inventable #'+filas).find("#cant").focus();
+                  totales();  
                 }
+              });                
             });
-
             
         });
         //tipo documento=1 COF

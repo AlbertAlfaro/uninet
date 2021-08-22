@@ -253,7 +253,10 @@ class FacturacionController extends Controller
                     }
                     Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
                     $this->setCorrelativo($request->tipo_impresion);
-                    return "Guradado con exito";
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='Guardado con exito.';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);
                 }else
                 {
                     return "no se puedo guardar la fctura";
@@ -332,53 +335,63 @@ class FacturacionController extends Controller
         if(count($contrato)!=0)
         {
             $precio=$contrato[0]->cuota_mensual;
-            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('pagado','1')->get();
+            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->get();
             $abono1=$abono->last();
             $results2 = array();
-            if($filas==0)
+            if(true)
             {
-             
-                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
-                $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
-                $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
-                $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
-                $cargo_sin_iva=$precio/1.13;
-                $mes=explode("-", $mes_servicio);
-                $results2[] = [ 
-                    'id' => $abono1->id,
-                    'cargo' => $precio,
-                    'mes_servicio' =>$mes[1].'/'.$mes[2],
-                    'fecha_vence'=>$fecha_vence,
-                    'mes_ser'=>$mes_ser,
-                    'cargo_sin_iva'=>$cargo_sin_iva,
-                ];
-                $xdatos['typeinfo']='Success';
-                $xdatos['msg']='ok';
+                if($filas==0)
+                {
+                 
+                    $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
+                    $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
+                    $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                    $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
+                    $cargo_sin_iva=$precio/1.13;
+                    $mes=explode("-", $mes_servicio);
+                    $results2[] = [ 
+                        'id' => $abono1->id,
+                        'cargo' => $precio,
+                        'mes_servicio' =>$mes[1].'/'.$mes[2],
+                        'fecha_vence'=>$fecha_vence,
+                        'mes_ser'=>$mes_ser,
+                        'cargo_sin_iva'=>$cargo_sin_iva,
+                    ];
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='ok';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);
+                    
+                }
+                if($filas>0)
+                {   $filas =$filas+1;
+                    $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                    $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                    $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                    $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
+                    $cargo_sin_iva=$precio/1.13;
+                    $mes=explode("-", $mes_servicio);
+                    $results2[] = [ 
+                        'id' => $abono1->id,
+                        'cargo' => $precio,
+                        'mes_servicio' =>$mes[1].'/'.$mes[2],
+                        'fecha_vence'=>$fecha_vence,
+                        'mes_ser'=>$mes_ser,
+                        'cargo_sin_iva'=>$cargo_sin_iva,
+                    ];
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='ok';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);
+                }
+            }else
+            {
+                $xdatos['typeinfo']='Warning';
+                $xdatos['msg']='Cliente no posee abonos, debe tener al menos uno!';
                 $xdatos['results']=$results2;
                 return response($xdatos);
-                
             }
-            if($filas>0)
-            {   $filas =$filas+1;
-                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
-                $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
-                $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
-                $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
-                $cargo_sin_iva=$precio/1.13;
-                $mes=explode("-", $mes_servicio);
-                $results2[] = [ 
-                    'id' => $abono1->id,
-                    'cargo' => $precio,
-                    'mes_servicio' =>$mes[1].'/'.$mes[2],
-                    'fecha_vence'=>$fecha_vence,
-                    'mes_ser'=>$mes_ser,
-                    'cargo_sin_iva'=>$cargo_sin_iva,
-                ];
-                $xdatos['typeinfo']='Success';
-                $xdatos['msg']='ok';
-                $xdatos['results']=$results2;
-                return response($xdatos);
-            }
+
         }else
         {
             $xdatos['typeinfo']='Warning';

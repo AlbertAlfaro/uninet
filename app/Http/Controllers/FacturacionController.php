@@ -410,7 +410,7 @@ class FacturacionController extends Controller
 
 
     }
-    public function busqueda_cliente2(Request $request){
+    public function busqueda_producto(Request $request){
         $term1 = $request->term;
         $results = array();
         $queries = Producto::
@@ -419,7 +419,7 @@ class FacturacionController extends Controller
         get();    
         foreach ($queries as $query){
             $precio_sin_iva=$query->precio/1.13;
-            $results[] = [ 'id' => $query->id, 'value' => $query->nombre,'nombre' => $query->nombre,'precio'=>$query->precio,'precio_sin_iva'=>$precio_sin_iva];
+            $results[] = [ 'id' => $query->id, 'value' => $query->nombre,'nombre' => $query->nombre,'precio'=>$query->precio,'precio_sin_iva'=>$precio_sin_iva,'exento'=>$query->exento];
         }
         return response($results);       
     

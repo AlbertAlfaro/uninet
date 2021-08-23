@@ -305,13 +305,6 @@
 				</p>
         @include('flash::message')
         <div class="row">
-          <div class="col-md-2" >
-            <label for="example-text-input" class=" col-form-label">Servicio</label>              
-            <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
-                <option value="1" >Internet</option>
-                <option value="0" >Televisión</option>
-            </select>
-          </div>
           <div class="col-md-4" >
             <label for="example-text-input" class="col-form-label">Buscar Cliente</label>     
             <input type="text" name="busqueda" id="busqueda" class="form-control" placeholder="Digita la busqueda ..." aria-describedby="helpId">
@@ -348,13 +341,6 @@
               <option value="EFEC" >EFECTIVO</option>
               <option value="TRANS" >TRANSFERENCIA</option>
             </select>
-          </div>
-          <div class="col-md-1">
-            <label class="col-form-label" for="defaultCheck1">Exenta</label>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input jqcheck" id="exenta" name="exenta" value="0" >
-              <label class="custom-control-label" for="exenta"></label>
-            </div>
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
@@ -401,24 +387,24 @@
 
                     </tr>
                     <tr>
-                      <td class="cell100 column15 leftt text-bluegrey ">SUMAS (SIN IVA) $:</td>
-                      <td  class="cell100 column10 text-right text-green" id='total_gravado_sin_iva'>0.00</td>
-                      <td class="cell100 column15  leftt  text-bluegrey ">IVA  $:</td>
-                      <td class="cell100 column10 text-right text-green " id='total_iva'>0.00</td>
-                      <td class="cell100 column15  leftt text-bluegrey ">SUBTOTAL  $:</td>
-                      <td class="cell100 column10 text-right  text-green" id='total_gravado_iva'>0.00</td>
-                      <td class="cell100 column15 leftt  text-bluegrey ">VENTA EXENTA $:</td>
-                      <td class="cell100 column10  text-right text-green" id='total_exenta'>0.00</td>
+                      <td class=" leftt text-bluegrey ">SUMAS (SIN IVA) $:</td>
+                      <td class=" text-right text-green" id='total_gravado_sin_iva'>0.00</td>
+                      <td class=" leftt  text-bluegrey ">IVA  $:</td>
+                      <td class=" text-right text-green " id='total_iva'>0.00</td>
+                      <td class=" leftt text-bluegrey ">SUBTOTAL  $:</td>
+                      <td class=" text-right  text-green" id='total_gravado_iva'>0.00</td>
+                      <td class=" leftt  text-bluegrey ">VENTA EXENTA $:</td>
+                      <td class=" text-right text-green" id='total_exenta'>0.00</td>
                     </tr>
                     <tr>
-                      <td class="cell100 column15 leftt text-bluegrey ">PERCEPCION $:</td>
-                      <td class="cell100 column10 text-right  text-green"  id='total_percepcion'>0.00</td>
-                      <td class="cell100 column15  leftt  text-bluegrey ">RETENCION $:</td>
-                      <td class="cell100 column10 text-right text-green" id='total_retencion'>0.00</td>
-                      <td class="cell100 column15 leftt text-bluegrey ">DESCUENTO $:</td>
-                      <td class="cell100 column10  text-right text-green"  id='total_final'>0.00</td>
-                      <td class="cell100 column15 leftt  text-bluegrey">A PAGAR $:</td>
-                      <td class="cell100 column10  text-right text-green"  id='monto_pago'>0.00</td>
+                      <td class=" leftt text-bluegrey ">PERCEPCION $:</td>
+                      <td class=" text-right  text-green"  id='total_percepcion'>0.00</td>
+                      <td class=" leftt  text-bluegrey ">RETENCION $:</td>
+                      <td class=" text-right text-green" id='total_retencion'>0.00</td>
+                      <td class=" leftt text-bluegrey ">DESCUENTO $:</td>
+                      <td class=" text-right text-green"  id='total_final'>0.00</td>
+                      <td class=" leftt  text-bluegrey">A PAGAR $:</td>
+                      <td class=" text-right text-green"  id='monto_pago'>0.00</td>
                     </tr>
                   </tbody>
 
@@ -551,44 +537,43 @@
             });
             $(function(){
               $("#busqueda_producto").autocomplete({
-                source: "{{URL::to('facturacion/autocomplete')}}",
+                source: "{{URL::to('facturacion/autocomplete2')}}",
                 select: function(event, ui) {
-                  console.log(ui.item.id);
-                  var precio_venta = data.precio_venta;
-                  var exento = data.exento;
-                  var preciop_s_iva = parseFloat(data.preciop_s_iva);
-
+                  console.log(ui.item.precio);
+                  var precio_venta = ui.item.precio;
+                  var exento = ui.item.exento;
+                  var preciop_s_iva = parseFloat(ui.item.precio_sin_iva);
+                  var descrip_only = ui.item.nombre;
 			            var tipo_impresion=$('#tipo_impresion').val();
 
                   var filas = parseInt($("#filas").val());
                   var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
-                  var subtotal = subt(data.preciop, 1);
+                  var subtotal = subt(ui.item.precio, 1);
                   subt_mostrar = subtotal.toFixed(2);
-                  var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='txt_box decimal2 "+categoria+" cant' id='cant' name='cant' value='' style='width:60px;'></div></td>";
+                  var cantidades = "<td class='text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal2 cant' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
                   tr_add = '';
                   tr_add += "<tr  class='row100 head' id='" + filas + "'>";
-                  tr_add += "<td hidden class='cell100 column10 text-success id_pps'><input type='hidden' id='unidades' name='unidades' value='" + data.unidadp + "'>" + id_prod + "</td>";
                   tr_add += "<td class=' text-success'>" + descrip_only + exento+ '</td>';
-                  tr_add += "<td class=' text-success descp'><input type'text' id='dsd' class='form-control' value='" + data.descripcionp + "' class='txt_box' readonly></td>";
-                  tr_add += "<td class=' text-success rank_s'>" + data.select_rank + "</td>";
-                  tr_add += "<td hidden class='text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + data.preciop + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + data.preciop + "'></td>";
-                  if(tipo_impresion=="CCF")
+                  tr_add += "<td  class='text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + ui.item.precio + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + ui.item.precio + "' style='width:60px;'></td>";
+                  tr_add += cantidades;
+                  if(tipo_impresion==2)//ccf=2 cof=1
                   {
-                    tr_add += "<td class='ccell100 column10'>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+"0.00"+"'>" + "<input type='text'  class='decimal txt_box form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" +"0.00"+ "'readOnly></td>";
+                    tr_add += "<td class=''>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+preciop_s_iva+"'>" + "<input type='text'  class='decimal form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + preciop_s_iva.toFixed(2) + "'readOnly style='width:70px;'></td>";
+
                   }
                   else
                   {
-                     tr_add += "<td class='ccell100 column10'>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+"0.00"+"'>" + "<input type='text'  class='decimal txt_box form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + "0.00" + "'readOnly></td>";
+                    tr_add += "<td class=''>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+subt_mostrar+"'>" + "<input type='text'  class='decimal form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + subt_mostrar + "'readOnly style='width:70px;'></td>";
 
-                  }
-                  tr_add += '<td class="cell100 column10 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+                 }
+                  tr_add += '<td class=" Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                   tr_add += '</tr>';
                   //numero de filas
                   filas++;
 
                   $("#inventable").append(tr_add);
-                  $(".decimal2").numeric({negative:false,decimal:false});
-                  $(".86").numeric({negative:false,decimalPlaces:4});
+                  //$(".decimal2").numeric({negative:false,decimal:false});
+                  //$(".86").numeric({negative:false,decimalPlaces:4});
                   $('#items').val(filas);
                   $('#inventable #'+filas).find("#cant").focus();
                   totales();  
@@ -597,53 +582,29 @@
             });
             
         });
+        //obtener subtotal cantidad x precio
+        function subt(qty,price){
+          subtotal=parseFloat(qty)*parseFloat(price);
+          subtotal=round(subtotal,4);
+          return subtotal;
+        }
+        /*$(document).on('keyup', '.cant', function(evt){
+	        var tr = $(this).parents("tr");
+	        if(evt.keyCode == 13)
+	        {
+		        num=parseFloat($(this).val());
+		        if(isNaN(num))
+		        {
+			        num=0;
+		        }
+		        if($(this).val()!=""&&num>0)
+		        {
+		          tr.find('.sel').select2("open");
+		        }
+	        }
+        });*/
         //tipo documento=1 COF
         //tipo documento=2 CCF
-
-      function addproducto(id_producto){
-            var servicio=$('#tipo_servicio').val();
-            alert(servicio);
-            $.ajax({
-              type:'GET',
-              url:'{{ url("fact_direct/cargo") }}/'+id_cliente+'/'+servicio,
-              success:function(data){
-                if(data.length > 0)
-                {
-                  console.log(data);
-                  var precio_venta = 10;
-                  var exento = 0;
-                  var preciop_s_iva = 0;
-
-                  var tipo_impresion=$('#tipo_documento').val();
-                  var filas = parseInt($("#filas").val());
-          
-                  //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
-                  var subtotal =0; //subt(0, 1);
-                  //subt_mostrar = subtotal.toFixed(2);
-                  //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
-                  tr_add = '';
-                  $.each( data, function( i, value ) {
-                    tr_add += "<tr class='row100 head' id=''>";
-                    tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data[i].cargo+"'>TEXTO DE EJEMPLO</td>";
-                    tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
-                    tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
-                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;' readOnly></div></td>";
-                    tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
-                    tr_add += '</tr>';
-                    //numero de filas 
-                    filas++;
-                  });
-                  $("#inventable").append(tr_add);
-                  $('#items').val(filas);
-                  totales();
-                  //scrolltable();
-                }else
-                {
-                  alert("Este cliente no posee cargos pendientes");
-                }
-              }
-            }); 
-          }
       function totales() {
         //impuestos
         var iva =0.13;   //$('#porc_iva').val();
@@ -684,29 +645,26 @@
         var StringDatos = '';
         var filas = 0;
         var total_iva = 0;
-        ex = $("#exenta").val();//parseInt($(this).find('#exento').val()); 
         if (tipo_impresion==2)
         {//CCF
         
           $("#inventable tr").each(function() {
-            //subt_cant = $(this).find("#cant").val();
-
-            /*if (isNaN(subt_cant) || subt_cant == "") {
+            subt_cant = $(this).find("#cant").val();
+            ex = parseInt($(this).find('#exento').val());
+            if (isNaN(subt_cant) || subt_cant == "") {
               subt_cant = 0;
-            }*/
+            }
             subt_gravado=0;
             subt_exento=0;
 
-            if (ex==1) {
-              subt_exento=$(this).find("#cargo_sin_iva").val(); 
-              
+            if (ex==0) {
+              subt_gravado= $(this).find("#subtotal_fin").val();
             }
             else {
-              //subt_gravado= parseFloat($(this).find("#cargo").val()/1.13);
-              subt_gravado= $(this).find("#cargo").val();
+              subt_exento=$(this).find("#subtotal_fin").val()/1.13;
             }
 
-            //totalcantidad += parseFloat(subt_cant);
+            totalcantidad += parseFloat(subt_cant);
 
             total_gravado += parseFloat(subt_gravado);
 
@@ -727,10 +685,10 @@
           }
           var total_descuento_mostrar = total_descuento.toFixed(2)
           var total_mostrar = subtotal.toFixed(2)
-          //totcant_mostrar = totalcantidad.toFixed(2)
+          totcant_mostrar = totalcantidad.toFixed(2)
 
           console.log(subt_gravado);
-          //$('#totcant').text(totcant_mostrar);
+          $('#totcant').text(totcant_mostrar);
 
 
           var total_sin_iva_mostrar = total_gravado.toFixed(2);
@@ -792,17 +750,23 @@
     else
     {
       $("#inventable tr").each(function() {
+        subt_cant = $(this).find("#cant").val();
+        ex = parseInt($(this).find('#exento').val());
+
+        if (isNaN(subt_cant) || subt_cant == "") {
+          subt_cant = 0;
+        }
         subt_gravado=0;
         subt_exento=0;
        
-        if (ex==1) {
-          subt_exento=$(this).find("#cargo_sin_iva").val();
+        if (ex==0) {
+          subt_gravado= $(this).find("#subtotal_fin").val();
         }
         else {
-          
-          subt_gravado= $(this).find("#cargo").val();
+          subt_exento=$(this).find("#subtotal_fin").val();
         }
 
+        totalcantidad += parseFloat(subt_cant);
         total_gravado += parseFloat(subt_gravado);
 
         total_exento += parseFloat(subt_exento);
@@ -822,10 +786,10 @@
       }
       var total_descuento_mostrar = total_descuento.toFixed(2)
       var total_mostrar = subtotal.toFixed(2)
-      //totcant_mostrar = totalcantidad.toFixed(2)
+      totcant_mostrar = totalcantidad.toFixed(2)
 
       console.log(subt_gravado);
-      //$('#totcant').text(totcant_mostrar);
+      $('#totcant').text(totcant_mostrar);
 
 
       var total_sin_iva_mostrar = total_gravado.toFixed(2);
@@ -870,10 +834,6 @@
       $('#totalfactura').val(total_final_mostrar);
 
       $('#totcant').html(filas);
-      
-      /*$('#totaltexto').load(urlprocess, {
-        'total': total_final_mostrar
-      });*/
       $.ajax({
           type: 'GET',
           url: 'convertir/'+total_final_mostrar,
@@ -972,57 +932,7 @@ $(document).on("click", ".Delete", function() {
   $(this).parents("tr").remove();
   totales();
 });
-$(document).on("click","#addmes",function(){
-	var tipo_ser=$('#tipo_servicio').val();
-  var id_cliente=$('#id_cliente').val();
 
- 
- // Añades los meses
-  if(tipo_ser!="" && id_cliente!="")
-  {
-    var filas = $("#inventable tr").length;
-    $.ajax({
-      type:'GET',
-      url:'{{ url("facturacion/addmes/") }}/'+id_cliente+'/'+tipo_ser+'/'+filas,
-      success:function(data) {
-        console.log(data);
-        if(data.length>0)
-        {
-          var precio_venta = 10;
-          var exento = 0;
-          var preciop_s_iva = 0;
-
-          var tipo_impresion=$('#tipo_documento').val();
-          var filas = parseInt($("#filas").val());
-          //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
-          var subtotal =0; //subt(0, 1);
-          //subt_mostrar = subtotal.toFixed(2);
-          //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
-          tr_add = '';
-          $.each( data, function( i, value ) {
-            tr_add += "<tr class='row100 head' id=''>";
-            tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data[i].cargo+"'>TEXTO DE EJEMPLO</td>";
-            tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='0'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data[i].mes_ser+"'>"+data[i].mes_servicio+"</td>";
-            tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data[i].fecha_vence+"'>"+data[i].fecha_vence+"</td>";
-            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data[i].cargo+"' style='width:70px;' readOnly></div></td>";
-            tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
-            tr_add += '</tr>';
-            //numero de filas 
-            filas++;
-          });
-          $("#inventable").append(tr_add);
-          $('#items').val(filas);
-          totales();  
-        }else{
-          alert('Cliente no tiene este servicio activo');
-        }    
-      }
-    });
-  }else
-  {
-    console.log("Cliente o tipos de servicio vacios");
-  }
-});
 $(document).on("keyup","#efectivov",function(){
   total_efectivov();
 });

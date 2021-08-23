@@ -71,6 +71,20 @@ Productos
                                             <input type="number" step="0.01" name="precio" id="precio" class="form-control" value="{{$producto->precio}}" placeholder="" required>
                                         </div>
                                     </div>
+                                    <div class="form-group row col-md-4">
+                                        <label class="col-md-4 col-form-label" for="defaultCheck1">Exento</label>
+                                        <div class="col-md-8">
+                                            <div class="custom-control custom-checkbox">
+                                                @if($producto->exento==1)
+                                                <input checked type="checkbox" class="custom-control-input jqcheck" id="exento" name="exento" value="1" >
+                                                <label class="custom-control-label" for="exento"></label>
+                                                @else
+                                                <input type="checkbox" class="custom-control-input jqcheck" id="exento" name="exento" value="0" >
+                                                 <label class="custom-control-label" for="exento"></label>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -120,13 +134,13 @@ Productos
             autoclose: true
         });
         $('.jqcheck').change(function(){
-                if( $('#activo').is(':checked'))
-                {
-                    $('#activo').val("1");
-                }else
-                {
-                    $('#activo').val("0");
-                }
+            if( $('#exento').is(':checked'))
+            {
+                $('#exento').val("1");
+            }else
+            {
+                $('#exento').val("0");
+            }
         });
 
     </script>

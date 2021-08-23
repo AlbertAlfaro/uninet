@@ -133,14 +133,14 @@ Productos
         $('.jqcheck').change(function(){
             if( $('#exento').is(':checked'))
             {
-                alert($('#exento').val("1"));
+                $('#exento').val("1");
+                    
             }else
             {
-                alert($('#exento').val("0"));
+                $('#exento').val("0");
+                
             }
         });
     }); 
     </script>
-
-    
 @endsection

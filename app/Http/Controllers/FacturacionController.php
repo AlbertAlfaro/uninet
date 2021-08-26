@@ -8,6 +8,7 @@ use App\Models\Internet;
 use App\Models\Tv;
 use App\Models\Abono;
 use App\Models\Factura;
+use App\Models\Factura_detalle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -188,7 +189,7 @@ class FacturacionController extends Controller
             if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
             {
                 
-                return "Este documento ya fue impreso";
+                return "Este numero de documento ya fue impreso";
             }else
             { // AHORITA NO GUARDA LOS ABONOS CUANDO SON MESES ANTICIPOS
                 if($request->tipo_impresion==1){$tipo="FACTURA";}
@@ -255,11 +256,11 @@ class FacturacionController extends Controller
                     $this->setCorrelativo($request->tipo_impresion);
                     $xdatos['typeinfo']='Success';
                     $xdatos['msg']='Guardado con exito.';
-                    $xdatos['results']=$results2;
+                    //$xdatos['results']=$results2;
                     return response($xdatos);
                 }else
                 {
-                    return "no se puedo guardar la fctura";
+                    return "no se puedo guardar la factura";
                 }
             }
             
@@ -423,5 +424,81 @@ class FacturacionController extends Controller
         }
         return response($results);       
     
-    } 
+    }
+    public function venta(Request $request){
+        $xdatos['typeinfo']='';
+        $xdatos['msg']='';
+        $xdatos['results']=[];
+        if ($request->cuantos >0)
+        { 
+            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
+            {
+                
+                $xdatos['typeinfo']='warning';
+                $xdatos['msg']='Este numero de documento ya fue impresa.';
+                return response($xdatos);
+            }else
+            { 
+                if($request->tipo_impresion==1){$tipo="FACTURA";}
+                if($request->tipo_impresion==2){$tipo="CREDITO FISCAL";}
+                $factura = new Factura();
+                $factura->id_usuario=Auth::user()->id;
+                $factura->id_cliente=$request->id_cliente;
+                $factura->id_cobrador=$request->id_cobrador;
+                $factura->sumas=$request->sumas;
+                $factura->iva=$request->iva;
+                $factura->subtotal=$request->subtotal;
+                $factura->suma_gravada=$request->suma_gravada;
+                $factura->venta_exenta=$request->venta_exenta;
+                $factura->total=$request->total;
+                $factura->tipo_pago=$request->tipo_pago;
+                $factura->tipo=$tipo;
+                $correlativo=Correlativo::find($request->tipo_impresion);
+                $factura->serie=$correlativo->serie;
+                $factura->tipo_documento=$request->tipo_impresion;
+                $factura->numero_documento=$request->numdoc;
+                $factura->impresa=0;
+                $factura->cuota=0;
+                $factura->anulada=0;
+                $factura->id_sucursal=Auth::user()->id_sucursal;
+                $factura->save();
+                $ultima_factura = Factura::all()->last();
+                $id_factura =$ultima_factura->id;
+                if($factura)
+                {  
+                    //comienza factura detalle
+                    $array = json_decode($request->json_arr, true);
+                    foreach ($array as $fila)
+                    {   
+                        if($request->tipo_impresion==1){$tipo="FAC";}
+                        if($request->tipo_impresion==2){$tipo="CRE";}
+                        $Fdetalle = new Factura_detalle();
+                        $Fdetalle->id_factura=$id_factura;
+                        $Fdetalle->id_producto=$fila['id'];
+                        $Fdetalle->cantidad=$fila['cantidad'];
+                        $Fdetalle->precio=$fila['precio_venta'];
+                        $Fdetalle->subtotal = $fila['subtotal'];
+                        $Fdetalle->save();
+                    }
+                    //Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
+                    $this->setCorrelativo($request->tipo_impresion);
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='Guardado con exito.';
+                    return response($xdatos);
+                }else
+                {
+                    $xdatos['typeinfo']='Error';
+                    $xdatos['msg']='no se puedo guardar la factura.';
+                    return response($xdatos);
+                }
+            }
+            
+        }else{
+            
+            $xdatos['typeinfo']='Error';
+            $xdatos['msg']='No hay productos en la venta.';
+            return response($xdatos);
+            
+        }   
+    }
 }

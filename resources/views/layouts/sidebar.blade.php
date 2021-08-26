@@ -98,7 +98,7 @@
                         <li><a href="{{url('fact_direct')}}">Factura Abonos</a></li>
                         @endcan
                         @can('Facturacion')
-                        <li><a href="{{url('facturacion')}}">Factura Menual</a></li>
+                        <li><a href="{{url('facturacion')}}">Factura Manual</a></li>
                         @endcan
                         
                         @can('Ordenes')

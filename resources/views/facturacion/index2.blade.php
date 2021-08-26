@@ -7,8 +7,8 @@
     <link href="{{ URL::asset('assets/libs/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />-->
+    <link href="{{ URL::asset('assets/libs/toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
     <style>
     
 
@@ -344,7 +344,6 @@
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
-            <button type="button" id="addmes" style="margin-left:3%;" name="addmes" class="btn btn-primary pull-right usage"><i class="fa fa-save"></i> Mes Anticipado</button>
             <button type="button" id="clean" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
             <input type="hidden" id="items" name="items">
           </div>
@@ -431,10 +430,10 @@
                     <td class='text-success'>NUM. DOCUMENTO: </td>
                     <td><input type="text" id="numdoc" class="form-control"   value="" readOnly></td>
                   </tr>
-                  <tr>
+                  <!--<tr>
                     <td class='text-success'>NUM. RECIBO: </td>
                     <td><input type="text" id="numreci" class="form-control"   value="" readOnly></td>
-                  </tr>
+                  </tr>-->
                   <tr>
                     <td class='text-success'>CLIENTE: </td>
                     <td><input type="text" id="nomcli" class="form-control"  value="" readOnly></td>
@@ -488,9 +487,48 @@
     <!-- Range slider init js-->
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js" integrity="sha512-byagY9YdfRsmvM/9ld4XQ9mvd9uNhNOaMzvCYpPw1CLuoIXAdWR8/6rHjRwuWy0Pi+JGWjDHiE7tVGhtPd21ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js" integrity="sha512-byagY9YdfRsmvM/9ld4XQ9mvd9uNhNOaMzvCYpPw1CLuoIXAdWR8/6rHjRwuWy0Pi+JGWjDHiE7tVGhtPd21ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script src="{{ URL::asset('assets/libs/toastr/toastr.min.js')}}"></script>
     <script>
+    function display_notify(typeinfo,msg,process)
+      {
+	      // Use toastr for notifications get an parameter from other function
+	      var infotype=typeinfo;
+	      var msg=msg;
+        toastr.options = {
+          "closeButton": false,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": false,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+	      if (infotype=='Success'){
+		      toastr.success(msg,infotype);
+		      /*if (process=='insert'){
+			      cleanvalues();
+		      }*/
+	      }
+	      if (infotype=='Info'){
+		      toastr.info(msg,infotype);
+	      }
+	      if (infotype=='Warning'){
+		      toastr.warning(msg,infotype);
+	      }
+	      if (infotype=='Error'){
+		      toastr.error(msg,infotype);
+	      }
+
+      }
     function eliminar(id,id_cliente){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',
@@ -541,6 +579,7 @@
                 select: function(event, ui) {
                   console.log(ui.item.precio);
                   var precio_venta = ui.item.precio;
+                  var id_producto = ui.item.id;
                   var exento = ui.item.exento;
                   var preciop_s_iva = parseFloat(ui.item.precio_sin_iva);
                   var descrip_only = ui.item.nombre;
@@ -548,12 +587,13 @@
 
                   var filas = parseInt($("#filas").val());
                   var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
+                  var input_producto="<input type='hidden' id='id_producto' name='id_producto' value='" + id_producto + "'>";
                   var subtotal = subt(ui.item.precio, 1);
                   subt_mostrar = subtotal.toFixed(2);
                   var cantidades = "<td class='text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal2 cant' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
                   tr_add = '';
                   tr_add += "<tr  class='row100 head' id='" + filas + "'>";
-                  tr_add += "<td class=' text-success'>" + descrip_only + exento+ '</td>';
+                  tr_add += "<td class=' text-success'>" + descrip_only + exento+ input_producto+ '</td>';
                   tr_add += "<td  class='text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + ui.item.precio + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + ui.item.precio + "' style='width:60px;'></td>";
                   tr_add += cantidades;
                   if(tipo_impresion==2)//ccf=2 cof=1
@@ -881,34 +921,56 @@ function tipo_documentoload()
     $('#numdoc').val('');
   }
 }
+$(document).on("keyup", "#cant, #precio_venta", function() {
+  var tr = $(this).parents("tr");
+  actualiza_subtotal(tr);
+});
 function actualiza_subtotal(tr) {
   var iva = 0.13;
-  var cargo = parseFloat(tr.find('#cargo_sin_iva').val());
+  var precio_sin_iva = parseFloat(tr.find('#precio_sin_iva').val());
 
   var tipo_impresion = $('#tipo_documento').val();
+  alert(tipo_impresion);
+  if (tipo_impresion!=2) {//ccf=2 y cof=1
 
-  if (tipo_impresion==2) {//2=CCF
-
-    if (isNaN(cargo) || cargo == "") {
-      cargo = 0;
+    var cantidad = tr.find('#cant').val();
+    if (isNaN(cantidad) || cantidad == "") {
+      cantidad = 0;
     }
-    var subt_mostrar = cargo.toFixed(4);
-    //var subt_mostrar = round(cargo,2);
-    tr.find("#cargo").val(subt_mostrar);
-    totales();
-  }else
-  {
-    var precio = tr.find('#cuota').val();
+    var precio = tr.find('#precio_venta').val();
+    var precio_oculto = tr.find('#precio_venta').val();
+
     if (isNaN(precio) || precio == "") {
       precio = 0;
     }
-    var subt_mostrar = round(precio,2);
-    tr.find("#cargo").val(subt_mostrar);
+    var subtotal = subt(cantidad, precio);
+    var subt_mostrar = subtotal.toFixed(2);
+    tr.find("#subtotal_fin").val(subt_mostrar);
+    tr.find("#subtotal_mostrar").val(subt_mostrar);
     totales();
+  }
+  else {
+    var cantidad = tr.find('#cant').val();
+    if (isNaN(cantidad) || cantidad == "") {
+      cantidad = 0;
+    }
+    var precio = tr.find('#precio_sin_iva').val();
 
+    if (isNaN(precio) || precio == "") {
+      precio = 0;
+    }
+    var subtotal = cantidad * precio;
+    var subt_mostrar = subtotal.toFixed(4);
+
+    tr.find("#subtotal_fin").val(subt_mostrar);
+    var subt_mostrar = subtotal.toFixed(2);
+    tr.find("#subtotal_mostrar").val(subt_mostrar);
+    totales();
   }
 
+
 }
+/*
 $(document).on('change', '#id_cobrador', function(event) {
   var id_cobrador=$('#id_cobrador').val();
   if(id_cobrador!="")
@@ -926,7 +988,7 @@ $(document).on('change', '#id_cobrador', function(event) {
     $('#numreci').val('');
   }
   
-});
+});*/
 
 $(document).on("click", ".Delete", function() {
   $(this).parents("tr").remove();
@@ -961,7 +1023,6 @@ function guardar() {
   var i = 0;
   var StringDatos = "";
   var id = '1';
-  var id_empleado = 0;
   var id_cliente = $("#id_cliente").val();
   var items = $("#items").val();
   var msg = "";
@@ -981,9 +1042,9 @@ function guardar() {
   
   var tipo_pago=$('#tipo_pago').val();
 	var id_cobrador =$('#id_cobrador').val();
-  var tipo_servicio =$('#tipo_servicio').val();
+  //var tipo_servicio =$('#tipo_servicio').val();
   var tipo_impresion= $('#tipo_documento').val();
-  var numreci= $('#numreci').val();
+  //var numreci= $('#numreci').val();
   var numdoc= $('#numdoc').val();
 
 
@@ -992,18 +1053,18 @@ function guardar() {
   var verifica = [];
   var array_json = new Array();
   $("#inventable tr").each(function(index) {
-      var id = $(this).find("#id_cargo").val();
-      var cargo = $(this).find("#cargo").val();
-      var cuota = $(this).find("#cuota").val();//cuota mensual
-      var mes_ser = $(this).find("#mes_ser").val();
-      var fecha_ven = $(this).find("#fecha_ven").val();
-      if (cargo) {
+      var id = $(this).find("#id_producto").val();
+      var precio_venta = $(this).find("#precio_venta").val();
+      var cantidad = $(this).find("#cant").val();
+      var subtotal = $(this).find("#subtotal_fin").val();
+      var exento = $(this).find("#exento").val();
+      if (cantidad && precio_venta) {
         var obj = new Object();
         obj.id = id;
-        obj.precio = cargo;
-        obj.cuota = cuota;
-        obj.mes_ser = mes_ser;
-        obj.fecha_ven = fecha_ven;
+        obj.precio_venta = precio_venta;
+        obj.cantidad = cantidad;
+        obj.subtotal = subtotal;
+        obj.exento = exento;
         //convert object to json string
         text = JSON.stringify(obj);
         array_json.push(text);
@@ -1022,9 +1083,9 @@ function guardar() {
  
   var dataString = 'cuantos=' + i ;
   dataString += '&id_cliente=' + id_cliente + '&total=' + total;
-  dataString += '&tipo_servicio=' + tipo_servicio;
+  //dataString += '&tipo_servicio=' + tipo_servicio;
   dataString += '&tipo_pago=' + tipo_pago;
-  dataString += '&numreci=' + numreci;
+  //dataString += '&numreci=' + numreci;
   dataString += '&numdoc=' + numdoc;
   dataString += '&id_cobrador=' + id_cobrador + '&json_arr=' + json_arr;
   dataString += '&retencion=' + retencion;
@@ -1037,7 +1098,7 @@ function guardar() {
   dataString += '&suma_gravada=' + suma_gravada;
   dataString += '&tipo_impresion=' + tipo_impresion;
 	dataString += '&id_factura=' + id_factura;
-
+  //alert(dataString);
 	if (tipo_pago == "") {
     msg = 'No a seleccionado un tipo de pago!';
     sel_vendedor = 0;
@@ -1066,21 +1127,20 @@ function guardar() {
     $("#inventable tr").remove();
     $.ajax({
       type: 'GET',
-      url: "{{ url('/fact_direct/abono') }}",
+      url: "{{ url('/facturacion/venta') }}",
       data: dataString,
       success: function(datax) {
-        console.log(datax);
-        $("#nomcli").val('');
-				$("#numdoc").val('');
-				$("#dircli").val('');
- 				$("#numreci").val('');
-        $("#tot_fdo").val('');
-        $("#nitcli").val('');
-        $("#efectivov").val('');
-        $("#cambiov").val('');
-        /*if (datax.typeinfo == "Success")
-				{
-					$(".usage").attr("disabled", true);
+        if (datax.typeinfo == "Success")
+				{ $("#nomcli").val('');
+				  $(" #numdoc").val('');
+				  $("#dircli").val('');
+ 				  $("#numreci").val('');
+          $("#tot_fdo").val('');
+          $("#nitcli").val('');
+          $("#efectivov").val('');
+          $("#cambiov").val('');
+					/*
+          $(".usage").attr("disabled", true);
 					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
 					{
 						if(tipo_impresion == "CCF")
@@ -1107,14 +1167,16 @@ function guardar() {
 						 //$('#num_doc_fact').val(ultimo);
 					 }
 					 //$('#corr_in').val(datax.numdoc);
+           */
+          display_notify(datax.typeinfo, datax.msg);
         }
 				else {
-				//display_notify(datax.typeinfo, datax.msg);
-				}*/
+				display_notify(datax.typeinfo, datax.msg);
+				}
       }
     });
   } else {
-    console.log(msg);
+    display_notify('Warning',msg,'');
   }
 }
 

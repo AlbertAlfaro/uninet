@@ -194,6 +194,9 @@ Route::group(['middleware' => ['permission:Abonos']], function () {
     //grupo abonos
     Route::get('abonos/pendientes',[App\Http\Controllers\AbonosController::class ,'index'])->middleware('permission:abonos_pendientes')->name('abonos.pendientes');
     Route::get('abonos/pedientes_pdf/{id}/{tipo_servicio}/{fecha_i}/{fecha_f}',[App\Http\Controllers\AbonosController::class ,'abonos_pendientes_pdf'])->middleware('permission:abonos_pendientes')->name('abonos.pendientes_pdf');
+
+
+    Route::get('factura/imprimir/{id}',[App\Http\Controllers\AbonosController::class ,'imprimir_factura'])->middleware('permission:reporte_cliente')->name('factura.imprimir');
 });
 
 
@@ -202,6 +205,7 @@ Route::group(['middleware' => ['permission:Reportes']], function () {
     //grupo abonos
     Route::get('reportes/{opcion}',[App\Http\Controllers\ReportesController::class ,'index'])->middleware('permission:reporte_cliente')->name('reportes');
     Route::post('reportes/pdf',[App\Http\Controllers\ReportesController::class ,'pdf'])->middleware('permission:reporte_cliente')->name('reportes.pdf');
+
 });
 
 

@@ -654,8 +654,9 @@ class ClientesController extends Controller
 
         $inter_activos = Internet::where('id_cliente',$id)->where('activo',1)->get();
         $tv_activos = Tv::where('id_cliente',$id)->where('activo',1)->get();
+       
 
-        return view('contratos.index',compact('contratos','cliente','id','tv_activos','tipo_servicio'));
+        return view('contratos.index',compact('contratos','cliente','id','tv_activos','inter_activos'));
         
         
     }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Fpdf\FpdfEstadoCuenta;
+use App\Fpdf\FpdfFactura;
 use App\Models\Abono;
 use App\Models\Cliente;
+use App\Models\Factura;
 use App\Models\Internet;
 use App\Models\Tv;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Luecano\NumeroALetras\NumeroALetras;;
 use Illuminate\Support\Facades\Auth;
 
 class AbonosController extends Controller
@@ -107,6 +109,191 @@ class AbonosController extends Controller
 
         $fpdf->Output();
         exit;
+
+    }
+
+    public function imprimir_factura($id){
+
+        $factura = Factura::find($id);
+
+        if($factura->tipo_documento==1){
+            
+            $fpdf = new FpdfFactura('P','mm', array(155,240));
+            $detalle_factura = Abono::where('id_factura',$id)->get();
+            $fpdf->AliasNbPages();
+            $fpdf->AddPage();
+            $fpdf->SetTitle('FACTURA FINAL | UNINET');
+    
+            $fpdf->SetXY(115,40);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
+    
+            $fpdf->SetXY(20,47);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
+    
+            $fpdf->SetXY(22,54);
+            $fpdf->SetFont('Courier','',8);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dirreccion));
+    
+    
+            $fpdf->SetXY(22,61);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dui));
+    
+            $fpdf->SetXY(39,68);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->telefono1));
+    
+            $fpdf->SetFont('Courier','',10);
+
+            $formatter = new NumeroALetras();
+
+            $letras = $formatter->toInvoice($factura->total, 2, 'DOLARES');
+
+            $fpdf->SetXY(16,164);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($letras));
+
+
+            $fpdf->SetXY(132,165);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
+
+
+            $fpdf->SetXY(132,200);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
+           
+            $y=83;
+        }
+
+        if($factura->tipo_documento==2){
+            
+            $fpdf = new FpdfFactura('P','mm', array(163,240));
+
+            $detalle_factura = Abono::where('id_factura',$id)->get();
+            $fpdf->AliasNbPages();
+            $fpdf->AddPage();
+            $fpdf->SetTitle('FACTURA CREDITO| UNINET');
+        
+            $fpdf->SetXY(115,53);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
+        
+            $fpdf->SetXY(115,58);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->numero_registro));
+        
+            $fpdf->SetXY(115,63);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nit));
+        
+            $fpdf->SetXY(115,68);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->giro));
+        
+            $fpdf->SetXY(20,53);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
+        
+            $fpdf->SetXY(23,63);
+            $fpdf->SetFont('Courier','',8);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dirreccion));
+        
+            
+            $fpdf->SetXY(23,68);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->nombre));
+        
+            $fpdf->SetXY(65,68);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->get_departamento->nombre));
+        
+        
+            $fpdf->SetFont('Courier','',10);
+
+            
+            $formatter = new NumeroALetras();
+            $letras = $formatter->toInvoice($factura->total, 2, 'DOLARES');
+
+            $fpdf->SetXY(16,161);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode($letras));
+
+
+            $fpdf->SetXY(132,161);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
+
+            $fpdf->SetXY(132,169);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas*0.13,2)));
+
+            $fpdf->SetXY(132,177);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
+
+            $fpdf->SetXY(132,184);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format(0,2)));
+
+
+            $fpdf->SetXY(132,201);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
+           
+            $y=92;
+        }
+
+        foreach ($detalle_factura as $value) {
+            if($value->tipo_servicio==1){
+                $internet = Internet::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
+                //$fecha_i=$internet->dia_gene_fact.''.date('/m/Y');
+                $concepto = "SERVICIO DE INTERNET ".$internet[0]->velocidad;
+                $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+
+
+                $fpdf->SetXY(10,$y);
+                $fpdf->Cell(20,10,utf8_decode(1));
+                $fpdf->SetXY(22,$y);
+                $fpdf->Cell(20,10,utf8_decode($concepto));
+                $y+=5;
+                $fpdf->SetXY(22,$y);
+                $fpdf->Cell(20,10,utf8_decode($concepto1));
+                $y-=5;
+                $fpdf->SetXY(132,$y);
+                $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                $y+=10;
+
+            }else{
+                $tv = Tv::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
+                $concepto = "SERVICIO DE TELEVISIÓN";
+                $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+
+
+                $fpdf->SetXY(10,$y);
+                $fpdf->Cell(20,10,utf8_decode(1));
+                $fpdf->SetXY(22,$y);
+                $fpdf->Cell(20,10,utf8_decode($concepto));
+                $y+=7;
+                $fpdf->SetXY(22,$y);
+                $fpdf->Cell(20,10,utf8_decode($concepto1));
+                $y-=7;
+                $fpdf->SetXY(132,$y);
+                $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                $y+=14;
+
+            }
+           
+        }
+
+    
+
+
+        $fpdf->Output();
+        exit;
+
 
     }
 }

@@ -34,11 +34,12 @@
 					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
-								<th>Nombre</th>
-								<th>Marca</th>
-								<th>Costo$</th>
-                                <th>Precio$</th>
-                                <th>Tipo Producto</th>
+                                <th>ID</th>
+								<th>Correltivo</th>
+								<th>Cliente</th>
+								<th>Cobrador</th>
+                                <th>Total</th>
+                                <th>Fecha</th>
 								<th>Acciones</th>
 							
 							</tr>
@@ -46,11 +47,18 @@
 							<tbody>
 								@foreach ($obj_factura as $obj_item)
 								<tr class="filas">
-									<td>{{$obj_item->nombre}}</td>
-									<td>{{$obj_item->marca}}</td>
-                                    <td>{{$obj_item->costo}}</td>
-									<td>{{$obj_item->precio}}</td>
-                                    <td>{{$obj_item->tipo_producto}}</td>
+                                    <td>{{$obj_item->id}}</td>
+									<td>
+                                        @if($obj_item->tipo_documento==1)
+                                            FAC_{{$obj_item->numero_documento}}
+                                        @else
+                                            CRE_{{$obj_item->numero_documento}}
+                                        @endif
+                                    </td>
+									<td>{{$obj_item->get_cliente->nombre}}</td>
+                                    <td>{{$obj_item->get_cobrador->nombre}}</td>
+									<td>${{$obj_item->total}}</td>
+                                    <td>{{$obj_item->created_at}}</td>
                                     <!--<td>
                                     @if($obj_item->activo==1)
                                         <div class="col-md-8 badge badge-pill badge-success ">Activo</div>

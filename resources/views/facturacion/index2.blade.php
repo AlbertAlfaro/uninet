@@ -311,7 +311,7 @@
             <input type="hidden" name="id_cliente" id="id_cliente" class="form-control"  aria-describedby="helpId">
           </div>
           <div class="col-md-3" >
-            <label for="example-text-input" class=" col-form-label">Cobrador</label>              
+            <label for="example-text-input" class=" col-form-label">Cobrador *</label>              
             <select class="form-control" name="id_cobrador" id="id_cobrador" required>
               <option value="" >Seleccionar...</option>        
               @foreach ($obj_cobrador as $obj_item)
@@ -320,7 +320,7 @@
             </select>                    
           </div>
           <div class="col-md-3" >
-            <label for="example-text-input" class=" col-form-label">Tipo Impresión</label>              
+            <label for="example-text-input" class=" col-form-label">Tipo Impresión *</label>              
             <select class="form-control" name="tipo_documento" id="tipo_documento" required>
               <option value="" >Seleccionar...</option>
               <option value="1" >CONSUMIDOR FINAL</option>
@@ -335,7 +335,7 @@
             <input type="hidden" name="id_producto" id="id_producto" class="form-control"  aria-describedby="helpId">
           </div>
           <div class="col-md-2" >
-            <label for="example-text-input" class=" col-form-label">Tipo de pago</label>              
+            <label for="example-text-input" class=" col-form-label">Tipo de pago *</label>              
             <select class="form-control" name="tipo_pago" id="tipo_pago" required>
               <option value="" >Seleccionar...</option>
               <option value="EFEC" >EFECTIVO</option>

@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') Productos @endsection
+@section('title') Facturación @endsection
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -9,16 +9,16 @@
 @endsection
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Productos @endslot
-    @slot('title') Productos @endslot
+    @slot('pagetitle') Facturación @endslot
+    @slot('title') Gestión de Facturas @endslot
 @endcomponent
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                    <h4 class="card-title">Productos</h4>
+                    <h4 class="card-title">Gestión de Facturas</h4>
 				<p class="card-title-desc">
-					Usted se encuentra en el modulo Productos.
+					Usted se encuentra en el modulo Gestion de Facturas.
 				</p>
                 <div class="text-right">
                     <a href="{{ route('productos.create') }}">
@@ -36,27 +36,20 @@
 							<tr>
 								<th>Nombre</th>
 								<th>Marca</th>
-								<th>Costo</th>
-                                <th>Precio</th>
+								<th>Costo$</th>
+                                <th>Precio$</th>
                                 <th>Tipo Producto</th>
 								<th>Acciones</th>
 							
 							</tr>
 						</thead>
 							<tbody>
-								@foreach ($productos as $obj_item)
+								@foreach ($obj_factura as $obj_item)
 								<tr class="filas">
 									<td>{{$obj_item->nombre}}</td>
 									<td>{{$obj_item->marca}}</td>
-                                    <td>
-                                        @if($obj_item->costo==null)
-                                            
-                                        @else
-                                            ${{$obj_item->costo}}
-                                        @endif
-                    
-                                    </td>
-									<td>${{$obj_item->precio}}</td>
+                                    <td>{{$obj_item->costo}}</td>
+									<td>{{$obj_item->precio}}</td>
                                     <td>{{$obj_item->tipo_producto}}</td>
                                     <!--<td>
                                     @if($obj_item->activo==1)

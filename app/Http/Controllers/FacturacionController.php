@@ -501,4 +501,10 @@ class FacturacionController extends Controller
             
         }   
     }
+    //GESTION FACTURAS MANUALES
+    public function index3()
+    {
+        $obj_factura = Factura::where('id_sucursal',Auth::user()->id_sucursal)->get();
+        return view('facturacion/index3',compact('obj_factura'));
+    }
 }

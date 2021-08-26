@@ -222,7 +222,7 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('facturacion',[App\Http\Controllers\FacturacionController::class ,'index2'])->middleware('permission:Facturacion')->name('facturacion.index2');
     Route::get('facturacion/autocomplete2',[App\Http\Controllers\FacturacionController::class ,'busqueda_producto'])->middleware('permission:Facturacion')->name('facturacion.autocomplete2');
     Route::get('facturacion/venta',[App\Http\Controllers\FacturacionController::class ,'venta'])->middleware('permission:Facturacion')->name('facturacion.venta');
-    
+    Route::get('facturacion/gestion',[App\Http\Controllers\FacturacionController::class ,'index3'])->middleware('permission:Facturacion')->name('facturacion.gestion');    
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

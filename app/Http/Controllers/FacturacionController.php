@@ -8,6 +8,7 @@ use App\Models\Internet;
 use App\Models\Tv;
 use App\Models\Abono;
 use App\Models\Factura;
+use App\Models\Factura_detalle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -120,22 +121,24 @@ class FacturacionController extends Controller
         $xdatos['typeinfo']='';
         $xdatos['msg']='';
         $xdatos['results']=[];
-        if($servicio==0 || $servicio==1)
+        if($servicio==2 || $servicio==1)
         {
             if($servicio==1)//1=internet
             {
                 $servi=Cliente::where('id',$id_cliente)->where('internet','1')->count();
                 $mensaje="Cliente no posee Internet activo!";
+                $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->where('tipo_servicio',1)->get();
     
             }
-            if($servicio==0)//0=television
+            if($servicio==2)//2=television
             {
                 $servi=Cliente::where('id',$id_cliente)->where('tv','1')->count();
                 $mensaje="Cliente no posee Tv activo!";
+                $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->where('tipo_servicio',2)->get();
     
             }
             if($servi>0)
-            {   $abono = Abono::where('id_cliente',$id_cliente)->where('abono','0.00')->where('pagado','0')->get();
+            {   
                 if($abono->count()>0)
                 {
                     foreach ($abono as $query){
@@ -186,7 +189,7 @@ class FacturacionController extends Controller
             if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
             {
                 
-                return "Este documento ya fue impreso";
+                return "Este numero de documento ya fue impreso";
             }else
             { // AHORITA NO GUARDA LOS ABONOS CUANDO SON MESES ANTICIPOS
                 if($request->tipo_impresion==1){$tipo="FACTURA";}
@@ -251,10 +254,13 @@ class FacturacionController extends Controller
                     }
                     Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
                     $this->setCorrelativo($request->tipo_impresion);
-                    return "Guradado con exito";
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='Guardado con exito.';
+                    //$xdatos['results']=$results2;
+                    return response($xdatos);
                 }else
                 {
-                    return "no se puedo guardar la fctura";
+                    return "no se puedo guardar la factura";
                 }
             }
             
@@ -320,55 +326,79 @@ class FacturacionController extends Controller
     public function ultimo_mes($id_cliente, $tipo_ser,$filas)
     {   /*nota:segun la logica por lo menos debe tener un abono realizado para ver el ultimo mes
         y asi para los que siguen, si tiene cuotas pendientes no quitaras y usar el boton anticipo de meses*/ 
-        //1=internet y 0=television
+        //1=internet y 2=television
+        $xdatos['typeinfo']='';
+        $xdatos['msg']='';
+        $xdatos['results']=[];
         if($tipo_ser==1){$contrato= Internet::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
-        if($tipo_ser==0){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        if($tipo_ser==2){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
         $results2 = array();
         if(count($contrato)!=0)
         {
             $precio=$contrato[0]->cuota_mensual;
-            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('pagado','1')->get();
+            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->get();
             $abono1=$abono->last();
             $results2 = array();
-            if($filas==0)
+            if(true)
             {
-             
-                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
-                $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
-                $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
-                $cargo_sin_iva=$precio/1.13;
+                if($filas==0)
+                {
+                 
+                    $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
+                    $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
+                    $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                    $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
+                    $cargo_sin_iva=$precio/1.13;
+                    $mes=explode("-", $mes_servicio);
+                    $results2[] = [ 
+                        'id' => $abono1->id,
+                        'cargo' => $precio,
+                        'mes_servicio' =>$mes[1].'/'.$mes[2],
+                        'fecha_vence'=>$fecha_vence,
+                        'mes_ser'=>$mes_ser,
+                        'cargo_sin_iva'=>$cargo_sin_iva,
+                    ];
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='ok';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);
+                    
+                }
+                if($filas>0)
+                {   $filas =$filas+1;
+                    $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                    $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
+                    $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                    $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
+                    $cargo_sin_iva=$precio/1.13;
+                    $mes=explode("-", $mes_servicio);
+                    $results2[] = [ 
+                        'id' => $abono1->id,
+                        'cargo' => $precio,
+                        'mes_servicio' =>$mes[1].'/'.$mes[2],
+                        'fecha_vence'=>$fecha_vence,
+                        'mes_ser'=>$mes_ser,
+                        'cargo_sin_iva'=>$cargo_sin_iva,
+                    ];
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='ok';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);
+                }
+            }else
+            {
+                $xdatos['typeinfo']='Warning';
+                $xdatos['msg']='Cliente no posee abonos, debe tener al menos uno!';
+                $xdatos['results']=$results2;
+                return response($xdatos);
+            }
 
-                $results2[] = [ 
-                    'id' => $abono1->id,
-                    'cargo' => $precio,
-                    'mes_servicio' =>$mes_servicio,
-                    'fecha_vence'=>$fecha_vence,
-                    'mes_ser'=>$mes_ser,
-                    'cargo_sin_iva'=>$cargo_sin_iva,
-                ];
-                return response($results2);
-                
-            }
-            if($filas>0)
-            {   $filas =$filas+1;
-                $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
-                $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
-                $fecha_vence=date("d/m/Y", strtotime($mes_servicio."+ 10 days"));
-                $cargo_sin_iva=$precio/1.13;
-                $results2[] = [ 
-                    'id' => $abono1->id,
-                    'cargo' => $precio,
-                    'mes_servicio' =>$mes_servicio,
-                    'fecha_vence'=>$fecha_vence,
-                    'mes_ser'=>$mes_ser,
-                    'cargo_sin_iva'=>$cargo_sin_iva,
-                ];
-                return response($results2);
-            }
         }else
         {
-
-            return response($results2);
+            $xdatos['typeinfo']='Warning';
+            $xdatos['msg']='Cliente no posee servicio Activo.';
+            $xdatos['results']=$results2;
+            return response($xdatos);
         }
 
     }
@@ -381,7 +411,7 @@ class FacturacionController extends Controller
 
 
     }
-    public function busqueda_cliente2(Request $request){
+    public function busqueda_producto(Request $request){
         $term1 = $request->term;
         $results = array();
         $queries = Producto::
@@ -390,9 +420,85 @@ class FacturacionController extends Controller
         get();    
         foreach ($queries as $query){
             $precio_sin_iva=$query->precio/1.13;
-            $results[] = [ 'id' => $query->id, 'value' => $query->nombre,'nombre' => $query->nombre,'precio'=>$query->precio,'precio_sin_iva'=>$precio_sin_iva];
+            $results[] = [ 'id' => $query->id, 'value' => $query->nombre,'nombre' => $query->nombre,'precio'=>$query->precio,'precio_sin_iva'=>$precio_sin_iva,'exento'=>$query->exento];
         }
         return response($results);       
     
-    } 
+    }
+    public function venta(Request $request){
+        $xdatos['typeinfo']='';
+        $xdatos['msg']='';
+        $xdatos['results']=[];
+        if ($request->cuantos >0)
+        { 
+            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
+            {
+                
+                $xdatos['typeinfo']='warning';
+                $xdatos['msg']='Este numero de documento ya fue impresa.';
+                return response($xdatos);
+            }else
+            { 
+                if($request->tipo_impresion==1){$tipo="FACTURA";}
+                if($request->tipo_impresion==2){$tipo="CREDITO FISCAL";}
+                $factura = new Factura();
+                $factura->id_usuario=Auth::user()->id;
+                $factura->id_cliente=$request->id_cliente;
+                $factura->id_cobrador=$request->id_cobrador;
+                $factura->sumas=$request->sumas;
+                $factura->iva=$request->iva;
+                $factura->subtotal=$request->subtotal;
+                $factura->suma_gravada=$request->suma_gravada;
+                $factura->venta_exenta=$request->venta_exenta;
+                $factura->total=$request->total;
+                $factura->tipo_pago=$request->tipo_pago;
+                $factura->tipo=$tipo;
+                $correlativo=Correlativo::find($request->tipo_impresion);
+                $factura->serie=$correlativo->serie;
+                $factura->tipo_documento=$request->tipo_impresion;
+                $factura->numero_documento=$request->numdoc;
+                $factura->impresa=0;
+                $factura->cuota=0;
+                $factura->anulada=0;
+                $factura->id_sucursal=Auth::user()->id_sucursal;
+                $factura->save();
+                $ultima_factura = Factura::all()->last();
+                $id_factura =$ultima_factura->id;
+                if($factura)
+                {  
+                    //comienza factura detalle
+                    $array = json_decode($request->json_arr, true);
+                    foreach ($array as $fila)
+                    {   
+                        if($request->tipo_impresion==1){$tipo="FAC";}
+                        if($request->tipo_impresion==2){$tipo="CRE";}
+                        $Fdetalle = new Factura_detalle();
+                        $Fdetalle->id_factura=$id_factura;
+                        $Fdetalle->id_producto=$fila['id'];
+                        $Fdetalle->cantidad=$fila['cantidad'];
+                        $Fdetalle->precio=$fila['precio_venta'];
+                        $Fdetalle->subtotal = $fila['subtotal'];
+                        $Fdetalle->save();
+                    }
+                    //Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
+                    $this->setCorrelativo($request->tipo_impresion);
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='Guardado con exito.';
+                    return response($xdatos);
+                }else
+                {
+                    $xdatos['typeinfo']='Error';
+                    $xdatos['msg']='no se puedo guardar la factura.';
+                    return response($xdatos);
+                }
+            }
+            
+        }else{
+            
+            $xdatos['typeinfo']='Error';
+            $xdatos['msg']='No hay productos en la venta.';
+            return response($xdatos);
+            
+        }   
+    }
 }

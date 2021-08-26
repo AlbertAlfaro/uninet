@@ -43,7 +43,7 @@ class ProductoController extends Controller
         $producto->nombre = $request->nombre;
         $producto->marca = $request->marca;
         $producto->activo = "1";
-        $producto->exento = "0";
+        $producto->exento = $request->exento;
         $producto->costo = $request->costo;
         $producto->precio = $request->precio;
         $producto->tipo_producto = $request->tipo_producto;
@@ -93,6 +93,7 @@ class ProductoController extends Controller
         Producto::where('id',$id)->update([ 
             'nombre'=> $request->nombre,
             'marca'=>$request->marca,
+            'exento' => $request->exento,
             'tipo_producto'=>$request->tipo_producto,
             'costo'=>$request->costo,
             'precio'=>$request->precio,

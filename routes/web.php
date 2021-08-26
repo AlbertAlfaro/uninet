@@ -224,10 +224,9 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('facturacion/addmes/{id_cliente}/{tipo_ser}/{filas}',[App\Http\Controllers\FacturacionController::class ,'ultimo_mes'])->name('facturacion.addmes');
     //FACTURA DIRECTA
     Route::get('facturacion',[App\Http\Controllers\FacturacionController::class ,'index2'])->middleware('permission:Facturacion')->name('facturacion.index2');
-    Route::get('facturacion/autocomplete',[App\Http\Controllers\FacturacionController::class ,'busqueda_cliente2'])->middleware('permission:Facturacion')->name('facturacion.autocomplete2');
-
-
-
+    Route::get('facturacion/autocomplete2',[App\Http\Controllers\FacturacionController::class ,'busqueda_producto'])->middleware('permission:Facturacion')->name('facturacion.autocomplete2');
+    Route::get('facturacion/venta',[App\Http\Controllers\FacturacionController::class ,'venta'])->middleware('permission:Facturacion')->name('facturacion.venta');
+    
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

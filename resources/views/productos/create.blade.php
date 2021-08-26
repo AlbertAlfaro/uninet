@@ -74,6 +74,15 @@ Productos
                                             <input type="number" step="0.01" name="precio" id="precio" class="form-control" placeholder="" required>
                                         </div>
                                     </div>
+                                    <div class="form-group row col-md-4">
+                                        <label class="col-md-4 col-form-label" for="defaultCheck1">Exento</label>
+                                        <div class="col-md-8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input jqcheck" id="exento" name="exento"  >
+                                                <label class="custom-control-label" for="exento"></label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -107,23 +116,31 @@ Productos
     <script src="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script> 
 
     <script type="text/javascript">
-
- 
-        $(function () {
-          $('#form').parsley().on('field:validated', function() {
+    $(function () {
+        $('#form').parsley().on('field:validated', function() {
             var ok = $('.parsley-error').length === 0;
             $('.bs-callout-info').toggleClass('hidden', !ok);
             $('.bs-callout-warning').toggleClass('hidden', ok);
-          })
-        
-        });
+        })
+    });
 
-        $('.datepicker').datepicker({
-            format: "dd/mm/yyyy",
-            language: "es",
-            autoclose: true
+    $('.datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        language: "es",
+        autoclose: true
+    });
+    $( document ).ready(function() {
+        $('.jqcheck').change(function(){
+            if( $('#exento').is(':checked'))
+            {
+                $('#exento').val("1");
+                    
+            }else
+            {
+                $('#exento').val("0");
+                
+            }
         });
+    }); 
     </script>
-
-    
 @endsection

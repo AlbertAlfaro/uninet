@@ -3,7 +3,7 @@
 
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Minible @endslot
+    @slot('pagetitle') UNINET @endslot
     @slot('title') Dashboard @endslot
 @endcomponent 
 <div class="row">
@@ -14,10 +14,11 @@
                     <div id="total-revenue-chart"></div>
                 </div>
                 <div>
-                    <h4 class="mb-1 mt-1">$<span data-plugin="counterup">34,152</span></h4>
-                    <p class="text-muted mb-0">Total Revenue</p>
+                    <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{ $clientes }}</span></h4>
+                    <p class="text-muted mb-0">Clientes activos</p>
                 </div>
-                <p class="text-muted mt-3 mb-0"><span class="text-success mr-1"><i class="mdi mdi-arrow-up-bold ml-1"></i>2.65%</span> since last week
+                <p class="text-muted mt-3 mb-0"><a href="">Clientes</a>
+                
                 </p>
             </div>
         </div>
@@ -30,10 +31,11 @@
                     <div id="orders-chart"> </div>
                 </div>
                 <div>
-                    <h4 class="mb-1 mt-1"><span data-plugin="counterup">5,643</span></h4>
-                    <p class="text-muted mb-0">Orders</p>
+                    <h4 class="mb-1 mt-1">$ <span data-plugin="counterup">{{ number_format($total_fac,2) }}</span></h4>
+                    <p class="text-muted mb-0">Ingresos hoy</p>
                 </div>
-                <p class="text-muted mt-3 mb-0"><span class="text-danger mr-1"><i class="mdi mdi-arrow-down-bold ml-1"></i>0.82%</span> since last week
+                <p class="text-muted mt-3 mb-0"><a href="">Facturas</a>
+                
                 </p>
             </div>
         </div>
@@ -46,10 +48,11 @@
                     <div id="customers-chart"> </div>
                 </div>
                 <div>
-                    <h4 class="mb-1 mt-1"><span data-plugin="counterup">45,254</span></h4>
-                    <p class="text-muted mb-0">Customers</p>
+                    <h4 class="mb-1 mt-1">$ <span data-plugin="counterup">{{ number_format($total_pen,2) }}</span></h4>
+                    <p class="text-muted mb-0">Cargos pendientes</p>
                 </div>
-                <p class="text-muted mt-3 mb-0"><span class="text-danger mr-1"><i class="mdi mdi-arrow-down-bold ml-1"></i>6.24%</span> since last week
+                <p class="text-muted mt-3 mb-0"><a href="">Pendientes</a>
+                
                 </p>
             </div>
         </div>
@@ -63,10 +66,11 @@
                     <div id="growth-chart"></div>
                 </div>
                 <div>
-                    <h4 class="mb-1 mt-1">+ <span data-plugin="counterup">12.58</span>%</h4>
-                    <p class="text-muted mb-0">Growth</p>
+                    <h4 class="mb-1 mt-1"><span data-plugin="counterup">39</span></h4>
+                    <p class="text-muted mb-0">Instalaciones</p>
                 </div>
-                <p class="text-muted mt-3 mb-0"><span class="text-success mr-1"><i class="mdi mdi-arrow-up-bold ml-1"></i>10.51%</span> since last week
+                <p class="text-muted mt-3 mb-0"><a href="">Ordenes</a>
+                
                 </p>
             </div>
         </div>

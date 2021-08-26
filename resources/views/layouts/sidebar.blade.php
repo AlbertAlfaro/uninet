@@ -120,6 +120,9 @@
                          @can('abonos_pendientes')
                          <li><a href="{{url('abonos/pendientes')}}">Pedientes</a></li>
                          @endcan
+                         @can('Facturacion')
+                         <li><a href="{{url('factura/imprimir/1')}}">Imprimir factura</a></li>
+                         @endcan
                         
                      </ul>
                      

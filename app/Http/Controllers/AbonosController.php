@@ -7,7 +7,9 @@ use App\Fpdf\FpdfFactura;
 use App\Models\Abono;
 use App\Models\Cliente;
 use App\Models\Factura;
+use App\Models\Factura_detalle;
 use App\Models\Internet;
+use App\Models\Producto;
 use App\Models\Tv;
 use Carbon\Carbon;
 use Luecano\NumeroALetras\NumeroALetras;;
@@ -119,7 +121,7 @@ class AbonosController extends Controller
         if($factura->tipo_documento==1){
             
             $fpdf = new FpdfFactura('P','mm', array(155,240));
-            $detalle_factura = Abono::where('id_factura',$id)->get();
+           
             $fpdf->AliasNbPages();
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA FINAL | UNINET');
@@ -134,7 +136,8 @@ class AbonosController extends Controller
     
             $fpdf->SetXY(22,54);
             $fpdf->SetFont('Courier','',8);
-            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dirreccion));
+            $direccion = substr($factura->get_cliente->dirreccion,0,50);
+            $fpdf->Cell(20,10,utf8_decode($direccion));
     
     
             $fpdf->SetXY(22,61);
@@ -199,7 +202,8 @@ class AbonosController extends Controller
         
             $fpdf->SetXY(23,63);
             $fpdf->SetFont('Courier','',8);
-            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dirreccion));
+            $direccion = substr($factura->get_cliente->dirreccion,0,45);
+            $fpdf->Cell(20,10,utf8_decode($direccion));
         
             
             $fpdf->SetXY(23,68);
@@ -245,47 +249,85 @@ class AbonosController extends Controller
            
             $y=92;
         }
+        if($factura->cuota==1){
 
-        foreach ($detalle_factura as $value) {
-            if($value->tipo_servicio==1){
-                $internet = Internet::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
-                //$fecha_i=$internet->dia_gene_fact.''.date('/m/Y');
-                $concepto = "SERVICIO DE INTERNET ".$internet[0]->velocidad;
-                $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+            $detalle_factura = Abono::where('id_factura',$id)->get();
 
-
-                $fpdf->SetXY(10,$y);
-                $fpdf->Cell(20,10,utf8_decode(1));
-                $fpdf->SetXY(22,$y);
-                $fpdf->Cell(20,10,utf8_decode($concepto));
-                $y+=5;
-                $fpdf->SetXY(22,$y);
-                $fpdf->Cell(20,10,utf8_decode($concepto1));
-                $y-=5;
-                $fpdf->SetXY(132,$y);
-                $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
-                $y+=10;
-
-            }else{
-                $tv = Tv::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
-                $concepto = "SERVICIO DE TELEVISIÓN";
-                $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
-
-
-                $fpdf->SetXY(10,$y);
-                $fpdf->Cell(20,10,utf8_decode(1));
-                $fpdf->SetXY(22,$y);
-                $fpdf->Cell(20,10,utf8_decode($concepto));
-                $y+=7;
-                $fpdf->SetXY(22,$y);
-                $fpdf->Cell(20,10,utf8_decode($concepto1));
-                $y-=7;
-                $fpdf->SetXY(132,$y);
-                $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
-                $y+=14;
-
+            foreach ($detalle_factura as $value) {
+                if($value->tipo_servicio==1){
+                    $internet = Internet::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
+                    //$fecha_i=$internet->dia_gene_fact.''.date('/m/Y');
+                    $concepto = "SERVICIO DE INTERNET ".$internet[0]->velocidad;
+                    $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+    
+    
+                    $fpdf->SetXY(10,$y);
+                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->SetXY(22,$y);
+                    $fpdf->Cell(20,10,utf8_decode($concepto));
+                    $y+=5;
+                    $fpdf->SetXY(22,$y);
+                    $fpdf->Cell(20,10,utf8_decode($concepto1));
+                    $y-=5;
+                    $fpdf->SetXY(132,$y);
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                    $y+=10;
+    
+                }else{
+                    $tv = Tv::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
+                    $concepto = "SERVICIO DE TELEVISIÓN";
+                    $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+    
+    
+                    $fpdf->SetXY(10,$y);
+                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->SetXY(22,$y);
+                    $fpdf->Cell(20,10,utf8_decode($concepto));
+                    $y+=7;
+                    $fpdf->SetXY(22,$y);
+                    $fpdf->Cell(20,10,utf8_decode($concepto1));
+                    $y-=7;
+                    $fpdf->SetXY(132,$y);
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                    $y+=14;
+    
+                }
+               
+               
             }
-           
+        }else{
+
+            $detalle_factura = Factura_detalle::where('id_factura',$id)->get();
+
+            foreach ($detalle_factura as $value) {
+                if($value->tipo_servicio==1){
+                   
+    
+    
+                    $fpdf->SetXY(10,$y);
+                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->SetXY(22,$y);
+                    $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
+                    $fpdf->SetXY(132,$y);
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->get_producto->precio,2)));
+                    $y+=5;
+    
+                }else{
+                    $fpdf->SetXY(10,$y);
+                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->SetXY(22,$y);
+                    $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
+                    
+                    $fpdf->SetXY(132,$y);
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->get_producto->precio,2)));
+                    $y+=7;
+    
+                }
+               
+               
+            }
+
+
         }
 
     

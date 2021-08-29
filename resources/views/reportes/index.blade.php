@@ -8,6 +8,13 @@
     <link href="{{ URL::asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
 
     <link href="{{ URL::asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <style>
+        .datepicker {
+          z-index: 1600 !important; /* has to be larger than 1050 */
+          
+        }
+
+    </style>    
 @endsection
 @section('content')
 @component('common-components.breadcrumb')
@@ -202,6 +209,7 @@
             format: "dd/mm/yyyy",
             language: "es",
             autoclose: true,
+            orientation: "bottom",
         });
     </script>
 @endsection

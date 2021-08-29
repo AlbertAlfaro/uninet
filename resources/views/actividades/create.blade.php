@@ -78,6 +78,7 @@ Actividades
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 
+
     <script type="text/javascript">
 
  

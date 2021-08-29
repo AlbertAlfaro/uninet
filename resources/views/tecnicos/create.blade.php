@@ -93,6 +93,9 @@ Tecnicos
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 
+    <script src="{{ URL::asset('assets/libs/inputmask/inputmask.min.js')}}"></script>
+    <script src="{{ URL::asset('assets/js/pages/form-mask.init.js')}}"></script>
+
     <script type="text/javascript">
 
 

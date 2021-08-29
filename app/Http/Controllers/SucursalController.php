@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class SucursalController extends Controller
 {
+    public function __construct(){
+        // verifica si la session esta activa
+        $this->middleware('auth');
+    }
+
     public function index(){
         $sucursales = sucursal::all();
 

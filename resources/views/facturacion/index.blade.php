@@ -959,7 +959,7 @@ $(document).on('change', '#tipo_documento', function(event) {
     var tr = $(this);
     actualiza_subtotal(tr);
   });
-  //tipo_documentoload();
+  tipo_documentoload();
 });
 $(document).on('change', '#tipo_servicio', function(event) {
   $("#inventable tr").remove();

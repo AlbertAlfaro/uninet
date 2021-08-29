@@ -64,7 +64,38 @@ class FacturacionController extends Controller
      */
     public function show($id)
     {
-        //
+        $results = array();
+        $xdatos['cliente']='';
+        $xdatos['correlativo']='';
+        $xdatos['tipo_docu']='';
+        $xdatos['fecha']='';
+        $xdatos['iva']='';
+        $xdatos['sumas']='';
+        $xdatos['total']='';
+        $xdatos['results']=[];
+        $factura=Factura::find($id);
+        $detalle=Factura_detalle::where('id_factura',$id)->get();
+        if($detalle->count()>0)
+        {
+            foreach ($detalle as $query){
+                $results[] = [ 'cantidad' => $query->cantidad, 'producto' => $query->get_producto->nombre,'precio' => $query->precio,'subtotal'=>$query->subtotal];
+            }
+            $xdatos['results']=$results;
+        }
+        if($factura->tipo_documento==1){
+            $tipo='FAC';
+        }else{
+            $tipo='CRE';
+        }
+
+        $xdatos['cliente']=$factura->get_cliente->nombre;
+        $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
+        $xdatos['fecha']=$factura->created_at->format('d/m/Y');
+        $xdatos['tipo_docu']=$factura->tipo_documento;
+        $xdatos['iva']=$factura->iva;
+        $xdatos['sumas']=$factura->sumas;
+        $xdatos['total']=$factura->total;
+        return $xdatos;
     }
 
     /**
@@ -96,9 +127,26 @@ class FacturacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$cuota)
     {
-        //
+        Factura::destroy($id);
+        if($cuota==1)
+        {
+            Abono::where('id_factura', $id)->delete();
+        }else{
+            Factura_detalle::where('id_factura', $id)->delete();
+        }
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Factura eliminado con  id: '.$id);
+        flash()->success("Registro eliminado exitosamente!")->important();
+        return redirect()->route('facturacion.gestion');
+    }
+
+    public function anular($id)
+    {
+        Factura::where('id',$id)->update(['anulada' =>1]);
+        flash()->success("Factura anulada exitosamente!")->important();
+        return redirect()->route('facturacion.gestion');
     }
 
     // Autocomplete de Cliente
@@ -504,7 +552,7 @@ class FacturacionController extends Controller
     //GESTION FACTURAS MANUALES
     public function index3()
     {
-        $obj_factura = Factura::where('id_sucursal',Auth::user()->id_sucursal)->get();
+        $obj_factura = Factura::where('id_sucursal',Auth::user()->id_sucursal)->where('cuota',0)->get();
         return view('facturacion/index3',compact('obj_factura'));
     }
 }

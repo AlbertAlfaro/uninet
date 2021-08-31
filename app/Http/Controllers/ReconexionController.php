@@ -20,6 +20,11 @@ class ReconexionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(){
+        // verifica si la session esta activa
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $reconexiones = Reconexion::all();

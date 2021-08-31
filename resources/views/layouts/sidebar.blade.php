@@ -101,8 +101,8 @@
                         <li><a href="{{url('facturacion')}}">Factura Manual</a></li>
                         @endcan
                         
-                        @can('Ordenes')
-                        <li><a href="{{url('ordenes')}}">Gestión de Factura</a></li>
+                        @can('Facturacion')
+                        <li><a href="{{url('facturacion/gestion')}}">Gestión de Factura Manual</a></li>
                         @endcan
                     </ul>
                     

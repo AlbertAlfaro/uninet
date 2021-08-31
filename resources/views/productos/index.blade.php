@@ -36,8 +36,8 @@
 							<tr>
 								<th>Nombre</th>
 								<th>Marca</th>
-								<th>Costo$</th>
-                                <th>Precio$</th>
+								<th>Costo</th>
+                                <th>Precio</th>
                                 <th>Tipo Producto</th>
 								<th>Acciones</th>
 							
@@ -48,8 +48,15 @@
 								<tr class="filas">
 									<td>{{$obj_item->nombre}}</td>
 									<td>{{$obj_item->marca}}</td>
-                                    <td>{{$obj_item->costo}}</td>
-									<td>{{$obj_item->precio}}</td>
+                                    <td>
+                                        @if($obj_item->costo==null)
+                                            
+                                        @else
+                                            ${{$obj_item->costo}}
+                                        @endif
+                    
+                                    </td>
+									<td>${{$obj_item->precio}}</td>
                                     <td>{{$obj_item->tipo_producto}}</td>
                                     <!--<td>
                                     @if($obj_item->activo==1)

@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AbonosController extends Controller
 {
+    public function __construct(){
+        // verifica si la session esta activa
+        $this->middleware('auth');
+    }
+    
     public function index(){
         $id=0;
         $abono_inter = Abono::join('clientes','abonos.id_cliente','=','clientes.id')

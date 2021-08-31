@@ -308,7 +308,7 @@
         @include('flash::message')
         <div class="row">
           <div class="col-md-2" >
-            <label for="example-text-input" class=" col-form-label">Servicio</label>              
+            <label for="example-text-input" class=" col-form-label">Servicio *</label>              
             <select class="form-control" name="tipo_servicio" id="tipo_servicio" required>
                 <option value="1" >Internet</option>
                 <option value="2" >Televisión</option>
@@ -320,7 +320,7 @@
             <input type="hidden" name="id_cliente" id="id_cliente" class="form-control"  aria-describedby="helpId">
           </div>
           <div class="col-md-3" >
-            <label for="example-text-input" class=" col-form-label">Cobrador</label>              
+            <label for="example-text-input" class=" col-form-label">Cobrador *</label>              
             <select class="form-control" name="id_cobrador" id="id_cobrador" required>
               <option value="" >Seleccionar...</option>        
               @foreach ($obj_cobrador as $obj_item)
@@ -329,7 +329,7 @@
             </select>                    
           </div>
           <div class="col-md-3" >
-            <label for="example-text-input" class=" col-form-label">Tipo Impresión</label>              
+            <label for="example-text-input" class=" col-form-label">Tipo Impresión *</label>              
             <select class="form-control" name="tipo_documento" id="tipo_documento" required>
               <option value="" >Seleccionar...</option>
               <option value="1" >CONSUMIDOR FINAL</option>
@@ -339,7 +339,7 @@
         </div>
         <div class="row  ">
           <div class="col-md-3" >
-            <label for="example-text-input" class=" col-form-label">Tipo de pago</label>              
+            <label for="example-text-input" class=" col-form-label">Tipo de pago *</label>              
             <select class="form-control" name="tipo_pago" id="tipo_pago" required>
               <option value="" >Seleccionar...</option>
               <option value="EFEC" >EFECTIVO</option>
@@ -959,7 +959,7 @@ $(document).on('change', '#tipo_documento', function(event) {
     var tr = $(this);
     actualiza_subtotal(tr);
   });
-  //tipo_documentoload();
+  tipo_documentoload();
 });
 $(document).on('change', '#tipo_servicio', function(event) {
   $("#inventable tr").remove();

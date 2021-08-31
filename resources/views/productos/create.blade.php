@@ -62,14 +62,14 @@ Productos
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Costo</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Precio de compra</label>
                                         <div class="col-md-8">
                                             <input type="number" step="0.01" name="costo" id="costo" class="form-control" placeholder="">
 
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Precio *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Precio de venta*</label>
                                         <div class="col-md-8">
                                             <input type="number" step="0.01" name="precio" id="precio" class="form-control" placeholder="" required>
                                         </div>

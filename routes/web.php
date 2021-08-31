@@ -226,7 +226,12 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('facturacion',[App\Http\Controllers\FacturacionController::class ,'index2'])->middleware('permission:Facturacion')->name('facturacion.index2');
     Route::get('facturacion/autocomplete2',[App\Http\Controllers\FacturacionController::class ,'busqueda_producto'])->middleware('permission:Facturacion')->name('facturacion.autocomplete2');
     Route::get('facturacion/venta',[App\Http\Controllers\FacturacionController::class ,'venta'])->middleware('permission:Facturacion')->name('facturacion.venta');
-    
+    Route::get('facturacion/gestion',[App\Http\Controllers\FacturacionController::class ,'index3'])->middleware('permission:Facturacion')->name('facturacion.gestion');    
+    Route::get('facturacion/destroy/{id}/{cuota}',[App\Http\Controllers\FacturacionController::class ,'destroy'])->middleware('permission:destroy_factura')->name('facturacion.destroy');
+    Route::get('facturacion/detalle/{id}',[App\Http\Controllers\FacturacionController::class ,'show'])->middleware('permission:Facturacion')->name('facturacion.detalle');
+    Route::get('facturacion/anular/{id}',[App\Http\Controllers\FacturacionController::class ,'anular'])->middleware('permission:anular_factura')->name('facturacion.anular');
+    Route::get('facturacion/verfactura/{id}',[App\Http\Controllers\FacturacionController::class ,'show'])->middleware('permission:Facturacion')->name('facturacion.verfactura');
+
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

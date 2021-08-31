@@ -14,4 +14,9 @@ class Factura extends Model
         return $this->hasOne('App\Models\Cliente','id', 'id_cliente');
 
     }
+    public function get_cobrador(){
+
+        return $this->hasOne('App\Models\Cobrador','id', 'id_cobrador');
+
+    }
 }

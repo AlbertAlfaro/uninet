@@ -344,7 +344,7 @@
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
-            <button type="button" id="btnImprimir" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Imprimir </button>
+            <button type="button" id="btnImprimir" style="margin-left:3%;" name="btnImprimir" class="btn btn-primary pull-right usage"><i class="uil-file"></i> F9 Imprimir </button>
             <input type="hidden" id="items" name="items">
           </div>
         </div>
@@ -622,6 +622,16 @@
               });                
             });
             
+        });
+        $(document).keydown(function(e) {
+          if (e.which == 120) { //F9 guarda factura
+            e.preventDefault();
+            if ($('#totalfactura').val() != 0 && $("#items").val() > 0) {
+              Imprimir_factura();
+            } else {
+            display_notify('Error', 'Debe haber al menos un producto registrado');
+            }
+          }
         });
         //obtener subtotal cantidad x precio
         function subt(qty,price){
@@ -1136,16 +1146,7 @@ function guardar() {
       success: function(datax) {
         if (datax.typeinfo == "Success")
 				{ 
-          /*$("#nomcli").val('');
-				  $(" #numdoc").val('');
-				  $("#dircli").val('');
- 				  $("#numreci").val('');
-          $("#tot_fdo").val('');
-          $("#nitcli").val('');
-          $("#efectivov").val('');
-          $("#cambiov").val('');
-          $('#id_factura').val('');
-					--------------------------------
+          /*
           $(".usage").attr("disabled", true);
 					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
 					{
@@ -1164,15 +1165,9 @@ function guardar() {
  					 	$("#efectivov").focus();
 						$('#numdoc').val(datax.ultimo);
 					}
-					$("#tot_fdo").val(total);
-						 //activa_modal(datax.numdoc,datax.numdoc,id_cliente);
-					 $('#id_factura').val(datax.id_factura);
-					 ultimo=parseInt(datax.ultimo);
-					 if(ultimo!=0)
-					 {
-						 //$('#num_doc_fact').val(ultimo);
-					 }
-					 //$('#corr_in').val(datax.numdoc);
+
+
+		
            */
 
           $('#id_factura').val(datax.id_factura);

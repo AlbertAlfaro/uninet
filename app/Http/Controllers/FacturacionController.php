@@ -238,7 +238,9 @@ class FacturacionController extends Controller
             if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
             {
                 
-                return "Este numero de documento ya fue impreso";
+                $xdatos['typeinfo']='Warning';
+                $xdatos['msg']='el número de documento ya fue impreso.';
+                return response($xdatos);
             }else
             { // AHORITA NO GUARDA LOS ABONOS CUANDO SON MESES ANTICIPOS
                 if($request->tipo_impresion==1){$tipo="FACTURA";}
@@ -304,17 +306,22 @@ class FacturacionController extends Controller
                     Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
                     $this->setCorrelativo($request->tipo_impresion);
                     $xdatos['typeinfo']='Success';
+                    $xdatos['id_factura']=$id_factura;
                     $xdatos['msg']='Guardado con exito.';
                     //$xdatos['results']=$results2;
                     return response($xdatos);
                 }else
                 {
-                    return "no se puedo guardar la factura";
+                    $xdatos['typeinfo']='Warning';
+                    $xdatos['msg']='no se puedo guardar la factura.';
+                    return response($xdatos);
                 }
             }
             
         }else{
-            return "No hay abonos para ingresar";
+            $xdatos['typeinfo']='Warning';
+            $xdatos['msg']="No hay abonos para ingresar.";
+            return response($xdatos);
         }
     }
 

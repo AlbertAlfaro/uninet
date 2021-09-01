@@ -344,7 +344,7 @@
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
-            <button type="button" id="clean" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
+            <button type="button" id="btnImprimir" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Imprimir </button>
             <input type="hidden" id="items" name="items">
           </div>
         </div>
@@ -585,7 +585,7 @@
                   var descrip_only = ui.item.nombre;
 			            var tipo_impresion=$('#tipo_impresion').val();
 
-                  var filas = parseInt($("#filas").val());
+                  var filas = parseInt($("#items").val());    
                   var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
                   var input_producto="<input type='hidden' id='id_producto' name='id_producto' value='" + id_producto + "'>";
                   var subtotal = subt(ui.item.precio, 1);
@@ -609,13 +609,14 @@
                   tr_add += '<td class=" Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                   tr_add += '</tr>';
                   //numero de filas
-                  filas++;
+                  //filas++;
 
                   $("#inventable").append(tr_add);
                   //$(".decimal2").numeric({negative:false,decimal:false});
                   //$(".86").numeric({negative:false,decimalPlaces:4});
-                  $('#items').val(filas);
+                  //$('#items').val(filas);
                   $('#inventable #'+filas).find("#cant").focus();
+                  
                   totales();  
                 }
               });                
@@ -873,7 +874,7 @@
       $('#total_final').html(total_descuento_mostrar);
       $('#totalfactura').val(total_final_mostrar);
 
-      $('#totcant').html(filas);
+      $('#items').val(filas);
       $.ajax({
           type: 'GET',
           url: 'convertir/'+total_final_mostrar,
@@ -1017,6 +1018,9 @@ function total_efectivov(){
 $(document).on("click","#submit1",function(){
 	guardar();
 });
+$(document).on("click","#btnImprimir",function(){
+	Imprimir_factura();
+});
 function guardar() {
   //Obtener los valores a guardar de cada item facturado
   sel_vendedor=1;
@@ -1131,7 +1135,8 @@ function guardar() {
       data: dataString,
       success: function(datax) {
         if (datax.typeinfo == "Success")
-				{ $("#nomcli").val('');
+				{ 
+          /*$("#nomcli").val('');
 				  $(" #numdoc").val('');
 				  $("#dircli").val('');
  				  $("#numreci").val('');
@@ -1139,7 +1144,8 @@ function guardar() {
           $("#nitcli").val('');
           $("#efectivov").val('');
           $("#cambiov").val('');
-					/*
+          $('#id_factura').val('');
+					--------------------------------
           $(".usage").attr("disabled", true);
 					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
 					{
@@ -1168,6 +1174,9 @@ function guardar() {
 					 }
 					 //$('#corr_in').val(datax.numdoc);
            */
+
+          $('#id_factura').val(datax.id_factura);
+          $("#efectivov").focus();
           display_notify(datax.typeinfo, datax.msg);
         }
 				else {
@@ -1178,6 +1187,53 @@ function guardar() {
   } else {
     display_notify('Warning',msg,'');
   }
+}
+function Imprimir_factura() {
+ 
+  sel_vendedor=1;
+  var id_factura = $("#id_factura").val();
+  var efectivov = $("#efectivov").val();
+  var cambiov = $("#cambiov").val();
+  var msg = "";
+
+	if (id_factura == "") {
+    msg = 'No hay factura para imprimir!';
+    sel_vendedor = 0;
+  }
+
+  if (efectivov == "") {
+    msg = 'Ingrese el Efectivo!';
+    sel_vendedor = 0;
+  }
+
+  if (sel_vendedor == 1) {
+    $("#inventable tr").remove();
+    $('input[type="text"]').val('');
+    $("#id_cobrador").val("");
+    $("#tipo_documento").val("");
+    $("#tipo_pago").val("");
+    //CLEAN TD DE LA TABLE
+    $("#totaltexto").html("0.00");
+    $("#totcant").html("0");
+    $("#total_gravado").html("0.00");
+    
+    $("#total_gravado_sin_iva").html("0.00");
+    $("#total_iva").html("0.00");
+    $("#total_gravado_iva").html("0.00");
+    $("#total_exenta").html("0.00");
+
+    $("#total_percepcion").html("0.00");
+    $("#total_retencion").html("0.00");
+    $("#total_final").html("0.00");
+    $("#monto_pago").html("0.00");
+            
+    window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
+    //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
+
+  } else {
+    display_notify('Warning',msg,'');
+  }
+  
 }
 
 

@@ -16,8 +16,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
-        return view('productos/index',compact('productos'));
+        $productos = Producto::where('id_sucursal',Auth::user()->id_sucursal)->get();
+            return view('productos/index',compact('productos'));
     }
 
     /**

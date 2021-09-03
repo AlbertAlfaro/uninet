@@ -18,6 +18,7 @@ use App\Models\Tecnicos;
 use App\Models\Traslados;
 use App\Models\Tv;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -1950,7 +1951,15 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $internet = Internet::where('dia_gene_fact',$dia_actual)->where('activo',1)->get();
         $tv = Tv::where('dia_gene_fact',$dia_actual)->where('activo',1)->get();
 
+        $primer_fac_inter = new DateTime();
+        $primer_fac_tv = new DateTime();
+
+        $fecha_fa = new DateTime($mes_servicio);
+
         foreach ($internet as $value) {
+            $primer_fac_inter = new DateTime($value->fecha_primer_fact);
+            if($primer_fac_inter<=$fecha_fa){
+
                 $abono = new Abono();
                 $abono->id_cliente = $value->id_cliente;
                 $abono->tipo_servicio = 1;
@@ -1961,19 +1970,24 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                 $abono->anulado = 0;
                 $abono->pagado = 0;
                 $abono->save();
+            }
         
         }
         foreach ($tv as $value) {
-            $abono = new Abono();
-            $abono->id_cliente = $value->id_cliente;
-            $abono->tipo_servicio = 2;
-            $abono->mes_servicio = $mes_servicio;
-            $abono->cargo = $value->cuota_mensual;
-            $abono->abono = 0.00;
-            $abono->fecha_vence = $fecha_vence;
-            $abono->anulado = 0;
-            $abono->pagado = 0;
-            $abono->save();
+            $primer_fac_tv = new DateTime($value->fecha_primer_fact);
+            if($primer_fac_tv<=$fecha_fa){
+
+                $abono = new Abono();
+                $abono->id_cliente = $value->id_cliente;
+                $abono->tipo_servicio = 2;
+                $abono->mes_servicio = $mes_servicio;
+                $abono->cargo = $value->cuota_mensual;
+                $abono->abono = 0.00;
+                $abono->fecha_vence = $fecha_vence;
+                $abono->anulado = 0;
+                $abono->pagado = 0;
+                $abono->save();
+            }
     
     }
     flash()->success("Cobros generados exitosamente")->important();

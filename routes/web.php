@@ -231,6 +231,7 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('facturacion/detalle/{id}',[App\Http\Controllers\FacturacionController::class ,'show'])->middleware('permission:Facturacion')->name('facturacion.detalle');
     Route::get('facturacion/anular/{id}',[App\Http\Controllers\FacturacionController::class ,'anular'])->middleware('permission:anular_factura')->name('facturacion.anular');
     Route::get('facturacion/verfactura/{id}',[App\Http\Controllers\FacturacionController::class ,'show'])->middleware('permission:Facturacion')->name('facturacion.verfactura');
+    Route::get('facturacion/imprimir_factura/{id}/{efectivo}/{cambio}',[App\Http\Controllers\FacturacionController::class ,'imprimir_factura'])->middleware('permission:Facturacion')->name('facturacion.imprimir_factura');
 
 });
 

@@ -43,7 +43,7 @@
                 @can('Productos')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="uil-users-alt"></i>
+                        <i class="uil-archive"></i>
                         <span>Productos</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">

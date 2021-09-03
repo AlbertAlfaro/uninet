@@ -355,8 +355,8 @@
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
-            <button type="button" id="addmes" style="margin-left:3%;" name="addmes" class="btn btn-primary pull-right usage"><i class="fa fa-save"></i> Mes Anticipado</button>
-            <button type="button" id="clean" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
+            <button type="button" id="addmes" style="margin-left:3%;" name="addmes" class="btn btn-primary pull-right usage"><i class="fa uil-plus"></i> Mes Anticipado</button>
+            <button type="button" id="btnImprimir" style="margin-left:3%;" name="btnImprimir" class="btn btn-primary pull-right usage"><i class="uil-file"></i> F9 Imprimir </button>
             <input type="hidden" id="items" name="items">
           </div>
         </div>
@@ -368,7 +368,7 @@
                 <table id="inventable1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                   <thead class="bg-primary" style="color:white;">
                     <tr>
-                      <th>Concepto</th>
+                      <th>Servicio</th>
                       <th>Mes de servicio</th>
                       <th>Vencimiento</th>
                       <th>Cuota</th>
@@ -667,7 +667,9 @@
 
                   var tipo_impresion=$('#tipo_documento').val();
                   var filas = parseInt($("#filas").val());
-          
+                  var tipo_servicio=$('#tipo_servicio').val();
+                  if(tipo_servicio==1){var servicio="Internet";}
+                  if(tipo_servicio==2){var servicio="Television";}
                   //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
                   var subtotal =0; //subt(0, 1);
                   //subt_mostrar = subtotal.toFixed(2);
@@ -675,11 +677,11 @@
                   tr_add = '';
                   $.each( data.results, function( i, value ) {
                     tr_add += "<tr class='row100 head' id=''>";
-                    tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>MENSUALIDAD</td>";
-                    tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='"+data.results[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
-                    tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
-                    tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
-                    tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+                    tr_add += "<td class=''><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>"+servicio+"</td>";
+                    tr_add += "<td class=''><input type='hidden' id='id_cargo' name='id_cargo' value='"+data.results[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
+                    tr_add += "<td class='descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
+                    tr_add += "<td class='' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
+                    tr_add += '<td class="Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                     tr_add += '</tr>';
                     //numero de filas 
                     filas++;
@@ -691,8 +693,7 @@
                     var tr = $(this);
                     actualiza_subtotal(tr);
                   });
-                  //totales();
-                  //scrolltable();
+                  
                   
                 }else
                 {
@@ -747,11 +748,6 @@
         {//CCF
         
           $("#inventable tr").each(function() {
-            //subt_cant = $(this).find("#cant").val();
-
-            /*if (isNaN(subt_cant) || subt_cant == "") {
-              subt_cant = 0;
-            }*/
             subt_gravado=0;
             subt_exento=0;
 
@@ -764,7 +760,6 @@
               subt_gravado= $(this).find("#cargo_fin").val();
             }
 
-            //totalcantidad += parseFloat(subt_cant);
 
             total_gravado += parseFloat(subt_gravado);
 
@@ -785,10 +780,10 @@
           }
           var total_descuento_mostrar = total_descuento.toFixed(2)
           var total_mostrar = subtotal.toFixed(2)
-          //totcant_mostrar = totalcantidad.toFixed(2)
+         
 
           console.log(subt_gravado);
-          //$('#totcant').text(totcant_mostrar);
+        $('#totcant').text(filas);
 
 
           var total_sin_iva_mostrar = total_gravado.toFixed(2);
@@ -880,10 +875,9 @@
       }
       var total_descuento_mostrar = total_descuento.toFixed(2)
       var total_mostrar = subtotal.toFixed(2)
-      //totcant_mostrar = totalcantidad.toFixed(2)
 
       console.log(subt_gravado);
-      //$('#totcant').text(totcant_mostrar);
+      $('#totcant').text(filas);
 
 
       var total_sin_iva_mostrar = total_gravado.toFixed(2);
@@ -927,7 +921,7 @@
       $('#total_final').html(total_descuento_mostrar);
       $('#totalfactura').val(total_final_mostrar);
 
-      $('#totcant').html(filas);
+      $('#items').val(filas);
       
       /*$('#totaltexto').load(urlprocess, {
         'total': total_final_mostrar
@@ -1063,7 +1057,6 @@ $(document).on("click","#addmes",function(){
 	var tipo_ser=$('#tipo_servicio').val();
   var id_cliente=$('#id_cliente').val();
 
- 
  // Añades los meses
   if(tipo_ser!="" && id_cliente!="")
   {
@@ -1078,32 +1071,37 @@ $(document).on("click","#addmes",function(){
           var precio_venta = 10;
           var exento = 0;
           var preciop_s_iva = 0;
-
+          var tipo_servicio=$('#tipo_servicio').val();
+          if(tipo_servicio==1){var servicio="Internet";}
+          if(tipo_servicio==2){var servicio="Television";}
           var tipo_impresion=$('#tipo_documento').val();
-          var filas = parseInt($("#filas").val());
+          //var filas = parseInt($("#items").val());
           //var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
           var subtotal =0; //subt(0, 1);
           //subt_mostrar = subtotal.toFixed(2);
           //var cantidades = "<td class='cell100 column10 text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal ' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
-          tr_add = '';
-          $.each( data.results, function( i, value ) {
-            tr_add += "<tr class='row100 head' id='b'>";
-            tr_add += "<td class='cell100 column30 '><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>TEXTO DE EJEMPLO</td>";
-            tr_add += "<td class='cell100 column10 '><input type='hidden' id='id_cargo' name='id_cargo' value='0'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
-            tr_add += "<td class='cell100 column20 descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
-            tr_add += "<td class='cell100 column30 ' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
-            tr_add += '<td class="cell100 column20 Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
-            tr_add += '</tr>';
-            //numero de filas 
-            filas++;
-          });
-          $("#inventable").append(tr_add);
-          $('#items').val(filas);
-          $('#inventable tr').each(function(index) {
+          if(filas<3){
+            tr_add = '';
+            $.each( data.results, function( i, value ) {
+              tr_add += "<tr class='row100 head' id='b'>";
+              tr_add += "<td class=''><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>"+servicio+"</td>";
+              tr_add += "<td class=''><input type='hidden' id='id_cargo' name='id_cargo' value='0'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
+              tr_add += "<td class='descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
+              tr_add += "<td class='' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
+              tr_add += '<td class="Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+              tr_add += '</tr>';
+              //numero de filas 
+              filas++;
+            });
+            $("#inventable").append(tr_add);
+            $('#items').val(filas);
+            $('#inventable tr').each(function(index) {
               var tr = $(this);
               actualiza_subtotal(tr);
-          });
-          //totales();  
+            });
+          }else{
+            display_notify('Warning','No es posible procesar mas de 3 abonos en la Factura','');
+          }
         }else{
           display_notify(data.typeinfo,data.msg,'');
         }    
@@ -1111,7 +1109,8 @@ $(document).on("click","#addmes",function(){
     });
   }else
   {
-    console.log("Cliente o tipos de servicio vacios");
+  
+    display_notify("Warning","Cliente o tipos de servicio vacio!",'');
   }
 });
 $(document).on("keyup","#efectivov",function(){
@@ -1135,6 +1134,9 @@ function total_efectivov(){
 }
 $(document).on("click","#submit1",function(){
 	guardar();
+});
+$(document).on("click","#btnImprimir",function(){
+	Imprimir_factura();
 });
 function guardar() {
   //Obtener los valores a guardar de cada item facturado
@@ -1252,14 +1254,6 @@ function guardar() {
       success: function(datax) {
         if (datax.typeinfo == "Success")
 				{
-          $("#nomcli").val('');
-				  $(" #numdoc").val('');
-				  $("#dircli").val('');
- 				  $("#numreci").val('');
-          $("#tot_fdo").val('');
-          $("#nitcli").val('');
-          $("#efectivov").val('');
-          $("#cambiov").val('');
 					//$(".usage").attr("disabled", true);
 					/*if(tipo_impresion == "CCF" || tipo_impresion == "COF")
 					{
@@ -1287,6 +1281,9 @@ function guardar() {
 						 //$('#num_doc_fact').val(ultimo);
 					 }
 					 //$('#corr_in').val(datax.numdoc); */
+           $('#id_factura').val(datax.id_factura);
+          $("#efectivov").focus();
+          
           display_notify(datax.typeinfo, datax.msg);
         }
 				else{
@@ -1297,6 +1294,52 @@ function guardar() {
   } else {
     display_notify('Warning',msg,'');
   }
+}
+function Imprimir_factura() {
+ sel_vendedor=1;
+ var id_factura = $("#id_factura").val();
+ var efectivov = $("#efectivov").val();
+ var cambiov = $("#cambiov").val();
+ var msg = "";
+
+ if (id_factura == "") {
+   msg = 'No hay factura para imprimir!';
+   sel_vendedor = 0;
+ }
+
+ if (efectivov == "") {
+   msg = 'Ingrese el Efectivo!';
+   sel_vendedor = 0;
+ }
+
+ if (sel_vendedor == 1) {
+   $("#inventable tr").remove();
+   $('input[type="text"]').val('');
+   $("#id_cobrador").val("");
+   $("#tipo_documento").val("");
+   $("#tipo_pago").val("");
+   //CLEAN TD DE LA TABLE
+   $("#totaltexto").html("0.00");
+   $("#totcant").html("0");
+   $("#total_gravado").html("0.00");
+   
+   $("#total_gravado_sin_iva").html("0.00");
+   $("#total_iva").html("0.00");
+   $("#total_gravado_iva").html("0.00");
+   $("#total_exenta").html("0.00");
+
+   $("#total_percepcion").html("0.00");
+   $("#total_retencion").html("0.00");
+   $("#total_final").html("0.00");
+   $("#monto_pago").html("0.00");
+           
+   window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
+   //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
+
+ } else {
+   display_notify('Warning',msg,'');
+ }
+ 
 }
 
 

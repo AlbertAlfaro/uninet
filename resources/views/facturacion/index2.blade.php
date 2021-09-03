@@ -344,8 +344,8 @@
           </div>
           <div class="col-md-5" ><br><br>
             <button type="button" id="submit1" name="submit1" class="btn btn-success"><i class="fa fa-check"></i> Pagar</button>
-            <button type="button" id="clean" style="margin-left:3%;" name="clean" class="btn btn-primary pull-right usage"><i class="fa fa-trash"></i> F6 Borrar </button>
-            <input type="hidden" id="items" name="items">
+            <button type="button" id="btnImprimir" style="margin-left:3%;" name="btnImprimir" class="btn btn-primary pull-right usage"><i class="uil-file"></i> F9 Imprimir </button>
+            <input type="hidden" id="items" name="items" value="0">
           </div>
         </div>
         <br>
@@ -584,43 +584,54 @@
                   var preciop_s_iva = parseFloat(ui.item.precio_sin_iva);
                   var descrip_only = ui.item.nombre;
 			            var tipo_impresion=$('#tipo_impresion').val();
-
-                  var filas = parseInt($("#filas").val());
+                  
+                  var filas = parseInt($("#items").val());  
                   var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
                   var input_producto="<input type='hidden' id='id_producto' name='id_producto' value='" + id_producto + "'>";
                   var subtotal = subt(ui.item.precio, 1);
                   subt_mostrar = subtotal.toFixed(2);
                   var cantidades = "<td class='text-success'><div class='col-xs-2'><input type='text'  class='form-control decimal2 cant' id='cant' name='cant' value='1' style='width:60px;'></div></td>";
-                  tr_add = '';
-                  tr_add += "<tr  class='row100 head' id='" + filas + "'>";
-                  tr_add += "<td class=' text-success'>" + descrip_only + exento+ input_producto+ '</td>';
-                  tr_add += "<td  class='text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + ui.item.precio + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + ui.item.precio + "' style='width:60px;'></td>";
-                  tr_add += cantidades;
-                  if(tipo_impresion==2)//ccf=2 cof=1
-                  {
-                    tr_add += "<td class=''>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+preciop_s_iva+"'>" + "<input type='text'  class='decimal form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + preciop_s_iva.toFixed(2) + "'readOnly style='width:70px;'></td>";
-
-                  }
-                  else
-                  {
-                    tr_add += "<td class=''>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+subt_mostrar+"'>" + "<input type='text'  class='decimal form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + subt_mostrar + "'readOnly style='width:70px;'></td>";
-
-                 }
-                  tr_add += '<td class=" Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
-                  tr_add += '</tr>';
-                  //numero de filas
-                  filas++;
-
-                  $("#inventable").append(tr_add);
-                  //$(".decimal2").numeric({negative:false,decimal:false});
-                  //$(".86").numeric({negative:false,decimalPlaces:4});
-                  $('#items').val(filas);
-                  $('#inventable #'+filas).find("#cant").focus();
-                  totales();  
+                  if(filas<4){
+                    tr_add = '';
+                    tr_add += "<tr  class='row100 head' id='" + filas + "'>";
+                    tr_add += "<td class=' text-success'>" + descrip_only + exento+ input_producto+ '</td>';
+                    tr_add += "<td  class='text-success'><input type='hidden'  id='precio_venta_inicial' name='precio_venta_inicial' value='" + ui.item.precio + "'><input type='hidden'  id='precio_sin_iva' name='precio_sin_iva' value='" + preciop_s_iva + "'><input type='text'  class='form-control decimal' readOnly id='precio_venta' name='precio_venta' value='" + ui.item.precio + "' style='width:60px;'></td>";
+                    tr_add += cantidades;
+                    if(tipo_impresion==2)//ccf=2 cof=1
+                    {
+                      tr_add += "<td class=''>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+preciop_s_iva+"'>" + "<input type='text'  class='decimal form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + preciop_s_iva.toFixed(2) + "'readOnly style='width:70px;'></td>";
+                    }
+                    else
+                    {
+                      tr_add += "<td class=''>" + "<input type='hidden'  id='subtotal_fin' name='subtotal_fin' value='"+subt_mostrar+"'>" + "<input type='text'  class='decimal form-control' id='subtotal_mostrar' name='subtotal_mostrar'  value='" + subt_mostrar + "'readOnly style='width:70px;'></td>";
+                    }
+                    tr_add += '<td class=" Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
+                    tr_add += '</tr>';
+                    //numero de filas
+                    //filas++;
+                    $("#inventable").append(tr_add);
+                    //$(".decimal2").numeric({negative:false,decimal:false});
+                    //$(".86").numeric({negative:false,decimalPlaces:4});
+                    //$('#items').val(filas);
+                    $('#inventable #'+filas).find("#cant").focus();
+                    totales();
+                  }else{
+                    display_notify("Warning",'No es posible agregar mas de 4 productos en la Factura');
+                  }  
                 }
               });                
             });
             
+        });
+        $(document).keydown(function(e) {
+          if (e.which == 120) { //F9 guarda factura
+            e.preventDefault();
+            if ($('#totalfactura').val() != 0 && $("#items").val() > 0) {
+              Imprimir_factura();
+            } else {
+            display_notify('Error', 'Debe haber al menos un producto registrado');
+            }
+          }
         });
         //obtener subtotal cantidad x precio
         function subt(qty,price){
@@ -873,7 +884,7 @@
       $('#total_final').html(total_descuento_mostrar);
       $('#totalfactura').val(total_final_mostrar);
 
-      $('#totcant').html(filas);
+      $('#items').val(filas);
       $.ajax({
           type: 'GET',
           url: 'convertir/'+total_final_mostrar,
@@ -924,13 +935,14 @@ function tipo_documentoload()
 $(document).on("keyup", "#cant, #precio_venta", function() {
   var tr = $(this).parents("tr");
   actualiza_subtotal(tr);
+  
 });
 function actualiza_subtotal(tr) {
   var iva = 0.13;
   var precio_sin_iva = parseFloat(tr.find('#precio_sin_iva').val());
 
   var tipo_impresion = $('#tipo_documento').val();
-  alert(tipo_impresion);
+  //alert('hola'+tipo_impresion);
   if (tipo_impresion!=2) {//ccf=2 y cof=1
 
     var cantidad = tr.find('#cant').val();
@@ -1016,6 +1028,9 @@ function total_efectivov(){
 }
 $(document).on("click","#submit1",function(){
 	guardar();
+});
+$(document).on("click","#btnImprimir",function(){
+	Imprimir_factura();
 });
 function guardar() {
   //Obtener los valores a guardar de cada item facturado
@@ -1131,15 +1146,8 @@ function guardar() {
       data: dataString,
       success: function(datax) {
         if (datax.typeinfo == "Success")
-				{ $("#nomcli").val('');
-				  $(" #numdoc").val('');
-				  $("#dircli").val('');
- 				  $("#numreci").val('');
-          $("#tot_fdo").val('');
-          $("#nitcli").val('');
-          $("#efectivov").val('');
-          $("#cambiov").val('');
-					/*
+				{ 
+          /*
           $(".usage").attr("disabled", true);
 					if(tipo_impresion == "CCF" || tipo_impresion == "COF")
 					{
@@ -1158,16 +1166,13 @@ function guardar() {
  					 	$("#efectivov").focus();
 						$('#numdoc').val(datax.ultimo);
 					}
-					$("#tot_fdo").val(total);
-						 //activa_modal(datax.numdoc,datax.numdoc,id_cliente);
-					 $('#id_factura').val(datax.id_factura);
-					 ultimo=parseInt(datax.ultimo);
-					 if(ultimo!=0)
-					 {
-						 //$('#num_doc_fact').val(ultimo);
-					 }
-					 //$('#corr_in').val(datax.numdoc);
+
+
+		
            */
+
+          $('#id_factura').val(datax.id_factura);
+          $("#efectivov").focus();
           display_notify(datax.typeinfo, datax.msg);
         }
 				else {
@@ -1178,6 +1183,53 @@ function guardar() {
   } else {
     display_notify('Warning',msg,'');
   }
+}
+function Imprimir_factura() {
+ 
+  sel_vendedor=1;
+  var id_factura = $("#id_factura").val();
+  var efectivov = $("#efectivov").val();
+  var cambiov = $("#cambiov").val();
+  var msg = "";
+
+	if (id_factura == "") {
+    msg = 'No hay factura para imprimir!';
+    sel_vendedor = 0;
+  }
+
+  if (efectivov == "") {
+    msg = 'Ingrese el Efectivo!';
+    sel_vendedor = 0;
+  }
+
+  if (sel_vendedor == 1) {
+    $("#inventable tr").remove();
+    $('input[type="text"]').val('');
+    $("#id_cobrador").val("");
+    $("#tipo_documento").val("");
+    $("#tipo_pago").val("");
+    //CLEAN TD DE LA TABLE
+    $("#totaltexto").html("0.00");
+    $("#totcant").html("0");
+    $("#total_gravado").html("0.00");
+    
+    $("#total_gravado_sin_iva").html("0.00");
+    $("#total_iva").html("0.00");
+    $("#total_gravado_iva").html("0.00");
+    $("#total_exenta").html("0.00");
+
+    $("#total_percepcion").html("0.00");
+    $("#total_retencion").html("0.00");
+    $("#total_final").html("0.00");
+    $("#monto_pago").html("0.00");
+            
+    window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
+    //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
+
+  } else {
+    display_notify('Warning',msg,'');
+  }
+  
 }
 
 

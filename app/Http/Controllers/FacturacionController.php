@@ -63,7 +63,7 @@ class FacturacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$cuota)
     {
         $results = array();
         $xdatos['cliente']='';
@@ -74,29 +74,64 @@ class FacturacionController extends Controller
         $xdatos['sumas']='';
         $xdatos['total']='';
         $xdatos['results']=[];
-        $factura=Factura::find($id);
-        $detalle=Factura_detalle::where('id_factura',$id)->get();
-        if($detalle->count()>0)
-        {
-            foreach ($detalle as $query){
-                $results[] = [ 'cantidad' => $query->cantidad, 'producto' => $query->get_producto->nombre,'precio' => $query->precio,'subtotal'=>$query->subtotal];
+        if($cuota==0){
+            $factura=Factura::find($id);
+            $detalle=Factura_detalle::where('id_factura',$id)->get();
+            if($detalle->count()>0)
+            {
+                foreach ($detalle as $query){
+                    $results[] = [ 'cantidad' => $query->cantidad, 'producto' => $query->get_producto->nombre,'precio' => $query->precio,'subtotal'=>$query->subtotal];
+                }
+                $xdatos['results']=$results;
             }
-            $xdatos['results']=$results;
-        }
-        if($factura->tipo_documento==1){
-            $tipo='FAC';
+            if($factura->tipo_documento==1){
+                $tipo='FAC';
+            }else{
+                $tipo='CRE';
+            }
+    
+            $xdatos['cliente']=$factura->get_cliente->nombre;
+            $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
+            $xdatos['fecha']=$factura->created_at->format('d/m/Y');
+            $xdatos['tipo_docu']=$factura->tipo_documento;
+            $xdatos['iva']=$factura->iva;
+            $xdatos['sumas']=$factura->sumas;
+            $xdatos['total']=$factura->total;
+            $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($factura->get_cliente->get_municipio->nombre).' '.strtoupper($factura->get_cliente->get_municipio->get_departamento->nombre);
+            return $xdatos;
         }else{
-            $tipo='CRE';
+            $factura=Factura::find($id);
+            $detalle=Abono::where('id_factura',$id)->get();
+            if($detalle->count()>0)
+            {
+                foreach ($detalle as $query){
+                    if($query->tipo_servicio==1){
+                        $servicio="Internet";
+                    }else{
+                        $servicio="Television";
+                    }
+                    $results[] = [ 'cantidad' => '1', 'producto' => $servicio,'precio' => $query->abono,'subtotal'=>$query->abono];
+                }
+                $xdatos['results']=$results;
+            }else{
+                
+            }
+            if($factura->tipo_documento==1){
+                $tipo='FAC';
+            }else{
+                $tipo='CRE';
+            }
+    
+            $xdatos['cliente']=$factura->get_cliente->nombre;
+            $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
+            $xdatos['fecha']=$factura->created_at->format('d/m/Y');
+            $xdatos['tipo_docu']=$factura->tipo_documento;
+            $xdatos['iva']=$factura->iva;
+            $xdatos['sumas']=$factura->sumas;
+            $xdatos['total']=$factura->total;
+            $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($factura->get_cliente->get_municipio->nombre).' '.strtoupper($factura->get_cliente->get_municipio->get_departamento->nombre);
+            return $xdatos;   
         }
-
-        $xdatos['cliente']=$factura->get_cliente->nombre;
-        $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
-        $xdatos['fecha']=$factura->created_at->format('d/m/Y');
-        $xdatos['tipo_docu']=$factura->tipo_documento;
-        $xdatos['iva']=$factura->iva;
-        $xdatos['sumas']=$factura->sumas;
-        $xdatos['total']=$factura->total;
-        return $xdatos;
     }
 
     /**
@@ -490,7 +525,7 @@ class FacturacionController extends Controller
             if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
             {
                 
-                $xdatos['typeinfo']='warning';
+                $xdatos['typeinfo']='Warning';
                 $xdatos['msg']='Este numero de documento ya fue impresa.';
                 return response($xdatos);
             }else
@@ -561,7 +596,7 @@ class FacturacionController extends Controller
     //GESTION FACTURAS MANUALES
     public function index3()
     {
-        $obj_factura = Factura::where('id_sucursal',Auth::user()->id_sucursal)->where('cuota',0)->get();
+        $obj_factura = Factura::where('id_sucursal',Auth::user()->id_sucursal)->get();
         return view('facturacion/index3',compact('obj_factura'));
     }
     public function imprimir_factura($id,$efectivo,$cambio){

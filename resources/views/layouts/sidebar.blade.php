@@ -102,7 +102,7 @@
                         @endcan
                         
                         @can('Facturacion')
-                        <li><a href="{{url('facturacion/gestion')}}">Gestión de Factura Manual</a></li>
+                        <li><a href="{{url('facturacion/gestion')}}">Gestión de Factura</a></li>
                         @endcan
                     </ul>
                     

@@ -40,6 +40,7 @@
 								<th>Cobrador</th>
                                 <th>Total</th>
                                 <th>Fecha</th>
+                                <th>Tipo</th>
                                 <th>Estado</th>
 								<th>Acciones</th>
 							
@@ -61,6 +62,13 @@
 									<td>${{$obj_item->total}}</td>
                                     <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
                                     <td>
+                                        @if($obj_item->cuota==1)
+                                            <div class="col-md-8 badge badge-pill badge-primary">Cuota </div>
+                                        @else
+                                        <div class="col-md-8 badge badge-pill badge-secondary">Manual</div>
+                                        @endif
+                                    </td>
+                                    <td>
                                         @if($obj_item->anulada==0)
                                             <div class="col-md-8 badge badge-pill badge-success">Finalizada</div>
                                         @else
@@ -81,9 +89,9 @@
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#" onclick="detalleFactura({{$obj_item->id}})">Ver Factura</a>
+                                                <a class="dropdown-item" href="#" onclick="detalleFactura({{$obj_item->id}},{{$obj_item->cuota}})">Ver Factura</a>
                                                 <a class="dropdown-item" href="#" onclick="anular({{$obj_item->id}})">Anular</a>
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id,$obj_item->cuota}})">Eliminar</a>
+                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{$obj_item->cuota}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
                                                 
                                             </div>
@@ -114,12 +122,39 @@
                         <!-- Tab panes -->
                         <div class="tab-content p-3 text-muted">
                             <div class="tab-pane active" id="navtabs-home" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <span class="logo-lg">
+                                            <img src="{{ URL::asset('assets/images/LOGO.png')}}" alt="" height="70">
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <h4>
+                                            <strong>TECNNITEL S.A. DE C.V</strong>
+                                        </h4>
+                                        <p>
+                                            <strong>Col. Cuscatlan Block C, #16 Apopa San salvador</strong>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="border border-dark text-center">
+                                            <h6 class="my-0"><label id='factura' class='text-danger'></label></h6>
+                                            <p><strong>Factura No</strong></p>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                        <h6 class="my-0">Cliente: <label id='cliente' class='text-primary border-bottom border-dark'></label>  Fecha: <label id='fecha' class='text-primary border-bottom border-dark'></label></h6>
+                                        <h6 class="my-0">Dirección: <label id='direccion' class='text-primary border-bottom border-dark'></label></h6>
+                                </div>
+                                
                                 <div class="col-lg-12">
                                     <div class="card border border-primary">
-                                        <div class="card-header bg-transparent border-primary">
-                                            <h6 class="my-0 text-danger">Factura No: <label id='factura'></label></h6>
-                                            <h6 class="my-0 text-primary">Cliente: <label id='cliente'></label>  Fecha: <label id='fecha'></label></h6>
-                                        </div>
+                                        <!--<div class="card-header bg-transparent border-primary">
+                                            <h6 class="my-0">Factura No: <label id='factura' class='text-danger'></label></h6>
+                                            <h6 class="my-0">Cliente: <label id='cliente' class='text-primary'></label>  Fecha: <label id='fecha' class='text-primary'></label></h6>
+                                        </div> -->
                                         
                                         <div class="card-body">
                                             <table class="table" style="width: 100%;" >
@@ -238,38 +273,39 @@
                 }
                 })      
         }
-        function detalleFactura(id){
+        function detalleFactura(id,cuota){
             $("#Tdetalle tr").remove();
             $(".cre").hide();
-            $.ajax({
-                type:'GET',
-                url:'{{ url("facturacion/verfactura") }}/'+id,
-                success:function(data) {
-                    console.log(data);
-                    $("#factura").text(data['correlativo']);
-                    $("#cliente").text(data['cliente']);
-                    $("#fecha").text(data['fecha']);
-                    $("#iva").text(data['iva']);
-                    $("#sumas").text(data['sumas']);
-                    $("#total_dinero").text(data['total']);
-                    tr_add = '';
-                    $.each( data.results, function( i, value ) {
-                        tr_add += "<tr>";
-                        tr_add += "<td class=''>"+data.results[i].cantidad+"</td>";
-                        tr_add += "<td class=''>"+data.results[i].producto+"</td>";
-                        tr_add += "<td class=''>"+data.results[i].precio+"</td>";
-                        tr_add += "<td class=''>"+data.results[i].subtotal+"</td>";
-                        tr_add += '</tr>';
-                        //numero de filas 
-                    });
-                    $("#Tdetalle").append(tr_add);
-                    if(data['tipo_docu']==2){
-                        $(".cre").show();
+                $.ajax({
+                    type:'GET',
+                    url:'{{ url("facturacion/verfactura") }}/'+id+'/'+cuota,
+                    success:function(data) {
+                        
+                        $("#factura").text(data['correlativo']);
+                        $("#cliente").text(data['cliente']);
+                        $("#fecha").text(data['fecha']);
+                        $("#iva").text(data['iva']);
+                        $("#sumas").text(data['sumas']);
+                        $("#total_dinero").text(data['total']);
+                        $("#direccion").text(data['direccion']);
+                        tr_add = '';
+                        $.each( data.results, function( i, value ) {
+                            tr_add += "<tr>";
+                            tr_add += "<td class=''>"+data.results[i].cantidad+"</td>";
+                            tr_add += "<td class=''>"+data.results[i].producto+"</td>";
+                            tr_add += "<td class=''>"+data.results[i].precio+"</td>";
+                            tr_add += "<td class=''>"+data.results[i].subtotal+"</td>";
+                            tr_add += '</tr>';
+                            //numero de filas 
+                        });
+                        $("#Tdetalle").append(tr_add);
+                        if(data['tipo_docu']==2){
+                            $(".cre").show();
+                        }
+
+
                     }
-
-
-                }
-            });
+                });
             $('#myModal').modal('show') 
         }    
     </script>

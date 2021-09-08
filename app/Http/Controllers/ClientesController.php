@@ -1942,7 +1942,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
     }
 
     public function gen_cobros(){
-        $dia_actual = date('d');
+        $dia_actual = date('j');
         $fecha_actual = date('Y-m-d');
         $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
         $fecha_vence = date ( 'Y-m-d' , $fecha_vence );
@@ -1990,6 +1990,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
             }
     
     }
+    //return $dia_actual;
     flash()->success("Cobros generados exitosamente")->important();
     return back();
 

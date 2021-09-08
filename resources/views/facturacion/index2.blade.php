@@ -583,7 +583,7 @@
                   var exento = ui.item.exento;
                   var preciop_s_iva = parseFloat(ui.item.precio_sin_iva);
                   var descrip_only = ui.item.nombre;
-			            var tipo_impresion=$('#tipo_impresion').val();
+			            var tipo_impresion=$('#tipo_documento').val();
                   
                   var filas = parseInt($("#items").val());  
                   var exento ="<input type='hidden' id='exento' name='exento' value='"+exento+"'>";
@@ -698,18 +698,22 @@
         var total_iva = 0;
         if (tipo_impresion==2)
         {//CCF
-        
+          
           $("#inventable tr").each(function() {
             subt_cant = $(this).find("#cant").val();
             ex = parseInt($(this).find('#exento').val());
             if (isNaN(subt_cant) || subt_cant == "") {
               subt_cant = 0;
             }
+            if (isNaN(ex) || ex == "") {
+              ex = 0;
+            }
             subt_gravado=0;
             subt_exento=0;
 
             if (ex==0) {
               subt_gravado= $(this).find("#subtotal_fin").val();
+              alert('sumo cuando no es exento');
             }
             else {
               subt_exento=$(this).find("#subtotal_fin").val()/1.13;
@@ -800,6 +804,7 @@
       }
     else
     {
+      alert('cambio a cof');
       $("#inventable tr").each(function() {
         subt_cant = $(this).find("#cant").val();
         ex = parseInt($(this).find('#exento').val());

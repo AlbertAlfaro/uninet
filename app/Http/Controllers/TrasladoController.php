@@ -402,7 +402,7 @@ class TrasladoController extends Controller
         $fpdf->SetXY(10,56);
         $fpdf->Cell(30,5,utf8_decode("Suspendido en: "),0,1,'L');
         $fpdf->SetXY(40,56);
-        $fpdf->MultiCell(165, 5, substr(utf8_decode($traslado->get_cliente->dirreccion),0,175), 'B', 'L');
+        $fpdf->MultiCell(165, 5, substr(utf8_decode($traslado->get_cliente->dirreccion_cobro),0,175), 'B', 'L');
         $fpdf->SetXY(10,70);
         $fpdf->Cell(40,5,utf8_decode("Dirección a trasladar: "),0,1,'L');
         $fpdf->SetXY(50,70);

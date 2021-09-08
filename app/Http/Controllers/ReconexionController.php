@@ -463,7 +463,7 @@ class ReconexionController extends Controller
             $fpdf->SetXY(10,60);
             $fpdf->Cell(20,5,utf8_decode("Dirección: "),0,1,'L');
             $fpdf->SetXY(30,60);
-            $fpdf->MultiCell(175, 5, substr(utf8_decode($reconexion->get_cliente->dirreccion),0,255), 'B', 'L');
+            $fpdf->MultiCell(175, 5, substr(utf8_decode($reconexion->get_cliente->dirreccion_cobro),0,255), 'B', 'L');
             
             /*$fpdf->SetXY(10,75);
             $fpdf->Cell(40,5,utf8_decode("Actividad a Realizar: "),0,0,'L');

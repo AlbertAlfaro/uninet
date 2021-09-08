@@ -310,7 +310,7 @@ class AbonosController extends Controller
     
     
                     $fpdf->SetXY(10,$y);
-                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->Cell(20,10,utf8_decode($value->cantidad));
                     $fpdf->SetXY(22,$y);
                     $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
                     $fpdf->SetXY(132,$y);
@@ -319,7 +319,7 @@ class AbonosController extends Controller
     
                 }else{
                     $fpdf->SetXY(10,$y);
-                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->Cell(20,10,utf8_decode($value->cantidad));
                     $fpdf->SetXY(22,$y);
                     $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
                     

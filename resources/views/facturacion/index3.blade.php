@@ -185,8 +185,8 @@
 										            <tr>
 											            <td class="thick-line"></td>
 											            <td class="thick-line"></td>
-											            <td class="thick-line text-right"><strong>TOTAL $:</strong></td>
-											            <td  class="thick-line"  ><strong id='total_dinero'></strong></td>
+											            <td class="text-right"><strong>TOTAL $:</strong></td>
+											            <td  class="text-righ"><strong id='total_dinero'>00</strong></td>
 										            </tr>
 									            </tfoot>
                                             </table>

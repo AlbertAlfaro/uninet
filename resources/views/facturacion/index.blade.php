@@ -1087,7 +1087,7 @@ $(document).on("click","#addmes",function(){
               tr_add += "<td class=''><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>"+servicio+"</td>";
               tr_add += "<td class=''><input type='hidden' id='id_cargo' name='id_cargo' value='0'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
               tr_add += "<td class='descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
-              tr_add += "<td class='' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
+              tr_add += "<td class='' id='precio'><div class='col-xs-2 '><input type='hidden'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
               tr_add += '<td class="Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
               tr_add += '</tr>';
               //numero de filas 

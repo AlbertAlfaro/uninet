@@ -257,6 +257,7 @@
             var fecha_i = fecha_conversion($("#fecha_i").val());
             var fecha_f = fecha_conversion($("#fecha_f").val());
             var tipo_servicio = $("#tipo_estado_cuenta").val();
+            //alert(fecha_i.length);
 
             if(fecha_i!="" && fecha_f!=""){
                 var url = "{{ url('cliente/estado_cuenta_pdf') }}";
@@ -284,10 +285,15 @@
         }
 
         function fecha_conversion(fecha){
-            var from = fecha.split("/");
-            var f = new Date(from[2], from[1], from[0]);
-            var date_string = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
-            return date_string;
+            if(fecha!=""){
+
+                var from = fecha.split("/");
+                var f = new Date(from[2], from[1], from[0]);
+                var date_string = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
+                return date_string;
+            }else{
+                return false;
+            }
         }
 
     </script>

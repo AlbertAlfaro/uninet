@@ -475,9 +475,9 @@
           </div>
         </div>  
         
-        <input type='text' name='numero_doc' id='numero_doc' >
-        <input type='text' name='id_factura' id='id_factura' >
-        <input type='text' name='totalfactura' id='totalfactura' value='0'>  
+        <input type='hidden' name='numero_doc' id='numero_doc' >
+        <input type='hidden' name='id_factura' id='id_factura' >
+        <input type='hidden' name='totalfactura' id='totalfactura' value='0'>  
 
       
 

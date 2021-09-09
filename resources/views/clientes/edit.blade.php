@@ -739,17 +739,17 @@ Gestión de Clientes
                                                                                 @if (isset($internet[0]->onu_wifi)==1) 
                                                                                     @if($internet[0]->onu_wifi==1)
                                                                                         <input checked type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                        <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
+                                                                                        <label class="custom-control-label" for="onu_wifi">ONU + CATV</label>
                                                                                     
                                                                                     @else 
                                                                                         <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                        <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
+                                                                                        <label class="custom-control-label" for="onu_wifi">ONU + CATV</label>
 
                                                                                     @endif
                                                                                 
                                                                                 @else
                                                                                     <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                    <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
+                                                                                    <label class="custom-control-label" for="onu_wifi">ONU + CATV</label>
 
                                                                                 @endif
                                                                             </div>

@@ -18,23 +18,70 @@ class RolPermissionsSeeder extends Seeder
     public function run()
     {
         //Array de permisos
-        $permission = array('Administracion',
+        $permission = array(
+                            'Administracion',
+                            'Configuracion',
+                            'Clientes',
+                            'Abonos',
+                            'Reportes',
+                            'Facturacion',
+                            'Productos',
                             'Usuarios',
                             'Roles',
                             'Permisos',
                             'bitacora',
                             'Actividades',
                             'Tecnicos',
-                            'Clientes',
+                            'Correlativo',
+                            'correlativo_edit',
+                            'Cobradores',
+                            'create_cobrador',
+                            'edit_cobrador',
+                            'destroy_cobrador',
+                            'Sucursales',
+                            'create_sucursal',
+                            'edit_sucursal',
+                            'destroy_sucursal',
+                            'Velocidades',
+                            'create_velocidad',
+                            'edit_velocidad',
+                            'destroy_velocidad',
                             'index_cliente',
                             'create_cliente',
                             'edit_cliente',
                             'destroy_cliente',
-                            'Configuracion',
+                            'contrato_cliente',
+                            'contrato_activo',
+                            'contrato_vista',
+                            'contrato_create',
+                            'contrato_store',
                             'Ordenes',
                             'create_orden',
                             'edit_orden',
-                            'destroy_orden');
+                            'destroy_orden',
+                            'Suspensiones',
+                            'create_suspension',
+                            'edit_suspension',
+                            'destroy_suspension',
+                            'Reconexiones',
+                            'create_reconexion',
+                            'edit_reconexion',
+                            'destroy_reconexion',
+                            'Traslados',
+                            'create_traslado',
+                            'edit_traslado',
+                            'destroy_traslado',
+                            'estado_cuenta',
+                            'estado_cuenta_pdf',
+                            'abonos_pendientes',
+                            'abonos_pendientes_pdf',
+                            'reporte_cliente',
+                            'destroy_factura',
+                            'create_producto',
+                            'edit_producto',
+                            'destroy_producto',
+                           
+                        );
 
         //creando rol administrador
         $rol_admin = Role::create(['name' => 'Administrador']);
@@ -45,7 +92,7 @@ class RolPermissionsSeeder extends Seeder
         }
 
         //asignando los permisos al rol administrador
-        $rol_admin->givePermissionTo('Administracion');
+        $rol_admin->givePermis'',sionTo('Administracion');
         $rol_admin->givePermissionTo('Roles');
 
         //Asignando rol administrador al primer usuario creado

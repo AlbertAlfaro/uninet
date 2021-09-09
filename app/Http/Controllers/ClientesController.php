@@ -1189,8 +1189,8 @@ class ClientesController extends Controller
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(128,176);
-        $fpdf->cell(30,10,utf8_decode('ONU + KTV'));
+        $fpdf->SetXY(126,176);
+        $fpdf->cell(30,10,utf8_decode('ONU + CATV'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
         if($contrato_internet[0]->onu_wifi==1){
@@ -1559,8 +1559,8 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(128,176);
-        $fpdf->cell(30,10,utf8_decode('ONU + KTV'));
+        $fpdf->SetXY(126,176);
+        $fpdf->cell(30,10,utf8_decode('ONU + CATV'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
         if($contrato_internet[0]->onu_wifi==1){

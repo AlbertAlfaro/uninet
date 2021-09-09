@@ -703,7 +703,7 @@ Gestión de Clientes
 
                                                                             <div class="custom-control custom-checkbox">
                                                                                 <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
+                                                                                <label class="custom-control-label" for="onu_wifi">ONU + CATV</label>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">

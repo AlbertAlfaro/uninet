@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command('cobros:genCobro')->everyMinute();
+        $schedule->command('cobros:genCobro')->dailyAt('01:00');
+        //$schedule->command('backup:diario')->dailyAt('01:00');
     }
 
     /**

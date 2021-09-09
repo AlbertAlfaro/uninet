@@ -20,7 +20,7 @@ class CreateSucursalsTable extends Migration
             $table->integer('id_municipio');
             $table->string('correo');
             $table->string('telefono');
-            $table->string('web')->nullable;
+            $table->string('web')->nullable();
             $table->timestamps();
         });
     }

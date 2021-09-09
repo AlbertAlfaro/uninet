@@ -10,7 +10,7 @@
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle') Clientes @endslot
-    @slot('title') Ordenes @endslot
+    @slot('title') Gestión de ordenes @endslot
 @endcomponent
 <div class="row">
     <div class="col-12">
@@ -22,7 +22,7 @@
                     <h4 class="card-title">Ordenes de {{ $nombre_cliente }}</h4>
                 @endif
 				<p class="card-title-desc">
-					Usted se encuentra en el modulo Clientes.
+					Usted se encuentra en el modulo Gestión de Ordenes.
 				</p>
                 <div class="text-right">
                     @if($id_cliente!=0)

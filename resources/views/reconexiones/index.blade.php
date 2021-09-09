@@ -23,7 +23,7 @@
                     <h4 class="card-title">Gestión de reconexiones de {{ $nombre_cliente }}</h4>
                 @endif
 				<p class="card-title-desc">
-                    Usted se encuentra en el modulo Gestión de reconexiones.
+                    Usted se encuentra en el modulo Gestión de Reconexiones.
 				</p>
                 <div class="text-right">
                   

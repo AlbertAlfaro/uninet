@@ -23,7 +23,7 @@
                     <h4 class="card-title">Gestión de sunpensiones de {{ $nombre_cliente }}</h4>
                 @endif
 				<p class="card-title-desc">
-                    Usted se encuentra en el modulo Gestión de suspensiones.
+                    Usted se encuentra en el modulo Gestión de Suspensiones.
 				</p>
                 <div class="text-right">
 

@@ -22,7 +22,7 @@
                     <h4 class="card-title">Gestión de traslados de {{ $nombre_cliente }}</h4>
                 @endif
 				<p class="card-title-desc">
-                    Usted se encuentra en el modulo Gestión de traslados.
+                    Usted se encuentra en el modulo Gestión de Traslados.
 				</p>
                 <div class="text-right">
                     @if($id_cliente!=0)

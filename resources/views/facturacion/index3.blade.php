@@ -199,6 +199,7 @@
                        
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary waves-effect" onclick="imprimir({{$obj_item->id}})">Imprimir</button>
                         <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -307,6 +308,9 @@
                     }
                 });
             $('#myModal').modal('show') 
-        }    
+        }
+        function imprimir(id){
+            alert("Id de la Factura:"+id);
+        }
     </script>
 @endsection

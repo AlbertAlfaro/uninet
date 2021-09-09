@@ -678,7 +678,15 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Velocidad *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="velocidad" name="velocidad"  data-inputmask="'alias': 'numeric', 'digits': 0, 'radixPoint': '', 'suffix': ' MB' " required>
+
+                                                                    <select class="form-control inter" name="velocidad" id="velocidad" required>
+                                                                        <option value="" >Seleccionar...</option>
+                                                                        @foreach ($velocidades as $item)
+                                                                        <option value="{{ $item->bajada }} MB" >{{ $item->bajada }} MB</option>
+                                                                            
+                                                                        @endforeach
+    
+                                                                    </select>
                                                                     
                                                                 </div>
                                                             </div>

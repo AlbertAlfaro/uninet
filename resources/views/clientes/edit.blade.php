@@ -570,8 +570,8 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <select class="form-control inter" name="prepago" id="prepago" disabled="disabled">
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" @if (isset($internet[0]->prepago)==1) @if($internet[0]->prepago==1) selected @endif @endif>SI</option>
-                                                                        <option value="2" @if (isset($internet[0]->prepago)==1) @if($internet[0]->prepago==2) selected @endif @endif>NO</option>
+                                                                       
+                                                                        <option value="2" selected>NO</option>
     
                                                                     </select>
                                                                     
@@ -700,8 +700,27 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Velocidad *</label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="velocidad" name="velocidad" value="@if (isset($internet[0]->velocidad)==1){{ $internet[0]->velocidad }}@endif"  data-inputmask="'alias': 'numeric', 'digits': 0, 'radixPoint': '', 'suffix': ' MB' " required>
-                                                                    
+                                                                    <select class="form-control inter" name="velocidad" id="velocidad" required>
+                                                                        <option value="" >Seleccionar...</option>
+                                                                        @if (isset($internet[0]->velocidad)==1) 
+                                                                            @foreach ($velocidades as $item)
+                                                                                @php $velo = $item->bajada.' MB'; @endphp
+                                                                                @if($internet[0]->velocidad == $velo)
+                                                                                <option value="{{ $item->bajada }} MB" selected>{{ $item->bajada }} MB</option>
+                                                                                @else
+                                                                                    <option value="{{ $item->bajada }} MB" >{{ $item->bajada }} MB</option>
+                                                                                @endif
+                                                                                
+                                                                            @endforeach
+                                                                        @else
+                                                                        @foreach ($velocidades as $item)
+                                                                            <option value="{{ $item->bajada }} MB" >{{ $item->bajada }} MB</option>
+                                                                                
+                                                                            @endforeach
+
+                                                                        @endif
+    
+                                                                    </select>
                                                                 </div>
                                                             </div>
                             
@@ -988,8 +1007,8 @@ Gestión de Clientes
                                                                 <div class="col-md-8">
                                                                     <select class="form-control tv" name="prepago_tv" id="prepago_tv" disabled="disabled">
                                                                         <option value="" >Seleccionar...</option>
-                                                                        <option value="1" @if (isset($tv[0]->prepago)==1) @if($tv[0]->prepago==1) selected @endif @endif>SI</option>
-                                                                        <option value="2" @if (isset($tv[0]->prepago)==1) @if($tv[0]->prepago==2) selected @endif @endif>NO</option>
+                                                                       
+                                                                        <option value="2" selected>NO</option>
     
                                                                     </select>
                                                                     

@@ -27,7 +27,7 @@ Gestión de Clientes
 
                     <h4 class="card-title">Gestión de Clientes</h4>
                     <p class="card-title-desc">
-                        Usted se encuentra en el modulo de Gestión de clientes Editar.
+                        Usted se encuentra en el módulo de Gestión de clientes Editar.
                     </p>
                     <hr>
 
@@ -67,7 +67,7 @@ Gestión de Clientes
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Codigo *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Código *</label>
                                                     <div class="col-md-8">
                                                         <input hidden class="form-control" type="text"  id="id_cliente" name="id_cliente" value="{{ $cliente->id }}">
                                                         <input class="form-control" type="text"  id="codigo" name="codigo" value="{{ $cliente->codigo }}" required readonly>
@@ -94,9 +94,9 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Correo electronico *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Correo electrónico </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" type="email"  id="email" name="email" value="{{ $cliente->email }}" required>
+                                                        <input class="form-control" type="email"  id="email" name="email" value="{{ $cliente->email }}">
                                                     </div>
                                                 </div>
                 
@@ -121,7 +121,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Telefono *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Teléfono *</label>
                                                     <div class="col-md-8">
                                                         
                                                         <input class="form-control input-mask" type="text"  id="telefono1" name="telefono1" value="{{ $cliente->telefono1 }}" required data-inputmask="'mask': '9999-9999'" im-insert="true">
@@ -135,7 +135,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Segundo Telefono</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Segundo Teléfono</label>
                                                     <div class="col-md-8">
                                                         
                                                         <input class="form-control input-mask" type="text"  id="telefono2" name="telefono2" value="{{ $cliente->telefono2 }}" data-inputmask="'mask': '9999-9999'" im-insert="true">
@@ -238,7 +238,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Dirección *</label>
                                                     <div class="col-md-8">
                                                         <textarea id="dirreccion" name="dirreccion" class="form-control" rows="2" required>{{ $cliente->dirreccion }}</textarea>
                                                     </div>
@@ -286,7 +286,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Numero de registro</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Número de registro</label>
                                                     <div class="col-md-8">
                                                         <input class="form-control" type="number"  id="numero_registro" name="numero_registro" value="{{ $cliente->numero_registro }}">
                                                     </div>
@@ -299,7 +299,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Dirreccion de facturación *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Dirección de facturación *</label>
                                                     <div class="col-md-8">
                                                         <textarea id="dirreccion_cobro" name="dirreccion_cobro" class="form-control" rows="2"  required>{{ $cliente->dirreccion_cobro }}</textarea>
                                                     </div>
@@ -332,7 +332,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Nombre del nueño *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Nombre del dueño *</label>
                                                     <div class="col-md-8">
                                                         <input class="form-control" type="text"  id="nombre_dueno" name="nombre_dueno" value="{{ $cliente->nombre_dueno }}" required>
                                                     </div>
@@ -345,7 +345,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cordenada </label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Coordenada </label>
                                                     <div class="col-md-8">
                                                         <input class="form-control" type="text"  id="cordenada" name="cordenada" value="{{ $cliente->cordenada }}">
                                                     </div>
@@ -358,7 +358,7 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Nodo </label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Ruta </label>
                                                     <div class="col-md-8">
                                                         <input class="form-control" type="text"  id="nodo" name="nodo" value="{{ $cliente->nodo }}">
                                                     </div>
@@ -379,7 +379,7 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre ferencia 1 </label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre referecia 1 </label>
                                                         <div class="col-md-8">
                                                             
                                                             <input class="form-control" type="text"  id="referencia1" name="referencia1" value="{{ $cliente->referencia1 }}" >
@@ -392,7 +392,7 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Telefono ferencia 1 </label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Teléfono referecia 1 </label>
                                                         <div class="col-md-8">
                                                             
                                                             <input class="form-control input-mask" type="text"  id="telefo1" name="telefo1" value="{{ $cliente->telefo1 }}"  data-inputmask="'mask': '9999-9999'" im-insert="true">
@@ -407,7 +407,7 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre ferencia 2 </label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre referecia 2 </label>
                                                         <div class="col-md-8">
                                                             
                                                             <input class="form-control" type="text"  id="referencia2" name="referencia2" value="{{ $cliente->referencia2 }}">
@@ -420,7 +420,7 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Telefono ferencia 2 </label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Teléfono referecia 2 </label>
                                                         <div class="col-md-8">
                                                             
                                                             <input class="form-control input-mask" type="text"  id="telefo2" name="telefo2" value="{{ $cliente->telefo2 }}" data-inputmask="'mask': '9999-9999'" im-insert="true">
@@ -435,7 +435,7 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre ferencia 3 </label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre referecia 3 </label>
                                                         <div class="col-md-8">
                                                             
                                                             <input class="form-control" type="text"  id="referencia3" name="referencia3" value="{{ $cliente->referencia3 }}">
@@ -448,7 +448,7 @@ Gestión de Clientes
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <div class="form-group row col-md-12">
-                                                        <label for="example-text-input" class="col-md-4 col-form-label">Telefono ferencia 3 </label>
+                                                        <label for="example-text-input" class="col-md-4 col-form-label">Teléfono referecia 3 </label>
                                                         <div class="col-md-8">
                                                             
                                                             <input class="form-control input-mask" type="text"  id="telefo3" name="telefo3" value="{{ $cliente->telefo3 }}" data-inputmask="'mask': '9999-9999'" im-insert="true">
@@ -500,7 +500,7 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato </label>
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Número de contrato </label>
                                                                 <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="num_contrato" name="num_contrato" value="@if (isset($internet[0]->numero_contrato)==1){{ $internet[0]->numero_contrato }}@endif" readonly>
                                                                     
@@ -566,9 +566,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago *</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago </label>
                                                                 <div class="col-md-8">
-                                                                    <select class="form-control inter" name="prepago" id="prepago" required>
+                                                                    <select class="form-control inter" name="prepago" id="prepago" disabled="disabled">
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" @if (isset($internet[0]->prepago)==1) @if($internet[0]->prepago==1) selected @endif @endif>SI</option>
                                                                         <option value="2" @if (isset($internet[0]->prepago)==1) @if($internet[0]->prepago==2) selected @endif @endif>NO</option>
@@ -632,7 +632,7 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Periodo *</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Período *</label>
                                                                 <div class="col-md-8">
                                                                     <select class="form-control inter" name="periodo" id="periodo" required>
                                                                         <option value="" >Seleccionar...</option>
@@ -739,17 +739,17 @@ Gestión de Clientes
                                                                                 @if (isset($internet[0]->onu_wifi)==1) 
                                                                                     @if($internet[0]->onu_wifi==1)
                                                                                         <input checked type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                        <label class="custom-control-label" for="onu_wifi">ONU CON WIFI</label>
+                                                                                        <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
                                                                                     
                                                                                     @else 
                                                                                         <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                        <label class="custom-control-label" for="onu_wifi">ONU CON WIFI</label>
+                                                                                        <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
 
                                                                                     @endif
                                                                                 
                                                                                 @else
                                                                                     <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                                    <label class="custom-control-label" for="onu_wifi">ONU CON WIFI</label>
+                                                                                    <label class="custom-control-label" for="onu_wifi">ONU + KTV</label>
 
                                                                                 @endif
                                                                             </div>
@@ -864,7 +864,7 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Resepción </label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Recepción </label>
                                                                 <div class="col-md-8">
                                                                     <input class="form-control" type="text"  id="recepcion" name="recepcion" value="@if (isset($internet[0]->recepcion)==1){{ $internet[0]->recepcion }}@endif">
                                                                     
@@ -918,7 +918,7 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato </label>
+                                                                <label for="example-text-input" class="col-md-5 col-form-label">Número de contrato </label>
                                                                 <div class="col-md-7">
                                                                     <input class="form-control" type="text"  id="num_contrato_tv" name="num_contrato_tv" readonly value="@if (isset($tv[0]->numero_contrato)==1){{ $tv[0]->numero_contrato }}@endif">
                                                                     
@@ -984,9 +984,9 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago *</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Prepago </label>
                                                                 <div class="col-md-8">
-                                                                    <select class="form-control tv" name="prepago_tv" id="prepago_tv" required>
+                                                                    <select class="form-control tv" name="prepago_tv" id="prepago_tv" disabled="disabled">
                                                                         <option value="" >Seleccionar...</option>
                                                                         <option value="1" @if (isset($tv[0]->prepago)==1) @if($tv[0]->prepago==1) selected @endif @endif>SI</option>
                                                                         <option value="2" @if (isset($tv[0]->prepago)==1) @if($tv[0]->prepago==2) selected @endif @endif>NO</option>
@@ -1050,7 +1050,7 @@ Gestión de Clientes
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="form-group row col-md-12">
-                                                                <label for="example-text-input" class="col-md-4 col-form-label">Periodo *</label>
+                                                                <label for="example-text-input" class="col-md-4 col-form-label">Período *</label>
                                                                 <div class="col-md-8">
                                                                     <select class="form-control tv" name="periodo_tv" id="periodo_tv" required>
                                                                         <option value="" >Seleccionar...</option>

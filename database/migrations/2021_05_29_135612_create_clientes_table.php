@@ -17,7 +17,7 @@ class CreateClientesTable extends Migration
             $table->id();
             $table->string('codigo');
             $table->string('nombre');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('dui');
             $table->string('nit')->nullable();
             $table->date('fecha_nacimiento')->nullable();

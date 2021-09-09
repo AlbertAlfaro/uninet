@@ -947,7 +947,7 @@ class ClientesController extends Controller
         $fpdf->SetTextColor(0,0,0);
         $fpdf->SetFont('Arial','B',12);
         $fpdf->SetXY(65,26);
-        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE TELEVISIÓN');
+        $fpdf->cell(30,10,utf8_decode('CONTRATO DE SERVICIO DE INTERNET'));
         //$contrato_internet[0]->numero_contrato
         $fpdf->SetXY(165,22);
         $fpdf->SetFont('Arial','',14);
@@ -1189,8 +1189,8 @@ class ClientesController extends Controller
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(120,176);
-        $fpdf->cell(30,10,utf8_decode('ONU CON WIFI'));
+        $fpdf->SetXY(128,176);
+        $fpdf->cell(30,10,utf8_decode('ONU + KTV'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
         if($contrato_internet[0]->onu_wifi==1){
@@ -1283,12 +1283,12 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->SetFont('Arial','',10);
         $fpdf->MultiCell(186,5,utf8_decode('Los terminos y condiciones indicados en el mismo por parte de TECNNITEL de Nacionalidad Salvadoreña de este domicilio, en adelante denominada "EI PROVEEDOR". Las condiciones particulares en cuanto a plazo, tarifas y especificaciones de equipo para la prestación de servicios a cada CLIENTE, se encuentran todas detalladas en el presente CONTRATO DE SERVICIO que El CLIENTE suscribe con EI PROVEEDOR, los cuales forman parte Integrante del presente documento CONDICIONES GENERAL APLICABLES 1. PLAZO; el plazo obligatorio de vigencia aplicable a la prestación de los servicios del proveedor que entrará en vigencia se estipula en el presente contrato que El CLIENTE suscribe con EL PROVEEDOR y contará a partir de la fecha de suscripción. Una vez transcurrido el plazo obligatorio antes indicado, el plazo de contrato de cada servicio continuará por tiempo indefinido TERMINACION: anticipada; en caso de que EL CLIENTE solicite la terminación dentro del plazo obligatorio ant Indicado, deberá pagar a El PROVEEDOR, todos y cada unos de los cargos pendientes del pago a la fecha de terminación efectiva del servicio de que se traten y además le obliga a pagar en concepto de penalidad por terminación anticipadas las cantidades señaladas en El CONTRATO DE SERVICIO que corresponda. B) Suspensión por mo EL PROVEEDOR podrá suspender cualquiera de los servicios contratados por Incumplimientos de las obligaciones EI CLIENTE este podrá dar por terminado el plazo de vigencia del presente CONTRATO DE SERVICIO corresponda.'));
         $fpdf->SetXY(38,249);
-        $fpdf->setFillColor(0,0,0); 
-        $fpdf->SetTextColor(255,255,255);
+        //$fpdf->setFillColor(0,0,0); 
+        //$fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);
         $fpdf->MultiCell(135,5,utf8_decode('Dirección: Colonia Cuscatlán Block D Casa N. 16 Apopa San Salvador 
-        Correo Electronico: tecnnitel.sv@gmail.com'),0,'C',1);
-        $fpdf->SetTextColor(0,0,0);
+        Correo Electronico: tecnnitel.sv@gmail.com'),1,'C',0);
+        //$fpdf->SetTextColor(0,0,0);
 
         
 
@@ -1317,7 +1317,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->SetTextColor(0,0,0);
         $fpdf->SetFont('Arial','B',12);
         $fpdf->SetXY(65,26);
-        $fpdf->cell(30,10,'CONTRATO DE SERVICIO DE TELEVISIÓN');
+        $fpdf->cell(30,10,utf8_decode('CONTRATO DE SERVICIO DE TELEVISIÓN'));
         //$contrato_internet[0]->numero_contrato
         $fpdf->SetXY(165,22);
         $fpdf->SetFont('Arial','',14);
@@ -1559,8 +1559,8 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(120,176);
-        $fpdf->cell(30,10,utf8_decode('ONU CON WIFI'));
+        $fpdf->SetXY(128,176);
+        $fpdf->cell(30,10,utf8_decode('ONU + KTV'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
         if($contrato_internet[0]->onu_wifi==1){
@@ -1653,11 +1653,11 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->SetFont('Arial','',10);
         $fpdf->MultiCell(186,5,utf8_decode('Los terminos y condiciones indicados en el mismo por parte de TECNNITEL de Nacionalidad Salvadoreña de este domicilio, en adelante denominada "EI PROVEEDOR". Las condiciones particulares en cuanto a plazo, tarifas y especificaciones de equipo para la prestación de servicios a cada CLIENTE, se encuentran todas detalladas en el presente CONTRATO DE SERVICIO que El CLIENTE suscribe con EI PROVEEDOR, los cuales forman parte Integrante del presente documento CONDICIONES GENERAL APLICABLES 1. PLAZO; el plazo obligatorio de vigencia aplicable a la prestación de los servicios del proveedor que entrará en vigencia se estipula en el presente contrato que El CLIENTE suscribe con EL PROVEEDOR y contará a partir de la fecha de suscripción. Una vez transcurrido el plazo obligatorio antes indicado, el plazo de contrato de cada servicio continuará por tiempo indefinido TERMINACION: anticipada; en caso de que EL CLIENTE solicite la terminación dentro del plazo obligatorio ant Indicado, deberá pagar a El PROVEEDOR, todos y cada unos de los cargos pendientes del pago a la fecha de terminación efectiva del servicio de que se traten y además le obliga a pagar en concepto de penalidad por terminación anticipadas las cantidades señaladas en El CONTRATO DE SERVICIO que corresponda. B) Suspensión por mo EL PROVEEDOR podrá suspender cualquiera de los servicios contratados por Incumplimientos de las obligaciones EI CLIENTE este podrá dar por terminado el plazo de vigencia del presente CONTRATO DE SERVICIO corresponda.'));
         $fpdf->SetXY(38,249);
-        $fpdf->setFillColor(0,0,0); 
-        $fpdf->SetTextColor(255,255,255);
+        //$fpdf->setFillColor(0,0,0); 
+        //$fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);
         $fpdf->MultiCell(135,5,utf8_decode('Dirección: Colonia Cuscatlán Block D Casa N. 16 Apopa San Salvador 
-        Correo Electronico: tecnnitel.sv@gmail.com'),0,'C',1);
+        Correo Electronico: tecnnitel.sv@gmail.com'),1,'C',0);
         $fpdf->SetTextColor(0,0,0);
 
         

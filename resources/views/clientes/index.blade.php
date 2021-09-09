@@ -16,7 +16,7 @@
             <div class="card-body">
                 <h4 class="card-title">Gestión de clientes</h4>
 				<p class="card-title-desc">
-					Usted se encuentra en el modulo Gestión de clientes.
+					Usted se encuentra en el módulo Gestión de clientes.
 				</p>
                 <div class="text-right">
                   

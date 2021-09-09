@@ -177,6 +177,10 @@
                         @can('Sucursales')
                         <li><a href="{{url('sucursales')}}">Sucursales</a></li>
                         @endcan
+
+                        @can('Velocidades')
+                        <li><a href="{{url('velocidades')}}">Velocidades de Internet</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

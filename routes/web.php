@@ -89,6 +89,16 @@ Route::group(['middleware' => ['permission:Configuracion']], function () {
      Route::post('sucursal/update',[App\Http\Controllers\SucursalController::class ,'update'])->middleware('permission:edit_sucursal')->name('sucursal.update');
      Route::get('sucursal/destroy/{id}',[App\Http\Controllers\SucursalController::class ,'destroy'])->middleware('permission:destroy_sucursal')->name('sucursal.destroy');
 
+
+      //grupo velocidades 
+      Route::get('velocidades',[App\Http\Controllers\VelocidadesController::class ,'index'])->middleware('permission:Velocidades')->name('velocidades.index');
+      Route::get('velocidades/create',[App\Http\Controllers\VelocidadesController::class ,'create'])->middleware('permission:create_velocidad')->name('velocidades.create');
+      Route::post('velocidades/store',[App\Http\Controllers\VelocidadesController::class ,'store'])->middleware('permission:create_velocidad')->name('velocidades.store');
+      Route::get('velocidades/edit/{id}',[App\Http\Controllers\VelocidadesController::class ,'edit'])->middleware('permission:edit_velocidad')->name('velocidades.edit');
+      Route::post('velocidades/update',[App\Http\Controllers\VelocidadesController::class ,'update'])->middleware('permission:edit_velocidad')->name('velocidades.update');
+      Route::get('velocidades/destroy/{id}',[App\Http\Controllers\VelocidadesController::class ,'destroy'])->middleware('permission:destroy_velocidad')->name('velocidades.destroy');
+ 
+
 });
 
 Route::group(['middleware' => ['permission:Clientes']], function () {

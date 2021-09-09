@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Sucursal
+Velocidades
 @endsection
 @section('css')
     <!-- DataTables -->
@@ -13,7 +13,7 @@ Sucursal
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle')  @endslot
-    @slot('title') Sucursal @endslot
+    @slot('title') Velocidad de internet @endslot
     
 @endcomponent
 
@@ -22,79 +22,55 @@ Sucursal
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title">Administracion de Sucursal</h4>
+                    <h4 class="card-title">Administracion de velocidad del internet</h4>
                     <p class="card-title-desc">
-                        Usted se encuentra en el modulo de Administracion de Sucursal Edición.
+                        Usted se encuentra en el modulo de Administracion de velocidadades de internet Edición.
                     </p>
                     <hr>
                     @include('flash::message')
-                    <form action="{{Route('sucursal.update')}}" method="post" id="form">
+                    <form action="{{Route('velocidades.update')}}" method="post" id="form">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
 
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Nombre *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Detalle *</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="text"  id="id_sucursal" name="id_sucursal" value="{{ $sucursal->id }}" required hidden>
-                                            <input class="form-control" type="text"  id="nombre" name="nombre" value="{{ $sucursal->nombre }}" required>
+                                            <input hidden class="form-control" type="text"  id="id" name="id" value="{{ $velocidad->id }}" required>
+                                            <input class="form-control" type="text"  id="detalle" name="detalle" value="{{ $velocidad->detalle }}" required>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Correo *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Bajada *</label>
                                         <div class="col-md-8">
                                             
-                                            <input class="form-control" type="email"  id="correo" name="correo"  value="{{ $sucursal->correo }}" required>
+                                            <input class="form-control" type="number"  id="bajada" name="bajada" value="{{ $velocidad->bajada }}" required>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Telefono *</label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Subida </label>
                                         <div class="col-md-8">
                                             
-                                            <input class="form-control input-mask" type="text"  id="telefono" name="telefono"  value="{{ $sucursal->telefono }}" data-inputmask="'mask': '9999-9999'" im-insert="true" required>
+                                            <input class="form-control " type="number"  id="subida" name="subida" value="{{ $velocidad->subida }}" >
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Web </label>
+                                        <label for="example-text-input" class="col-md-4 col-form-label">Estado *</label>
                                         <div class="col-md-8">
                                             
-                                            <input class="form-control" type="text"  id="web" name="web"  value="{{ $sucursal->web }}">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Dirrección *</label>
-                                        <div class="col-md-8">
-                            
-                                            <textarea class="form-control" cols="30" rows="3" id="dirreccion" name="dirreccion" required>{{ $sucursal->dirreccion }}</textarea>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Departamento *</label>
-                                        <div class="col-md-8">
-                                            
-                                            <select class="form-control" data-live-search="true" name="id_departamento" id="id_departamento" required>
-                                                <option value="" >Seleccionar...</option>
-                                                
-                                                @foreach ($obj_departamento as $obj_item)
-                                                    <option value="{{$obj_item->id}}" @if($sucursal->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
-                                                
-                                                @endforeach
+                                            <select class="form-control"  name="estado" id="estado" required>
+                                                <option value="1" @if($velocidad->estado==1) selected @endif>Activo</option>
+                                                <option value="0" @if($velocidad->estado==0) selected @endif>Inactivo</option>
                                                 
                                                 
                                             </select>
@@ -102,19 +78,7 @@ Sucursal
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="form-group row col-md-4">
-                                        <label for="example-text-input" class="col-md-4 col-form-label">Municipio *</label>
-                                        <div class="col-md-8">
-                                            
-                                            <select class="form-control" name="id_municipio" id="id_municipio" required>
-                                                <option value="" >Seleccionar...</option>
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                
                                 
                                
                             </div>
@@ -158,9 +122,6 @@ Sucursal
             filtro(id);
         });
 
-        var id = $("#id_departamento").val();
-        filtro(id);
-
         function filtro(id) {
         // Guardamos el select de cursos
         var municipios = $("#id_municipio");
@@ -172,13 +133,7 @@ Sucursal
                     municipios.find('option').remove();
                     municipios.append('<option value="">Seleccionar...</option>');
                     $(data).each(function(i, v){ // indice, valor
-                        if(v.id=='{{ $sucursal->id_municipio }}'){
-                            municipios.append('<option value="' + v.id + '" selected>' + v.nombre + '</option>');
-
-                        }else{
-                            municipios.append('<option value="' + v.id + '">' + v.nombre + '</option>');
-
-                        }
+                        municipios.append('<option value="' + v.id + '">' + v.nombre + '</option>');
                     })
                 }
             });

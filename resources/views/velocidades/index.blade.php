@@ -19,7 +19,7 @@
                 <h4 class="card-title">Velocidades de internet</h4>
               
 				<p class="card-title-desc">
-					Usted se encuentra en el modulo Velocidades de internet.
+					Usted se encuentra en el módulo Velocidades de internet.
 				</p>
                 <div class="text-right">
                    

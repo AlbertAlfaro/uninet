@@ -92,7 +92,7 @@ class RolPermissionsSeeder extends Seeder
         }
 
         //asignando los permisos al rol administrador
-        $rol_admin->givePermis'',sionTo('Administracion');
+        $rol_admin->givePermissionTo('Administracion');
         $rol_admin->givePermissionTo('Roles');
 
         //Asignando rol administrador al primer usuario creado

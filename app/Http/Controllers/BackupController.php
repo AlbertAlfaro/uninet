@@ -70,7 +70,7 @@ class BackupController extends Controller
         Backups::destroy($id);
         flash()->success("Copia de seguridad eliminada exitosamente!")->important();
         $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->crear_mensaje('Backup id:'.$id.' eliminado');
+        $obj_controller_bitacora->create_mensaje('Backup id:'.$id.' eliminado');
         return redirect()->route('backup.index');
 
     }

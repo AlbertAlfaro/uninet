@@ -48,7 +48,7 @@ class BackupController extends Controller
         flash()->success("Copia de seguridad creada exitosamente!")->important();
 
         $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->crear_mensaje('Backup creado');
+        $obj_controller_bitacora->create_mensaje('Backup creado');
 
         return redirect()->route('backup.index');
 

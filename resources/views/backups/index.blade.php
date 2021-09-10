@@ -61,7 +61,7 @@ Backup
                                             <i class="mdi mdi-chevron-down"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="descargar_backup/{{$backups_item->id}}" target="_blank">Descargar</a>
+                                            <a class="dropdown-item" href="backup/download/{{$backups_item->id}}" target="_blank">Descargar</a>
                                             <a class="dropdown-item" href="#" onclick="eliminar({{$backups_item->id}})">Eliminar</a>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@ Backup
                     'Registro eliminado',
                     'success'
                     )
-                    window.location.href = "eliminacion_backup/"+id;
+                    window.location.href = "backup/destroy/"+id;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

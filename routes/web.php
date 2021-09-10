@@ -49,6 +49,15 @@ Route::group(['middleware' => ['permission:Administracion']], function () {
     //rutas bitacora
     Route::get('bitacora',[App\Http\Controllers\BitacoraController::class ,'index'])->middleware('permission:bitacora')->name('bitacora.index');
     
+    //Administracion de copias de seguridad
+    Route::group(['middleware' => ['can:backup']], function () {
+        Route::get('backup', [App\Http\Controllers\BackupController::class,'index'])->name('backup.index');
+        Route::get('backup/create', [App\Http\Controllers\BackupController::class, 'create'])->name('backup.create');
+        Route::get('backup/download/{id}', [App\Http\Controllers\BackupController::class, 'download'])->name('backup.download');
+        Route::get('backup/destroy/{id}', [App\Http\Controllers\BackupController::class, 'destroy'])->name('backup.destroy');
+    
+    });
+    
 });
 
 Route::group(['middleware' => ['permission:Configuracion']], function () {

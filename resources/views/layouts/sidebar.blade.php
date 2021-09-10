@@ -206,6 +206,10 @@
                         @can('bitacora')
                         <li><a href="{{url('bitacora')}}">Bitacora</a></li>
                         @endcan
+
+                        @can('backup')
+                        <li><a href="{{url('backup')}}">Backup</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

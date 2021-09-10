@@ -80,6 +80,7 @@ class RolPermissionsSeeder extends Seeder
                             'create_producto',
                             'edit_producto',
                             'destroy_producto',
+                            'backup',
                            
                         );
 

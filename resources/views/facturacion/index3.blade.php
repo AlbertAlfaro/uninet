@@ -90,6 +90,7 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#" onclick="detalleFactura({{$obj_item->id}},{{$obj_item->cuota}})">Ver Factura</a>
+                                                <a class="dropdown-item" href="#" onclick="imprimir({{$obj_item->id}})">Imprimir</a>
                                                 <a class="dropdown-item" href="#" onclick="anular({{$obj_item->id}})">Anular</a>
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{$obj_item->cuota}})">Eliminar</a>
                                                 <div class="dropdown-divider"></div>
@@ -199,7 +200,6 @@
                        
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary waves-effect" onclick="imprimir({{$obj_item->id}})">Imprimir</button>
                         <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -309,8 +309,12 @@
                 });
             $('#myModal').modal('show') 
         }
-        function imprimir(id){
-            alert("Id de la Factura:"+id);
+        function imprimir(id_factura){
+            var efectivov=0;
+            var cambiov=0;
+            window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
+             //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
+
         }
     </script>
 @endsection

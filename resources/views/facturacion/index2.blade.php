@@ -340,6 +340,9 @@
               <option value="" >Seleccionar...</option>
               <option value="EFEC" >EFECTIVO</option>
               <option value="TRANS" >TRANSFERENCIA</option>
+              <option value="BITCOIN" >BITCOIN</option>
+              <option value="DEPO" >DEPOSITO</option>
+              <option value="POST" >POST</option>
             </select>
           </div>
           <div class="col-md-5" ><br><br>

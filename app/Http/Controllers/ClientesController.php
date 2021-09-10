@@ -17,6 +17,7 @@ use App\Models\Suspensiones;
 use App\Models\Tecnicos;
 use App\Models\Traslados;
 use App\Models\Tv;
+use App\Models\Velocidades;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -40,7 +41,8 @@ class ClientesController extends Controller
         $correlativo_cod_cliente = $this->correlativo(3,6);
         $correlativo_contra_tv = $this->correlativo(4,6);
         $correlativo_contra_inter = $this->correlativo(5,6);
-        return view('clientes.create',compact('obj_departamento','correlativo_cod_cliente','correlativo_contra_tv','correlativo_contra_inter'));
+        $velocidades = Velocidades::all();
+        return view('clientes.create',compact('obj_departamento','correlativo_cod_cliente','correlativo_contra_tv','correlativo_contra_inter','velocidades'));
     }
 
     public function municipios($id){
@@ -298,8 +300,9 @@ class ClientesController extends Controller
         $tv = Tv::where('id_cliente',$id)->where('activo',1)->get();
         $internet = Internet::where('id_cliente',$id)->where('activo',1)->get();
         $obj_departamento = Departamentos::all();
+        $velocidades = Velocidades::all();
 
-        return view('clientes.edit', compact('cliente','tv','internet','obj_departamento'));
+        return view('clientes.edit', compact('cliente','tv','internet','obj_departamento','velocidades'));
 
     }
 
@@ -1189,8 +1192,8 @@ class ClientesController extends Controller
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(128,176);
-        $fpdf->cell(30,10,utf8_decode('ONU + KTV'));
+        $fpdf->SetXY(126,176);
+        $fpdf->cell(30,10,utf8_decode('ONU + CATV'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
         if($contrato_internet[0]->onu_wifi==1){
@@ -1559,8 +1562,8 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $fpdf->SetFont('Arial','',12);
 
-        $fpdf->SetXY(128,176);
-        $fpdf->cell(30,10,utf8_decode('ONU + KTV'));
+        $fpdf->SetXY(126,176);
+        $fpdf->cell(30,10,utf8_decode('ONU + CATV'));
         $fpdf->SetXY(155,178);
         $fpdf->SetFont('ZapfDingbats');
         if($contrato_internet[0]->onu_wifi==1){

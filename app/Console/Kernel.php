@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        'App\Console\Commands\GenCobros',
     ];
 
     /**
@@ -25,6 +26,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->command('cobros:genCobro')->dailyAt('01:00');
+        //$schedule->command('backup:diario')->dailyAt('01:00');
     }
 
     /**

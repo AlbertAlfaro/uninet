@@ -130,7 +130,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('cliente/ordenes/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'ordenes_edit'])->middleware('permission:edit_orden')->name('cliente.ordenes.edit');
 
     //Suspenciones por cliente
-    Route::get('cliente/suspensiones/{id}',[App\Http\Controllers\ClientesController::class ,'suspensiones_index'])->middleware('permission:Ordenes')->name('cliente.suspensiones.index');
+    Route::get('cliente/suspensiones/{id}',[App\Http\Controllers\ClientesController::class ,'suspensiones_index'])->middleware('permission:Suspensiones')->name('cliente.suspensiones.index');
     Route::get('cliente/suspensiones/create/{id}',[App\Http\Controllers\ClientesController::class ,'suspensiones_create'])->middleware('permission:create_suspension')->name('cliente.suspensiones.create');
     Route::get('cliente/suspensiones/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'suspensiones_edit'])->middleware('permission:edit_suspension')->name('cliente.suspensiones.edit');
 

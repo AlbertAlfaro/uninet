@@ -600,7 +600,6 @@ class FacturacionController extends Controller
         return view('facturacion/index3',compact('obj_factura'));
     }
     public function imprimir_factura($id,$efectivo,$cambio){
-
         $factura = Factura::find($id);
 
         if($factura->tipo_documento==1){
@@ -790,21 +789,21 @@ class FacturacionController extends Controller
     
     
                     $fpdf->SetXY(10,$y);
-                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->Cell(20,10,utf8_decode($value->cantidad));
                     $fpdf->SetXY(22,$y);
                     $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->get_producto->precio,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=5;
     
                 }else{
                     $fpdf->SetXY(10,$y);
-                    $fpdf->Cell(20,10,utf8_decode(1));
+                    $fpdf->Cell(20,10,utf8_decode($value->cantidad));
                     $fpdf->SetXY(22,$y);
                     $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
                     
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->get_producto->precio,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=7;
     
                 }
@@ -814,14 +813,8 @@ class FacturacionController extends Controller
 
 
         }
-
-    
-
-
         $fpdf->Output();
         exit;
-
-
     }
 
 }

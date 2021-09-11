@@ -225,6 +225,8 @@ Route::group(['middleware' => ['permission:Reportes']], function () {
     Route::get('reportes/{opcion}',[App\Http\Controllers\ReportesController::class ,'index'])->middleware('permission:reporte_cliente')->name('reportes');
     Route::post('reportes/pdf',[App\Http\Controllers\ReportesController::class ,'pdf'])->middleware('permission:reporte_cliente')->name('reportes.pdf');
 
+    //REPORTE DE LO FACTURADO
+
 });
 
 

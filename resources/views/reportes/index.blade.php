@@ -32,32 +32,41 @@
                 <form action="{{ route('reportes.pdf') }}" method="post" target="_blank">
                     {{ csrf_field() }}
                     <div class="row">
-                        <div class="col-md-2">
-                            <label for="tipo_reporte">Tipo de reporte {{ $opcion }}</label>
-                            <select name="tipo_reporte" id="tipo_reporte" class="form-control">
-                                <option value="" >Seleccionar... </option>
-                                <option value="1" >Contratos a vencer</option>
-                                <option value="2" >Pago de servicio</option>
-                                <option value="3" >General</option>
-                               
-                                
-                              
-                            </select>
-                        </div>
-                       
+                        @if($opcion=="Clientes")
+                            <div class="col-md-2">
+                                <label for="tipo_reporte">Tipo de reporte {{ $opcion }}</label>
+                                <select name="tipo_reporte" id="tipo_reporte" class="form-control">
+                                    <option value="" >Seleccionar... </option>
+                                    <option value="1" >Contratos a vencer</option>
+                                    <option value="2" >Pago de servicio</option>
+                                    <option value="3" >General</option>
+                                </select>
+                            </div>
+                        @endif
+                        @if($opcion=="Facturas")
+                            <div class="col-md-2">
+                                <label for="tipo_reporte">Tipo de reporte {{ $opcion }}</label>
+                                <select name="tipo_reporte" id="tipo_reporte" class="form-control">
+                                    <option value="" >Seleccionar... </option>
+                                    <option value="0" >Finalizada</option>
+                                    <option value="1" >Anulada</option>
+                                </select>
+                            </div>
+                        @endif
+
                         <div class="col-md-2" style="display:none;" id="div_fecha_i">
                             <label for="estado">Desdes </label>
-                            <input type="text" class="form-control datepicker" name="fecha_i" id="fecha_i" autocomplete="off">
+                            <input type="text" class="form-control datepicker" name="fecha_i" id="fecha_i" value="{{ date('d/m/Y') }}" autocomplete="off">
                         </div>
                         <div class="col-md-2" style="display:none;" id="div_fecha_f">
                             <label for="estado">Hasta</label>
-                            <input type="text" class="form-control datepicker" name="fecha_f" id="fecha_f" autocomplete="off">
+                            <input type="text" class="form-control datepicker" name="fecha_f" id="fecha_f" value="{{ date('d/m/Y') }}" autocomplete="off">
                         </div>
+                        @if($opcion=="Clientes")
                         <div class="col-md-2" style="display:none;" id="div_dia">
                             <label for="estado">Fecha *</label>
                             <input type="text" class="form-control datepicker" name="fecha" id="fecha" value="{{ date('d/m/Y') }}" autocomplete="off">
                         </div>
-
                         <div class="col-md-2" style="display: none;" id="div_estado_pago">
                             <label for="tipo_reporte">Estado *</label>
                             <select name="estado_pago" id="estado_pago" class="form-control">
@@ -68,6 +77,7 @@
                               
                             </select>
                         </div>
+                        @endif
                         <input type="text" class="form-control" name="opcion" id="opcion" value="{{ $opcion }}" hidden>
 
                         <div class="col-md-1">
@@ -102,55 +112,56 @@
 
     $( "#tipo_reporte" ).change(function() {
        var tipo_reporte = $("#tipo_reporte").val();
+        if($("#opcion").val()=="Clientes"){
+            if(tipo_reporte==1){
+                $("#div_fecha_i").show();
+                $("#div_fecha_f").show();
 
-       if(tipo_reporte==1){
-           $("#div_fecha_i").show();
-           $("#div_fecha_f").show();
+                $("#div_dia").hide();
+                $("#div_estado_pago").hide();
 
-           $("#div_dia").hide();
-           $("#div_estado_pago").hide();
+            }
+            if(tipo_reporte==2){
+                $("#div_dia").show();
+                $("#div_estado_pago").show();
 
-       }
-       if(tipo_reporte==2){
-           $("#div_dia").show();
-           $("#div_estado_pago").show();
+                $("#div_fecha_i").hide();
+                $("#div_fecha_f").hide();
+                
 
-           $("#div_fecha_i").hide();
-           $("#div_fecha_f").hide();
-         
+            }
+            if(tipo_reporte==3){
+                $("#div_fecha_i").show();
+                $("#div_fecha_f").show();
 
-       }
+                $("#div_dia").hide();
+                
+                $("#div_estado_pago").hide();
 
-       if(tipo_reporte==3){
-           $("#div_fecha_i").show();
-           $("#div_fecha_f").show();
+            }
+            if(tipo_reporte==4){
+                $("#div_fecha_i").show();
+                $("#div_fecha_f").show();
 
-           $("#div_dia").hide();
-        
-           $("#div_estado_pago").hide();
+                $("#div_dia").hide();
+                
+                $("#div_estado_pago").hide();
 
-       }
+            }
+            if(tipo_reporte==""){
+                $("#div_fecha_i").hide();
+                $("#div_fecha_f").hide();
 
-       if(tipo_reporte==4){
-           $("#div_fecha_i").show();
-           $("#div_fecha_f").show();
+                $("#div_dia").hide();
+                
+                $("#div_estado_pago").hide();
 
-           $("#div_dia").hide();
-         
-           $("#div_estado_pago").hide();
-
-       }
-
-       if(tipo_reporte==""){
-           $("#div_fecha_i").hide();
-           $("#div_fecha_f").hide();
-
-           $("#div_dia").hide();
-         
-           $("#div_estado_pago").hide();
-
-       }
-      
+            }
+        }
+        if($("#opcion").val()=="Facturas"){
+            $("#div_fecha_i").show();
+            $("#div_fecha_f").show();
+        }
     });
 
     $( "#estado_pago" ).change(function() {

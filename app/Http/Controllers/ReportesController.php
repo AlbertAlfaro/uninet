@@ -7,6 +7,7 @@ use App\Models\Abono;
 use App\Models\Cliente;
 use App\Models\Internet;
 use App\Models\Tv;
+use App\Models\Factura;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,15 +24,23 @@ class ReportesController extends Controller
 
     public function pdf(Request $request){
         //return $request->tipo_reporte;
-        if($request->tipo_reporte==1){
-            $this->meses_faltantes($request->fecha_i,$request->fecha_f);
+        if($request->opcion=="Clientes"){
+            if($request->tipo_reporte==1){
+                $this->meses_faltantes($request->fecha_i,$request->fecha_f);
+            }
+            if($request->tipo_reporte==2){
+                $this->pago_servicios($request->fecha,$request->estado_pago);
+            }
+            if($request->tipo_reporte==3){
+                $this->general_clientes($request->fecha_i,$request->fecha_f);
+            }
         }
-        if($request->tipo_reporte==2){
-            $this->pago_servicios($request->fecha,$request->estado_pago);
+        if($request->opcion=="Facturas"){
+            $this->facturas($request->fecha_i,$request->fecha_f,$request->opcion);
+        
         }
-        if($request->tipo_reporte==3){
-            $this->general_clientes($request->fecha_i,$request->fecha_f);
-        }
+
+
     }
 
     private function general_clientes($fecha_i,$fecha_f){
@@ -219,5 +228,61 @@ class ReportesController extends Controller
 
         $fpdf->Output();
         exit;
+    }
+
+    private function facturas($fecha_i,$fecha_f,$opcion){
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
+        $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
+
+        $fpdf = new FpdfReportes('P','mm', 'Letter');
+        $fpdf->AliasNbPages();
+        $fpdf->AddPage();
+        $fpdf->SetTitle('CLIENTES | UNINET');
+
+        $fpdf->SetXY(15,29);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('Generado por '.Auth::user()->name).' '.date('d/m/Y h:i:s a'));
+        $fpdf->SetXY(15,33);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE '.Auth::user()->get_sucursal->nombre));
+
+        $fpdf->SetXY(88,40);
+        $fpdf->SetFont('Arial','B',14);
+        $fpdf->Cell(20,10,utf8_decode('CORTE DE FACTURACION'));
+
+        $fpdf->SetXY(95,44);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('desde '.$fecha_i.' hasta '.$fecha_f));
+        $facturas = Factura::where('id_sucursal',Auth::user()->id_sucursal)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+        $fpdf->Ln();
+        //$fpdf->BasicTable_clientes($clientes);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,7,utf8_decode('Documento'),'B',0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Número'),'B',0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Código'),'B',0,'C');
+        $fpdf->Cell(75,7,utf8_decode('Cliente'),'B',0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Fecha'),'B',0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Cantidad'),'B',0,'C');
+        $fpdf->Ln();
+
+        $fpdf->SetFont('Arial','',9);
+
+        foreach($facturas as $row){
+            if($row->tipo_documento==1){$tipo='FAC';}
+            if($row->tipo_documento==2){$tipo='CRE';}
+            $fpdf->Cell(20,7,utf8_decode($tipo),0,0,'');
+            $fpdf->Cell(20,7,utf8_decode($row->numero_documento),0,0,'C');
+            $fpdf->Cell(20,7,utf8_decode($row->get_cliente->codigo),0,0,'C');
+            $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
+            $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');
+            $fpdf->Cell(20,7,utf8_decode("$".$row->total),0,0,'C');
+            $fpdf->Ln();
+
+        }
+        
+
+        $fpdf->Output();
+        exit;
+
     }
 }

@@ -139,14 +139,14 @@
                          @can('reporte_cliente')
                          <li><a href="{{url('reportes/Clientes')}}">Clientes</a></li>
                          @endcan
-                         @can('reporte_cliente')
-                         <li><a href="{{url('reportes/facturas')}}">Facturas</a></li>
+                         @can('reporte_factura')
+                         <li><a href="{{url('reportes/Facturas')}}">Facturas</a></li>
                          @endcan
                          @can('reporte_cliente')
-                         <li><a href="{{url('reportes/tecnicos')}}">Tecnicos</a></li>
+                         <li><a href="{{url('reportes/Tecnicos')}}">Tecnicos</a></li>
                          @endcan
                          @can('reporte_cliente')
-                         <li><a href="{{url('reportes/actividades')}}">Actividades</a></li>
+                         <li><a href="{{url('reportes/Actividades')}}">Actividades</a></li>
                          @endcan
                         
                      </ul>

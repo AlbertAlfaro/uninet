@@ -8,6 +8,10 @@ use App\Models\Cliente;
 use App\Models\Internet;
 use App\Models\Tv;
 use App\Models\Factura;
+use App\Models\Ordenes;
+use App\Models\Reconexion;
+use App\Models\Suspensiones;
+use App\Models\Traslados;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +40,11 @@ class ReportesController extends Controller
             }
         }
         if($request->opcion=="Facturas"){
-            $this->facturas($request->fecha_i,$request->fecha_f,$request->opcion);
+            $this->facturas($request->fecha_i,$request->fecha_f,$request->tipo_reporte);
+        
+        }
+        if($request->opcion=="Ordenes"){
+            $this->Ordenes($request->fecha_i,$request->fecha_f,$request->tipo_reporte,$request->orden_estado);
         
         }
 
@@ -230,14 +238,14 @@ class ReportesController extends Controller
         exit;
     }
 
-    private function facturas($fecha_i,$fecha_f,$opcion){
+    private function facturas($fecha_i,$fecha_f,$tipo_reporte){
         $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
         $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
 
         $fpdf = new FpdfReportes('P','mm', 'Letter');
         $fpdf->AliasNbPages();
         $fpdf->AddPage();
-        $fpdf->SetTitle('CLIENTES | UNINET');
+        $fpdf->SetTitle('FACTURAS | UNINET');
 
         $fpdf->SetXY(15,29);
         $fpdf->SetFont('Arial','',9);
@@ -253,7 +261,16 @@ class ReportesController extends Controller
         $fpdf->SetXY(95,44);
         $fpdf->SetFont('Arial','',9);
         $fpdf->Cell(20,10,utf8_decode('desde '.$fecha_i.' hasta '.$fecha_f));
-        $facturas = Factura::where('id_sucursal',Auth::user()->id_sucursal)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+        if($tipo_reporte==0){
+            $facturas = Factura::where('id_sucursal',Auth::user()->id_sucursal)->where('anulada',0)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+        }
+        if($tipo_reporte==1){
+            $facturas = Factura::where('id_sucursal',Auth::user()->id_sucursal)->where('anulada',1)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+
+        }
+        if($tipo_reporte==2){
+            $facturas = Factura::where('id_sucursal',Auth::user()->id_sucursal)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();            
+        }
         $fpdf->Ln();
         //$fpdf->BasicTable_clientes($clientes);
         $fpdf->SetFont('Arial','B',9);
@@ -264,9 +281,8 @@ class ReportesController extends Controller
         $fpdf->Cell(20,7,utf8_decode('Fecha'),'B',0,'C');
         $fpdf->Cell(20,7,utf8_decode('Cantidad'),'B',0,'C');
         $fpdf->Ln();
-
+        $suma=0.00;
         $fpdf->SetFont('Arial','',9);
-
         foreach($facturas as $row){
             if($row->tipo_documento==1){$tipo='FAC';}
             if($row->tipo_documento==2){$tipo='CRE';}
@@ -275,12 +291,146 @@ class ReportesController extends Controller
             $fpdf->Cell(20,7,utf8_decode($row->get_cliente->codigo),0,0,'C');
             $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
             $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');
-            $fpdf->Cell(20,7,utf8_decode("$".$row->total),0,0,'C');
+            if($row->anulada==0){
+                $fpdf->Cell(20,7,utf8_decode($row->total),0,0,'C');
+                $suma+=$row->total;
+            }else{
+                $fpdf->SetTextColor(194,8,8);
+                $fpdf->Cell(20,7,utf8_decode("ANULADA"),0,0,'C');
+                $fpdf->SetTextColor(0,0,0);
+            }
             $fpdf->Ln();
-
         }
+        $fpdf->Cell(20,7,'','B',0,'');
+        $fpdf->Cell(20,7,'','B',0,'C');
+        $fpdf->Cell(20,7,'','B',0,'C');
+        $fpdf->Cell(75,7,'','B',0,'L');
+        $fpdf->Cell(20,7,'','B',0,'R');
+        $fpdf->Cell(20,7,'','B',0,'C');
+        $fpdf->Ln();
+        $fpdf->Cell(20,7,'',0,0,'');
+        $fpdf->Cell(20,7,'',0,0,'C');
+        $fpdf->Cell(20,7,'',0,0,'C');
+        $fpdf->Cell(75,7,'',0,0,'L');
+        $fpdf->Cell(20,7,'Total',0,0,'R');
+        $fpdf->Cell(20,7,'$'.$suma,0,0,'C');
         
 
+        $fpdf->Output();
+        exit;
+
+    }
+
+    private function Ordenes($fecha_i,$fecha_f,$tipo_reporte,$estado){
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
+        $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
+
+        $fpdf = new FpdfReportes('P','mm', 'Letter');
+        $fpdf->AliasNbPages();
+        $fpdf->AddPage();
+        $fpdf->SetTitle('ORDENES | UNINET');
+
+        $fpdf->SetXY(15,29);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('Generado por '.Auth::user()->name).' '.date('d/m/Y h:i:s a'));
+        $fpdf->SetXY(15,33);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE '.Auth::user()->get_sucursal->nombre));
+
+        $fpdf->SetXY(88,40);
+        $fpdf->SetFont('Arial','B',14);
+        if($tipo_reporte==1){$fpdf->Cell(20,10,utf8_decode('ORDENES DE TRABAJO'));}
+        if($tipo_reporte==2){$fpdf->Cell(20,10,utf8_decode('ORDENES DE SUSPENSION'));}
+        if($tipo_reporte==3){$fpdf->Cell(20,10,utf8_decode('ORDENES DE RECONEXIONE'));}
+        if($tipo_reporte==4){$fpdf->Cell(20,10,utf8_decode('ORDENES DE TRASLADO'));}
+        if($tipo_reporte==5){$fpdf->Cell(20,10,utf8_decode('ORDENES DE SOPORTE'));}
+
+        $fpdf->SetXY(95,44);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('desde '.$fecha_i.' hasta '.$fecha_f));
+        if($tipo_reporte==1){
+            if($estado==1){
+                
+                $ordenes = Ordenes::join('clientes','ordenes.id_cliente','=','clientes.id')->where('ordenes.fecha_trabajo','!=',null)->whereBetween('ordenes.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==2){
+                $ordenes = Ordenes::join('clientes','ordenes.id_cliente','=','clientes.id')->where('ordenes.fecha_trabajo','=',null)->whereBetween('ordenes.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==3 || $estado==''){
+                $ordenes = Ordenes::join('clientes','ordenes.id_cliente','=','clientes.id')->whereBetween('ordenes.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+        }
+        if($tipo_reporte==2){
+            if($estado==1){
+                $ordenes = Suspensiones::join('clientes','suspensiones.id_cliente','=','clientes.id')->where('suspensiones.fecha_trabajo','!=',null)->whereBetween('suspensiones.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==2){
+                $ordenes = Suspensiones::join('clientes','suspensiones.id_cliente','=','clientes.id')->where('suspensiones.fecha_trabajo','=',null)->whereBetween('suspensiones.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==3 || $estado==''){
+                $ordenes = Suspensiones::join('clientes','suspensiones.id_cliente','=','clientes.id')->whereBetween('suspensiones.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+
+        }
+        if($tipo_reporte==3){
+            if($estado==1){
+                $ordenes = Reconexion::join('clientes','reconexions.id_cliente','=','clientes.id')->where('reconexions.fecha_trabajo','!=',null)->whereBetween('reconexions.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==2){
+                $ordenes = Reconexion::join('clientes','reconexions.id_cliente','=','clientes.id')->where('reconexions.fecha_trabajo','=',null)->whereBetween('reconexions.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==3 || $estado==''){
+                $ordenes = Reconexion::join('clientes','reconexions.id_cliente','=','clientes.id')->whereBetween('reconexions.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+        }
+        if($tipo_reporte==4){
+            if($estado==1){
+                $ordenes = Traslados::join('clientes','traslados.id_cliente','=','clientes.id')->where('traslados.fecha_trabajo','!=',null)->whereBetween('traslados.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==2){
+                $ordenes = Traslados::join('clientes','traslados.id_cliente','=','clientes.id')->where('traslados.fecha_trabajo','=',null)->whereBetween('traslados.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==3 || $estado==''){
+                $ordenes = Traslados::join('clientes','traslados.id_cliente','=','clientes.id')->whereBetween('traslados.created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+        }
+        if($tipo_reporte==5){
+            $ordenes = Ordenes::join('clientes','ordenes.id_cliente','=','clientes.id')->where('ordenes.soporte',1)->whereBetween('ordenes.created_at',[$fecha_inicio,$fecha_fin])->get();
+            
+        }
+        $fpdf->Ln();
+        //$fpdf->BasicTable_clientes($clientes);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(10,7,utf8_decode('#'),1,0,'C');
+        $fpdf->Cell(30,7,utf8_decode('Fecha y Hora'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Orden'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Código'),1,0,'C');
+        $fpdf->Cell(75,7,utf8_decode('Cliente'),1,0,'C');
+        $fpdf->Cell(14,7,utf8_decode('Servicio'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Realizado'),1,0,'C');
+        $fpdf->Ln();
+        $suma=0.00;
+        $n=1;
+        $fpdf->SetFont('Arial','',9);
+        foreach($ordenes as $row){
+            $fpdf->Cell(10,7,utf8_decode($n),0,0,'C');
+            $fpdf->Cell(30,7,$row->created_at->format("d/m/Y H:i:s"),0,0,'C');
+            $fpdf->Cell(20,7,$row->numero,0,0,'C');
+            $fpdf->Cell(20,7,$row->get_cliente->codigo,0,0,'L');
+            $fpdf->Cell(75,7,$row->get_cliente->nombre,0,0,'L');
+            if($row->tipo_servicio=='Internet'){
+                $fpdf->Cell(14,7,'I',0,0,'C');
+            }else{
+                $fpdf->Cell(14,7,'T',0,0,'C');
+            }
+            if($row->fecha_trabajo!=null){
+                $fpdf->Cell(20,7,$row->fecha_trabajo->format("d/m/Y"),0,0,'C');
+            }else{
+                $fpdf->Cell(20,7,'Pendiente',0,0,'C');
+            }
+            $fpdf->Ln();
+            $n+=1;
+        }        
         $fpdf->Output();
         exit;
 

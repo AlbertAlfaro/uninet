@@ -89,7 +89,20 @@ Actividades
                                             </select>
                                         </div>
                                     </div>
-        
+                                    <div class="form-group row col-md-4">
+                                        <label class="col-md-4 col-form-label" for="defaultCheck1">Soporte</label>
+                                        <div class="col-md-8">
+                                            <div class="custom-control custom-checkbox">
+                                                @if($orden->soporte==1)
+                                                <input checked type="checkbox" class="custom-control-input jqcheck" id="soporte" name="soporte" value="1" >
+                                                <label class="custom-control-label" for="soporte"></label>
+                                                @else
+                                                <input type="checkbox" class="custom-control-input jqcheck" id="soporte" name="soporte" value="0" >
+                                                 <label class="custom-control-label" for="soporte"></label>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-8">
@@ -171,6 +184,15 @@ Actividades
             format: "dd/mm/yyyy",
             language: "es",
             autoclose: true
+        });
+        $('.jqcheck').change(function(){
+                if( $('#soporte').is(':checked'))
+                {
+                    $('#soporte').val("1");
+                }else
+                {
+                    $('#soporte').val("0");
+                }
         });
     </script>
 

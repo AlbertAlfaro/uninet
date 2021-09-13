@@ -143,7 +143,7 @@
                          <li><a href="{{url('reportes/Facturas')}}">Facturas</a></li>
                          @endcan
                          @can('reporte_cliente')
-                         <li><a href="{{url('reportes/Tecnicos')}}">Tecnicos</a></li>
+                         <li><a href="{{url('reportes/Ordenes')}}">Ordenes</a></li>
                          @endcan
                          @can('reporte_cliente')
                          <li><a href="{{url('reportes/Actividades')}}">Actividades</a></li>

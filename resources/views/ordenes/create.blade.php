@@ -83,7 +83,6 @@ Ordenes
                                             </select>
                                         </div>
                                     </div>
-        
                                 </div>
                                 <div class="row">
                                     <div class="form-group row col-md-4">
@@ -106,6 +105,15 @@ Ordenes
                                                     <option value="{{$obj_item->id}}">{{$obj_item->nombre}}</option>          
                                                 @endforeach            
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-4">
+                                        <label class="col-md-4 col-form-label" for="defaultCheck1">Soporte</label>
+                                        <div class="col-md-8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input jqcheck" id="soporte" name="soporte"  >
+                                                <label class="custom-control-label" for="soporte"></label>
+                                            </div>
                                         </div>
                                     </div>
         
@@ -173,6 +181,16 @@ Ordenes
                         $('#nombre').val(ui.item.nombre);
                     }
                 });
+            });
+
+            $('.jqcheck').change(function(){
+                if( $('#soporte').is(':checked'))
+                {
+                    $('#soporte').val("1");
+                }else
+                {
+                    $('#soporte').val("0");
+                }
             });
         });
 

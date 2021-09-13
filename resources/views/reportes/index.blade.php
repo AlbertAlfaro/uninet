@@ -50,6 +50,20 @@
                                     <option value="" >Seleccionar... </option>
                                     <option value="0" >Finalizada</option>
                                     <option value="1" >Anulada</option>
+                                    <option value="2" >General</option>
+                                </select>
+                            </div>
+                        @endif
+                        @if($opcion=="Ordenes")
+                            <div class="col-md-2">
+                                <label for="tipo_reporte">Tipo de reporte {{ $opcion }}</label>
+                                <select name="tipo_reporte" id="tipo_reporte" class="form-control">
+                                    <option value="" >Seleccionar... </option>
+                                    <option value="1" >Trabajo</option>
+                                    <option value="2" >Suspensión</option>
+                                    <option value="3" >Reconexión</option>
+                                    <option value="4" >Traslado</option>
+                                    <option value="5" >Soporte</option>
                                 </select>
                             </div>
                         @endif
@@ -77,6 +91,17 @@
                               
                             </select>
                         </div>
+                        @endif
+                        @if($opcion=="Ordenes")
+                            <div class="col-md-2" id="div_estado_orden" style="display:none;">
+                                <label for="orden_estado">Estado</label>
+                                <select name="orden_estado" id="orden_estado" class="form-control">
+                                    <option value="" >Seleccionar... </option>
+                                    <option value="1" >Finalizada</option>
+                                    <option value="2" >Pendiente</option>
+                                    <option value="3" >General</option>
+                                </select>
+                            </div>
                         @endif
                         <input type="text" class="form-control" name="opcion" id="opcion" value="{{ $opcion }}" hidden>
 
@@ -161,6 +186,18 @@
         if($("#opcion").val()=="Facturas"){
             $("#div_fecha_i").show();
             $("#div_fecha_f").show();
+        }
+        if($("#opcion").val()=="Ordenes"){
+            if(tipo_reporte==5){
+                $("#div_fecha_i").show();
+                $("#div_fecha_f").show();
+                $("#div_estado_orden").hide();
+            }
+            if(tipo_reporte!=5){
+                $("#div_fecha_i").show();
+                $("#div_fecha_f").show();
+                $("#div_estado_orden").show();
+            }
         }
     });
 

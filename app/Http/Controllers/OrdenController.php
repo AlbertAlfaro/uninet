@@ -65,6 +65,7 @@ class OrdenController extends Controller
                 $orden->id_actividad = $request->id_actividad;
                 $orden->id_tecnico = $request->id_tecnico;
                 $orden->observacion = $request->observacion;
+                $orden->soporte = $request->soporte;
                 $orden->id_usuario=Auth::user()->id;
                 $orden->save();
                 $this->setCorrelativo(6);
@@ -102,6 +103,7 @@ class OrdenController extends Controller
                 $orden->id_actividad = $request->id_actividad;
                 $orden->id_tecnico = $request->id_tecnico;
                 $orden->observacion = $request->observacion;
+                $orden->soporte = $request->soporte;
                 $orden->id_usuario=Auth::user()->id;
                 $orden->save();
                 $this->setCorrelativo(6);
@@ -181,7 +183,8 @@ class OrdenController extends Controller
                     'recepcion'=>$request->rx,
                     'tx'=>$request->tx,
                     "fecha_trabajo"=>$fecha_trabajo,
-                    "tipo_servicio"=>$request->tipo_servicio
+                    "tipo_servicio"=>$request->tipo_servicio,
+                    "soporte"=>$request->soporte
                     ]);
                 flash()->success("Registro editado exitosamente!")->important();
                 $obj_controller_bitacora=new BitacoraController();	
@@ -222,7 +225,8 @@ class OrdenController extends Controller
                     'recepcion'=>$request->rx,
                     'tx'=>$request->tx,
                     "fecha_trabajo"=>$fecha_trabajo,
-                    "tipo_servicio"=>$request->tipo_servicio
+                    "tipo_servicio"=>$request->tipo_servicio,
+                    "soporte"=>$request->soporte
                     ]);
                 flash()->success("Registro editado exitosamente!")->important();
                 $obj_controller_bitacora=new BitacoraController();	

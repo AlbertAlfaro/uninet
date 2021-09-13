@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -273,4 +274,11 @@ Route::group(['middleware' => ['permission:Productos']], function () {
     Route::post('productos/update/{id}',[App\Http\Controllers\ProductoController::class ,'update'])->middleware('permission:edit_producto')->name('productos.update');
     Route::get('productos/destroy/{id}',[App\Http\Controllers\ProductoController::class ,'destroy'])->middleware('permission:destroy_producto')->name('productos.distroy');
     
+});
+
+
+
+//Test borrar en produccion 
+Route::get('drive_test', function() {
+    Storage::disk('google')->put('test.zip', 'Hello World');
 });

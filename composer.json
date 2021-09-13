@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "luecano/numero-a-letras": "^3.0",
+        "nao-pon/flysystem-google-drive": "~1.1",
         "spatie/laravel-backup": "^6.16",
         "spatie/laravel-permission": "^4.0"
     },

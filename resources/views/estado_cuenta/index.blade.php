@@ -80,11 +80,11 @@
                                         
                                         </td>
                                         <td class="text-danger">
-                                          @if($obj_item->cargo!="") $ @endif {{ $obj_item->cargo }}
+                                          @if($obj_item->cargo!="") $ @endif {{ number_format($obj_item->cargo,2) }}
                                             
                                         </td>
                                         <td class="text-success">
-                                            @if($obj_item->abono!="") $ @endif {{ $obj_item->abono }}
+                                            @if($obj_item->abono!="") $ @endif {{ number_format($obj_item->abono,2) }}
                                              
                                          </td>
                                                 
@@ -125,11 +125,11 @@
                                         
                                         </td>
                                         <td class="text-danger">
-                                          @if($obj_item->cargo!="") $ @endif {{ $obj_item->cargo }}
+                                          @if($obj_item->cargo!="") $ @endif {{ number_format($obj_item->cargo,2) }}
                                             
                                         </td>
                                         <td class="text-success">
-                                            @if($obj_item->abono!="") $ @endif {{ $obj_item->abono }}
+                                            @if($obj_item->abono!="") $ @endif {{ number_format($obj_item->abono) }}
                                              
                                          </td>
                                                 

@@ -36,7 +36,7 @@
 
                 <li>
                     <a href="{{url('index')}}">
-                        <i class="uil-home-alt"></i><span class="badge badge-pill badge-primary float-right">01</span>
+                        <i class="uil-home-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
@@ -119,9 +119,6 @@
                      <ul class="sub-menu" aria-expanded="false">
                          @can('abonos_pendientes')
                          <li><a href="{{url('abonos/pendientes')}}">Pedientes</a></li>
-                         @endcan
-                         @can('Facturacion')
-                         <li><a href="{{url('factura/imprimir/1')}}">Imprimir factura</a></li>
                          @endcan
                         
                      </ul>

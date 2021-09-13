@@ -50,7 +50,7 @@ class BackupController extends Controller
 
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Backup creado');
-        Storage::disk('google')->put('2017-06-02-20-23-34.zip', file_get_contents(storage_path()."/laravel-backups/Laravel/".$nombre));
+        Storage::disk('google')->put($nombre, file_get_contents(storage_path()."/laravel-backups/Laravel/".$nombre));
 
 
         return redirect()->route('backup.index');

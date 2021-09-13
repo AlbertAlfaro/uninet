@@ -280,5 +280,5 @@ Route::group(['middleware' => ['permission:Productos']], function () {
 
 //Test borrar en produccion 
 Route::get('drive_test', function() {
-    Storage::disk('google')->put('test.txt', 'Hello World');
+    Storage::disk('google')->put('test.zip', 'Hello World');
 });

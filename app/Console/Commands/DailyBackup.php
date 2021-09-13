@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\BitacoraController;
+use App\Models\Backups;
 use Illuminate\Console\Command;
 
 use Illuminate\Support\Facades\Artisan;

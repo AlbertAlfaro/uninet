@@ -1957,7 +1957,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $primer_fac_inter = new DateTime();
         $primer_fac_tv = new DateTime();
 
-        $fecha_fa = new DateTime($mes_servicio);
+        $fecha_fa = new DateTime($fecha_actual);
 
         foreach ($internet as $value) {
             $primer_fac_inter = new DateTime($value->fecha_primer_fact);

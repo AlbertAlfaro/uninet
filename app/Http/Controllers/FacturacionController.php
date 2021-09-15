@@ -742,7 +742,7 @@ class FacturacionController extends Controller
                     $internet = Internet::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
                     //$fecha_i=$internet->dia_gene_fact.''.date('/m/Y');
                     $concepto = "SERVICIO DE INTERNET ".$internet[0]->velocidad;
-                    $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+                    $concepto1 = 'DESDE '.$value->mes_servicio->format('d/m/Y')." HASTA ".date("d/m/Y",strtotime($value->mes_servicio."+ 1 month"));
     
     
                     $fpdf->SetXY(10,$y);
@@ -760,7 +760,7 @@ class FacturacionController extends Controller
                 }else{
                     $tv = Tv::where('id_cliente',$value->id_cliente)->where('activo',1)->get();
                     $concepto = "SERVICIO DE TELEVISIÓN";
-                    $concepto1 = 'DESDE '.date("d/m/Y",strtotime($value->mes_servicio."- 1 month"))." HASTA ".$value->mes_servicio->format('d/m/Y');
+                    $concepto1 = 'DESDE '.$value->mes_servicio->format('d/m/Y')." HASTA ".date("d/m/Y",strtotime($value->mes_servicio."+ 1 month"));
     
     
                     $fpdf->SetXY(10,$y);

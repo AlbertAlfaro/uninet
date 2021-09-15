@@ -36,24 +36,10 @@
 
                 <li>
                     <a href="{{url('index')}}">
-                        <i class="uil-home-alt"></i><span class="badge badge-pill badge-primary float-right">01</span>
+                        <i class="uil-home-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                @can('Productos')
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="uil-archive"></i>
-                        <span>Productos</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        @can('Productos')
-                        <li><a href="{{url('productos')}}">Gestión de Productos</a></li>
-                        @endcan
-                    </ul>
-                    
-                </li>
-                @endcan
                 @can('Clientes')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -82,6 +68,20 @@
                         @endcan
 
                         
+                    </ul>
+                    
+                </li>
+                @endcan
+                @can('Productos')
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="uil-archive"></i>
+                        <span>Productos</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        @can('Productos')
+                        <li><a href="{{url('productos')}}">Gestión de Productos</a></li>
+                        @endcan
                     </ul>
                     
                 </li>
@@ -119,9 +119,6 @@
                      <ul class="sub-menu" aria-expanded="false">
                          @can('abonos_pendientes')
                          <li><a href="{{url('abonos/pendientes')}}">Pedientes</a></li>
-                         @endcan
-                         @can('Facturacion')
-                         <li><a href="{{url('factura/imprimir/1')}}">Imprimir factura</a></li>
                          @endcan
                         
                      </ul>

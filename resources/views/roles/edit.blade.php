@@ -35,7 +35,10 @@ Roles
                                 <input class="form-control" value="{{$rol->id}}" type="text"  id="id_rol" name="id_rol" required readonly style="display: none">
                                 <input class="form-control" value="{{$rol->name}}" type="text"  id="nombre_rol" name="nombre_rol" required readonly>
                             </div>
+                            
                         </div>
+                        
+                        
                         <hr>
                         <table  class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
@@ -48,6 +51,17 @@ Roles
     
     
                             <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                   
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="select_all" name="select_all" value="1" >
+                                            <label class="custom-control-label" for="select_all">Seleccionar todos</label>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @foreach ($permisos as $item)
                                 <tr>
                                     <td>{{$item->id}}</td>
@@ -71,13 +85,24 @@ Roles
                                         @endphp
                                         @endforeach          
                                         @if($si>0)
-                                            <input name="permisos[]" type="checkbox" class="form-check-input" value="{{$item->name}}" checked>
+                                        <div class="custom-control custom-checkbox">
+                                            <input name="permisos[]" type="checkbox" class="custom-control-input permisos" id="{{ $item->id }}" value="{{$item->name}}" checked>
+                                            <label class="custom-control-label" for="{{ $item->id }}"></label>
+                                        </div>
                                         @endif
                                         @if($no>0 && $si==0)
-                                            <input name="permisos[]" type="checkbox" class="form-check-input" value="{{$item->name}}" >
+                                            
+                                            <div class="custom-control custom-checkbox">
+                                                <input name="permisos[]" type="checkbox" class="custom-control-input permisos" id="{{ $item->id }}" value="{{$item->name}}">
+                                                <label class="custom-control-label" for="{{ $item->id }}"></label>
+                                            </div>
                                         @endif
                                         @if($contador==0)
-                                            <input name="permisos[]" type="checkbox" class="form-check-input" value="{{$item->name}}" >
+                                            
+                                            <div class="custom-control custom-checkbox">
+                                                <input name="permisos[]" type="checkbox" class="custom-control-input permisos" id="{{ $item->id }}" value="{{$item->name}}" >
+                                                <label class="custom-control-label" for="{{ $item->id }}"></label>
+                                            </div>
                                         @endif
                                       
 
@@ -124,6 +149,11 @@ Roles
             $('.bs-callout-warning').toggleClass('hidden', ok);
           })
         
+        });
+
+
+        $("#select_all").on("click", function() {  
+            $(".permisos").prop("checked", this.checked);  
         });
     </script>
 

@@ -1181,6 +1181,7 @@ function guardar() {
 
           $('#id_factura').val(datax.id_factura);
           $("#efectivov").focus();
+          $("#submit1").prop('disabled', true);
           display_notify(datax.typeinfo, datax.msg);
         }
 				else {
@@ -1204,7 +1205,10 @@ function Imprimir_factura() {
     msg = 'No hay factura para imprimir!';
     sel_vendedor = 0;
   }
-
+  if($('#tipo_pago').val() != "EFEC"){
+    efectivov='0';
+    cambiov='0';
+  }
   if (efectivov == "") {
     msg = 'Ingrese el Efectivo!';
     sel_vendedor = 0;
@@ -1216,6 +1220,7 @@ function Imprimir_factura() {
     $("#id_cobrador").val("");
     $("#tipo_documento").val("");
     $("#tipo_pago").val("");
+    $("#id_cliente").val();
     //CLEAN TD DE LA TABLE
     $("#totaltexto").html("0.00");
     $("#totcant").html("0");
@@ -1230,7 +1235,8 @@ function Imprimir_factura() {
     $("#total_retencion").html("0.00");
     $("#total_final").html("0.00");
     $("#monto_pago").html("0.00");
-            
+    
+    $("#submit1").prop('disabled', false);
     window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
     //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
 

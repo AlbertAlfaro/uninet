@@ -683,7 +683,7 @@
                     tr_add += "<td class=''><input type='hidden' id='cargo_sin_iva' name='cargo_sin_iva' value='"+data.results[i].cargo_sin_iva+"'><input type='hidden' id='cuota' name='cuota' value='"+data.results[i].cargo+"'>"+servicio+"</td>";
                     tr_add += "<td class=''><input type='hidden' id='id_cargo' name='id_cargo' value='"+data.results[i].id+"'><input type='hidden' id='mes_ser' name='mes_ser' value='"+data.results[i].mes_ser+"'>"+data.results[i].mes_servicio+"</td>";
                     tr_add += "<td class='descp text-center'><input type='hidden' id='fecha_ven' name='fecha_ven' value='"+data.results[i].fecha_vence+"'>"+data.results[i].fecha_vence+"</td>";
-                    tr_add += "<td class='' id='precio'><div class='col-xs-2 '><input type='text'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
+                    tr_add += "<td class='' id='precio'><div class='col-xs-2 '><input type='hidden'  class='form-control decimal' id='cargo_fin' name='cargo_fin' value='0.00' style='width:70px;' readOnly><input type='text'  class='form-control decimal' id='cargo' name='cargo' value='"+data.results[i].cargo+"' style='width:70px;' readOnly></div></td>";
                     tr_add += '<td class="Delete text-center"><input id="delprod" type="button" class="btn btn-danger fa"  value="&#xf1f8;"></td>';
                     tr_add += '</tr>';
                     //numero de filas 
@@ -1285,7 +1285,11 @@ function guardar() {
 					 }
 					 //$('#corr_in').val(datax.numdoc); */
            $('#id_factura').val(datax.id_factura);
-          $("#efectivov").focus();
+           if($('#tipo_pago').val()=='EFEC'){
+            $("#efectivov").focus();
+           }
+           $("#submit1").prop('disabled', true);
+           $("#addmes").prop('disabled', true);
           
           display_notify(datax.typeinfo, datax.msg);
         }
@@ -1309,7 +1313,10 @@ function Imprimir_factura() {
    msg = 'No hay factura para imprimir!';
    sel_vendedor = 0;
  }
-
+ if($('#tipo_pago').val() != "EFEC"){
+  efectivov='0';
+  cambiov='0';
+ }
  if (efectivov == "") {
    msg = 'Ingrese el Efectivo!';
    sel_vendedor = 0;
@@ -1321,6 +1328,7 @@ function Imprimir_factura() {
    $("#id_cobrador").val("");
    $("#tipo_documento").val("");
    $("#tipo_pago").val("");
+   $("#id_cliente").val();
    //CLEAN TD DE LA TABLE
    $("#totaltexto").html("0.00");
    $("#totcant").html("0");
@@ -1335,9 +1343,11 @@ function Imprimir_factura() {
    $("#total_retencion").html("0.00");
    $("#total_final").html("0.00");
    $("#monto_pago").html("0.00");
-           
-   window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
-   //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
+  
+  $("#submit1").prop('disabled', false);
+  $("#addmes").prop('disabled', false);
+  window.open("{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura+"/"+efectivov+"/"+cambiov,'_blank');
+  //window.location="{{URL::to('/facturacion/imprimir_factura')}}/"+id_factura;
 
  } else {
    display_notify('Warning',msg,'');

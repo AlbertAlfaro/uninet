@@ -81,7 +81,7 @@ class RolPermissionsSeeder extends Seeder
                             'edit_producto',
                             'destroy_producto',
                             'backup',
-                           
+                            'reporte_factura',
                         );
 
         //creando rol administrador

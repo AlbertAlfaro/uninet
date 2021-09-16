@@ -716,7 +716,7 @@ class FacturacionController extends Controller
 
             $fpdf->SetXY(132,169);
             $fpdf->SetFont('Courier','',10);
-            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas*0.13,2)));
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->iva,2)));
 
             $fpdf->SetXY(132,177);
             $fpdf->SetFont('Courier','',10);

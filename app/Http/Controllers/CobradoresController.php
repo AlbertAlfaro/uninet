@@ -108,6 +108,7 @@ class CobradoresController extends Controller
             'serie'=>$request->serie,
             'recibo_desde'=>$request->desde,
             "recibo_hasta"=>$request->hasta,
+            "recibo_ultimo"=>$request->ultimo,
             "activo"=>$request->activo
         ]);
         flash()->success("Registro editado exitosamente!")->important();

@@ -1949,7 +1949,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fecha_actual = date('Y-m-d');
         $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
         $fecha_vence = date ( 'Y-m-d' , $fecha_vence );
-        $mes_servicio = strtotime ( '-30 day' , strtotime ( $fecha_actual ) ) ;
+        $mes_servicio = strtotime ( '-1 month' , strtotime ( $fecha_actual ) ) ;
         $mes_servicio = date ( 'Y-m-d' , $mes_servicio );
         $internet = Internet::where('dia_gene_fact',$dia_actual)->where('activo',1)->get();
         $tv = Tv::where('dia_gene_fact',$dia_actual)->where('activo',1)->get();
@@ -1992,7 +1992,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                 $abono->save();
             }
     
-    }
+        }
     //return $dia_actual;
     flash()->success("Cobros generados exitosamente")->important();
     return back();

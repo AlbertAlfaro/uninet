@@ -716,7 +716,7 @@ class FacturacionController extends Controller
 
             $fpdf->SetXY(132,169);
             $fpdf->SetFont('Courier','',10);
-            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas*0.13,2)));
+            $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->iva,2)));
 
             $fpdf->SetXY(132,177);
             $fpdf->SetFont('Courier','',10);
@@ -754,7 +754,7 @@ class FacturacionController extends Controller
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
                     $y-=5;
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=10;
     
                 }else{
@@ -772,7 +772,7 @@ class FacturacionController extends Controller
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
                     $y-=7;
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=14;
     
                 }

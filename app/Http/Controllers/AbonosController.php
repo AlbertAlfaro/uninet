@@ -275,7 +275,7 @@ class AbonosController extends Controller
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
                     $y-=5;
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=10;
     
                 }else{
@@ -293,7 +293,7 @@ class AbonosController extends Controller
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
                     $y-=7;
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->abono,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=14;
     
                 }

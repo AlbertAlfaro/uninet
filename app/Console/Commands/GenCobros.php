@@ -88,6 +88,6 @@ class GenCobros extends Command
                 $abono->save();
             }
     
-    }
+        }
     }
 }

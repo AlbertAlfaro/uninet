@@ -34,6 +34,7 @@ class CreateAbonosTable extends Migration
             $table->float('precio')->nullable();
             $table->integer('anulado');
             $table->integer('pagado');
+            $table->integer('exento')->nullable();
             $table->timestamps();
         });
     }

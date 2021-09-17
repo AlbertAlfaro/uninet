@@ -292,7 +292,7 @@ class ReportesController extends Controller
             $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
             $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');
             if($row->anulada==0){
-                $fpdf->Cell(20,7,utf8_decode($row->total),0,0,'C');
+                $fpdf->Cell(20,7,number_format($row->total,2),0,0,'C');
                 $suma+=$row->total;
             }else{
                 $fpdf->SetTextColor(194,8,8);
@@ -313,7 +313,7 @@ class ReportesController extends Controller
         $fpdf->Cell(20,7,'',0,0,'C');
         $fpdf->Cell(75,7,'',0,0,'L');
         $fpdf->Cell(20,7,'Total',0,0,'R');
-        $fpdf->Cell(20,7,'$'.$suma,0,0,'C');
+        $fpdf->Cell(20,7,'$'.number_format($suma,2),0,0,'C');
         
 
         $fpdf->Output();

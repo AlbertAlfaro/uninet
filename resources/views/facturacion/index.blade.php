@@ -789,7 +789,7 @@
         $('#totcant').text(filas);
 
 
-          var total_sin_iva_mostrar = total_gravado.toFixed(2);
+          var total_sin_iva_mostrar = total_gravado.toFixed(2);//Numero de digitos que aparecen despues del . decimal
           $('#total_gravado_sin_iva').html(total_sin_iva_mostrar);
           txt_war = "class='text-danger'"
 
@@ -1169,6 +1169,7 @@ function guardar() {
 	var id_cobrador =$('#id_cobrador').val();
   var tipo_servicio =$('#tipo_servicio').val();
   var tipo_impresion= $('#tipo_documento').val();
+  var exenta= $('#exenta').val();
   var numreci= $('#numreci').val();
   var numdoc= $('#numdoc').val();
 
@@ -1223,6 +1224,7 @@ function guardar() {
   dataString += '&suma_gravada=' + suma_gravada;
   dataString += '&tipo_impresion=' + tipo_impresion;
 	dataString += '&id_factura=' + id_factura;
+  dataString += '&exenta=' + exenta;
 
 	if (tipo_pago == "") {
     msg = 'No a seleccionado un tipo de pago!';
@@ -1247,6 +1249,11 @@ function guardar() {
     msg = 'No hay cobrador seleccionado!';
     sel_vendedor = 0;
   }
+  if (exenta == 1 && tipo_impresion==2) {
+    msg = 'No es posible aplicar abono exentos en Credito fiscal!';
+    sel_vendedor = 0;
+  }
+
 
   if (sel_vendedor == 1) {
     $("#inventable tr").remove();
@@ -1288,6 +1295,10 @@ function guardar() {
            if($('#tipo_pago').val()=='EFEC'){
             $("#efectivov").focus();
            }
+          if(exenta==1){
+            $( "#exenta" ).prop( "checked", false );
+            $("#exenta").val("0");
+          }
            $("#submit1").prop('disabled', true);
            $("#addmes").prop('disabled', true);
           

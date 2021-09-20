@@ -325,7 +325,15 @@ class FacturacionController extends Controller
                         $abono->fecha_aplicado=date('Y/m/d');
                         $abono->fecha_vence=Carbon::createFromFormat('d/m/Y', $fila['fecha_ven']);
                         $abono->cargo=0;
-                        $abono->abono=$fila['cuota'];
+                        if($request->exenta==0){
+                            $abono->abono=$fila['cuota'];
+                            $abono->exento=0;
+                         
+                        }else{
+                            $abono->abono=$fila['precio'];
+                            $abono->exento=1;
+                            
+                        }
                         $abono->precio=$fila['precio'];
                         $abono->anulado=0;
                         $abono->pagado=1;
@@ -430,7 +438,7 @@ class FacturacionController extends Controller
             $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->get();
             $abono1=$abono->last();
             $results2 = array();
-            if(true)
+            if($abono->count()>0)
             {
                 if($filas==0)
                 {

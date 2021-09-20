@@ -78,6 +78,12 @@ Cobradores
                                         <input type="number" name="hasta" id="hasta" class="form-control"  value="{{$cobrador->recibo_hasta}}" placeholder="" required>
                                         </div>
                                     </div>
+                                    <div class="form-group row col-md-4">
+                                        <label for="example-text-input" class="col-md-4  col-form-label">Ultimo *</label>
+                                        <div class="col-md-8">
+                                        <input type="number" name="ultimo" id="ultimo" class="form-control"  value="{{$cobrador->recibo_ultimo}}" placeholder="" required>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                 <div class="form-group row col-md-4">

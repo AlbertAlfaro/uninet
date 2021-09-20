@@ -62,6 +62,7 @@
                                     <th>Id</th>
                                     <th>Cliente</th>
                                     <th>Mes de servicio</th>
+                                    <th>Fecha aplicado</th>
                                     <th>Tipo servicio</th>
                                     <th>Cargo</th>
                                     <th>Abono</th>
@@ -74,6 +75,7 @@
                                         <td>{{$obj_item->id}}</td>
                                         <td>{{$obj_item->get_cliente->nombre}}</td>
                                         <td>@if (isset($obj_item->mes_servicio)==1) {{$obj_item->mes_servicio->format('m/Y')}} @endif</td>
+                                        <td>@if (isset($obj_item->fecha_aplicado)==1) {{$obj_item->fecha_aplicado->format('d/m/Y')}} @endif</td>
                                         <td>
                                             @if($obj_item->tipo_servicio==1) Internet @endif
                                             @if($obj_item->tipo_servicio==2) Televisión  @endif

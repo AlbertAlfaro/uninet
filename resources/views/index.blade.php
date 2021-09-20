@@ -90,7 +90,7 @@
                             <h3 class="text-primary">$<span data-plugin="counterup">{{ $total_full }}</span><span class="text-muted d-inline-block font-size-15 ml-3">Ingreso</span></h3>
                         </li>
                         <li class="list-inline-item chart-border-left mr-0">
-                            <h3><span data-plugin="counterup">{{ $total_ventas }}</span><span class="text-muted d-inline-block font-size-15 ml-3">Ventas</span>
+                            <h3><span data-plugin="counterup">{{ $total_ventas }}</span><span class="text-muted d-inline-block font-size-15 ml-3">Facturas</span>
                             </h3>
                         </li>
                        

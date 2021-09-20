@@ -160,7 +160,7 @@ class ReportesController extends Controller
         $fpdf->Cell(20,10,utf8_decode('PAGO DE SERVICIOS'));
 
         if($estado_pago==1){
-            $tipo ="A pagar hoy";
+            $tipo ="Ultima fecha de Pago";
         }
         if($estado_pago==2){
             $tipo ="Vencidos";
@@ -170,6 +170,9 @@ class ReportesController extends Controller
         }
 
         $fpdf->SetXY(95,44);
+        if($estado_pago==1){
+            $fpdf->SetXY(89,44);
+        }
         $fpdf->SetFont('Arial','',9);
         $fpdf->Cell(20,10,utf8_decode($tipo.' ('.$fecha.')'));
 

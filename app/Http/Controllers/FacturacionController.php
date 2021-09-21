@@ -181,6 +181,7 @@ class FacturacionController extends Controller
     public function anular($id)
     {
         Factura::where('id',$id)->update(['anulada' =>1]);
+        Abono::where('id_factura',$id)->update(['anulado' =>1]);
         flash()->success("Factura anulada exitosamente!")->important();
         return redirect()->route('facturacion.gestion');
     }

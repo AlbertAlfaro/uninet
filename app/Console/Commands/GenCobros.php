@@ -52,23 +52,33 @@ class GenCobros extends Command
 
         $primer_fac_inter = new DateTime();
         $primer_fac_tv = new DateTime();
+        
 
         $fecha_fa = new DateTime($fecha_actual);
 
         foreach ($internet as $value) {
             $primer_fac_inter = new DateTime($value->fecha_primer_fact);
             if($primer_fac_inter<=$fecha_fa){
-
+                //comparar cantidad de cargo y abonos
+                $cargos_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('cargo','!=','0.00')->get()->count();
+                $abono_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('abono','!=','0.00')->where('pagado',1)->get()->count();
+                $pagado=0;
+                if($abono_inter>$cargos_inter){
+                    $pagado=1;
+                }
                 $abono = new Abono();
                 $abono->id_cliente = $value->id_cliente;
                 $abono->tipo_servicio = 1;
                 $abono->mes_servicio = $mes_servicio;
+                $abono->fecha_aplicado = date('Y-m-d');
                 $abono->cargo = $value->cuota_mensual;
                 $abono->abono = 0.00;
                 $abono->fecha_vence = $fecha_vence;
                 $abono->anulado = 0;
-                $abono->pagado = 0;
+                $abono->pagado = $pagado;
                 $abono->save();
+                //echo "Cargo ".$cargos_inter." pago: ".$abono_inter;
+                
             }
         
         }
@@ -76,15 +86,24 @@ class GenCobros extends Command
             $primer_fac_tv = new DateTime($value->fecha_primer_fact);
             if($primer_fac_tv<=$fecha_fa){
 
+                //comparar cantidad de cargo y abonos
+                $cargos_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('cargo','!=','0.00')->get()->count();
+                $abono_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('abono','!=','0.00')->where('pagado',1)->get()->count();
+                $pagado=0;
+                if($abono_tv>$cargos_tv){
+                    $pagado=1;
+                }
+
                 $abono = new Abono();
                 $abono->id_cliente = $value->id_cliente;
                 $abono->tipo_servicio = 2;
                 $abono->mes_servicio = $mes_servicio;
                 $abono->cargo = $value->cuota_mensual;
+                $abono->fecha_aplicado = date('Y-m-d');
                 $abono->abono = 0.00;
                 $abono->fecha_vence = $fecha_vence;
                 $abono->anulado = 0;
-                $abono->pagado = 0;
+                $abono->pagado = $pagado;
                 $abono->save();
             }
     

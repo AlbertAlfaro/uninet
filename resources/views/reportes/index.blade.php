@@ -84,7 +84,7 @@
                         <div class="col-md-2" style="display: none;" id="div_estado_pago">
                             <label for="tipo_reporte">Estado *</label>
                             <select name="estado_pago" id="estado_pago" class="form-control">
-                                <option value="1" >A pagar hoy</option>
+                                <option value="1" >Ultima fecha de pago</option>
                                 <option value="2" >Vencido</option>
                                 <option value="3" >A tiempo</option>
                                 

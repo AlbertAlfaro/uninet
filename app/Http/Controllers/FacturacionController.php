@@ -800,8 +800,11 @@ class FacturacionController extends Controller
                     $fpdf->Cell(20,10,utf8_decode($value->cantidad));
                     $fpdf->SetXY(22,$y);
                     $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
-                    $fpdf->SetXY(132,$y);
+                    //agregar subtotal despues de precio unitario
+                    $fpdf->SetXY(110,$y);
                     $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
+                    $fpdf->SetXY(132,$y);
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->subtotal,2)));
                     $y+=5;
     
                 }else{
@@ -809,9 +812,14 @@ class FacturacionController extends Controller
                     $fpdf->Cell(20,10,utf8_decode($value->cantidad));
                     $fpdf->SetXY(22,$y);
                     $fpdf->Cell(20,10,utf8_decode($value->get_producto->nombre));
+
+                    //agregar subtotal despues de precio unitario
+                    $fpdf->SetXY(110,$y);
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     
                     $fpdf->SetXY(132,$y);
-                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
+                    $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->subtotal,2)));
+                    //agregar subtotal despues de precio unitario
                     $y+=7;
     
                 }

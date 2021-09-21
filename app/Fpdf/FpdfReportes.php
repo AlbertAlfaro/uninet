@@ -171,6 +171,7 @@ class FpdfReportes extends Fpdf{
                     $this->Cell(26,6,utf8_decode('Vencido'),0,0,'C');
     
                 }
+                $this->Ln();
             }
             if($estado_pago==2){
                 if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) < 0){
@@ -201,6 +202,8 @@ class FpdfReportes extends Fpdf{
                         $this->Cell(26,6,utf8_decode('Vencido'),0,0,'C');
         
                     }
+
+                    $this->Ln();
 
                 }
             }
@@ -235,11 +238,11 @@ class FpdfReportes extends Fpdf{
         
                     }
 
+                    $this->Ln();
                 }
             }
 
 
-            $this->Ln();
 
         }
     }

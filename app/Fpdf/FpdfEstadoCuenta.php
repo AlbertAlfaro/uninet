@@ -85,6 +85,8 @@ class FpdfEstadoCuenta extends Fpdf{
         //while($x<60){
         foreach($data as $row)
         {
+            $c=0;
+            $a=0;
             $this->Cell(24,6,$row->recibo,0,0,'C');
             $this->Cell(26,6,$row->id_cobrador,0,0,'C');
             if($row->tipo_servicio==1){
@@ -118,30 +120,32 @@ class FpdfEstadoCuenta extends Fpdf{
             $this->Cell(20,6,number_format($row->cargo,2),0,0,'C');
             $this->Cell(20,6,number_format($row->abono,2),0,0,'C');
           
-            if($row->cargo!=""){
+            if($row->cargo!=0){
 
                 $this->Cell(20,6,number_format($row->cesc_cargo,2),0,0,'C');
                 $impuesto = $row->cesc_cargo;
                 $c=$row->cargo;
+                $x=$row->cargo;
             }
-            if($row->abono!=""){
+            if($row->abono!=0){
 
                 $this->Cell(20,6,number_format($row->cesc_abono,2),0,0,'C');
                 $impuesto = $row->cesc_abono;
                 $a=$row->abono;
-                $c=$row->abono;
+                $x=$row->abono;
             }
             $total = $impuesto+$c;
-            $this->Cell(20,6,number_format($total,2),0,0,'C');
+            $total_a = $impuesto+$a;
+            $this->Cell(20,6,number_format($impuesto+$x,2),0,0,'C');
             
-            $total_abono+=$a;
+            $total_abono+=$total_a;
             $total_cargo+=$total;
             
             $this->Ln();
         }
         //$x++;
    // }
-        $total_pago = $total_cargo-$total_cargo;
+        $total_pago = $total_cargo-$total_abono;
         $this->SetFont('Arial','B',9);
         $this->SetX(240);
         $this->Cell(30,6,utf8_decode('TOTAL A COBRAR'),0,0,'C');

@@ -59,7 +59,7 @@
                                     </td>
 									<td>{{$obj_item->get_cliente->nombre}}</td>
                                     <td>{{$obj_item->get_cobrador->nombre}}</td>
-									<td>${{$obj_item->total}}</td>
+									<td>${{number_format($obj_item->total,2)}}</td>
                                     <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
                                     <td>
                                         @if($obj_item->cuota==1)

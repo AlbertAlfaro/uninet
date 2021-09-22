@@ -92,7 +92,9 @@
                                                 <a class="dropdown-item" href="#" onclick="detalleFactura({{$obj_item->id}},{{$obj_item->cuota}})">Ver Factura</a>
                                                 <a class="dropdown-item" href="#" onclick="imprimir({{$obj_item->id}})">Imprimir</a>
                                                 <a class="dropdown-item" href="#" onclick="anular({{$obj_item->id}})">Anular</a>
+                                                @if($obj_item->anulada==0)
                                                 <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{$obj_item->cuota}})">Eliminar</a>
+                                                @endif
                                                 <div class="dropdown-divider"></div>
                                                 
                                             </div>

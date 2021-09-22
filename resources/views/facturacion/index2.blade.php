@@ -1221,6 +1221,7 @@ function Imprimir_factura() {
     $("#tipo_documento").val("");
     $("#tipo_pago").val("");
     $("#id_cliente").val("");
+    $("#id_factura").val("");
     //CLEAN TD DE LA TABLE
     $("#totaltexto").html("0.00");
     $("#totcant").html("0");

@@ -40,7 +40,7 @@ class HomeController extends Controller
            $total_fac+=$value->total;
         }
 
-        $cargos_pen = Abono::where('pagado',0)->get();
+        $cargos_pen = Abono::where('pagado',0)->where('anulado',0)->get();
         $total_pen=0;
         foreach ($cargos_pen as $value1) {
            $total_pen+=1;
@@ -86,13 +86,15 @@ class HomeController extends Controller
            // echo $fecha_final.' ';
             $dat_in = Factura::join('abonos','facturas.id','=','abonos.id_factura')
                                 ->where('abonos.tipo_servicio',1)
+                                ->where('facturas.anulada',0)
                                 ->whereBetween('facturas.created_at',[$fecha_inicial,$fecha_final])->get();
             
             $dat_tv = Factura::join('abonos','facturas.id','=','abonos.id_factura')
                                 ->where('abonos.tipo_servicio',2)
+                                ->where('facturas.anulada',0)
                                 ->whereBetween('facturas.created_at',[$fecha_inicial,$fecha_final])->get();
 
-            $produc = Factura::where('cuota',0)->whereBetween('created_at',[$fecha_inicial,$fecha_final])->get();
+            $produc = Factura::where('anulada',0)->where('cuota',0)->whereBetween('created_at',[$fecha_inicial,$fecha_final])->get();
             
             foreach ($dat_in as $value) {
                 $total+= $value->total;
@@ -116,7 +118,7 @@ class HomeController extends Controller
             $total_full += $total+$total1+$total2;
 
         }
-        $total_ventas = Factura::count(); 
+        $total_ventas = Factura::where('anulada',0)->count(); 
         $fecha_fin = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
         $estado_cuenta = Abono::select(
                                         'abonos.id',
@@ -135,6 +137,7 @@ class HomeController extends Controller
                                         )
                                     ->join('clientes','abonos.id_cliente','=','clientes.id')
                                     ->where('abonos.pagado',0)
+                                    ->where('abonos.anulado',0)
                                     ->where('abonos.fecha_vence',$fecha_fin->format('Y-m-d'))
                                     ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
                                     ->get(); 

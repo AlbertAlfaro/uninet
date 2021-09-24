@@ -52,9 +52,30 @@ class ReportesController extends Controller
 
     }
 
+    private function format_fecha($x,$date){
+       
+        if($x==1){
+            $fch=explode("/",$date);
+            $tfecha=$fch[2]."-".$fch[1]."-".$fch[0];
+            $newDate = $tfecha." 00:00:00";
+          
+        }
+        if($x==2){
+            $fch=explode("/",$date);
+            $tfecha=$fch[2]."-".$fch[1]."-".$fch[0];
+            $newDate = $tfecha." 23:59:59";
+        }
+
+        return $newDate;
+
+    }
+
     private function general_clientes($fecha_i,$fecha_f){
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
-        $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
+      
+        $fecha_inicio = $this->format_fecha(1,$fecha_i);
+        $fecha_fin =  $this->format_fecha(2,$fecha_f);
+
+    
 
         $fpdf = new FpdfReportes('P','mm', 'Letter');
         $fpdf->AliasNbPages();
@@ -187,8 +208,8 @@ class ReportesController extends Controller
     }
 
     private function meses_faltantes($fecha_i,$fecha_f){
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
-        $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
+        $fecha_inicio =  $this->format_fecha(1,$fecha_i);
+        $fecha_fin =  $this->format_fecha(2,$fecha_f);
         $cliente_tv = Tv::select(
                             'id_cliente',
                             'numero_contrato',
@@ -243,8 +264,8 @@ class ReportesController extends Controller
     }
 
     private function facturas($fecha_i,$fecha_f,$tipo_reporte){
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
-        $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
+        $fecha_inicio =  $this->format_fecha(1, $fecha_i);
+        $fecha_fin =  $this->format_fecha(2, $fecha_f);
 
         $fpdf = new FpdfReportes('P','mm', 'Letter');
         $fpdf->AliasNbPages();
@@ -326,8 +347,8 @@ class ReportesController extends Controller
     }
 
     private function Ordenes($fecha_i,$fecha_f,$tipo_reporte,$estado){
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha_i);
-        $fecha_fin = Carbon::createFromFormat('d/m/Y', $fecha_f);
+        $fecha_inicio = $this->format_fecha(1, $fecha_i);
+        $fecha_fin =  $this->format_fecha(2, $fecha_f);
 
         $fpdf = new FpdfReportes('P','mm', 'Letter');
         $fpdf->AliasNbPages();

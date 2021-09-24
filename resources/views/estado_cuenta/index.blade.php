@@ -56,7 +56,7 @@
 
                     <div class="table-responsive">
     
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable-1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -103,7 +103,7 @@
 
                     <div class="table-responsive">
     
-                        <table id="datatable-1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable-2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -199,7 +199,8 @@
 
     <script>
         $(document).ready(function() {
-        var table = $('#datatable-1').DataTable({language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}})
+        var table = $('#datatable-1').DataTable({"order": [ 2, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
+        var table1 = $('#datatable-2').DataTable({"order": [ 2, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
     
 	});
         

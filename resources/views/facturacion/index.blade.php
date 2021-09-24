@@ -301,7 +301,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Factura directa</h4>
+                <h4 class="card-title">Factura Abono</h4>
 				<p class="card-title-desc">
 					Usted se encuentra en el modulo Facturación.
 				</p>
@@ -617,6 +617,7 @@
                         $("#inventable tr").remove();
                         totales();
                         $('input[type="text"]').val('');
+                        $("#id_cobrador").val("");
                         //------------------------------
                         $('#id_cliente').val(ui.item.id);
                         //$('#busqueda').val(ui.item.nombre);   
@@ -1339,7 +1340,8 @@ function Imprimir_factura() {
    $("#id_cobrador").val("");
    $("#tipo_documento").val("");
    $("#tipo_pago").val("");
-   $("#id_cliente").val();
+   $("#id_cliente").val("");
+   $("#id_factura").val("");
    //CLEAN TD DE LA TABLE
    $("#totaltexto").html("0.00");
    $("#totcant").html("0");

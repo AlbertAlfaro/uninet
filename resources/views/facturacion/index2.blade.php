@@ -716,7 +716,7 @@
 
             if (ex==0) {
               subt_gravado= $(this).find("#subtotal_fin").val();
-              alert('sumo cuando no es exento');
+              //salert('sumo cuando no es exento');
             }
             else {
               subt_exento=$(this).find("#subtotal_fin").val()/1.13;
@@ -807,7 +807,7 @@
       }
     else
     {
-      alert('cambio a cof');
+      //alert('cambio a cof');
       $("#inventable tr").each(function() {
         subt_cant = $(this).find("#cant").val();
         ex = parseInt($(this).find('#exento').val());
@@ -1220,7 +1220,8 @@ function Imprimir_factura() {
     $("#id_cobrador").val("");
     $("#tipo_documento").val("");
     $("#tipo_pago").val("");
-    $("#id_cliente").val();
+    $("#id_cliente").val("");
+    $("#id_factura").val("");
     //CLEAN TD DE LA TABLE
     $("#totaltexto").html("0.00");
     $("#totcant").html("0");

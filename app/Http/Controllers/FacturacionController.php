@@ -80,7 +80,7 @@ class FacturacionController extends Controller
             if($detalle->count()>0)
             {
                 foreach ($detalle as $query){
-                    $results[] = [ 'cantidad' => $query->cantidad, 'producto' => $query->get_producto->nombre,'precio' => $query->precio,'subtotal'=>$query->subtotal];
+                    $results[] = [ 'cantidad' => $query->cantidad, 'producto' => $query->get_producto->nombre,'precio' => number_format($query->precio,2),'subtotal'=> number_format($query->subtotal,2)];
                 }
                 $xdatos['results']=$results;
             }
@@ -94,9 +94,9 @@ class FacturacionController extends Controller
             $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
             $xdatos['fecha']=$factura->created_at->format('d/m/Y');
             $xdatos['tipo_docu']=$factura->tipo_documento;
-            $xdatos['iva']=$factura->iva;
-            $xdatos['sumas']=$factura->sumas;
-            $xdatos['total']=$factura->total;
+            $xdatos['iva']=number_format($factura->iva,2);
+            $xdatos['sumas']=number_format($factura->sumas,2);
+            $xdatos['total']=number_format($factura->total,2);
             $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($factura->get_cliente->get_municipio->nombre).' '.strtoupper($factura->get_cliente->get_municipio->get_departamento->nombre);
             return $xdatos;
         }else{
@@ -110,7 +110,7 @@ class FacturacionController extends Controller
                     }else{
                         $servicio="Television";
                     }
-                    $results[] = [ 'cantidad' => '1', 'producto' => $servicio,'precio' => $query->abono,'subtotal'=>$query->abono];
+                    $results[] = [ 'cantidad' => '1', 'producto' => $servicio,'precio' => number_format($query->abono,2),'subtotal' => number_format($query->abono,2)];
                 }
                 $xdatos['results']=$results;
             }else{
@@ -126,9 +126,9 @@ class FacturacionController extends Controller
             $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
             $xdatos['fecha']=$factura->created_at->format('d/m/Y');
             $xdatos['tipo_docu']=$factura->tipo_documento;
-            $xdatos['iva']=$factura->iva;
-            $xdatos['sumas']=$factura->sumas;
-            $xdatos['total']=$factura->total;
+            $xdatos['iva']=number_format($factura->iva,2);
+            $xdatos['sumas']=number_format($factura->sumas,2);
+            $xdatos['total']=number_format($factura->total,2);
             $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($factura->get_cliente->get_municipio->nombre).' '.strtoupper($factura->get_cliente->get_municipio->get_departamento->nombre);
             return $xdatos;   
         }
@@ -181,6 +181,7 @@ class FacturacionController extends Controller
     public function anular($id)
     {
         Factura::where('id',$id)->update(['anulada' =>1]);
+        Abono::where('id_factura',$id)->update(['anulado' =>1]);
         flash()->success("Factura anulada exitosamente!")->important();
         return redirect()->route('facturacion.gestion');
     }

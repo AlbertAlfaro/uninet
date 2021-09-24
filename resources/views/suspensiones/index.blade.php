@@ -90,7 +90,7 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 @if($obj_item->suspendido==0)
-                                                <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}})">Suspender</a>
+                                                <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}},{{ $id_cliente }})">Suspender</a>
                                                 @endif
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('suspensiones.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
@@ -158,7 +158,7 @@
                 }
                 })      
         }
-        function suspender(id){
+        function suspender(id,id_cliente){
             Swal.fire({
                 title: 'Estas seguro de Suspender el Servicio?',
                 text: 'No podras desaser esta accion',
@@ -173,7 +173,7 @@
                     'Servicio suspendido',
                     'success'
                     )
-                    window.location.href = "{{ url('suspensiones/suspender') }}/"+id;
+                    window.location.href = "{{ url('suspensiones/suspender') }}/"+id+'/'+id_cliente;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

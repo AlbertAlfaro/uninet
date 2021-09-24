@@ -175,7 +175,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::post('suspensiones/update/{id}',[App\Http\Controllers\SuspensionController::class ,'update'])->middleware('permission:edit_suspension')->name('suspensiones.update');
     Route::get('suspensiones/destroy/{id}/{id_cliente}',[App\Http\Controllers\SuspensionController::class ,'destroy'])->middleware('permission:destroy_suspension')->name('suspensiones.distroy');
     Route::get('suspensiones/autocomplete',[App\Http\Controllers\SuspensionController::class ,'busqueda_cliente'])->middleware('permission:create_suspension')->name('suspensiones.autocomplete');
-    Route::get('suspensiones/suspender/{id}',[App\Http\Controllers\SuspensionController::class ,'suspender'])->middleware('permission:edit_suspension')->name('suspensiones.suspender');
+    Route::get('suspensiones/suspender/{id}/{id_cliente}',[App\Http\Controllers\SuspensionController::class ,'suspender'])->middleware('permission:edit_suspension')->name('suspensiones.suspender');
     Route::get('suspensiones/imprimir/{id}',[App\Http\Controllers\SuspensionController::class ,'imprimir'])->middleware('permission:Suspensiones')->name('suspensiones.imprimir');
 
 

@@ -2035,6 +2035,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                                 ->where('tipo_servicio',$tipo_servicio)
                                 ->where('id_cliente',$id)
                                 ->where('anulado',0)
+                                ->orderBy('mes_servicio','ASC')
                                 ->get();
         $internet = Internet::where('id_cliente',$id)->where('activo',1)->get();
         $tv = Tv::where('id_cliente',$id)->where('activo',1)->get();

@@ -206,7 +206,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="badge badge-pill badge-soft-success font-size-12">Pagar hoy</span>
+                                    <span class="badge badge-pill badge-soft-danger font-size-12">Ultima fecha de pago</span>
                                 </td>
                             </tr>
                                 

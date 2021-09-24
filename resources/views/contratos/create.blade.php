@@ -39,7 +39,7 @@ Gestión de contratos
                                 <div class="col-md-4">
                                     <div class="row">
                                         <div class="form-group row col-md-12">
-                                            <label for="example-text-input" class="col-md-4 col-form-label">Codigo Cliente</label>
+                                            <label for="example-text-input" class="col-md-4 col-form-label">Código Cliente</label>
                                             <div class="col-md-8">
                                                 <input class="form-control inter" type="text"  id="id_cliente" name="id_cliente" value="{{ $cliente->id }}" required style="display: none">
                                                 <input class="form-control inter" type="text"  id="codigo" name="codigo" value="{{ $cliente->codigo }}" required readonly>
@@ -102,7 +102,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Numero de contrato *</label>
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Número de contrato *</label>
                                                     <div class="col-md-7">
                                                         <input class="form-control inter" type="text"  id="num_contrato" name="num_contrato" value="{{ $correlativo_contra_inter }}" required readonly>
                                                         
@@ -168,12 +168,12 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Prepago *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Prepago </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control inter" name="prepago" id="prepago" required>
+                                                        <select class="form-control inter" name="prepago" id="prepago" disabled="disabled">
                                                             <option value="" >Seleccionar...</option>
                                                             <option value="1" >SI</option>
-                                                            <option value="2" >NO</option>
+                                                            <option value="2" selected>NO</option>
 
                                                         </select>
                                                         
@@ -187,7 +187,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Dia generacion factura *</label>
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Dia generación factura *</label>
                                                     <div class="col-md-7">
                                                         <select class="form-control inter" name="dia_gene_fact" id="dia_gene_fact" required>
                                                             <option value="" >Seleccionar...</option>
@@ -234,7 +234,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Periodo *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Período *</label>
                                                     <div class="col-md-8">
                                                         <select class="form-control inter" name="periodo" id="periodo" required>
                                                             <option value="" >Seleccionar...</option>
@@ -255,7 +255,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cortesía </label>
                                                     <div class="col-md-8">
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox" class="custom-control-input" id="cortesia" name="cortesia" value="1" >
@@ -288,7 +288,15 @@ Gestión de contratos
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Velocidad *</label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control input-mask text-left inter" type="text"  id="velocidad" name="velocidad"  data-inputmask="'alias': 'numeric', 'digits': 0, 'radixPoint': '', 'suffix': ' MB' " required>
+
+                                                        <select class="form-control inter" name="velocidad" id="velocidad" required>
+                                                            <option value="" >Seleccionar...</option>
+                                                            @foreach ($velocidades as $item)
+                                                            <option value="{{ $item->bajada }} MB" >{{ $item->bajada }} MB</option>
+                                                                
+                                                            @endforeach
+
+                                                        </select>
                                                         
                                                     </div>
                                                 </div>
@@ -313,7 +321,7 @@ Gestión de contratos
 
                                                                 <div class="custom-control custom-checkbox">
                                                                     <input type="checkbox" class="custom-control-input" id="onu_wifi" name="onu_wifi" value="1" >
-                                                                    <label class="custom-control-label" for="onu_wifi">ONU con wifi</label>
+                                                                    <label class="custom-control-label" for="onu_wifi">ONU + CATV</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -397,7 +405,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Resepción </label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Recepción </label>
                                                     <div class="col-md-8">
                                                         <input class="form-control" type="text"  id="recepcion" name="recepcion">
                                                         
@@ -517,12 +525,12 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Prepago *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Prepago </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control tv" name="prepago_tv" id="prepago_tv" required>
+                                                        <select class="form-control tv" name="prepago_tv" id="prepago_tv" disabled="disabled">
                                                             <option value="" >Seleccionar...</option>
                                                             <option value="1" >SI</option>
-                                                            <option value="2" >NO</option>
+                                                            <option value="2" selected>NO</option>
 
                                                         </select>
                                                         
@@ -536,7 +544,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-5 col-form-label">Dia generacion factura *</label>
+                                                    <label for="example-text-input" class="col-md-5 col-form-label">Dia generación factura *</label>
                                                     <div class="col-md-7">
                                                         <select class="form-control tv" name="dia_gene_fact_tv" id="dia_gene_fact_tv" required>
                                                             <option value="" >Seleccionar...</option>
@@ -583,7 +591,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Periodo *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Período *</label>
                                                     <div class="col-md-8">
                                                         <select class="form-control tv" name="periodo_tv" id="periodo_tv" required>
                                                             <option value="" >Seleccionar...</option>
@@ -604,7 +612,7 @@ Gestión de contratos
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cortesia </label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Cortesía </label>
                                                     <div class="col-md-8">
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="checkbox" class="custom-control-input" id="cortesia_tv" name="cortesia_tv" value="1" >
@@ -796,7 +804,7 @@ Gestión de contratos
         });
 
         $('#periodo').on('change', function() {
-            var fecha = $("#fecha_instalacion").val();
+            var fecha = $("#fecha_primer_fact").val();
             var meses = $("#periodo").val();
             if(fecha!="" && meses!=""){
                 sumarmeses(fecha, meses);
@@ -804,7 +812,7 @@ Gestión de contratos
             }
         });
         $('#periodo_tv').on('change', function() {
-            var fecha = $("#fecha_instalacion_tv").val();
+            var fecha = $("#fecha_primer_fact_tv").val();
             var meses = $("#periodo_tv").val();
             if(fecha!="" && meses!=""){
                 sumarmesestv(fecha, meses);

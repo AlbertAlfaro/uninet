@@ -89,7 +89,7 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 @if($obj_item->update_direc==0)
-                                                <a class="dropdown-item" href="#" onclick="update_direc({{$obj_item->id}})">Actualizar Dirección</a>
+                                                <a class="dropdown-item" href="#" onclick="update_direc({{$obj_item->id}},{{ $id_cliente }})">Actualizar Dirección</a>
                                                 @endif
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('traslados.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
@@ -157,7 +157,7 @@
                 })      
         }
 
-        function update_direc(id_traslado,direccion,id_muni,id_cliente)
+        function update_direc(id_traslado,id_cliente)
         {
             Swal.fire({
                 title: 'Estas seguro de actualizar dirección del cliente?',
@@ -173,7 +173,7 @@
                     'Registro actualizado',
                     'success'
                     )
-                    window.location.href = "{{ url('traslados/update_direc') }}/"+id_traslado;
+                    window.location.href = "{{ url('cliente/traslados/update_direc') }}/"+id_traslado+"/"+id_cliente;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

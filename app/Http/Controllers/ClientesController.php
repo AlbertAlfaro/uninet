@@ -736,7 +736,8 @@ class ClientesController extends Controller
         $cliente = Cliente::find($id);
         $inter_activos = Internet::where('id_cliente',$id)->where('activo',1)->get();
         $tv_activos = Tv::where('id_cliente',$id)->where('activo',1)->get();
-        return view('contratos.create',compact('correlativo_contra_tv','correlativo_contra_inter','cliente','id','inter_activos','tv_activos'));
+        $velocidades = Velocidades::all();
+        return view('contratos.create',compact('correlativo_contra_tv','correlativo_contra_inter','cliente','id','inter_activos','tv_activos','velocidades'));
         
     }
     public function contrato_store(Request $request){

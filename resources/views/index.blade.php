@@ -67,7 +67,7 @@
                 </div>
                 <div>
                     <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{ $suspendidos }}</span></h4>
-                    <p class="text-muted mb-0">Clientes suspendidos</p>
+                    <p class="text-muted mb-0">Contratos suspendidos</p>
                 </div>
                
                 

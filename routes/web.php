@@ -153,6 +153,7 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('cliente/traslados/{id}',[App\Http\Controllers\ClientesController::class ,'traslados_index'])->middleware('permission:Traslados')->name('cliente.traslados.index');
     Route::get('cliente/traslados/create/{id}',[App\Http\Controllers\ClientesController::class ,'traslados_create'])->middleware('permission:create_traslado')->name('cliente.traslados.create');
     Route::get('cliente/traslados/edit/{id}/{id_cliente}',[App\Http\Controllers\ClientesController::class ,'traslados_edit'])->middleware('permission:edit_traslado')->name('cliente.traslados.edit');
+    Route::get('cliente/traslados/update_direc/{id}/{id_cliente}',[App\Http\Controllers\TrasladoController::class ,'update_direc'])->middleware('permission:edit_traslado')->name('cliente.traslados.update_direc');
 
     //Estados de cuenta cliente
     Route::get('cliente/estado_cuenta/{id}',[App\Http\Controllers\ClientesController::class ,'estado_cuenta'])->middleware('permission:estado_cuenta')->name('cliente.estado_cuenta.index');

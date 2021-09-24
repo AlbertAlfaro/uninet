@@ -173,7 +173,7 @@
                     'Servicio suspendido',
                     'success'
                     )
-                    window.location.href = "suspensiones/suspender/"+id;
+                    window.location.href = "{{ url('suspensiones/suspender') }}/"+id;
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire(
                     'Cancelado',

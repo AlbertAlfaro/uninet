@@ -52,11 +52,11 @@
                                         @if($obj_item->costo==null)
                                             
                                         @else
-                                            ${{$obj_item->costo}}
+                                            ${{number_format($obj_item->costo,2)}}
                                         @endif
                     
                                     </td>
-									<td>${{$obj_item->precio}}</td>
+									<td>${{number_format($obj_item->precio,2)}}</td>
                                     <td>{{$obj_item->tipo_producto}}</td>
                                     <!--<td>
                                     @if($obj_item->activo==1)

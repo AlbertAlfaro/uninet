@@ -13,6 +13,7 @@ use App\Models\Reconexion;
 use App\Models\Suspensiones;
 use App\Models\Traslados;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

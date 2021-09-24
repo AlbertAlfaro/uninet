@@ -71,10 +71,10 @@ class DailyBackup extends Command
         $backup->nombre=$nombre;
         $backup->enlace="/laravel-backups/Laravel/".$nombre;
         $backup->save();
-        flash()->success("Copia de seguridad creada exitosamente!")->important();
-
-        $obj_controller_bitacora=new BitacoraController();
-        $obj_controller_bitacora->create_mensaje('Backup creado');
         Storage::disk('google')->put($nombre, file_get_contents(storage_path()."/laravel-backups/Laravel/".$nombre));
+
+        //$obj_controller_bitacora=new BitacoraController();
+        //$obj_controller_bitacora->create_mensaje('Backup creado');
+        
     }
 }

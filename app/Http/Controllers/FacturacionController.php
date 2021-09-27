@@ -164,7 +164,7 @@ class FacturacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id,$cuota)
-    {
+    {   $factura = Factura::find($id);
         Factura::destroy($id);
         if($cuota==1)
         {
@@ -173,7 +173,7 @@ class FacturacionController extends Controller
             Factura_detalle::where('id_factura', $id)->delete();
         }
         $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Factura eliminado con  id: '.$id);
+        $obj_controller_bitacora->create_mensaje('Se elimino '.$factura->tipo.': '.$factura->numero_documento);
         flash()->success("Registro eliminado exitosamente!")->important();
         return redirect()->route('facturacion.gestion');
     }
@@ -182,6 +182,10 @@ class FacturacionController extends Controller
     {
         Factura::where('id',$id)->update(['anulada' =>1]);
         Abono::where('id_factura',$id)->update(['anulado' =>1]);
+        $factura = Factura::find($id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Se anulo '.$factura->tipo.': '.$factura->numero_documento);
+
         flash()->success("Factura anulada exitosamente!")->important();
         return redirect()->route('facturacion.gestion');
     }
@@ -349,6 +353,14 @@ class FacturacionController extends Controller
                     }
                     Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
                     $this->setCorrelativo($request->tipo_impresion);
+                    //obteniendo la ultima factura
+                    $ultimo_factura = Factura::all()->last();
+                    $numero_docu = $ultimo_factura->numero_documento;
+                    $tipo_docu = $ultimo_factura->tipo;
+
+                    $obj_controller_bitacora=new BitacoraController();	
+                    $obj_controller_bitacora->create_mensaje('Se creo '.$tipo_docu.': '.$numero_docu);
+
                     $xdatos['typeinfo']='Success';
                     $xdatos['id_factura']=$id_factura;
                     $xdatos['msg']='Guardado con exito.';
@@ -582,6 +594,15 @@ class FacturacionController extends Controller
                     }
                     //Cobrador::where('id',$request->id_cobrador)->update(['recibo_ultimo' =>$request->numreci]);
                     $this->setCorrelativo($request->tipo_impresion);
+                    
+                    //obteniendo la ultima factura
+                    $ultimo_factura = Factura::all()->last();
+                    $numero_docu = $ultimo_factura->numero_documento;
+                    $tipo_docu = $ultimo_factura->tipo;
+
+                    $obj_controller_bitacora=new BitacoraController();	
+                    $obj_controller_bitacora->create_mensaje('Se creo '.$tipo_docu.': '.$numero_docu);
+
                     $xdatos['typeinfo']='Success';
                     $xdatos['id_factura']=$id_factura;
                     $xdatos['msg']='Guardado con exito.';

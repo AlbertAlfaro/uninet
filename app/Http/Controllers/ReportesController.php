@@ -53,7 +53,6 @@ class ReportesController extends Controller
     }
 
     private function format_fecha($x,$date){
-       
         if($x==1){
             $fch=explode("/",$date);
             $tfecha=$fch[2]."-".$fch[1]."-".$fch[0];

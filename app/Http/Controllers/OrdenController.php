@@ -70,8 +70,12 @@ class OrdenController extends Controller
                 $orden->save();
                 $this->setCorrelativo(6);
         
+                  //obteniendo la ultima orden
+                $ultima_orden = Ordenes::all()->last();
+                $numero = $ultima_orden->numero;
+                
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Orden creada: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Orden creada: '.$numero);
         
                 flash()->success("Registro creado exitosamente!")->important();
                 if($request->di==0){
@@ -107,9 +111,13 @@ class OrdenController extends Controller
                 $orden->id_usuario=Auth::user()->id;
                 $orden->save();
                 $this->setCorrelativo(6);
-        
+                
+                //obteniendo la ultima orden
+                $ultima_orden = Ordenes::all()->last();
+                $numero = $ultima_orden->numero;
+                
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Orden creada: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Orden creada: '.$numero);
         
                 flash()->success("Registro creado exitosamente!")->important();
                 if($request->di==0){
@@ -188,7 +196,7 @@ class OrdenController extends Controller
                     ]);
                 flash()->success("Registro editado exitosamente!")->important();
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+                $obj_controller_bitacora->create_mensaje('Orden editada con el número: '. $request->numero);
                
                 if($request->go_to==0){
         
@@ -230,7 +238,7 @@ class OrdenController extends Controller
                     ]);
                 flash()->success("Registro editado exitosamente!")->important();
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Orden editada con el id: '. $request->numero);
+                $obj_controller_bitacora->create_mensaje('Orden editada con el número: '. $request->numero);
                
                 if($request->go_to==0){
         

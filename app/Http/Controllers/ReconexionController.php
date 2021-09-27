@@ -67,9 +67,13 @@ class ReconexionController extends Controller
                 $reconexion->id_usuario=Auth::user()->id;
                 $reconexion->save();
                 $this->setCorrelativo(8);
-        
+                
+                //obteniendo la ultima Recon
+                $ultimo_reconexion = Reconexion::all()->last();
+                $numero = $ultimo_reconexion->numero;
+
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$numero);
         
                 flash()->success("Registro creado exitosamente!")->important();
     
@@ -107,9 +111,13 @@ class ReconexionController extends Controller
                 $reconexion->id_usuario=Auth::user()->id;
                 $reconexion->save();
                 $this->setCorrelativo(8);
-        
+                
+                //obteniendo la ultima Recon
+                $ultimo_reconexion = Reconexion::all()->last();
+                $numero = $ultimo_reconexion->numero;
+                
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Reconexion creada: '.$numero);
         
                 flash()->success("Registro creado exitosamente!")->important();
     

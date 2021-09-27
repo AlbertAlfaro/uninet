@@ -79,9 +79,13 @@ class TrasladoController extends Controller
                 $traslado->id_usuario=Auth::user()->id;
                 $traslado->save();
                 $this->setCorrelativo(7);
-        
+                
+                //obteniendo el ultimo traslado
+                $ultimo_traslado = Traslados::all()->last();
+                $numero = $ultimo_traslado->numero;
+                
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Traslado creado: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Traslado creado: '.$numero);
         
                 flash()->success("Registro creado exitosamente!")->important();
                
@@ -118,9 +122,13 @@ class TrasladoController extends Controller
                 $traslado->id_usuario=Auth::user()->id;
                 $traslado->save();
                 $this->setCorrelativo(7);
-        
+                
+                //obteniendo el ultimo traslado
+                $ultimo_traslado = Traslados::all()->last();
+                $numero = $ultimo_traslado->numero;
+
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Traslado creado: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Traslado creado: '.$numero);
         
                 flash()->success("Registro creado exitosamente!")->important();
                

@@ -65,9 +65,13 @@ class SuspensionController extends Controller
                 $suspension->id_usuario=Auth::user()->id;
                 $suspension->save();
                 $this->setCorrelativo(9);
-
+                
+                //obteniendo la ultima suspension
+                $ultimo_suspension = Suspensiones::all()->last();
+                $numero = $ultimo_suspension->numero;
+                
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Suspension creada: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Suspension creada: '.$numero);
 
                 flash()->success("Registro creado exitosamente!")->important();
                 
@@ -105,8 +109,12 @@ class SuspensionController extends Controller
                 $suspension->save();
                 $this->setCorrelativo(9);
 
+                //obteniendo el ultimo cliente
+                $ultimo_suspension = Suspensiones::all()->last();
+                $numero = $ultimo_suspension->numero;
+
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Suspension creada: '.$request->id_cliente);
+                $obj_controller_bitacora->create_mensaje('Suspension creada: '.$numero);
 
                 flash()->success("Registro creado exitosamente!")->important();
                 

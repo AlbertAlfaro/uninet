@@ -107,13 +107,15 @@ class ClientesController extends Controller
         $this->setCorrelativo(3);
 
 
-        //guardaondo mensajes en bitacora
-        $obj_controller_bitacora=new BitacoraController();	
-        $obj_controller_bitacora->create_mensaje('Cliente creado');
-
         //obteniendo el ultimo cliente
         $ultimo_cliente = Cliente::all()->last();
         $id_cliente = $ultimo_cliente->id;
+        $codigo_cliente=$ultimo_cliente->codigo;
+
+        //guardaondo mensajes en bitacora
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Cliente creado: '.$codigo_cliente);
+
 
         //Si colill es igual a 1 se guarda en tabla internets
         if($request->colilla==1){
@@ -162,7 +164,7 @@ class ClientesController extends Controller
 
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
 
 
         }
@@ -203,7 +205,7 @@ class ClientesController extends Controller
             $this->setCorrelativo(4);
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
 
 
         }
@@ -252,7 +254,7 @@ class ClientesController extends Controller
             $this->setCorrelativo(5);
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
 
             $tv = new Tv();
             $tv->id_cliente = $id_cliente;
@@ -287,7 +289,7 @@ class ClientesController extends Controller
             $this->setCorrelativo(4);
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
 
         }
         flash()->success("Cliente y servicios creados exitosamente!")->important();
@@ -310,7 +312,7 @@ class ClientesController extends Controller
         //dd($request->all());
 
         $id_cliente = $request->id_cliente;
-      
+        $codigo_cliente = $request->codigo;
         if($request->colilla==1){
             $internet = 1;
             $tv = 0;
@@ -417,7 +419,7 @@ class ClientesController extends Controller
                 ]);
 
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Se edito servicio de internet para el cliente id: '.$id_cliente);
+                $obj_controller_bitacora->create_mensaje('Se edito servicio de internet para el cliente: '.$codigo_cliente);
 
             }else{
 
@@ -460,9 +462,9 @@ class ClientesController extends Controller
                 $internet->save();
                 $this->setCorrelativo(5);
 
-
+                // En editar entonces cuando guarda numero de contrato en bitacora esta sumando un correlativo mas
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+                $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
 
 
             }
@@ -511,7 +513,7 @@ class ClientesController extends Controller
                 ]);
 
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Se edito servicio de Televisión para el cliente id: '.$id_cliente);
+                $obj_controller_bitacora->create_mensaje('Se edito servicio de Televisión para el cliente: '.$codigo_cliente);
 
             }else{
 
@@ -547,7 +549,7 @@ class ClientesController extends Controller
                 $this->setCorrelativo(4);
 
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+                $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
 
 
 
@@ -667,11 +669,12 @@ class ClientesController extends Controller
 
 
 
-    public function contrato_activo($id,$identificador){
+    public function contrato_activo($id,$identificador){    
         
         if($identificador==1){
             $internet = Internet::find($id);
             $id_cliente = $internet->id_cliente;
+            $num_contrato_inter = $internet->numero_contrato;
             if($internet->activo==0 || $internet->activo==2){
                 $internet_con = Internet::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
                 //return $internet_con;
@@ -680,7 +683,7 @@ class ClientesController extends Controller
                     Internet::where('id',$id)->update(['activo'=>1]);
                     Cliente::where('id',$id_cliente)->update(['internet'=>1]);
                     $obj_controller_bitacora=new BitacoraController();	
-                    $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a activo');
+                    $obj_controller_bitacora->create_mensaje('Contrato: '.$num_contrato_inter.' cambio a activo');
                 }else{
 
                     flash()->error("Error no es permitido tener 2 contratos del mismo tipo activos")->important();
@@ -691,13 +694,14 @@ class ClientesController extends Controller
                 Internet::where('id',$id)->update(['activo'=>0]);
                 Cliente::where('id',$id_cliente)->update(['internet'=>0]);
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a inactivo');
+                $obj_controller_bitacora->create_mensaje('Contrato: '.$num_contrato_inter.' cambio a inactivo');
 
             }
         }else{
 
             $tv = Tv::find($id);
             $id_cliente = $tv->id_cliente;
+            $num_contrato_tv = $tv->numero_contrato;
             if($tv->activo==0 || $tv->activo==2){
                 $tv_con = Tv::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
 
@@ -706,7 +710,7 @@ class ClientesController extends Controller
                     Tv::where('id',$id)->update(['activo'=>1]);
                     Cliente::where('id',$id_cliente)->update(['tv'=>1]);
                     $obj_controller_bitacora=new BitacoraController();	
-                    $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a activo');
+                    $obj_controller_bitacora->create_mensaje('Contrato: '.$num_contrato_tv.' cambio a activo');
                 }else{
                     flash()->error("Error no es permitido tener 2 contratos del mismo tipo activos")->important();
                     return redirect()->route('clientes.contrato',$id_cliente);
@@ -717,7 +721,7 @@ class ClientesController extends Controller
                 Tv::where('id',$id)->update(['activo'=>0]);
                 Cliente::where('id',$id_cliente)->update(['tv'=>0]);
                 $obj_controller_bitacora=new BitacoraController();	
-                $obj_controller_bitacora->create_mensaje('Contrato id: '.$id.' cambio a inactivo');
+                $obj_controller_bitacora->create_mensaje('Contrato: '.$num_contrato_tv.' cambio a inactivo');
 
             }
 
@@ -742,6 +746,7 @@ class ClientesController extends Controller
     public function contrato_store(Request $request){
 
         $id_cliente = $request->id_cliente;
+        $codigo_cliente = $request->codigo;
         if($request->colilla==1){
             Cliente::where('id',$id_cliente)->update(['internet'=>1]);
 
@@ -788,7 +793,7 @@ class ClientesController extends Controller
 
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
 
 
         }
@@ -829,7 +834,7 @@ class ClientesController extends Controller
             $this->setCorrelativo(4);
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
 
 
         }
@@ -878,7 +883,7 @@ class ClientesController extends Controller
             $this->setCorrelativo(5);
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
 
             $tv = new Tv();
             $tv->id_cliente = $id_cliente;
@@ -913,7 +918,7 @@ class ClientesController extends Controller
             $this->setCorrelativo(4);
 
             $obj_controller_bitacora=new BitacoraController();	
-            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente id: '.$id_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+            $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
 
         }
         flash()->success("Contrato creados exitosamente!")->important();

@@ -341,7 +341,7 @@ class SuspensionController extends Controller
         return $valor_txt;
     }
 
-    public function suspender($id){
+    public function suspender($id,$id_cliente){
 
         $suspension = Suspensiones::find($id);
         $servicio = $suspension->tipo_servicio;
@@ -363,7 +363,13 @@ class SuspensionController extends Controller
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Servicio suspendido con la suspensión: '.$suspension->numero);
         flash()->success("Registro suspendido exitosamente!")->important();
-        return redirect()->route('suspensiones.index');
+        if($id_cliente==0){
+
+            return redirect()->route('suspensiones.index');
+        }else{
+            return redirect()->route('cliente.suspensiones.index',$id_cliente);
+
+        }
     }
 
     public function imprimir($id)

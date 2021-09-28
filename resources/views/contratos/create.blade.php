@@ -130,7 +130,7 @@ Gestión de contratos
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion" name="costo_instalacion" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                        <input class="form-control input-mask text-left " type="text"  id="costo_instalacion" name="costo_instalacion" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
                                                         
                                                     </div>
                                                 </div>
@@ -487,7 +487,7 @@ Gestión de contratos
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control input-mask text-left tv" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                        <input class="form-control input-mask text-left" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
                                                         
                                                     </div>
                                                 </div>

@@ -135,8 +135,12 @@ class ClientesController extends Controller
             $cuota_mensual = explode(" ", $request->cuota_mensual);
             $internet->cuota_mensual = $cuota_mensual[1];
 
-            $costo_instalacion = explode(" ",$request->costo_instalacion);
-            $internet->costo_instalacion = $costo_instalacion[1];
+            if($request->costo_instalacion!=""){
+
+                $costo_instalacion = explode(" ",$request->costo_instalacion);
+                $internet->costo_instalacion = $costo_instalacion[1];
+            }
+
             $internet->prepago = $request->prepago;
             $internet->dia_gene_fact = $request->dia_gene_fact;
             if($request->contrato_vence!=""){
@@ -160,11 +164,13 @@ class ClientesController extends Controller
             $internet->identificador = 1;
             $internet->activo = 1;
             $internet->save();
-            $this->setCorrelativo(5);
-
 
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+            
+            $this->setCorrelativo(5);
+
+
 
 
         }
@@ -185,8 +191,11 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
             $tv->cuota_mensual = $cuota_mensual[1];
-            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
-            $tv->costo_instalacion = $costo_instalacion[1];
+            if($request->costo_instalacion_tv!=""){
+
+                $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+                $tv->costo_instalacion = $costo_instalacion[1];
+            }
             $tv->prepago = $request->prepago_tv;
             $tv->dia_gene_fact = $request->dia_gene_fact_tv;
             if($request->contrato_vence_tv!=""){
@@ -202,10 +211,12 @@ class ClientesController extends Controller
             $tv->identificador = 2;
             $tv->activo = 1;
             $tv->save();
-            $this->setCorrelativo(4);
 
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+            
+            $this->setCorrelativo(4);
+
 
 
         }
@@ -226,8 +237,11 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual);
             $internet->cuota_mensual = $cuota_mensual[1];
-            $costo_instalacion = explode(" ",$request->costo_instalacion);
-            $internet->costo_instalacion = $costo_instalacion[1];
+            if($request->costo_instalacion!=""){
+
+                $costo_instalacion = explode(" ",$request->costo_instalacion);
+                $internet->costo_instalacion = $costo_instalacion[1];
+            }
             $internet->prepago = $request->prepago;
             $internet->dia_gene_fact = $request->dia_gene_fact;
             if($request->contrato_vence!=""){
@@ -251,10 +265,12 @@ class ClientesController extends Controller
             $internet->identificador = 1;
             $internet->activo = 1;
             $internet->save();
-            $this->setCorrelativo(5);
 
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+           
+            $this->setCorrelativo(5);
+
 
             $tv = new Tv();
             $tv->id_cliente = $id_cliente;
@@ -269,8 +285,11 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
             $tv->cuota_mensual = $cuota_mensual[1];
-            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
-            $tv->costo_instalacion = $costo_instalacion[1];
+            if($request->costo_instalacion_tv!=""){
+
+                $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+                $tv->costo_instalacion = $costo_instalacion[1];
+            }
             $tv->prepago = $request->prepago_tv;
             $tv->dia_gene_fact = $request->dia_gene_fact_tv;
             if($request->contrato_vence_tv!=""){
@@ -286,10 +305,12 @@ class ClientesController extends Controller
             $tv->identificador = 2;
             $tv->activo = 1;
             $tv->save();
-            $this->setCorrelativo(4);
 
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
+            
+            $this->setCorrelativo(4);
+
 
         }
         flash()->success("Cliente y servicios creados exitosamente!")->important();
@@ -436,8 +457,11 @@ class ClientesController extends Controller
                 }
                 $cuota_mensual = explode(" ", $request->cuota_mensual);
                 $internet->cuota_mensual = $cuota_mensual[1];
-                $costo_instalacion = explode(" ",$request->costo_instalacion);
-                $internet->costo_instalacion = $costo_instalacion[1];
+                if($request->costo_instalacion){
+
+                    $costo_instalacion = explode(" ",$request->costo_instalacion);
+                    $internet->costo_instalacion = $costo_instalacion[1];
+                }
                 $internet->prepago = $request->prepago;
                 $internet->dia_gene_fact = $request->dia_gene_fact;
                 if($request->contrato_vence!=""){
@@ -460,12 +484,14 @@ class ClientesController extends Controller
                 $internet->ip = $request->ip;
                 $internet->identificador = 1;
                 $internet->save();
-                $this->setCorrelativo(5);
 
+
+                
                 // En editar entonces cuando guarda numero de contrato en bitacora esta sumando un correlativo mas
                 $obj_controller_bitacora=new BitacoraController();	
                 $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
-
+                
+                $this->setCorrelativo(5);
 
             }
         }
@@ -530,8 +556,11 @@ class ClientesController extends Controller
                 }
                 $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
                 $tv->cuota_mensual = $cuota_mensual[1];
-                $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
-                $tv->costo_instalacion = $costo_instalacion[1];
+                if($request->costo_instalacion_tv){
+
+                    $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+                    $tv->costo_instalacion = $costo_instalacion[1];
+                }
                 $tv->prepago = $request->prepago_tv;
                 $tv->dia_gene_fact = $request->dia_gene_fact_tv;
                 if($request->contrato_vence_tv!=""){
@@ -546,11 +575,11 @@ class ClientesController extends Controller
                 $tv->modelo = $request->modelo_tv;
                 $internet->identificador = 2;
                 $tv->save();
-                $this->setCorrelativo(4);
-
+                
                 $obj_controller_bitacora=new BitacoraController();	
                 $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
-
+                
+                $this->setCorrelativo(4);
 
 
             }
@@ -686,6 +715,24 @@ class ClientesController extends Controller
                     $obj_controller_bitacora->create_mensaje('Contrato: '.$num_contrato_inter.' cambio a activo');
                 }else{
 
+                     //para obtener la colilla
+                    $cliente_inter = Internet::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+                    $cliente_tv = Tv::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+
+                    if($cliente_inter>0 && $cliente_tv>0){
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>3]);
+
+                    }elseif($cliente_inter>0){
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>1]);
+
+                    }elseif($cliente_tv>0){
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>2]);
+
+                    }else{
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>0]);
+
+                    }
+
                     flash()->error("Error no es permitido tener 2 contratos del mismo tipo activos")->important();
                     return redirect()->route('clientes.contrato',$id_cliente);
 
@@ -712,6 +759,24 @@ class ClientesController extends Controller
                     $obj_controller_bitacora=new BitacoraController();	
                     $obj_controller_bitacora->create_mensaje('Contrato: '.$num_contrato_tv.' cambio a activo');
                 }else{
+
+                     //para obtener la colilla
+                    $cliente_inter = Internet::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+                    $cliente_tv = Tv::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+
+                    if($cliente_inter>0 && $cliente_tv>0){
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>3]);
+
+                    }elseif($cliente_inter>0){
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>1]);
+
+                    }elseif($cliente_tv>0){
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>2]);
+
+                    }else{
+                        Cliente::where('id',$id_cliente)->update(['colilla'=>0]);
+
+                    }
                     flash()->error("Error no es permitido tener 2 contratos del mismo tipo activos")->important();
                     return redirect()->route('clientes.contrato',$id_cliente);
 
@@ -725,6 +790,24 @@ class ClientesController extends Controller
 
             }
 
+
+        }
+
+        //para obtener la colilla
+        $cliente_inter = Internet::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+        $cliente_tv = Tv::where('id_cliente',$id_cliente)->where('activo',1)->get()->count();
+
+        if($cliente_inter>0 && $cliente_tv>0){
+            Cliente::where('id',$id_cliente)->update(['colilla'=>3]);
+
+        }elseif($cliente_inter>0){
+            Cliente::where('id',$id_cliente)->update(['colilla'=>1]);
+
+        }elseif($cliente_tv>0){
+            Cliente::where('id',$id_cliente)->update(['colilla'=>2]);
+
+        }else{
+            Cliente::where('id',$id_cliente)->update(['colilla'=>0]);
 
         }
 
@@ -765,8 +848,11 @@ class ClientesController extends Controller
             $cuota_mensual = explode(" ", $request->cuota_mensual);
             $internet->cuota_mensual = $cuota_mensual[1];
 
-            $costo_instalacion = explode(" ",$request->costo_instalacion);
-            $internet->costo_instalacion = $costo_instalacion[1];
+            if($request->costo_instalacion!=""){
+
+                $costo_instalacion = explode(" ",$request->costo_instalacion);
+                $internet->costo_instalacion = $costo_instalacion[1];
+            }
             $internet->prepago = $request->prepago;
             $internet->dia_gene_fact = $request->dia_gene_fact;
             if($request->contrato_vence!=""){
@@ -790,12 +876,12 @@ class ClientesController extends Controller
             $internet->identificador = 1;
             $internet->activo = 1;
             $internet->save();
-            $this->setCorrelativo(5);
-
-
+            
+            
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
-
+            
+            $this->setCorrelativo(5);
 
         }
 
@@ -815,8 +901,12 @@ class ClientesController extends Controller
             }
             $cuota_mensual = explode(" ", $request->cuota_mensual_tv);
             $tv->cuota_mensual = $cuota_mensual[1];
-            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
-            $tv->costo_instalacion = $costo_instalacion[1];
+            if($request->costo_instalacion_tv!=""){
+
+                $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+                $tv->costo_instalacion = $costo_instalacion[1];
+            }
+            
             $tv->prepago = $request->prepago_tv;
             $tv->dia_gene_fact = $request->dia_gene_fact_tv;
             if($request->contrato_vence_tv!=""){
@@ -832,11 +922,11 @@ class ClientesController extends Controller
             $tv->identificador = 2;
             $tv->activo = 1;
             $tv->save();
-            $this->setCorrelativo(4);
-
+            
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
-
+            
+            $this->setCorrelativo(4);
 
         }
 
@@ -881,10 +971,11 @@ class ClientesController extends Controller
             $internet->identificador = 1;
             $internet->activo = 1;
             $internet->save();
-            $this->setCorrelativo(5);
-
+            
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de internet para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(5,6));
+            
+            $this->setCorrelativo(5);
 
             $tv = new Tv();
             $tv->id_cliente = $id_cliente;
@@ -916,11 +1007,11 @@ class ClientesController extends Controller
             $tv->identificador = 2;
             $tv->activo = 1;
             $tv->save();
-            $this->setCorrelativo(4);
-
+            
             $obj_controller_bitacora=new BitacoraController();	
             $obj_controller_bitacora->create_mensaje('Se creo servicio de tv para el cliente: '.$codigo_cliente.' con numero de contrato: '.$this->correlativo(4,6));
-
+            
+            $this->setCorrelativo(4);
         }
         flash()->success("Contrato creados exitosamente!")->important();
         return redirect()->route('clientes.contrato',$id_cliente);

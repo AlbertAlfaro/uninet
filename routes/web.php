@@ -58,6 +58,10 @@ Route::group(['middleware' => ['permission:Administracion']], function () {
         Route::get('backup/destroy/{id}', [App\Http\Controllers\BackupController::class, 'destroy'])->name('backup.destroy');
     
     });
+
+    
+    Route::get('carga_datos',[App\Http\Controllers\CargaDatosController::class ,'index'])->middleware('permission:carga_datos')->name('carga_datos.index');
+    Route::post('carga_datos/loading',[App\Http\Controllers\CargaDatosController::class ,'loading'])->middleware('permission:carga_datos')->name('carga_datos.loading');
     
 });
 

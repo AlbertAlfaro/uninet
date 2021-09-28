@@ -83,6 +83,7 @@ class RolPermissionsSeeder extends Seeder
                             'backup',
                             'reporte_factura',
                             'anular_factura',
+                            'carga_datos',
                         );
 
         //creando rol administrador

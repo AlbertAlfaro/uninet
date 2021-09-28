@@ -207,6 +207,10 @@
                         @can('backup')
                         <li><a href="{{url('backup')}}">Backup</a></li>
                         @endcan
+
+                        @can('carga_datos')
+                        <li><a href="{{url('carga_datos')}}">Cargar datos</a></li>
+                        @endcan
                     </ul>
                     
                 </li>

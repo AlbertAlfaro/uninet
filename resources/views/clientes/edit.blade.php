@@ -1353,7 +1353,7 @@ Gestión de Clientes
         if('{{ $cliente->internet }}'==1 && '{{ $cliente->tv }}'==1){
             $("#tv").show();
             $("#internet").show();
-            colilla
+            //colilla
             $("#colilla option[value=3]").attr("selected",true);
             required_op(1,'.tv');
             required_op(1,'.inter');

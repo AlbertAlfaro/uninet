@@ -142,9 +142,6 @@
                          @can('reporte_cliente')
                          <li><a href="{{url('reportes/Ordenes')}}">Ordenes</a></li>
                          @endcan
-                         @can('reporte_cliente')
-                         <li><a href="{{url('reportes/Actividades')}}">Actividades</a></li>
-                         @endcan
                         
                      </ul>
                      

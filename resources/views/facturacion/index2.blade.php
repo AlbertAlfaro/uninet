@@ -1078,6 +1078,7 @@ function guardar() {
   $("#inventable tr").each(function(index) {
       var id = $(this).find("#id_producto").val();
       var precio_venta = $(this).find("#precio_venta").val();
+      var precio_sin_iva = $(this).find("#precio_sin_iva").val();
       var cantidad = $(this).find("#cant").val();
       var subtotal = $(this).find("#subtotal_fin").val();
       var exento = $(this).find("#exento").val();
@@ -1085,6 +1086,7 @@ function guardar() {
         var obj = new Object();
         obj.id = id;
         obj.precio_venta = precio_venta;
+        obj.precio_sin_iva = precio_sin_iva;
         obj.cantidad = cantidad;
         obj.subtotal = subtotal;
         obj.exento = exento;

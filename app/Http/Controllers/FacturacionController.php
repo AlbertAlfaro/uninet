@@ -582,13 +582,18 @@ class FacturacionController extends Controller
                     $array = json_decode($request->json_arr, true);
                     foreach ($array as $fila)
                     {   
-                        if($request->tipo_impresion==1){$tipo="FAC";}
-                        if($request->tipo_impresion==2){$tipo="CRE";}
+                        //if($request->tipo_impresion==1){$tipo="FAC";}
+                        //if($request->tipo_impresion==2){$tipo="CRE";}
                         $Fdetalle = new Factura_detalle();
                         $Fdetalle->id_factura=$id_factura;
                         $Fdetalle->id_producto=$fila['id'];
                         $Fdetalle->cantidad=$fila['cantidad'];
-                        $Fdetalle->precio=$fila['precio_venta'];
+                        if($request->tipo_impresion==1){
+                            $Fdetalle->precio=$fila['precio_venta'];
+                        }
+                        if($request->tipo_impresion==2){
+                            $Fdetalle->precio=$fila['precio_sin_iva'];
+                        }
                         $Fdetalle->subtotal = $fila['subtotal'];
                         $Fdetalle->save();
                     }

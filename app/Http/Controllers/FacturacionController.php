@@ -448,7 +448,7 @@ class FacturacionController extends Controller
         if(count($contrato)!=0)
         {
             $precio=$contrato[0]->cuota_mensual;
-            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->get();
+            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->where('anulado','0')->get();
             $abono1=$abono->last();
             $results2 = array();
             if($abono->count()>0)

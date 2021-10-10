@@ -4,6 +4,7 @@ namespace App\Fpdf;
 
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Internet;
 
 class FpdfReportes extends Fpdf{
 
@@ -80,21 +81,23 @@ class FpdfReportes extends Fpdf{
         $this->Cell(20,7,utf8_decode('Código'),1,0,'C');
         $this->Cell(60,7,utf8_decode('Nombre'),1,0,'C');
         $this->Cell(26,7,utf8_decode('Departamento'),1,0,'C');
-        $this->Cell(26,7,utf8_decode('Teléfono'),1,0,'C');
+        $this->Cell(20,7,utf8_decode('Teléfono'),1,0,'C');
         $this->Cell(20,7,utf8_decode('Dui'),1,0,'C');
-        $this->Cell(20,7,utf8_decode('Internet'),1,0,'C');
-        $this->Cell(20,7,utf8_decode('Televisión'),1,0,'C');
-
+        $this->Cell(15,7,utf8_decode('Internet'),1,0,'C');
+        $this->Cell(15,7,utf8_decode('Tv'),1,0,'C');
+        $this->Cell(15,7,utf8_decode('Mbs'),1,0,'C');
         $this->Ln();
 
         $this->SetFont('Arial','',9);
 
         foreach($data as $row){
-            $this->Cell(20,7,utf8_decode($row->codigo),0,0,'C');
-            $this->Cell(60,7,utf8_decode($row->nombre),0,0,'');
-            $this->Cell(26,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
-            $this->Cell(26,7,utf8_decode($row->telefono1),0,0,'C');
-            $this->Cell(20,7,utf8_decode($row->dui),0,0,'C');
+            $inter = Internet::where('id_cliente',$row->id)->where('activo',1)->get();
+         
+            $this->Cell(20,7,utf8_decode($row->id),0,0,'C');
+            //$this->Cell(60,7,utf8_decode($row->nombre),0,0,'');
+            //$this->Cell(26,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
+            //$this->Cell(20,7,utf8_decode($row->telefono1),0,0,'C');
+            //$this->Cell(20,7,utf8_decode($row->dui),0,0,'C');
             if($row->internet==3){
                 $einter = 'Vencido';
             }
@@ -120,10 +123,16 @@ class FpdfReportes extends Fpdf{
             if($row->tv==0){
                 $etv = 'Inactivo';
             }
-            $this->Cell(20,7,utf8_decode($einter),0,0,'C');
-            $this->Cell(20,7,utf8_decode($etv),0,0,'C');
-     
-            $this->Ln();
+            //$this->Cell(15,7,utf8_decode($einter),0,0,'C');
+            //$this->Cell(15,7,utf8_decode($etv),0,0,'C');
+            if(isset($inter[0]->velocidad)){
+                $this->Cell(15,7,$inter[0]->velocidad,0,0,'C');
+            }else{
+                $this->Cell(15,7,'prueba',0,0,'C');
+            }
+           // return $inter[0]->velocidad;
+           
+           $this->Ln();
 
         }
     }

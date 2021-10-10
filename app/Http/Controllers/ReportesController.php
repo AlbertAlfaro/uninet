@@ -298,12 +298,13 @@ class ReportesController extends Controller
         $fpdf->Ln();
         //$fpdf->BasicTable_clientes($clientes);
         $fpdf->SetFont('Arial','B',9);
-        $fpdf->Cell(20,7,utf8_decode('Documento'),'B',0,'C');
-        $fpdf->Cell(20,7,utf8_decode('Número'),'B',0,'C');
-        $fpdf->Cell(20,7,utf8_decode('Código'),'B',0,'C');
-        $fpdf->Cell(75,7,utf8_decode('Cliente'),'B',0,'C');
-        $fpdf->Cell(20,7,utf8_decode('Fecha'),'B',0,'C');
-        $fpdf->Cell(20,7,utf8_decode('Cantidad'),'B',0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Documento'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Número'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Código'),1,0,'C');
+        $fpdf->Cell(75,7,utf8_decode('Cliente'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Fecha'),1,0,'C');
+        $fpdf->Cell(15,7,utf8_decode('Servicio'),1,0,'C');
+        $fpdf->Cell(20,7,utf8_decode('Cantidad'),1,0,'C');
         $fpdf->Ln();
         $suma=0.00;
         $fpdf->SetFont('Arial','',9);
@@ -315,6 +316,11 @@ class ReportesController extends Controller
             $fpdf->Cell(20,7,utf8_decode($row->get_cliente->codigo),0,0,'C');
             $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
             $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');
+            //tipo servicio 
+            if($row->tipo_servicio==1){$fpdf->Cell(15,7,'I',0,0,'C');}
+            if($row->tipo_servicio==2){$fpdf->Cell(15,7,'Tv',0,0,'C');}
+            if($row->tipo_servicio==0){$fpdf->Cell(15,7,'-',0,0,'C');}
+            //fin de tipo servicio
             if($row->anulada==0){
                 $fpdf->Cell(20,7,number_format($row->total,2),0,0,'C');
                 $suma+=$row->total;

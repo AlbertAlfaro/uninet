@@ -40,6 +40,7 @@
                                     <option value="1" >Contratos a vencer</option>
                                     <option value="2" >Pago de servicio</option>
                                     <option value="3" >General</option>
+                                    <option value="4" >Mbs Vendidos</option>
                                 </select>
                             </div>
                         @endif
@@ -87,8 +88,23 @@
                                 <option value="1" >Ultima fecha de pago</option>
                                 <option value="2" >Vencido</option>
                                 <option value="3" >A tiempo</option>
-                                
-                              
+                            </select>
+                        </div>
+                        <div class="col-md-2" style="display: none;" id="div_estado_servi">
+                            <label for="tipo_reporte">Estado</label>
+                            <select name="estado_cliente" id="estado_cliente" class="form-control">
+                                <option value="" >General</option>
+                                <option value="1" >Activo</option><!-- 1=activo 2=suspendido 0=inactivo -->
+                                <option value="0" >Inactivo</option>
+                                <option value="2" >Suspendido</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2" style="display: none;" id="div_servicio">
+                            <label for="tipo_reporte">Servicio</label>
+                            <select name="servicio" id="servicio" class="form-control">
+                                <option value="" >General</option><!-- 1=internet 2=tv -->
+                                <option value="1" >Internet</option>
+                                <option value="2" >Tv</option>
                             </select>
                         </div>
                         @endif
@@ -142,44 +158,51 @@
                 $("#div_fecha_i").show();
                 $("#div_fecha_f").show();
 
+                $("#div_estado_servi").hide();
                 $("#div_dia").hide();
                 $("#div_estado_pago").hide();
+                $("#div_servicio").hide();
 
             }
             if(tipo_reporte==2){
                 $("#div_dia").show();
                 $("#div_estado_pago").show();
 
+                $("#div_estado_servi").hide();
                 $("#div_fecha_i").hide();
                 $("#div_fecha_f").hide();
+                $("#div_servicio").hide();
                 
 
             }
-            if(tipo_reporte==3){
+            if(tipo_reporte==3){//GENERAL
                 $("#div_fecha_i").show();
                 $("#div_fecha_f").show();
+                $("#div_estado_servi").show();
+                $("#div_servicio").show();
 
                 $("#div_dia").hide();
-                
                 $("#div_estado_pago").hide();
 
             }
-            if(tipo_reporte==4){
+            if(tipo_reporte==4){//MEGAS VENDIDOS
                 $("#div_fecha_i").show();
                 $("#div_fecha_f").show();
 
+                $("#div_estado_servi").hide();
                 $("#div_dia").hide();
-                
                 $("#div_estado_pago").hide();
+                $("#div_servicio").hide();
 
             }
             if(tipo_reporte==""){
                 $("#div_fecha_i").hide();
                 $("#div_fecha_f").hide();
 
+                $("#div_estado_servi").hide();
                 $("#div_dia").hide();
-                
                 $("#div_estado_pago").hide();
+                $("#div_servicio").hide();
 
             }
         }

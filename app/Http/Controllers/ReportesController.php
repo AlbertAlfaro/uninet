@@ -37,8 +37,12 @@ class ReportesController extends Controller
                 $this->pago_servicios($request->fecha,$request->estado_pago);
             }
             if($request->tipo_reporte==3){
-                $this->general_clientes($request->fecha_i,$request->fecha_f);
+                $this->general_clientes($request->fecha_i,$request->fecha_f,$request->estado_cliente,$request->servicio);
             }
+            if($request->tipo_reporte==4){
+                $this->general_megas($request->fecha_i,$request->fecha_f);
+            }
+            
         }
         if($request->opcion=="Facturas"){
             $this->facturas($request->fecha_i,$request->fecha_f,$request->tipo_reporte);
@@ -69,7 +73,7 @@ class ReportesController extends Controller
 
     }
 
-    private function general_clientes($fecha_i,$fecha_f){
+    private function general_clientes($fecha_i,$fecha_f,$estado,$servicio){
       
         $fecha_inicio = $this->format_fecha(1,$fecha_i);
         $fecha_fin =  $this->format_fecha(2,$fecha_f);
@@ -95,10 +99,36 @@ class ReportesController extends Controller
         $fpdf->SetXY(95,44);
         $fpdf->SetFont('Arial','',9);
         $fpdf->Cell(20,10,utf8_decode('desde '.$fecha_i.' hasta '.$fecha_f));
-        $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+        if($estado=="" AND $servicio==""){
+            $clientes = Cliente::where('clientes.id_sucursal',Auth::user()->id_sucursal)->whereBetween('clientes.created_at',[$fecha_inicio,$fecha_fin])->get();
+        }elseif ($estado=="" AND $servicio!="") {
+            if($servicio==1){
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->where('internet','!=','0')->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($servicio==2){
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->where('tv','!=','0')->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+        }elseif($estado!="" AND $servicio==""){
+            if($estado==1){
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->where('tv','=','1')->orWhere('internet','=','1')->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==2){
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->where('tv','=','2')->orWhere('internet','=','2')->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($estado==0){
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->where('tv','=','0')->orWhere('internet','=','0')->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+        }elseif($estado!="" AND $servicio!=""){
+            if($servicio==1){//internet
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->Where('internet','=',$estado)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+            if($servicio==2){//internet
+                $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->Where('tv','=',$estado)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+            }
+        }
 
         $fpdf->Ln();
-        $fpdf->BasicTable_clientes($clientes);
+        $fpdf->BasicTable_clientes($clientes,$servicio);
 
         
 
@@ -106,6 +136,43 @@ class ReportesController extends Controller
         exit;
 
 
+    }
+    private function general_megas($fecha_i,$fecha_f){
+        $fecha_inicio = $this->format_fecha(1,$fecha_i);
+        $fecha_fin =  $this->format_fecha(2,$fecha_f);
+
+    
+
+        $fpdf = new FpdfReportes('P','mm', 'Letter');
+        $fpdf->AliasNbPages();
+        $fpdf->AddPage();
+        $fpdf->SetTitle('CLIENTES | UNINET');
+
+        $fpdf->SetXY(15,29);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('Generado por '.Auth::user()->name).' '.date('d/m/Y h:i:s a'));
+        $fpdf->SetXY(15,33);
+        $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,10,utf8_decode('SUCURSAL DE '.Auth::user()->get_sucursal->nombre));
+
+        $fpdf->SetXY(88,40);
+        $fpdf->SetFont('Arial','B',14);
+        $fpdf->Cell(20,10,utf8_decode('MEGAS VENDIDOS'));
+
+        $fpdf->SetXY(95,44);
+        $fpdf->SetFont('Arial','',9);
+        $fpdf->Cell(20,10,utf8_decode('desde '.$fecha_i.' hasta '.$fecha_f));
+        $clientes = Internet::select('internets.velocidad')
+                    ->join('clientes', 'internets.id_cliente', '=', 'clientes.id')
+                    ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
+                    ->where('internets.activo',1)
+                    ->whereBetween('internets.created_at',[$fecha_inicio,$fecha_fin])->get();
+       
+        $fpdf->Ln();
+        $fpdf->megas_vendidos($clientes);
+
+        $fpdf->Output();
+        exit;
     }
 
     private function pago_servicios($fecha,$estado_pago){

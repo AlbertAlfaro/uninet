@@ -282,7 +282,7 @@ class FacturacionController extends Controller
                 $xdatos['msg']='el número de documento ya fue impreso.';
                 return response($xdatos);
             }else
-            { // AHORITA NO GUARDA LOS ABONOS CUANDO SON MESES ANTICIPOS
+            { 
                 if($request->tipo_impresion==1){$tipo="FACTURA";}
                 if($request->tipo_impresion==2){$tipo="CREDITO FISCAL";}
                 $factura = new Factura();
@@ -303,6 +303,7 @@ class FacturacionController extends Controller
                 $factura->numero_documento=$request->numdoc;
                 $factura->impresa=0;
                 $factura->cuota=1;
+                $factura->tipo_servicio=$request->tipo_servicio;
                 $factura->anulada=0;
                 $factura->id_sucursal=Auth::user()->id_sucursal;
                 $factura->save();
@@ -448,7 +449,7 @@ class FacturacionController extends Controller
         if(count($contrato)!=0)
         {
             $precio=$contrato[0]->cuota_mensual;
-            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->get();
+            $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->where('anulado','0')->get();
             $abono1=$abono->last();
             $results2 = array();
             if($abono->count()>0)
@@ -571,6 +572,7 @@ class FacturacionController extends Controller
                 $factura->numero_documento=$request->numdoc;
                 $factura->impresa=0;
                 $factura->cuota=0;
+                $factura->tipo_servicio=0;
                 $factura->anulada=0;
                 $factura->id_sucursal=Auth::user()->id_sucursal;
                 $factura->save();

@@ -36,6 +36,7 @@ class CreateFacturasTable extends Migration
             $table->integer('impresa');
             $table->integer('cuota');
             $table->string('anulada');
+            $table->integer('tipo_servicio')->nullable();
             $table->integer('id_sucursal')->nullable();
             $table->timestamps();
         });

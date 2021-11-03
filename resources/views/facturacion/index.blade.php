@@ -411,7 +411,7 @@
                       <td class="cell100 column10  text-right text-green" id='total_exenta'>0.00</td>
                     </tr>
                     <tr>
-                      <td class="cell100 column15 leftt text-bluegrey ">PERCEPCION $:</td>
+                      <td class="cell100 column15 leftt text-bluegrey " >PERCEPCION $:</td>
                       <td class="cell100 column10 text-right  text-green"  id='total_percepcion'>0.00</td>
                       <td class="cell100 column15  leftt  text-bluegrey ">RETENCION $:</td>
                       <td class="cell100 column10 text-right text-green" id='total_retencion'>0.00</td>

@@ -4,6 +4,7 @@ namespace App\Fpdf;
 
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Internet;
 
 class FpdfReportes extends Fpdf{
 
@@ -75,25 +76,34 @@ class FpdfReportes extends Fpdf{
         }
     }
 
-    function BasicTable_clientes($data){
+    function BasicTable_clientes($data,$servicio){
         $this->SetFont('Arial','B',9);
-        $this->Cell(20,7,utf8_decode('Código'),1,0,'C');
-        $this->Cell(60,7,utf8_decode('Nombre'),1,0,'C');
-        $this->Cell(26,7,utf8_decode('Departamento'),1,0,'C');
-        $this->Cell(26,7,utf8_decode('Teléfono'),1,0,'C');
-        $this->Cell(20,7,utf8_decode('Dui'),1,0,'C');
-        $this->Cell(20,7,utf8_decode('Internet'),1,0,'C');
-        $this->Cell(20,7,utf8_decode('Televisión'),1,0,'C');
-
+        $this->Cell(13,7,utf8_decode('Código'),'B',0,'C');
+        $this->Cell(73,7,utf8_decode('Nombre'),'B',0,'C');
+        $this->Cell(26,7,utf8_decode('Departamento'),'B',0,'C');
+        $this->Cell(20,7,utf8_decode('Teléfono'),'B',0,'C');
+        $this->Cell(20,7,utf8_decode('Dui'),'B',0,'C');
+        if($servicio==""){
+            $this->Cell(15,7,utf8_decode('Internet'),'B',0,'C');
+            $this->Cell(9,7,utf8_decode('Mbs'),'B',0,'C');
+            $this->Cell(15,7,utf8_decode('Tv'),'B',0,'C');
+        }elseif($servicio==1){//internet
+            $this->Cell(17,7,utf8_decode('Internet'),'B',0,'C');
+            $this->Cell(9,7,utf8_decode('Mbs'),'B',0,'C');
+        }elseif($servicio==2){//tv
+            $this->Cell(17,7,utf8_decode('Tv'),'B',0,'C');
+        }
         $this->Ln();
 
         $this->SetFont('Arial','',9);
 
         foreach($data as $row){
-            $this->Cell(20,7,utf8_decode($row->codigo),0,0,'C');
-            $this->Cell(60,7,utf8_decode($row->nombre),0,0,'');
+            $i = Internet::select('velocidad')->where('activo',1)->where('id_cliente',$row->id)->get();
+
+            $this->Cell(13,7,utf8_decode($row->codigo),0,0,'C');
+            $this->Cell(73,7,utf8_decode($row->nombre),0,0,'');
             $this->Cell(26,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
-            $this->Cell(26,7,utf8_decode($row->telefono1),0,0,'C');
+            $this->Cell(20,7,utf8_decode($row->telefono1),0,0,'C');
             $this->Cell(20,7,utf8_decode($row->dui),0,0,'C');
             if($row->internet==3){
                 $einter = 'Vencido';
@@ -120,12 +130,42 @@ class FpdfReportes extends Fpdf{
             if($row->tv==0){
                 $etv = 'Inactivo';
             }
-            $this->Cell(20,7,utf8_decode($einter),0,0,'C');
-            $this->Cell(20,7,utf8_decode($etv),0,0,'C');
-     
-            $this->Ln();
+            if($servicio==""){
+                $this->Cell(17,7,utf8_decode($einter),0,0,'C');
+                if(isset($i[0]->velocidad)){
+                    $this->Cell(9,7,$i[0]->velocidad,0,0,'C');
+                }else{
+                    $this->Cell(9,7,'-',0,0,'C');
+                }
+                $this->Cell(17,7,utf8_decode($etv),0,0,'C');
+            }elseif($servicio==1){//internet
+                $this->Cell(17,7,utf8_decode($einter),0,0,'C');
+                if(isset($i[0]->velocidad)){
+                    $this->Cell(9,7,$i[0]->velocidad,0,0,'C');
+                }else{
+                    $this->Cell(9,7,'-',0,0,'C');
+                }
+            }elseif($servicio==2){//tv
+                $this->Cell(17,7,utf8_decode($etv),0,0,'C');
+            }
+           
+           $this->Ln();
 
         }
+    }
+    
+    function megas_vendidos($data){
+        $this->SetFont('Arial','',9);
+        $v=0;
+        foreach($data as $row){
+            $mb = explode(" ", $row->velocidad);
+            $velocidad=$mb[0];
+            $v+=$velocidad;
+            //$this->Ln();
+        }
+        $this->SetX(90);
+        $this->Cell(20,7,'VENDIDO:',1,0,'C');
+        $this->Cell(20,7,$v.' Mbs',1,0,'C');
     }
 
     function BasicTable_pago_servicios($data,$estado_pago){

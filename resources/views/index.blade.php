@@ -15,7 +15,7 @@
                 </div>
                 <div>
                     <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{ $clientes }}</span></h4>
-                    <p class="text-muted mb-0">Clientes activos{{ date('Y-m-d H:i:s')}}</p>
+                    <p class="text-muted mb-0">Clientes activos</p>
                 </div>
                 <!-- <p class="text-muted mt-3 mb-0"><a href="">Clientes</a> -->
                 

@@ -636,6 +636,22 @@ class FacturacionController extends Controller
     }
     public function imprimir_factura($id,$efectivo,$cambio){
         $factura = Factura::find($id);
+        $tipo_pago="";
+        if($factura->tipo_pago=='EFEC'){
+            $tipo_pago = 'EFECTIVO';
+        }
+        if($factura->tipo_pago=='BITCOIN'){
+            $tipo_pago = 'BITCOIN';
+        }
+        if($factura->tipo_pago=='DEPO'){
+            $tipo_pago = 'DEPOSITO';
+        }
+        if($factura->tipo_pago=='TRANS'){
+            $tipo_pago = 'TRANSFERENCIA';
+        }
+        if($factura->tipo_pago=='POST'){
+            $tipo_pago = 'POST';
+        }
 
         if($factura->tipo_documento==1){
             
@@ -644,6 +660,10 @@ class FacturacionController extends Controller
             $fpdf->AliasNbPages();
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA FINAL | UNINET');
+
+            $fpdf->SetXY(115,32);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
     
             $fpdf->SetXY(115,40);
             $fpdf->SetFont('Courier','',10);
@@ -677,6 +697,10 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Courier','',10);
             $fpdf->Cell(20,10,utf8_decode($letras));
 
+            $fpdf->SetXY(16,170);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
+
 
             $fpdf->SetXY(131,165);
             $fpdf->SetFont('Courier','',10);
@@ -698,6 +722,10 @@ class FacturacionController extends Controller
             $fpdf->AliasNbPages();
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA CREDITO| UNINET');
+
+            $fpdf->SetXY(115,45);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
         
             $fpdf->SetXY(115,53);
             $fpdf->SetFont('Courier','',10);
@@ -743,6 +771,10 @@ class FacturacionController extends Controller
             $fpdf->SetXY(16,161);
             $fpdf->SetFont('Courier','',10);
             $fpdf->Cell(20,10,utf8_decode($letras));
+
+            $fpdf->SetXY(16,167);
+            $fpdf->SetFont('Courier','',10);
+            $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
 
 
             $fpdf->SetXY(131,161);

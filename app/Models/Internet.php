@@ -16,4 +16,5 @@ class Internet extends Model
     {
         return $this->hasOne('App\Models\Cliente','id', 'id_cliente');
     }
+    /*psuboss */
 }

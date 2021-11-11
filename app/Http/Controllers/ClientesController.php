@@ -1096,7 +1096,12 @@ class ClientesController extends Controller
         $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
         $fpdf->SetXY(44,50);
         $fpdf->SetFont('Arial','',11);
-        $direccion = $cliente->dirreccion.', '.$cliente->get_municipio->nombre.', '.$cliente->get_municipio->get_departamento->nombre;
+        if($cliente->id_municipio!=0){
+
+            $direccion = $cliente->dirreccion.', '.$cliente->get_municipio->nombre.', '.$cliente->get_municipio->get_departamento->nombre;
+        }else{
+            $direccion = $cliente->dirreccion;
+        }
         $direccion = substr($direccion,0,172);
         $fpdf->MultiCell(158,5,utf8_decode($direccion));
         $fpdf->SetXY(42,48);
@@ -1472,7 +1477,12 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $fpdf->cell(40,10,utf8_decode('DIRRECCIÓN:'));
         $fpdf->SetXY(44,50);
         $fpdf->SetFont('Arial','',11);
-        $direccion = $cliente->dirreccion.', '.$cliente->get_municipio->nombre.', '.$cliente->get_municipio->get_departamento->nombre;
+        if($cliente->id_municipio!=0){
+
+            $direccion = $cliente->dirreccion.', '.$cliente->get_municipio->nombre.', '.$cliente->get_municipio->get_departamento->nombre;
+        }else{
+            $direccion = $cliente->dirreccion;
+        }
         $direccion = substr($direccion,0,172);
         $fpdf->MultiCell(158,5,utf8_decode($direccion));
         $fpdf->SetXY(42,48);

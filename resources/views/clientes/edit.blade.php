@@ -163,7 +163,7 @@ Gestión de Clientes
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">NIT *</label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control input-mask" type="text"  id="nit" name="nit" value="{{ $cliente->nit }}" required required data-inputmask="'mask': '9999-999999-9'" im-insert="true">
+                                                        <input class="form-control input-mask" type="text"  id="nit" name="nit" value="{{ $cliente->nit }}" required required data-inputmask="'mask': '9999-999999-999-9'" im-insert="true">
                                                     </div>
                                                 </div>
                 

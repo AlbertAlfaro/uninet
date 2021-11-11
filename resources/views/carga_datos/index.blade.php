@@ -22,18 +22,17 @@
 				</p>
 				<br>
                 @include('flash::message')
-                <form action="{{ route('carga_datos.loading') }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                <form action="{{ route('carga_datos.loading') }}" id="form" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="form-group row col-md-4">
                             <label for="example-text-input" class="col-md-4 col-form-label">Tabla *</label>
                             <div class="col-md-8">
-                                <select class="form-control" name="ocupacion" id="ocupacion" required>
+                                <select class="form-control" name="id_tabla" id="id_tabla" required>
                                     <option value="" >Seleccionar...</option>
                                     <option value="1" >Clientes</option>
-                                    <option value="2" >Facturas</option>
+                                    <option value="2" >Contratos</option>
                                     <option value="3" >Abonos</option>
-                                    <option value="4" >Otros</option>
 
                                 </select>
                             </div>
@@ -67,6 +66,8 @@
     <script src="{{ URL::asset('assets/libs/jszip/jszip.min.js')}}"></script>
     <script src="{{ URL::asset('assets/libs/pdfmake/pdfmake.min.js')}}"></script>
     <script src="{{ URL::asset('assets/js/pages/datatables.init.js')}}"></script>
+    <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs.min.js')}}"></script>
+    <script src="{{ URL::asset('assets/libs/parsleyjs/parsleyjs-spanish.js')}}"></script>
 
     <!-- Sweet Alerts js -->
     <script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
@@ -75,6 +76,15 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+         $(function () {
+          $('#form').parsley().on('field:validated', function() {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+          })
+        
+        });
+
         function eliminar(id,id_cliente){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',

@@ -56,8 +56,16 @@
 									<td>{{$obj_item->nombre}}</td>
                                     <td>{{$obj_item->telefono1}}</td>
                                     <td>{{$obj_item->dui}}</td>
-                                    <td>{{$obj_item->get_municipio->get_departamento->nombre}}</td>
-                                    <td>{{$obj_item->get_municipio->nombre}}</td>
+                                    <td>
+                                        @if($obj_item->id_municipio!=0)
+                                            {{$obj_item->get_municipio->get_departamento->nombre}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($obj_item->id_municipio!=0)
+                                            {{$obj_item->get_municipio->nombre}}
+                                        @endif
+                                    </td>
                                     <td> 
                                         @if($obj_item->internet==1) <div class="col-md-9 badge badge-pill badge-success">Activo</div> @endif
                                         @if($obj_item->internet==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div> @endif

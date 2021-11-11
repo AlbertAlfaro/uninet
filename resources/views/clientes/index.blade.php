@@ -547,8 +547,11 @@
                 $("#telefono2").text(validacion(data[0].telefono2,1));
                 $("#dui").text(validacion(data[0].dui,1));
                 $("#nit").text(validacion(data[0].nit,1));
-                $("#departamento").text(validacion(data[0].nombre_departamento,1));
-                $("#municipio").text(validacion(data[0].nombre_municipio,1));
+                if(data[0].id_municipio!=0){
+
+                    $("#departamento").text(validacion(data[0].nombre_departamento,1));
+                    $("#municipio").text(validacion(data[0].nombre_municipio,1));
+                }
                 $("#ocupacion").text(validacion(data[0].ocupacion,3));
                 $("#dirreccion").text(validacion(data[0].dirreccion,1));
                 $("#tipo_documento").text(validacion(data[0].tipo_documento,4));

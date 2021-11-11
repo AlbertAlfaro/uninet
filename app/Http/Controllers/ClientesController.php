@@ -592,41 +592,46 @@ class ClientesController extends Controller
     }
 
     public function details($id){
-        $cliente = Cliente::select(
-                            'clientes.codigo',
-                            'clientes.nombre',
-                            'clientes.email',
-                            'clientes.dui',
-                            'clientes.nit',
-                            'clientes.fecha_nacimiento',
-                            'clientes.telefono1',
-                            'clientes.telefono2',
-                            'clientes.dirreccion',
-                            'clientes.dirreccion_cobro',
-                            'clientes.ocupacion',
-                            'clientes.condicion_lugar',
-                            'clientes.nombre_dueno',
-                            'clientes.numero_registro',
-                            'clientes.giro',
-                            'clientes.internet',
-                            'clientes.tv',
-                            'clientes.colilla',
-                            'clientes.tipo_documento',
-                            'clientes.referencia1',
-                            'clientes.telefo1',
-                            'clientes.referencia2',
-                            'clientes.telefo2',
-                            'clientes.referencia3',
-                            'clientes.telefo3',
-                            'clientes.cordenada',
-                            'clientes.nodo',
-                            'municipios.nombre as nombre_municipio',
-                            'departamentos.nombre as nombre_departamento',
+        $cliente = Cliente::where('id',$id)->get();
+        if($cliente[0]->id_municipio!=0){
 
-                                )
-                            ->join('municipios','clientes.id_municipio','=','municipios.id')
-                            ->join('departamentos','municipios.id_departamento','=','departamentos.id')
-                            ->where('clientes.id',$id)->get();
+            $cliente = Cliente::select(
+                                'clientes.id_municipio',
+                                'clientes.codigo',
+                                'clientes.nombre',
+                                'clientes.email',
+                                'clientes.dui',
+                                'clientes.nit',
+                                'clientes.fecha_nacimiento',
+                                'clientes.telefono1',
+                                'clientes.telefono2',
+                                'clientes.dirreccion',
+                                'clientes.dirreccion_cobro',
+                                'clientes.ocupacion',
+                                'clientes.condicion_lugar',
+                                'clientes.nombre_dueno',
+                                'clientes.numero_registro',
+                                'clientes.giro',
+                                'clientes.internet',
+                                'clientes.tv',
+                                'clientes.colilla',
+                                'clientes.tipo_documento',
+                                'clientes.referencia1',
+                                'clientes.telefo1',
+                                'clientes.referencia2',
+                                'clientes.telefo2',
+                                'clientes.referencia3',
+                                'clientes.telefo3',
+                                'clientes.cordenada',
+                                'clientes.nodo',
+                                'municipios.nombre as nombre_municipio',
+                                'departamentos.nombre as nombre_departamento',
+    
+                                    )
+                                ->join('municipios','clientes.id_municipio','=','municipios.id')
+                                ->join('departamentos','municipios.id_departamento','=','departamentos.id')
+                                ->where('clientes.id',$id)->get();
+        }
 
         return response()->json(
             $cliente-> toArray()  

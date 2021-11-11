@@ -47,39 +47,41 @@
 							</tr>
 						</thead>
 							<tbody>
-								@foreach ($cobradores as $obj_item)
-								<tr class="filas">
-									<td>{{$obj_item->nombre}}</td>
-									<td>{{$obj_item->resolucion}}</td>
-                                    <td>{{$obj_item->fecha->format('d/m/Y')}}</td>
-									<td>{{$obj_item->serie}}</td>
-                                    <td>{{$obj_item->recibo_desde}}</td>
-                                    <td>{{$obj_item->recibo_hasta}}</td>
-                                    <td>{{$obj_item->recibo_ultimo}}</td>
-                                    <td>
-                                    @if($obj_item->activo==1)
-                                        <div class="col-md-8 badge badge-pill badge-success ">Activo</div>
-                                    @else
-                                        <div class="col-md-8 badge badge-pill badge-secondary">Inactivo</div>
-                                    @endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group mr-1 mt-2">
-                                            <button type="button" class="btn btn-primary">Acciones</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('cobradores.edit',$obj_item->id)}}">Editar</a>
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
-                                                <div class="dropdown-divider"></div>
-                                                
+                                @if(count($cobradores)>0)
+                                    @foreach ($cobradores as $obj_item)
+                                    <tr class="filas">
+                                        <td>{{$obj_item->nombre}}</td>
+                                        <td>{{$obj_item->resolucion}}</td>
+                                        <td>{{$obj_item->fecha->format('d/m/Y')}}</td>
+                                        <td>{{$obj_item->serie}}</td>
+                                        <td>{{$obj_item->recibo_desde}}</td>
+                                        <td>{{$obj_item->recibo_hasta}}</td>
+                                        <td>{{$obj_item->recibo_ultimo}}</td>
+                                        <td>
+                                        @if($obj_item->activo==1)
+                                            <div class="col-md-8 badge badge-pill badge-success ">Activo</div>
+                                        @else
+                                            <div class="col-md-8 badge badge-pill badge-secondary">Inactivo</div>
+                                        @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-group mr-1 mt-2">
+                                                <button type="button" class="btn btn-primary">Acciones</button>
+                                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="mdi mdi-chevron-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="{{ route('cobradores.edit',$obj_item->id)}}">Editar</a>
+                                                    <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-											
-								</tr>
-								@endforeach
+                                        </td>
+                                                
+                                    </tr>
+                                    @endforeach
+                                @endif
 							</tbody>
 					
 					</table>

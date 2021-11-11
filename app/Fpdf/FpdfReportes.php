@@ -96,7 +96,7 @@ class FpdfReportes extends Fpdf{
         $this->Ln();
 
         $this->SetFont('Arial','',9);
-
+        $m=0;
         foreach($data as $row){
             $i = Internet::select('velocidad')->where('activo',1)->where('id_cliente',$row->id)->get();
 
@@ -134,6 +134,9 @@ class FpdfReportes extends Fpdf{
                 $this->Cell(17,7,utf8_decode($einter),0,0,'C');
                 if(isset($i[0]->velocidad)){
                     $this->Cell(9,7,$i[0]->velocidad,0,0,'C');
+                    $porciones = explode(" ", $i[0]->velocidad);
+                    $porciones[0];
+                    $m+=$porciones[0];
                 }else{
                     $this->Cell(9,7,'-',0,0,'C');
                 }
@@ -142,6 +145,9 @@ class FpdfReportes extends Fpdf{
                 $this->Cell(17,7,utf8_decode($einter),0,0,'C');
                 if(isset($i[0]->velocidad)){
                     $this->Cell(9,7,$i[0]->velocidad,0,0,'C');
+                    $porciones = explode(" ", $i[0]->velocidad);
+                    $porciones[0];
+                    $m+=$porciones[0];
                 }else{
                     $this->Cell(9,7,'-',0,0,'C');
                 }
@@ -152,6 +158,21 @@ class FpdfReportes extends Fpdf{
            $this->Ln();
 
         }
+        $this->Cell(193,1,'','B',0,'C');
+        $this->Ln();
+        $this->Cell(13,7,'',0,0,'C');
+        $this->Cell(73,7,'',0,0,'C');
+        $this->Cell(26,7,'',0,0,'C');
+        $this->Cell(20,7,'',0,0,'C');
+        $this->Cell(20,7,'',0,0,'C');
+        if($servicio==""){
+            $this->Cell(15,7,'Total: ',0,0,'C');
+            $this->Cell(9,7,$m.' Mbs','B',0,'C');
+        }elseif($servicio==1){//internet
+            $this->Cell(17,7,'Total: ','B',0,'C');
+            $this->Cell(9,7,$m.' Mbs','B',0,'C');
+        }
+
     }
     
     function megas_vendidos($data){

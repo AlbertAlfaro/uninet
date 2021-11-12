@@ -2071,7 +2071,6 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo');
 
         $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
-                            
                             ->unionAll($contrato_tv)
                             ->get();
 
@@ -2080,10 +2079,82 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $estado=-1;
         $tipo_servicio="";
 
-        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos','estado','tipo_servicio'));
+        return view('contratos.all_index',compact('contratos','cliente','id','inter_activos','tv_activos','estado','tipo_servicio'));
         
 
     }
+
+    public function getContratos(Request $request){
+
+        if ($request->ajax()) {
+            $contrato_tv= Tv::select('tvs.id','clientes.nombre','tvs.id_cliente','tvs.numero_contrato','tvs.fecha_instalacion','tvs.contrato_vence','tvs.identificador','tvs.activo')
+                            ->join('clientes','tvs.id_cliente','=','clientes.id');
+
+            $data= Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
+                                ->join('clientes','internets.id_cliente','=','clientes.id')
+                                ->unionAll($contrato_tv)
+                                ->get();
+         
+            return Datatables()->of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+                    $fecha_entrada = strtotime($row->contrato_vence); $id=0;
+                    $cmstado ='';
+                    if($fecha_actual<$fecha_entrada && $id !=0 ){
+                        $cmstado = '<a class="dropdown-item" href="'.url('contrato/activo/'.$row->id.'/'.$row->identificador).'" >Cambiar estado</a></div></div>';
+
+                    }
+                    $actionBtn = '<div class="btn-group mr-1 mt-2">
+                    <button type="button" class="btn btn-primary">Acciones</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="'.url('contrato/vista/'.$row->id.'/'.$row->identificador).'" target="_blank">Ver contrato</a>'.$cmstado;
+                    return $actionBtn;
+                })
+                ->addColumn('identificador', function($row){
+                    $identificador='';
+                    if($row->identificador==1){ $identificador = '<div class="col-md-9 badge badge-pill badge-primary">Internet </div>';}
+                    if($row->identificador==0){ $identificador = '<div class="col-md-9 badge badge-pill badge-light">Televisión </div>'; }
+                   
+                    return $identificador;
+
+                })
+                ->addColumn('activo', function($row){
+                    $activo='';
+                    if($row->activo==1){ $activo = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                    if($row->activo==0){ $activo = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                    if($row->activo==2){ $activo = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                    if($row->activo==3){ $activo = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                    return $activo;
+
+                })
+                ->addColumn('fecha_inicio', function($row){
+                    $fecha_inicio='';
+                    if (isset($row->fecha_instalacion)==1){
+                        $fecha_inicio = $row->fecha_instalacion->format('d/m/Y');
+                    }
+                   
+                    return $fecha_inicio;
+
+                })
+                ->addColumn('fecha_fin', function($row){
+                    $fecha_fin = '';
+                    if (isset($row->contrato_vence)==1){
+                        $fecha_fin = $row->contrato_vence->format('d/m/Y');
+                    }
+                  
+                    return $fecha_fin;
+
+                })
+                ->rawColumns(['action','identificador','activo','fecha_fin','fecha_inicio'])
+                ->make(true);
+        }
+
+    }
+
     public function filtro_contratos(Request $request){
        
         if($request->tipo_servicio=="" && $request->estado==""){

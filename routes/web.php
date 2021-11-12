@@ -140,6 +140,8 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     //contratos general
     Route::get('contratos',[App\Http\Controllers\ClientesController::class ,'index_contratos'])->middleware('permission:contrato_cliente')->name('contrato.index');
     Route::post('contratos/filtro',[App\Http\Controllers\ClientesController::class ,'filtro_contratos'])->middleware('permission:contrato_cliente')->name('contrato.filtro');
+
+    Route::get('contratos/get',[App\Http\Controllers\ClientesController::class ,'getContratos'])->middleware('permission:contrato_cliente')->name('contrato.getContrato');
     //Ordenes por cliente
     Route::get('cliente/ordenes/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_index'])->middleware('permission:Ordenes')->name('cliente.ordenes.index');
     Route::get('cliente/ordenes/create/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_create'])->middleware('permission:create_orden')->name('cliente.ordenes.create');

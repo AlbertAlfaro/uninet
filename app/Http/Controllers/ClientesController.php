@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DataTables;
 
 class ClientesController extends Controller
 {
@@ -34,6 +35,84 @@ class ClientesController extends Controller
         $obj = Cliente::where('activo',1)->where('id_sucursal',Auth::user()->id_sucursal)->get();
 
         return view('clientes.index',compact('obj'));
+    }
+
+    public function cliente_genCargo($id){
+        $inter = Internet::where('id_cliente',$id)->get();
+        
+        $fecha_actual = date('Y-m-d');
+        $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
+        $fecha_vence = date ( 'Y-m-d' , $fecha_vence );
+        $mes_servicio = strtotime ( '-1 month' , strtotime ( $fecha_actual ) ) ;
+        $mes_servicio = date ( 'Y-m-d' , $mes_servicio );
+
+        $abono = new Abono();
+        $abono->id_cliente = $id;
+        $abono->tipo_servicio = 1;
+        $abono->mes_servicio = $mes_servicio;
+        $abono->fecha_aplicado = date('Y-m-d');
+        $abono->cargo = $inter[0]->cuota_mensual;
+        $abono->abono = 0.00;
+        $abono->fecha_vence = $fecha_vence;
+        $abono->anulado = 0;
+        $abono->pagado = 0;
+        $abono->save();
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Se creo un cargo manual para el cliente id: '.$id);
+            
+        flash()->success("Cargo manual generado  exitosamente!")->important();
+        return back();
+
+
+    }
+
+    public function getClientes(Request $request){
+        if ($request->ajax()) {
+            $data = Cliente::where('activo',1)->where('id_sucursal',Auth::user()->id_sucursal)->get();
+            return Datatables()->of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<div class="btn-group dropup mr-1 mt-2"><button type="button" class="btn btn-primary">Acciones</button><button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="'.route("clientes.gen_cargo",$row->id).'">Generar cargo</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="detallesCliente('.$row->id.')">Detalles</a>
+                        <a class="dropdown-item" href="'.route("clientes.edit",$row->id).'">Editar</a>
+                        <a class="dropdown-item" href="#" onclick="eliminar('.$row->id.')">Eliminar</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="'.route("clientes.contrato",$row->id).'">Contrato</a>
+                        <a class="dropdown-item" href="'.route("cliente.estado_cuenta.index",$row->id).'">Estado de cuenta</a>
+                        <a class="dropdown-item" href="'.route("cliente.ordenes.index",$row->id).'">Ordenes</a>
+                        <a class="dropdown-item" href="'.route("cliente.suspensiones.index",$row->id).'">Suspenciones</a>
+                        <a class="dropdown-item" href="'.route("cliente.reconexiones.index",$row->id).'">Reconexiones</a>
+                        <a class="dropdown-item" href="'.route("cliente.traslados.index",$row->id).'">Traslados</a>
+                        
+                    </div>
+                </div>';
+                    return $actionBtn;
+                })
+                ->addColumn('internet', function($row){
+                    $internet='';
+                    if($row->internet==1){ $internet = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                    if($row->internet==0){ $internet = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                    if($row->internet==2){ $internet = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                    if($row->internet==3){ $internet = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                    return $internet;
+
+                })
+                ->addColumn('television', function($row){
+                    $tv='';
+                    if($row->tv==1){ $tv = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                    if($row->tv==0){ $tv = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                    if($row->tv==2){ $tv = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                    if($row->tv==3){ $tv = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                    return $tv;
+
+                })
+                ->rawColumns(['action','internet','television'])
+                ->make(true);
+        }
     }
 
     public function create(){
@@ -1402,8 +1481,8 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         //$fpdf->setFillColor(0,0,0); 
         //$fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Colonia Cuscatlán Block D Casa N. 16 Apopa San Salvador 
-        Correo Electronico: tecnnitel.sv@gmail.com'),1,'C',0);
+        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Centro comercial Pericentro Local 22 Apopa, San Salvador
+        Correo Electronico: atencion@uninet.com.sv'),1,'C',0);
         //$fpdf->SetTextColor(0,0,0);
 
         
@@ -1783,9 +1862,11 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         //$fpdf->setFillColor(0,0,0); 
         //$fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Colonia Cuscatlán Block D Casa N. 16 Apopa San Salvador 
-        Correo Electronico: tecnnitel.sv@gmail.com'),1,'C',0);
+        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Centro comercial Pericentro Local 22 Apopa, San Salvador
+        Correo Electronico: atencion@uninet.com.sv'),1,'C',0);
         $fpdf->SetTextColor(0,0,0);
+
+        
 
         
 

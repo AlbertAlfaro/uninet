@@ -11,6 +11,7 @@
     @slot('title') Gestión de clientes @endslot
 @endcomponent
 <div class="row">
+    
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -33,78 +34,20 @@
                 
                 @include('flash::message')
                 <div class="table-responsive">
-					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+					<table  class="table table-bordered dt-responsive nowrap yajra-datatable" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
-                                
                                 <th>Código</th>
 								<th>Nombre</th>
                                 <th>Teléfono</th>
                                 <th>DUI</th>
-                                <th>Departamento</th>
-                                <th>Municipio</th>
                                 <th>Internet</th>
                                 <th>Televisión</th>
 								<th>Acciones</th>
-							
 							</tr>
 						</thead>
 							<tbody>
-								@foreach ($obj as $obj_item)
-								<tr class="filas">
-                                    <td>{{$obj_item->codigo}}</td>
-									<td>{{$obj_item->nombre}}</td>
-                                    <td>{{$obj_item->telefono1}}</td>
-                                    <td>{{$obj_item->dui}}</td>
-                                    <td>
-                                        @if($obj_item->id_municipio!=0)
-                                            {{$obj_item->get_municipio->get_departamento->nombre}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($obj_item->id_municipio!=0)
-                                            {{$obj_item->get_municipio->nombre}}
-                                        @endif
-                                    </td>
-                                    <td> 
-                                        @if($obj_item->internet==1) <div class="col-md-9 badge badge-pill badge-success">Activo</div> @endif
-                                        @if($obj_item->internet==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div> @endif
-                                        @if($obj_item->internet==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido</div> @endif
-                                        @if($obj_item->internet==3) <div class="col-md-9 badge badge-pill badge-warning">Vencido</div> @endif
-                                    </td>
-                                    <td>
-                                        @if($obj_item->tv==1) <div class="col-md-8 badge badge-pill badge-success ">Activo</div>  @endif
-                                        @if($obj_item->tv==0) <div class="col-md-8 badge badge-pill badge-secondary ">Inactivo</div>  @endif
-                                        @if($obj_item->tv==2) <div class="col-md-8 badge badge-pill badge-danger ">Suspendido</div>  @endif
-                                        @if($obj_item->tv==3) <div class="col-md-9 badge badge-pill badge-warning">Vencido</div> @endif
-                                    </td>
-                                    
-                                    <td>
-                                        <div class="btn-group dropup mr-1 mt-2">
-                                            <button type="button" class="btn btn-primary">Acciones</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                
-                                                <a class="dropdown-item" href="#" onclick="detallesCliente({{$obj_item->id}})">Detalles</a>
-                                                <a class="dropdown-item" href="{{ route('clientes.edit',$obj_item->id)}}">Editar</a>
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}})">Eliminar</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('clientes.contrato',$obj_item->id)}}">Contrato</a>
-                                                <a class="dropdown-item" href="{{ route('cliente.estado_cuenta.index',$obj_item->id)}}">Estado de cuenta</a>
-                                                <a class="dropdown-item" href="{{ route('cliente.ordenes.index',$obj_item->id)}}">Ordenes</a>
-                                                <a class="dropdown-item" href="{{ route('cliente.suspensiones.index',$obj_item->id)}}">Suspenciones</a>
-                                                <a class="dropdown-item" href="{{ route('cliente.reconexiones.index',$obj_item->id)}}">Reconexiones</a>
-                                                <a class="dropdown-item" href="{{ route('cliente.traslados.index',$obj_item->id)}}">Traslados</a>
-                                                
-                                            </div>
-                                        </div>
-
-                                    </td>
-											
-								</tr>
-								@endforeach
+								
 							</tbody>
 					
 					</table>
@@ -504,6 +447,44 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+        $(function () {
+    
+            var table = $('.yajra-datatable').DataTable({
+                "order": [ [0, "desc"] ],
+                language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('clientes.getClientes') }}",
+                columns: [
+                   
+                    {data: 'codigo', name: 'codigo'},
+                    {data: 'nombre', name: 'nombre'},
+                    {data: 'telefono1', name: 'telefono1'},
+                    {data: 'dui', name: 'dui'},
+                    {
+                        data: 'internet', 
+                        name: 'internet', 
+                        orderable: true, 
+                        searchable: true
+                    },
+                    {
+                        data: 'television', 
+                        name: 'television', 
+                        orderable: true, 
+                        searchable: true
+                    },
+                   
+                    
+                    {
+                        data: 'action', 
+                        name: 'action', 
+                        orderable: true, 
+                        searchable: true
+                    },
+                ]
+            });
+            
+        });
 
         
         function eliminar(id){

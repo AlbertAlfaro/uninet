@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DataTables;
 
 class ClientesController extends Controller
 {
@@ -34,6 +35,84 @@ class ClientesController extends Controller
         $obj = Cliente::where('activo',1)->where('id_sucursal',Auth::user()->id_sucursal)->get();
 
         return view('clientes.index',compact('obj'));
+    }
+
+    public function cliente_genCargo($id){
+        $inter = Internet::where('id_cliente',$id)->get();
+        
+        $fecha_actual = date('Y-m-d');
+        $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
+        $fecha_vence = date ( 'Y-m-d' , $fecha_vence );
+        $mes_servicio = strtotime ( '-1 month' , strtotime ( $fecha_actual ) ) ;
+        $mes_servicio = date ( 'Y-m-d' , $mes_servicio );
+
+        $abono = new Abono();
+        $abono->id_cliente = $id;
+        $abono->tipo_servicio = 1;
+        $abono->mes_servicio = $mes_servicio;
+        $abono->fecha_aplicado = date('Y-m-d');
+        $abono->cargo = $inter[0]->cuota_mensual;
+        $abono->abono = 0.00;
+        $abono->fecha_vence = $fecha_vence;
+        $abono->anulado = 0;
+        $abono->pagado = 0;
+        $abono->save();
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Se creo un cargo manual para el cliente id: '.$id);
+            
+        flash()->success("Cargo manual generado  exitosamente!")->important();
+        return back();
+
+
+    }
+
+    public function getClientes(Request $request){
+        if ($request->ajax()) {
+            $data = Cliente::where('activo',1)->where('id_sucursal',Auth::user()->id_sucursal)->get();
+            return Datatables()->of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<div class="btn-group dropup mr-1 mt-2"><button type="button" class="btn btn-primary">Acciones</button><button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="'.route("clientes.gen_cargo",$row->id).'">Generar cargo</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="detallesCliente('.$row->id.')">Detalles</a>
+                        <a class="dropdown-item" href="'.route("clientes.edit",$row->id).'">Editar</a>
+                        <a class="dropdown-item" href="#" onclick="eliminar('.$row->id.')">Eliminar</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="'.route("clientes.contrato",$row->id).'">Contrato</a>
+                        <a class="dropdown-item" href="'.route("cliente.estado_cuenta.index",$row->id).'">Estado de cuenta</a>
+                        <a class="dropdown-item" href="'.route("cliente.ordenes.index",$row->id).'">Ordenes</a>
+                        <a class="dropdown-item" href="'.route("cliente.suspensiones.index",$row->id).'">Suspenciones</a>
+                        <a class="dropdown-item" href="'.route("cliente.reconexiones.index",$row->id).'">Reconexiones</a>
+                        <a class="dropdown-item" href="'.route("cliente.traslados.index",$row->id).'">Traslados</a>
+                        
+                    </div>
+                </div>';
+                    return $actionBtn;
+                })
+                ->addColumn('internet', function($row){
+                    $internet='';
+                    if($row->internet==1){ $internet = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                    if($row->internet==0){ $internet = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                    if($row->internet==2){ $internet = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                    if($row->internet==3){ $internet = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                    return $internet;
+
+                })
+                ->addColumn('television', function($row){
+                    $tv='';
+                    if($row->tv==1){ $tv = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                    if($row->tv==0){ $tv = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                    if($row->tv==2){ $tv = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                    if($row->tv==3){ $tv = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                    return $tv;
+
+                })
+                ->rawColumns(['action','internet','television'])
+                ->make(true);
+        }
     }
 
     public function create(){
@@ -592,41 +671,46 @@ class ClientesController extends Controller
     }
 
     public function details($id){
-        $cliente = Cliente::select(
-                            'clientes.codigo',
-                            'clientes.nombre',
-                            'clientes.email',
-                            'clientes.dui',
-                            'clientes.nit',
-                            'clientes.fecha_nacimiento',
-                            'clientes.telefono1',
-                            'clientes.telefono2',
-                            'clientes.dirreccion',
-                            'clientes.dirreccion_cobro',
-                            'clientes.ocupacion',
-                            'clientes.condicion_lugar',
-                            'clientes.nombre_dueno',
-                            'clientes.numero_registro',
-                            'clientes.giro',
-                            'clientes.internet',
-                            'clientes.tv',
-                            'clientes.colilla',
-                            'clientes.tipo_documento',
-                            'clientes.referencia1',
-                            'clientes.telefo1',
-                            'clientes.referencia2',
-                            'clientes.telefo2',
-                            'clientes.referencia3',
-                            'clientes.telefo3',
-                            'clientes.cordenada',
-                            'clientes.nodo',
-                            'municipios.nombre as nombre_municipio',
-                            'departamentos.nombre as nombre_departamento',
+        $cliente = Cliente::where('id',$id)->get();
+        if($cliente[0]->id_municipio!=0){
 
-                                )
-                            ->join('municipios','clientes.id_municipio','=','municipios.id')
-                            ->join('departamentos','municipios.id_departamento','=','departamentos.id')
-                            ->where('clientes.id',$id)->get();
+            $cliente = Cliente::select(
+                                'clientes.id_municipio',
+                                'clientes.codigo',
+                                'clientes.nombre',
+                                'clientes.email',
+                                'clientes.dui',
+                                'clientes.nit',
+                                'clientes.fecha_nacimiento',
+                                'clientes.telefono1',
+                                'clientes.telefono2',
+                                'clientes.dirreccion',
+                                'clientes.dirreccion_cobro',
+                                'clientes.ocupacion',
+                                'clientes.condicion_lugar',
+                                'clientes.nombre_dueno',
+                                'clientes.numero_registro',
+                                'clientes.giro',
+                                'clientes.internet',
+                                'clientes.tv',
+                                'clientes.colilla',
+                                'clientes.tipo_documento',
+                                'clientes.referencia1',
+                                'clientes.telefo1',
+                                'clientes.referencia2',
+                                'clientes.telefo2',
+                                'clientes.referencia3',
+                                'clientes.telefo3',
+                                'clientes.cordenada',
+                                'clientes.nodo',
+                                'municipios.nombre as nombre_municipio',
+                                'departamentos.nombre as nombre_departamento',
+    
+                                    )
+                                ->join('municipios','clientes.id_municipio','=','municipios.id')
+                                ->join('departamentos','municipios.id_departamento','=','departamentos.id')
+                                ->where('clientes.id',$id)->get();
+        }
 
         return response()->json(
             $cliente-> toArray()  
@@ -1397,8 +1481,8 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         //$fpdf->setFillColor(0,0,0); 
         //$fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Colonia Cuscatlán Block D Casa N. 16 Apopa San Salvador 
-        Correo Electronico: tecnnitel.sv@gmail.com'),1,'C',0);
+        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Centro comercial Pericentro Local 22 Apopa, San Salvador
+        Correo Electronico: atencion@uninet.com.sv'),1,'C',0);
         //$fpdf->SetTextColor(0,0,0);
 
         
@@ -1778,9 +1862,11 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         //$fpdf->setFillColor(0,0,0); 
         //$fpdf->SetTextColor(255,255,255);
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Colonia Cuscatlán Block D Casa N. 16 Apopa San Salvador 
-        Correo Electronico: tecnnitel.sv@gmail.com'),1,'C',0);
+        $fpdf->MultiCell(135,5,utf8_decode('Dirección: Centro comercial Pericentro Local 22 Apopa, San Salvador
+        Correo Electronico: atencion@uninet.com.sv'),1,'C',0);
         $fpdf->SetTextColor(0,0,0);
+
+        
 
         
 
@@ -1985,7 +2071,6 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $contrato_tv= Tv::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo');
 
         $contratos= Internet::select('id','id_cliente','numero_contrato','fecha_instalacion','contrato_vence','identificador','activo')
-                            
                             ->unionAll($contrato_tv)
                             ->get();
 
@@ -1994,10 +2079,82 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
         $estado=-1;
         $tipo_servicio="";
 
-        return view('contratos.index',compact('contratos','cliente','id','inter_activos','tv_activos','estado','tipo_servicio'));
+        return view('contratos.all_index',compact('contratos','cliente','id','inter_activos','tv_activos','estado','tipo_servicio'));
         
 
     }
+
+    public function getContratos(Request $request){
+
+        if ($request->ajax()) {
+            $contrato_tv= Tv::select('tvs.id','clientes.nombre','tvs.id_cliente','tvs.numero_contrato','tvs.fecha_instalacion','tvs.contrato_vence','tvs.identificador','tvs.activo')
+                            ->join('clientes','tvs.id_cliente','=','clientes.id');
+
+            $data= Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
+                                ->join('clientes','internets.id_cliente','=','clientes.id')
+                                ->unionAll($contrato_tv)
+                                ->get();
+         
+            return Datatables()->of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+                    $fecha_entrada = strtotime($row->contrato_vence); $id=0;
+                    $cmstado ='';
+                    if($fecha_actual<$fecha_entrada && $id !=0 ){
+                        $cmstado = '<a class="dropdown-item" href="'.url('contrato/activo/'.$row->id.'/'.$row->identificador).'" >Cambiar estado</a></div></div>';
+
+                    }
+                    $actionBtn = '<div class="btn-group mr-1 mt-2">
+                    <button type="button" class="btn btn-primary">Acciones</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="'.url('contrato/vista/'.$row->id.'/'.$row->identificador).'" target="_blank">Ver contrato</a>'.$cmstado;
+                    return $actionBtn;
+                })
+                ->addColumn('identificador', function($row){
+                    $identificador='';
+                    if($row->identificador==1){ $identificador = '<div class="col-md-9 badge badge-pill badge-primary">Internet </div>';}
+                    if($row->identificador==0){ $identificador = '<div class="col-md-9 badge badge-pill badge-light">Televisión </div>'; }
+                   
+                    return $identificador;
+
+                })
+                ->addColumn('activo', function($row){
+                    $activo='';
+                    if($row->activo==1){ $activo = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                    if($row->activo==0){ $activo = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                    if($row->activo==2){ $activo = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                    if($row->activo==3){ $activo = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                    return $activo;
+
+                })
+                ->addColumn('fecha_inicio', function($row){
+                    $fecha_inicio='';
+                    if (isset($row->fecha_instalacion)==1){
+                        $fecha_inicio = $row->fecha_instalacion->format('d/m/Y');
+                    }
+                   
+                    return $fecha_inicio;
+
+                })
+                ->addColumn('fecha_fin', function($row){
+                    $fecha_fin = '';
+                    if (isset($row->contrato_vence)==1){
+                        $fecha_fin = $row->contrato_vence->format('d/m/Y');
+                    }
+                  
+                    return $fecha_fin;
+
+                })
+                ->rawColumns(['action','identificador','activo','fecha_fin','fecha_inicio'])
+                ->make(true);
+        }
+
+    }
+
     public function filtro_contratos(Request $request){
        
         if($request->tipo_servicio=="" && $request->estado==""){

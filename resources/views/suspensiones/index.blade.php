@@ -68,47 +68,49 @@
 							</tr>
 						</thead>
 							<tbody>
-								@foreach ($suspensiones as $obj_item)
-								<tr class="filas">
-									<td>{{$obj_item->numero}}</td>
-									<td>{{$obj_item->get_cliente->nombre}}</td>
-                                    <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
-									<td>{{$obj_item->tipo_servicio}}</td>
-                                    <td>{{$obj_item->get_tecnico->nombre}}</td>
-                                    <td>
-                                    @if($obj_item->fecha_trabajo==NULL)
-                                        <div class="col-md-8 badge badge-pill badge-danger ">Pendiente</div>
-                                    @else
-                                        {{$obj_item->fecha_trabajo->format('d/m/Y')}}
-                                    @endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group mr-1 mt-2">
-                                            <button type="button" class="btn btn-primary">Acciones</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                @if($obj_item->suspendido==0)
-                                                <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}},{{ $id_cliente }})">Suspender</a>
-                                                @endif
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('suspensiones.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
-                                               
-                                                @if($id_cliente==0)
-                                                <a class="dropdown-item" href="{{ route('suspensiones.edit',$obj_item->id)}}">Editar</a>
-                                                @else
-                                                <a class="dropdown-item" href="{{ route('cliente.suspensiones.edit',[$obj_item->id,$id_cliente])}}">Editar</a>
-                                                @endif
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{ $id_cliente }})">Eliminar</a>
-                                                <div class="dropdown-divider"></div>
+                                @if(count($suspensiones)>0)
+                                    @foreach ($suspensiones as $obj_item)
+                                    <tr class="filas">
+                                        <td>{{$obj_item->numero}}</td>
+                                        <td>{{$obj_item->get_cliente->nombre}}</td>
+                                        <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
+                                        <td>{{$obj_item->tipo_servicio}}</td>
+                                        <td>{{$obj_item->get_tecnico->nombre}}</td>
+                                        <td>
+                                        @if($obj_item->fecha_trabajo==NULL)
+                                            <div class="col-md-8 badge badge-pill badge-danger ">Pendiente</div>
+                                        @else
+                                            {{$obj_item->fecha_trabajo->format('d/m/Y')}}
+                                        @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-group mr-1 mt-2">
+                                                <button type="button" class="btn btn-primary">Acciones</button>
+                                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="mdi mdi-chevron-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    @if($obj_item->suspendido==0)
+                                                    <a class="dropdown-item" href="#" onclick="suspender({{$obj_item->id}},{{ $id_cliente }})">Suspender</a>
+                                                    @endif
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="{{ route('suspensiones.imprimir',$obj_item->id)}}" target="_blank">Reporte</a>
                                                 
+                                                    @if($id_cliente==0)
+                                                    <a class="dropdown-item" href="{{ route('suspensiones.edit',$obj_item->id)}}">Editar</a>
+                                                    @else
+                                                    <a class="dropdown-item" href="{{ route('cliente.suspensiones.edit',[$obj_item->id,$id_cliente])}}">Editar</a>
+                                                    @endif
+                                                    <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{ $id_cliente }})">Eliminar</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-											
-								</tr>
-								@endforeach
+                                        </td>
+                                                
+                                    </tr>
+                                    @endforeach
+                                @endif
 							</tbody>
 					
 					</table>

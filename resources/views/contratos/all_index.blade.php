@@ -83,7 +83,7 @@
                 <br>
                 <div class="table-responsive">
 
-					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+					<table  class="table table-bordered dt-responsive nowrap yajra-datatable" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
 								<th>Codigo contrato</th>
@@ -97,51 +97,7 @@
 							</tr>
 						</thead>
 							<tbody>
-                                @if(count($contratos)>0)
-                                    @foreach ($contratos as $obj_item)
-                                        @if(Auth::user()->id_sucursal==$obj_item->get_cliente->id_sucursal)
-                                            <tr class="filas">
-                                                <td>{{$obj_item->numero_contrato}}</td>
-                                                <td>{{$obj_item->get_cliente->nombre}}</td>
-                                                <td>@if (isset($obj_item->fecha_instalacion)==1) {{$obj_item->fecha_instalacion->format('d/m/Y')}} @endif</td>
-                                                <td>@if (isset($obj_item->contrato_vence)==1)  {{$obj_item->contrato_vence->format('d/m/Y')}} @endif</td>
-                                                <td>
-                                                    @if($obj_item->identificador==1) <div class="col-md-9 badge badge-pill badge-primary">Internet </div>@endif
-                                                    @if($obj_item->identificador==2) <div class="col-md-9 badge badge-pill badge-light">Televisión </div> @endif
-                                                
-                                                </td>
-                                                <td>
-                                                    @if($obj_item->activo==1) <div class="col-md-9 badge badge-pill badge-success">Activo<span style="color: #34c38f;">_</span></div>@endif
-                                                    @if($obj_item->activo==0) <div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>@endif
-                                                    @if($obj_item->activo==2) <div class="col-md-9 badge badge-pill badge-danger">Suspendido  </div>@endif
-                                                    @if($obj_item->activo==3) <div class="col-md-9 badge badge-pill badge-danger">Vencido  </div>@endif
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group mr-1 mt-2">
-                                                        <button type="button" class="btn btn-primary">Acciones</button>
-                                                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="mdi mdi-chevron-down"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="{{ url('contrato/vista/'.$obj_item->id.'/'.$obj_item->identificador) }}" target="_blank">Ver contrato</a>
-                                                            @php
-                                                                $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-                                                                $fecha_entrada = strtotime($obj_item->contrato_vence);
-                                                                    
-                                                                                                                                                                    
-                                                            @endphp 
-                                                            @if($fecha_actual<$fecha_entrada && $id !=0 )
-                                                                <a class="dropdown-item" href="{{ url('contrato/activo/'.$obj_item->id.'/'.$obj_item->identificador) }}" >Cambiar estado</a>
-                                                            @endif
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                        
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                @endif
+                                
 							</tbody>
 					
 					</table>
@@ -166,6 +122,62 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+
+$(function () {
+    
+    var table = $('.yajra-datatable').DataTable({
+        "order": [ [0, "desc"] ],
+        language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('contrato.getContrato') }}",
+        columns: [
+           
+            {data: 'numero_contrato', name: 'numero_contrato'},
+            {
+                data: 'nombre', 
+                name: 'nombre',
+                orderable: true, 
+                searchable: true
+            },
+            {
+                data: 'fecha_inicio', 
+                name: 'fecha_inicio', 
+                orderable: true, 
+                searchable: true
+            },
+            {
+                data: 'fecha_fin', 
+                name: 'fecha_fin', 
+                orderable: true, 
+                searchable: true
+            },
+           
+            {
+                data: 'identificador', 
+                name: 'identificador', 
+                orderable: true, 
+                searchable: true
+            },
+            {
+                data: 'activo', 
+                name: 'activo', 
+                orderable: true, 
+                searchable: true
+            },
+            {
+                data: 'action', 
+                name: 'action', 
+                orderable: true, 
+                searchable: true
+            },
+           
+            
+            
+        ]
+    });
+    
+    });
         
    
 

@@ -127,7 +127,9 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     Route::get('clientes/internet_details/{id}',[App\Http\Controllers\ClientesController::class ,'internet_details'])->middleware('permission:index_cliente')->name('clientes.tv_details');
     Route::get('clientes/tv_details/{id}',[App\Http\Controllers\ClientesController::class ,'tv_details'])->middleware('permission:index_cliente')->name('clientes.internet_details');
     Route::get('cliente/destroy/{id}',[App\Http\Controllers\ClientesController::class ,'destroy'])->middleware('permission:destroy_cliente')->name('clientes.distroy');
-
+    //Cargador de datos
+    Route::get('clientes/gen_cargo/{id}',[App\Http\Controllers\ClientesController::class ,'cliente_genCargo'])->middleware('permission:gen_cargo_cliente')->name('clientes.gen_cargo');
+    Route::get('clientes/get',[App\Http\Controllers\ClientesController::class ,'getClientes'])->middleware('permission:index_cliente')->name('clientes.getClientes');
 
     Route::get('cliente/contrato/{id}',[App\Http\Controllers\ClientesController::class ,'contrato'])->middleware('permission:contrato_cliente')->name('clientes.contrato');
     Route::get('contrato/activo/{id}/{identificador}',[App\Http\Controllers\ClientesController::class ,'contrato_activo'])->middleware('permission:contrato_activo')->name('contrato.activo');
@@ -138,6 +140,8 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     //contratos general
     Route::get('contratos',[App\Http\Controllers\ClientesController::class ,'index_contratos'])->middleware('permission:contrato_cliente')->name('contrato.index');
     Route::post('contratos/filtro',[App\Http\Controllers\ClientesController::class ,'filtro_contratos'])->middleware('permission:contrato_cliente')->name('contrato.filtro');
+
+    Route::get('contratos/get',[App\Http\Controllers\ClientesController::class ,'getContratos'])->middleware('permission:contrato_cliente')->name('contrato.getContrato');
     //Ordenes por cliente
     Route::get('cliente/ordenes/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_index'])->middleware('permission:Ordenes')->name('cliente.ordenes.index');
     Route::get('cliente/ordenes/create/{id}',[App\Http\Controllers\ClientesController::class ,'ordenes_create'])->middleware('permission:create_orden')->name('cliente.ordenes.create');

@@ -163,7 +163,7 @@ Gestión de Clientes
                                                 <div class="form-group row col-md-12">
                                                     <label for="example-text-input" class="col-md-4 col-form-label">NIT *</label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control input-mask" type="text"  id="nit" name="nit" value="{{ $cliente->nit }}" required required data-inputmask="'mask': '9999-999999-9'" im-insert="true">
+                                                        <input class="form-control input-mask" type="text"  id="nit" name="nit" value="{{ $cliente->nit }}" required required data-inputmask="'mask': '9999-999999-999-9'" im-insert="true">
                                                     </div>
                                                 </div>
                 
@@ -199,6 +199,7 @@ Gestión de Clientes
                                                     <div class="col-md-8">
                                                         <select class="form-control" data-live-search="true" name="id_departamento" id="id_departamento" required>
                                                             <option value="" >Seleccionar...</option>
+                                                            
                                                             
                                                             @foreach ($obj_departamento as $obj_item)
                                                                     <option value="{{$obj_item->id}}" @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
@@ -528,7 +529,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Costo por instalación </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left inter" type="text"  id="costo_instalacion" name="costo_instalacion" value="@if (isset($internet[0]->costo_instalacion)==1){{ $internet[0]->costo_instalacion }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    <input class="form-control input-mask text-left " type="text"  id="costo_instalacion" name="costo_instalacion" value="@if (isset($internet[0]->costo_instalacion)==1){{ $internet[0]->costo_instalacion }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
                                                                     
                                                                 </div>
                                                             </div>
@@ -965,7 +966,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-4 col-form-label">Costo de instalación </label>
                                                                 <div class="col-md-8">
-                                                                    <input class="form-control input-mask text-left tv" type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" value="@if (isset($tv[0]->costo_instalacion)==1){{ $tv[0]->costo_instalacion }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
+                                                                    <input class="form-control input-mask text-left " type="text"  id="costo_instalacion_tv" name="costo_instalacion_tv" value="@if (isset($tv[0]->costo_instalacion)==1){{ $tv[0]->costo_instalacion }}@endif" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'">
                                                                     
                                                                 </div>
                                                             </div>

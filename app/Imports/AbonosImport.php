@@ -14,14 +14,30 @@ class AbonosImport implements ToModel
     public function model(array $row)
     {
         return new Abono([
-            'id_cliente' => $row[5],
-            'numero_documento' => $row[0].$row[1],
-            'mes_servicio' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2]),
-            'abono' => $row[3],
-            'cesc_abono' => $row[4],
-            'precio' => $row[3],
+            /*PARA GENERAR LOS CARGOS*/
+            'id_cliente' => $row[0],
+            'tipo_servicio' => '1',
+            'numero_documento' => $row[4].$row[5],
+            'mes_servicio' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[3]),
+            'cargo' => $row[6],
+            'abono' => '0.00',
+            'cesc_cargo' => $row[7],
+            'precio' => $row[6],
             'anulado' => '0',
             'pagado' => '1',
+
+            /*PARA GENERAR LOS ABONOS
+            'id_cliente' => $row[0],
+            'tipo_servicio' => '1',
+            'numero_documento' => $row[4].$row[5],
+            'mes_servicio' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[3]),
+            'cargo' => '0.00',
+            'abono' => $row[6],
+            'cesc_abono' => $row[7],
+            'precio' => $row[6],
+            'anulado' => '0',
+            'pagado' => '1',
+            */
 
             
            

@@ -14,7 +14,6 @@ class AbonosImport implements ToModel
     public function model(array $row)
     {
         return new Abono([
-            /*PARA GENERAR LOS CARGOS*/
             'id_cliente' => $row[0],
             'tipo_servicio' => '1',
             'numero_documento' => $row[4].$row[5],
@@ -38,25 +37,6 @@ class AbonosImport implements ToModel
             'anulado' => '0',
             'pagado' => '1',
             */
-
-            
-           
          ]);
-
-         /*
-         0 id
-         1 codigo
-         2 nombre 
-         3 direccion
-         4 telefono
-         5 dui
-         6 nit 
-         7 id_municipio
-         8 ocupacion
-         9 activo
-         10 colilla o igual 1
-         11 igual 0
-
-         */
     }
 }

@@ -465,13 +465,13 @@
                         data: 'internet', 
                         name: 'internet', 
                         orderable: true, 
-                        searchable: true
+                        //searchable: true
                     },
                     {
                         data: 'television', 
                         name: 'television', 
                         orderable: true, 
-                        searchable: true
+                        //searchable: true
                     },
                    
                     
@@ -479,7 +479,7 @@
                         data: 'action', 
                         name: 'action', 
                         orderable: true, 
-                        searchable: true
+                        //searchable: true
                     },
                 ]
             });

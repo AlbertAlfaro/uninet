@@ -271,7 +271,7 @@ class FacturacionController extends Controller
           'letras' => $letras,
       ]);
     }
-    public function guardar(Request $request)
+    public function guardar(Request $request)//SE GUARDA FACTURA Y ABONO
     {   
         if ($request->cuantos >0)
         { 

@@ -14,7 +14,7 @@ class AbonosImport implements ToModel
     public function model(array $row)
     {
         return new Abono([
-            'id_cliente' => $row[0],
+            /*'id_cliente' => $row[0],
             'tipo_servicio' => '1',
             'numero_documento' => $row[4].$row[5],
             'mes_servicio' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[3]),
@@ -23,9 +23,9 @@ class AbonosImport implements ToModel
             'cesc_cargo' => $row[7],
             'precio' => $row[6],
             'anulado' => '0',
-            'pagado' => '1',
+            'pagado' => '1',*/
 
-            /*PARA GENERAR LOS ABONOS
+            /*PARA GENERAR LOS ABONOS*/
             'id_cliente' => $row[0],
             'tipo_servicio' => '1',
             'numero_documento' => $row[4].$row[5],
@@ -36,7 +36,6 @@ class AbonosImport implements ToModel
             'precio' => $row[6],
             'anulado' => '0',
             'pagado' => '1',
-            */
          ]);
     }
 }

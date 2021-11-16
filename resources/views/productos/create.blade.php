@@ -78,7 +78,7 @@ Productos
                                         <label class="col-md-4 col-form-label" for="defaultCheck1">Exento</label>
                                         <div class="col-md-8">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input jqcheck" id="exento" name="exento"  >
+                                                <input type="checkbox" class="custom-control-input jqcheck" id="exento" name="exento" value="0">
                                                 <label class="custom-control-label" for="exento"></label>
                                             </div>
                                         </div>

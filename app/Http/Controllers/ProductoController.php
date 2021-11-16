@@ -43,7 +43,12 @@ class ProductoController extends Controller
         $producto->nombre = $request->nombre;
         $producto->marca = $request->marca;
         $producto->activo = "1";
-        $producto->exento = $request->exento;
+        if(isset($request->exento))
+        {
+            $producto->exento = $request->exento;
+        }else{
+            $producto->exento = 0;   
+        }
         $producto->costo = $request->costo;
         $producto->precio = $request->precio;
         $producto->tipo_producto = $request->tipo_producto;

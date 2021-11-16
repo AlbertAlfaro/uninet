@@ -66,10 +66,16 @@
                                     <th>Tipo servicio</th>
                                     <th>Cargo</th>
                                     <th>Abono</th>
+                                    <th hidden>Impuesto</th>
+                                    <th>Total</th>
                                 
                                 </tr>
                             </thead>
                                 <tbody>
+                                    @php 
+                                    $dinero = 0;
+                                    $impuesto = 0;
+                                    @endphp
                                     @foreach ($abono_inter as $obj_item)
                                     <tr class="filas">
                                         <td>{{$obj_item->id}}</td>
@@ -82,12 +88,24 @@
                                         
                                         </td>
                                         <td class="text-danger">
-                                          @if($obj_item->cargo!="") $ @endif {{ number_format($obj_item->cargo,2) }}
+                                          @if($obj_item->cargo!="") @php $dinero = number_format($obj_item->cargo,2); @endphp @endif $ {{ number_format($obj_item->cargo,2) }}
+                                        
                                             
                                         </td>
                                         <td class="text-success">
-                                            @if($obj_item->abono!="") $ @endif {{ number_format($obj_item->abono,2) }}
-                                             
+                                            @if($obj_item->abono!="")@php $dinero = number_format($obj_item->abono,2); @endphp @endif $ {{ number_format($obj_item->abono,2) }}
+                                            
+                                         </td>
+                                         <td hidden>
+                                            @if($obj_item->cargo!=0) $ {{ number_format($obj_item->cesc_cargo,2) }} @endif
+                                            @if($obj_item->abono!=0) $ {{ number_format($obj_item->cesc_abono,2) }} @endif 
+                                            @php $impuesto = number_format($obj_item->cesc_cargo,2) + number_format($obj_item->cesc_abono,2); @endphp
+                                            
+
+                                         </td>
+                                         <td>
+                                             ${{ $dinero+$impuesto; }}
+
                                          </td>
                                                 
                                     </tr>

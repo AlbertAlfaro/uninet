@@ -66,7 +66,7 @@
                                     <th>Tipo servicio</th>
                                     <th>Cargo</th>
                                     <th>Abono</th>
-                                    <th>Impuesto</th>
+                                    <th hidden>Impuesto</th>
                                     <th>Total</th>
                                 
                                 </tr>
@@ -96,7 +96,7 @@
                                             @if($obj_item->abono!="")@php $dinero = number_format($obj_item->abono,2); @endphp @endif $ {{ number_format($obj_item->abono,2) }}
                                             
                                          </td>
-                                         <td>
+                                         <td hidden>
                                             @if($obj_item->cargo!=0) $ {{ number_format($obj_item->cesc_cargo,2) }} @endif
                                             @if($obj_item->abono!=0) $ {{ number_format($obj_item->cesc_abono,2) }} @endif 
                                             @php $impuesto = number_format($obj_item->cesc_cargo,2) + number_format($obj_item->cesc_abono,2); @endphp

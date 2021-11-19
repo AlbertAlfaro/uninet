@@ -447,8 +447,8 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+        /*
         $(function () {
-    
             var table = $('.yajra-datatable').DataTable({
                 "order": [ [0, "desc"] ],
                 language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
@@ -481,12 +481,36 @@
                         orderable: true, 
                         searchable: true
                     },
-                ]
+                ]   
+                
             });
-            
-        });
-
-        
+          
+        });*/
+    
+        $(document).ready(function(){
+            $('.yajra-datatable').DataTable({
+                "order": [ [0, "desc"] ],
+                "language":{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
+                "processing": true,
+                "serverSide": true,
+                pageLength: 50,
+                "ajax":{
+                    "url": "{{ route('clientes.getClientes')  }}",
+                    "dataType": "json",
+                    "type": "GET",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                {data: 'codigo'},
+                {data: 'nombre'},
+                {data: 'telefono1'},
+                {data: 'dui'},
+                {data: 'internet', orderable: true, searchable: true},
+                {data: 'television', orderable: true,  searchable: true},    
+                {data: 'action', orderable: true, searchable: true},    
+                ]	 
+            });   
+        });      
         function eliminar(id){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',

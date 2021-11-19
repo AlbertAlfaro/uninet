@@ -65,7 +65,7 @@ class ClientesController extends Controller
 
 
     }
-
+    /*
     public function getClientes(Request $request){
         if ($request->ajax()) {
             $data = Cliente::where('activo',1)->where('id_sucursal',Auth::user()->id_sucursal)->get();
@@ -112,7 +112,113 @@ class ClientesController extends Controller
                 })
                 ->rawColumns(['action','internet','television'])
                 ->make(true);
+                
         }
+        
+    }*/
+    public function getClientes(Request $request){
+        $columns = array( 
+            0 =>'codigo',
+            1 =>'nombre',
+            2 =>'telefono1',
+            3 => 'dui',
+            4=> 'internet',
+            5=> 'tv',
+            6=> 'id'
+        );
+
+        $totalData = Cliente::where('activo',1)->count();
+
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            $posts = Cliente::where('activo',1)->offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->get();
+        }else {
+            $search = $request->input('search.value'); 
+            $posts =  Cliente::where('activo',1)->where('codigo','LIKE',"%{$search}%")
+            ->orWhere('nombre', 'LIKE',"%{$search}%")
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->get();
+
+            $totalFiltered = Cliente::where('activo',1)->where('codigo','LIKE',"%{$search}%")
+            ->orWhere('nombre', 'LIKE',"%{$search}%")
+            ->count();
+        }
+
+        $data = array();
+        if(!empty($posts))
+        {
+            foreach ($posts as $post)
+            {
+                //$show =  route('posts.show',$post->id);
+                //$edit =  route('posts.edit',$post->id);
+
+                $nestedData['codigo'] = $post->codigo;
+                $nestedData['nombre'] = $post->nombre;
+                $nestedData['telefono1'] = $post->telefono1;
+                $nestedData['dui'] = $post->dui;
+                $internet='';
+                if($post->internet==1){ $internet = "<div class='col-md-9 badge badge-pill badge-success'>Activo</div>";}
+                if($post->internet==0){ $internet = "<div class='col-md-9 badge badge-pill badge-secondary'>Inactivo</div>"; }
+                if($post->internet==2){ $internet = "<div class='col-md-9 badge badge-pill badge-danger'>Suspendido</div>"; }
+                if($post->internet==3){ $internet = "<div class='col-md-9 badge badge-pill badge-warning'>Vencido</div>"; }
+                //return $internet;
+                $nestedData['internet']=$internet;
+                $tv='';
+                if($post->tv==1){ $tv = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                if($post->tv==0){ $tv = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                if($post->tv==2){ $tv = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                if($post->tv==3){ $tv = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                $nestedData['television']=$tv;
+                $actionBtn = '
+                <div class="btn-group dropup mr-1 mt-2">
+                    <button type="button" class="btn btn-primary">Acciones</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="'.route("clientes.gen_cargo",$post->id).'">Generar cargo</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" onclick="detallesCliente('.$post->id.')">Detalles</a>
+                            <a class="dropdown-item" href="'.route("clientes.edit",$post->id).'">Editar</a>
+                            <a class="dropdown-item" href="#" onclick="eliminar('.$post->id.')">Eliminar</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="'.route("clientes.contrato",$post->id).'">Contrato</a>
+                            <a class="dropdown-item" href="'.route("cliente.estado_cuenta.index",$post->id).'">Estado de cuenta</a>
+                            <a class="dropdown-item" href="'.route("cliente.ordenes.index",$post->id).'">Ordenes</a>
+                            <a class="dropdown-item" href="'.route("cliente.suspensiones.index",$post->id).'">Suspenciones</a>
+                            <a class="dropdown-item" href="'.route("cliente.reconexiones.index",$post->id).'">Reconexiones</a>
+                            <a class="dropdown-item" href="'.route("cliente.traslados.index",$post->id).'">Traslados</a>
+                        </div>
+                </div>';
+                $nestedData['action']=$actionBtn;
+
+                //$nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
+                //$nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
+                //                    &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>";
+                $data[] = $nestedData;
+
+            }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+        );
+
+        echo json_encode($json_data); 
     }
 
     public function create(){

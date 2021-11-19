@@ -31,7 +31,8 @@ class HomeController extends Controller
     public function index()
     {
 
-        $clientes = Cliente::count();
+        $cliente = Cliente::where('activo',1)->get();
+        $clientes=$cliente->count();
         $fecha_inicio = date('Y-m-d 00:00:00');
         $fecha_fin = date('Y-m-d 23:59:59');
         $factura = Factura::whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();

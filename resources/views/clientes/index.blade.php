@@ -426,7 +426,7 @@
                        
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary waves-effect">Imprimir</button>
+                       
                         <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -465,13 +465,13 @@
                         data: 'internet', 
                         name: 'internet', 
                         orderable: true, 
-                        searchable: true
+                        //searchable: true
                     },
                     {
                         data: 'television', 
                         name: 'television', 
                         orderable: true, 
-                        searchable: true
+                        //searchable: true
                     },
                    
                     
@@ -479,7 +479,7 @@
                         data: 'action', 
                         name: 'action', 
                         orderable: true, 
-                        searchable: true
+                        //searchable: true
                     },
                 ]   
                 

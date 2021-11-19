@@ -332,9 +332,9 @@ Gestión de Clientes
             
                                             <div class="row">
                                                 <div class="form-group row col-md-12">
-                                                    <label for="example-text-input" class="col-md-4 col-form-label">Nombre del dueño *</label>
+                                                    <label for="example-text-input" class="col-md-4 col-form-label">Nombre del dueño </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" type="text"  id="nombre_dueno" name="nombre_dueno" required>
+                                                        <input class="form-control" type="text"  id="nombre_dueno" name="nombre_dueno" >
                                                     </div>
                                                 </div>
                                                 
@@ -530,7 +530,7 @@ Gestión de Clientes
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="row">
-                                                            <div class="form-group row col-md-12">
+                                                            <div class="form-group row col-md-12"> 
                                                                 <label for="example-text-input" class="col-md-5 col-form-label">Primer fecha de facturación</label>
                                                                 <div class="col-md-7">
                                                                     <input class="form-control datepicker" type="text"  id="fecha_primer_fact" name="fecha_primer_fact" autocomplete="off">
@@ -664,7 +664,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato </label>
                                                                 <div class="col-md-7">
-                                                                    <input class="form-control datepicker" type="text"  id="contrato_vence" name="contrato_vence" autocomplete="off">
+                                                                    <input class="form-control" type="text"  id="contrato_vence" name="contrato_vence" autocomplete="off" readonly>
                                                                     
                                                                 </div>
                                                             </div>
@@ -1021,7 +1021,7 @@ Gestión de Clientes
                                                             <div class="form-group row col-md-12">
                                                                 <label for="example-text-input" class="col-md-5 col-form-label">Fecha vence contrato </label>
                                                                 <div class="col-md-7">
-                                                                    <input class="form-control datepicker" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" autocomplete="off">
+                                                                    <input class="form-control" type="text"  id="contrato_vence_tv" name="contrato_vence_tv" autocomplete="off" readonly>
                                                                     
                                                                 </div>
                                                             </div>

@@ -102,7 +102,13 @@ class FpdfReportes extends Fpdf{
 
             $this->Cell(13,7,utf8_decode($row->codigo),0,0,'C');
             $this->Cell(73,7,utf8_decode($row->nombre),0,0,'');
-            $this->Cell(26,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
+            if($row->id_municipio!=""){
+
+                $this->Cell(26,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
+            }else{
+                $this->Cell(26,7,utf8_decode(''),0,0,'');
+
+            }
             $this->Cell(20,7,utf8_decode($row->telefono1),0,0,'C');
             $this->Cell(20,7,utf8_decode($row->dui),0,0,'C');
             if($row->internet==3){

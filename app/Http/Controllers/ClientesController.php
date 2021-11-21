@@ -2191,74 +2191,123 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
     }
 
     public function getContratos(Request $request){
+        $columns = array( 
+            0 =>'numero_contrato',
+            1 =>'nombre',
+            2 =>'fecha_inicio',
+            3 => 'fecha_fin',
+            4=> 'identificador',
+            5=> 'activo',
+            6=> 'id'
+        );
+        //$totalData = Cliente::where('activo',1)->count();
+        $contrato_tv= Tv::select('tvs.id','clientes.nombre','tvs.id_cliente','tvs.numero_contrato','tvs.fecha_instalacion','tvs.contrato_vence','tvs.identificador','tvs.activo')
+        ->join('clientes','tvs.id_cliente','=','clientes.id');
 
-        if ($request->ajax()) {
-            $contrato_tv= Tv::select('tvs.id','clientes.nombre','tvs.id_cliente','tvs.numero_contrato','tvs.fecha_instalacion','tvs.contrato_vence','tvs.identificador','tvs.activo')
-                            ->join('clientes','tvs.id_cliente','=','clientes.id');
+        $totalData= Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
+            ->join('clientes','internets.id_cliente','=','clientes.id')
+            ->unionAll($contrato_tv)
+            ->count();
 
-            $data= Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
-                                ->join('clientes','internets.id_cliente','=','clientes.id')
-                                ->unionAll($contrato_tv)
-                                ->get();
-         
-            return Datatables()->of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-                    $fecha_entrada = strtotime($row->contrato_vence); $id=0;
-                    $cmstado ='';
-                    if($fecha_actual<$fecha_entrada && $id !=0 ){
-                        $cmstado = '<a class="dropdown-item" href="'.url('contrato/activo/'.$row->id.'/'.$row->identificador).'" >Cambiar estado</a></div></div>';
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
 
-                    }
-                    $actionBtn = '<div class="btn-group mr-1 mt-2">
-                    <button type="button" class="btn btn-primary">Acciones</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="'.url('contrato/vista/'.$row->id.'/'.$row->identificador).'" target="_blank">Ver contrato</a>'.$cmstado;
-                    return $actionBtn;
-                })
-                ->addColumn('identificador', function($row){
-                    $identificador='';
-                    if($row->identificador==1){ $identificador = '<div class="col-md-9 badge badge-pill badge-primary">Internet </div>';}
-                    if($row->identificador==0){ $identificador = '<div class="col-md-9 badge badge-pill badge-light">Televisión </div>'; }
-                   
-                    return $identificador;
+        if(empty($request->input('search.value')))
+        {            
+            $posts = Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
+            ->join('clientes','internets.id_cliente','=','clientes.id')
+            ->unionAll($contrato_tv)
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->get();
+        }else {
+            $search = $request->input('search.value'); 
+            $posts =Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
+            ->join('clientes','internets.id_cliente','=','clientes.id')
+            ->unionAll($contrato_tv)  
+            ->where('numero_contrato','LIKE',"%{$search}%")
+            ->orWhere('nombre', 'LIKE',"%{$search}%")
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->get();
 
-                })
-                ->addColumn('activo', function($row){
-                    $activo='';
-                    if($row->activo==1){ $activo = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
-                    if($row->activo==0){ $activo = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
-                    if($row->activo==2){ $activo = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
-                    if($row->activo==3){ $activo = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
-                    return $activo;
-
-                })
-                ->addColumn('fecha_inicio', function($row){
-                    $fecha_inicio='';
-                    if (isset($row->fecha_instalacion)==1){
-                        $fecha_inicio = $row->fecha_instalacion->format('d/m/Y');
-                    }
-                   
-                    return $fecha_inicio;
-
-                })
-                ->addColumn('fecha_fin', function($row){
-                    $fecha_fin = '';
-                    if (isset($row->contrato_vence)==1){
-                        $fecha_fin = $row->contrato_vence->format('d/m/Y');
-                    }
-                  
-                    return $fecha_fin;
-
-                })
-                ->rawColumns(['action','identificador','activo','fecha_fin','fecha_inicio'])
-                ->make(true);
+            $totalFiltered = Internet::select('internets.id','clientes.nombre','internets.id_cliente','internets.numero_contrato','internets.fecha_instalacion','internets.contrato_vence','internets.identificador','internets.activo')
+            ->join('clientes','internets.id_cliente','=','clientes.id')
+            ->unionAll($contrato_tv)
+            ->where('numero_contrato','LIKE',"%{$search}%")
+            ->orWhere('nombre', 'LIKE',"%{$search}%")
+            ->count();
         }
 
+        $data = array();
+        if(!empty($posts))
+        {
+            foreach ($posts as $row)
+            {
+                //$show =  route('posts.show',$post->id);
+                //$edit =  route('posts.edit',$post->id);
+
+                $nestedData['numero_contrato'] = $row->numero_contrato;
+                $nestedData['nombre'] = $row->nombre;
+                //------------------------------------------------
+                $fecha_inicio='';
+                if (isset($row->fecha_instalacion)==1){
+                    $fecha_inicio = $row->fecha_instalacion->format('d/m/Y');
+                }
+                $nestedData['fecha_inicio'] = $fecha_inicio;
+                //-------------------------------------------------
+                $fecha_fin='';
+                if (isset($row->contrato_vence)==1){
+                    $fecha_fin = $row->contrato_vence->format('d/m/Y');
+                }
+                $nestedData['fecha_fin'] = $fecha_fin;
+                //--------------------------------------------------
+                $identificador='';
+                if($row->identificador==1){ $identificador = '<div class="col-md-9 badge badge-pill badge-primary">Internet </div>';}
+                if($row->identificador==0){ $identificador = '<div class="col-md-9 badge badge-pill badge-light">Televisión </div>'; }
+                $nestedData['identificador'] =$identificador;
+                //---------------------------------------------------
+                $activo='';
+                if($row->activo==1){ $activo = '<div class="col-md-9 badge badge-pill badge-success">Activo</div>';}
+                if($row->activo==0){ $activo = '<div class="col-md-9 badge badge-pill badge-secondary">Inactivo</div>'; }
+                if($row->activo==2){ $activo = '<div class="col-md-9 badge badge-pill badge-danger">Suspendido</div>'; }
+                if($row->activo==3){ $activo = '<div class="col-md-9 badge badge-pill badge-warning">Vencido</div>'; }
+                $nestedData['activo'] =$activo;
+                //----------------------------------------------------
+                $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+                $fecha_entrada = strtotime($row->contrato_vence); $id=0;
+                $cmstado ='';
+                if($fecha_actual<$fecha_entrada && $id !=0 ){
+                    $cmstado = '<a class="dropdown-item" href="'.url('contrato/activo/'.$row->id.'/'.$row->identificador).'" >Cambiar estado</a></div></div>';
+                }
+                $actionBtn = '<div class="btn-group mr-1 mt-2">
+                <button type="button" class="btn btn-primary">Acciones</button>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                <a class="dropdown-item" href="'.url('contrato/vista/'.$row->id.'/'.$row->identificador).'" target="_blank">Ver contrato</a>'.$cmstado;
+                $nestedData['action']=$actionBtn;
+
+                //$nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
+                //$nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
+                //                    &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>";
+                $data[] = $nestedData;
+
+            }
+        }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+        );
+        echo json_encode($json_data); 
     }
 
     public function filtro_contratos(Request $request){

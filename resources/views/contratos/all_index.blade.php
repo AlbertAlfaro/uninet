@@ -122,9 +122,32 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
-
+    $(document).ready(function(){
+        $('.yajra-datatable').DataTable({
+            "order": [ [0, "desc"] ],
+            "language":{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
+            "processing": true,
+            "serverSide": true,
+            pageLength: 50,
+            "ajax":{
+                "url": "{{ route('contrato.getContrato')  }}",
+                "dataType": "json",
+                "type": "GET",
+                "data":{ _token: "{{csrf_token()}}"}
+            },
+            "columns": [
+                {data: 'numero_contrato'},
+                {data: 'nombre'},
+                {data: 'fecha_inicio'},
+                {data: 'fecha_fin'},
+                {data: 'identificador', orderable: true, searchable: true},
+                {data: 'activo', orderable: true,  searchable: true},    
+                {data: 'action', orderable: true, searchable: true},    
+            ]	 
+        });   
+    }); 
+/*
 $(function () {
-    
     var table = $('.yajra-datatable').DataTable({
         "order": [ [0, "desc"] ],
         language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
@@ -177,9 +200,7 @@ $(function () {
         ]
     });
     
-    });
-        
-   
+    });*/
 
     $( "#filtro" ).change(function() {
         var seleccion = $("#filtro").val();

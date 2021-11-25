@@ -143,14 +143,22 @@ class ClientesController extends Controller
             ->get();
         }else {
             $search = $request->input('search.value'); 
-            $posts =  Cliente::where('activo',1)->where('codigo','LIKE',"%{$search}%")
+            $posts =  Cliente::where('activo',1)
+            //->where( function($query) {
+            //    $query->where('codigo', 'LIKE', "%{$search}%")->orWhere('nombre', 'LIKE', "%{$search}%");
+            //})
+            ->where('codigo','LIKE',"%{$search}%")
             ->orWhere('nombre', 'LIKE',"%{$search}%")
             ->offset($start)
             ->limit($limit)
             ->orderBy($order,$dir)
             ->get();
 
-            $totalFiltered = Cliente::where('activo',1)->where('codigo','LIKE',"%{$search}%")
+            $totalFiltered = Cliente::where('activo',1)
+            //->where( function($query) {
+            //    $query->where('codigo', 'LIKE', "%{$search}%")->orWhere('nombre', 'LIKE', "%{$search}%");
+            //})
+            ->where('codigo','LIKE',"%{$search}%")
             ->orWhere('nombre', 'LIKE',"%{$search}%")
             ->count();
         }

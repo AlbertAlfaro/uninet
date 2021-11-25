@@ -27,7 +27,7 @@ class FpdfClass extends Fpdf{
     }
 
     // Pie de página
-    function Footer()
+    /*function Footer()
     {
         // Posición: a 1,5 cm del final
         $this->SetY(-15);
@@ -35,6 +35,6 @@ class FpdfClass extends Fpdf{
         $this->SetFont('Arial','I',8);
         // Número de página
         $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-    }
+    }*/
 
 }

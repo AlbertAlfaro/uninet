@@ -144,7 +144,7 @@ class ClientesController extends Controller
             ->get();
         }else {
             $search = $request->input('search.value');
-            $posts =  DB::table('clientes')->orwhere('codigo','LIKE',"%{$search}%")
+            $posts =  Cliente::orwhere('codigo','LIKE',"%{$search}%")
             ->orWhere('nombre', 'LIKE',"%{$search}%")
             ->where('activo',1)
             //$posts=Cliente::orwhere('codigo','LIKE','%'.$search.'%')->orwhere('nombre','LIKE','%'.$search.'%')->where('activo',1)

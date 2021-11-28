@@ -326,7 +326,7 @@
                                                             <td id="mac"></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Resepción:</th>
+                                                            <th>Recepción:</th>
                                                             <td id="recepcion"></td>
                                                         </tr>
                                                         <tr>

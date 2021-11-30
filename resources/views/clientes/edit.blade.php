@@ -202,7 +202,7 @@ Gestión de Clientes
                                                             
                                                             
                                                             @foreach ($obj_departamento as $obj_item)
-                                                                    <option value="{{$obj_item->id}}" @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif>{{$obj_item->nombre}}</option>
+                                                                    <option value="{{$obj_item->id}}" @if($cliente->id_municipio !="") @if($cliente->get_municipio->get_departamento->id==$obj_item->id) selected @endif @endif>{{$obj_item->nombre}}</option>
                                                                     
                                                             @endforeach
                                                             

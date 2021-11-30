@@ -365,8 +365,8 @@ class ReportesController extends Controller
         $fpdf->Ln();
         //$fpdf->BasicTable_clientes($clientes);
         $fpdf->SetFont('Arial','B',9);
+        $fpdf->Cell(20,7,utf8_decode('Cobrador'),1,0,'C');
         $fpdf->Cell(20,7,utf8_decode('Documento'),1,0,'C');
-        $fpdf->Cell(20,7,utf8_decode('Número'),1,0,'C');
         $fpdf->Cell(20,7,utf8_decode('Código'),1,0,'C');
         $fpdf->Cell(75,7,utf8_decode('Cliente'),1,0,'C');
         $fpdf->Cell(20,7,utf8_decode('Fecha'),1,0,'C');
@@ -378,8 +378,8 @@ class ReportesController extends Controller
         foreach($facturas as $row){
             if($row->tipo_documento==1){$tipo='FAC';}
             if($row->tipo_documento==2){$tipo='CRE';}
-            $fpdf->Cell(20,7,utf8_decode($tipo),0,0,'');
-            $fpdf->Cell(20,7,utf8_decode($row->numero_documento),0,0,'C');
+            $fpdf->Cell(20,7,utf8_decode($row->get_cobrador->nombre),0,0,'');
+            $fpdf->Cell(20,7,utf8_decode($tipo.'-'.$row->numero_documento),0,0,'C');
             $fpdf->Cell(20,7,utf8_decode($row->get_cliente->codigo),0,0,'C');
             $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
             $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');

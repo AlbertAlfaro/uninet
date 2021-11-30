@@ -136,22 +136,26 @@ class ClientesController extends Controller
         $dir = $request->input('order.0.dir');
 
         if(empty($request->input('search.value')))
-        {            
-            $posts = Cliente::where('activo',1)->offset($start)
+        {   
+            $posts = Cliente::where('activo',1)
+            ->offset($start)
             ->limit($limit)
             ->orderBy($order,$dir)
             ->get();
         }else {
-            $search = $request->input('search.value'); 
-            $posts =  Cliente::where('activo',1)->where('codigo','LIKE',"%{$search}%")
+            $search = $request->input('search.value');
+            $posts =  Cliente::orwhere('codigo','LIKE',"%{$search}%")
             ->orWhere('nombre', 'LIKE',"%{$search}%")
+            ->where('activo',1)
+            //$posts=Cliente::orwhere('codigo','LIKE','%'.$search.'%')->orwhere('nombre','LIKE','%'.$search.'%')->where('activo',1)
             ->offset($start)
             ->limit($limit)
             ->orderBy($order,$dir)
             ->get();
 
-            $totalFiltered = Cliente::where('activo',1)->where('codigo','LIKE',"%{$search}%")
+            $totalFiltered = Cliente::orwhere('codigo','LIKE',"%{$search}%")
             ->orWhere('nombre', 'LIKE',"%{$search}%")
+            ->where('activo',1)
             ->count();
         }
 

@@ -598,7 +598,12 @@ class ClientesController extends Controller
         }
 
         $cuota_mensual = explode(" ", $request->cuota_mensual);
-        $costo_instalacion = explode(" ",$request->costo_instalacion);
+        if($request->costo_instalacion!=""){
+
+            $costo_instalacion = explode(" ",$request->costo_instalacion);
+        }else{
+            $costo_instalacion = array(0.00,0.00);
+        }
 
         if($internet==1){
             $isset_internet = Internet::where('id_cliente',$id_cliente)->get();
@@ -704,7 +709,14 @@ class ClientesController extends Controller
         }
 
         $cuota_mensual_tv = explode(" ", $request->cuota_mensual_tv);
-        $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+        //$costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+
+        if($request->costo_instalacion!=""){
+
+            $costo_instalacion = explode(" ",$request->costo_instalacion_tv);
+        }else{
+            $costo_instalacion = array(0.00,0.00);
+        }
 
         if($tv==1){
             $isset_tv = Tv::where('id_cliente',$id_cliente)->get();

@@ -166,7 +166,8 @@ Route::group(['middleware' => ['permission:Clientes']], function () {
     //Estados de cuenta cliente
     Route::get('cliente/estado_cuenta/{id}',[App\Http\Controllers\ClientesController::class ,'estado_cuenta'])->middleware('permission:estado_cuenta')->name('cliente.estado_cuenta.index');
     Route::get('cliente/estado_cuenta_pdf/{id}/{tipo_servicio}/{fecha_i}/{fecha_f}',[App\Http\Controllers\ClientesController::class ,'estado_cuenta_pdf'])->middleware('permission:estado_cuenta')->name('cliente.estado_cuenta.pdf');
-     
+    Route::get('cliente/estado_cuenta/destroy/{id}',[App\Http\Controllers\ClientesController::class ,'estado_cuenta_destroy'])->middleware('permission:destroy_estado_cuenta')->name('cliente.estado_cuenta.destroy');
+
     //grupo ordenes
     Route::get('ordenes',[App\Http\Controllers\OrdenController::class ,'index'])->middleware('permission:Ordenes')->name('ordenes.index');
     Route::get('ordenes/create',[App\Http\Controllers\OrdenController::class ,'create'])->middleware('permission:create_orden')->name('ordenes.create');

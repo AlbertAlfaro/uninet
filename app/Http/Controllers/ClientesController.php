@@ -3244,6 +3244,15 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
     }
 
+    public function estado_cuenta_destroy($id){
+        Abono::destroy($id);
+        $obj_controller_bitacora=new BitacoraController();	
+        $obj_controller_bitacora->create_mensaje('Estado de cuenta eliminado id: '.$id);
+        
+        flash()->success("Registro eliminado exitosamente!")->important();
+        return back();
+    }
+
     public function estado_cuenta_pdf($id,$tipo_servicio,$fecha_i,$fecha_f){
 
         $cliente = Cliente::find($id);

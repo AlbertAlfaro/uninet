@@ -66,6 +66,9 @@
                                     <th>Tipo servicio</th>
                                     <th>Cargo</th>
                                     <th>Abono</th>
+                                    @can('destroy_estado_cuenta')
+                                    <th>Acciones</th>
+                                    @endcan
                                    
                                 
                                 </tr>
@@ -96,6 +99,11 @@
                                             @if($obj_item->abono!="")@php $dinero = number_format($obj_item->abono,2); @endphp @endif $ {{ number_format($obj_item->abono+$obj_item->cesc_abono,2) }}
                                             
                                          </td>
+                                         @can('destroy_estado_cuenta')
+                                         <td>
+                                            <button class="btn btn-danger" onclick="eliminar({{$obj_item->id}})">Eliminar</button>
+                                         </td>
+                                         @endcan
                                         
                                                 
                                     </tr>
@@ -120,6 +128,9 @@
                                     <th>Tipo servicio</th>
                                     <th>Cargo</th>
                                     <th>Abono</th>
+                                    @can('destroy_estado_cuenta')
+                                    <th>Acciones</th>
+                                    @endcan
                                 
                                 </tr>
                             </thead>
@@ -142,6 +153,11 @@
                                             @if($obj_item->abono!="") $ @endif {{ number_format($obj_item->abono) }}
                                              
                                          </td>
+                                         @can('destroy_estado_cuenta')
+                                         <td>
+                                            <button class="btn btn-danger" onclick="eliminar({{$obj_item->id}})">Eliminar</button>
+                                         </td>
+                                         @endcan
                                                 
                                     </tr>
                                     @endforeach
@@ -211,6 +227,33 @@
         var table1 = $('#datatable-2').DataTable({"order": [ 2, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
     
 	});
+
+    function eliminar(id){
+            Swal.fire({
+                title: 'Estas seguro de eliminar el registro?',
+                text: 'No podras deshacer esta acción',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                    'Eliminado!',
+                    'Registro eliminado',
+                    'success'
+                    )
+                    window.location.href = "{{ url('cliente/estado_cuenta/destroy') }}/"+id;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                    'Cancelado',
+                    'El registro no fue eliminado :)',
+                    'error'
+                    )
+                    
+                }
+                })      
+        }
         
    
 
@@ -229,32 +272,7 @@
 
 
 
-        function eliminar(id){
-            Swal.fire({
-                title: 'Estas seguro de eliminar el registro?',
-                text: 'No podras desaser esta accion',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
-                }).then((result) => {
-                if (result.value) {
-                    Swal.fire(
-                    'Eliminado!',
-                    'Registro eliminado',
-                    'success'
-                    )
-                    window.location.href = "ordenes/destroy/"+id;
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire(
-                    'Cancelado',
-                    'El registro no fue eliminado :)',
-                    'error'
-                    )
-                    
-                }
-                })      
-        }
+        
 
         $('.datepicker').datepicker({
             format: "dd/mm/yyyy",

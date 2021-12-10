@@ -69,7 +69,7 @@ function dias_pasados($fecha_inicial,$fecha_final){
                                     <th>Fecha de vencimiento</th>
                                     <th>Dias restantes</th>
                                     <th>Estado</th>
-                                    <th>Accion</th>
+                                    
                                 
                                 </tr>
                             </thead>
@@ -99,9 +99,7 @@ function dias_pasados($fecha_inicial,$fecha_final){
                                             @if(dias_pasados($obj_item->fecha_vence->format('Y/m/d'),date('Y/m/d')) >0) <div class="col-md-8 badge badge-pill badge-success">A tiempo</div> @endif
                                             @if(dias_pasados($obj_item->fecha_vence->format('Y/m/d'),date('Y/m/d')) <0) <div class="col-md-8 badge badge-pill badge-danger">Vencido</div> @endif
                                         </td>
-                                        <td>
-                                            <button class="btn btn-primary">Facturar</button>
-                                        </td>
+                                       
                                                 
                                     </tr>
                                     @endforeach

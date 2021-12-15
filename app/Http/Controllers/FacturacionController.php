@@ -663,11 +663,11 @@ class FacturacionController extends Controller
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA FINAL | UNINET');
 
-            $fpdf->SetXY(115,20);
+            $fpdf->SetXY(125,18);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
     
-            $fpdf->SetXY(118,36);
+            $fpdf->SetXY(118,35);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
     
@@ -681,11 +681,11 @@ class FacturacionController extends Controller
             $fpdf->Cell(20,10,utf8_decode($direccion));
     
     
-            $fpdf->SetXY(26,56);
+            $fpdf->SetXY(26,55);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dui));
     
-            $fpdf->SetXY(42,63);
+            $fpdf->SetXY(42,62);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->telefono1));
     
@@ -699,17 +699,17 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($letras));
 
-            $fpdf->SetXY(16,155);
+            $fpdf->SetXY(18,154);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
 
 
-            $fpdf->SetXY(133,163);
+            $fpdf->SetXY(134,161);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
 
 
-            $fpdf->SetXY(133,198);
+            $fpdf->SetXY(134,197);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
            
@@ -823,7 +823,7 @@ class FacturacionController extends Controller
                     $fpdf->SetXY(20,$y);
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
                     $y-=3;
-                    $fpdf->SetXY(132,$y);
+                    $fpdf->SetXY(134,$y);
                     $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=10;
     

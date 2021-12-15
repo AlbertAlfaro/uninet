@@ -655,7 +655,7 @@ class FacturacionController extends Controller
             $tipo_pago = 'POST';
         }
 
-        if($factura->tipo_documento==1){
+        if($factura->tipo_documento==1){//imprimo factura
             
             $fpdf = new FpdfFactura('P','mm', array(155,240));
             $fpdf->AddFont('Arial','','ARIAL.php');
@@ -667,15 +667,15 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
     
-            $fpdf->SetXY(115,40);
+            $fpdf->SetXY(115,36);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
     
-            $fpdf->SetXY(20,47);
+            $fpdf->SetXY(20,42);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
     
-            $fpdf->SetXY(22,54);
+            $fpdf->SetXY(22,50);
             $fpdf->SetFont('Arial','',8);
             $direccion = substr($factura->get_cliente->dirreccion,0,50);
             $fpdf->Cell(20,10,utf8_decode($direccion));
@@ -695,16 +695,16 @@ class FacturacionController extends Controller
 
             $letras = $formatter->toInvoice($factura->total, 2, 'DOLARES');
 
-            $fpdf->SetXY(16,164);
+            $fpdf->SetXY(16,160);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($letras));
 
-            $fpdf->SetXY(16,170);
+            $fpdf->SetXY(16,165);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
 
 
-            $fpdf->SetXY(131,165);
+            $fpdf->SetXY(131,160);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
 

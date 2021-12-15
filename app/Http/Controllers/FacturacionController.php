@@ -676,7 +676,7 @@ class FacturacionController extends Controller
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
     
             $fpdf->SetXY(25,48);
-            $fpdf->SetFont('Arial','',8);
+            $fpdf->SetFont('Arial','',9);
             $direccion = substr($factura->get_cliente->dirreccion,0,50);
             $fpdf->Cell(20,10,utf8_decode($direccion));
     
@@ -751,7 +751,7 @@ class FacturacionController extends Controller
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
         
             $fpdf->SetXY(23,63);
-            $fpdf->SetFont('Arial','',8);
+            $fpdf->SetFont('Arial','',9);
             $direccion = substr($factura->get_cliente->dirreccion,0,45);
             $fpdf->Cell(20,10,utf8_decode($direccion));
         

@@ -667,25 +667,25 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
     
-            $fpdf->SetXY(116,36);
+            $fpdf->SetXY(118,36);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
     
-            $fpdf->SetXY(20,41);
+            $fpdf->SetXY(22,42);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
     
-            $fpdf->SetXY(23,48);
+            $fpdf->SetXY(25,48);
             $fpdf->SetFont('Arial','',8);
             $direccion = substr($factura->get_cliente->dirreccion,0,50);
             $fpdf->Cell(20,10,utf8_decode($direccion));
     
     
-            $fpdf->SetXY(24,55);
+            $fpdf->SetXY(26,56);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dui));
     
-            $fpdf->SetXY(40,62);
+            $fpdf->SetXY(42,63);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->telefono1));
     
@@ -704,12 +704,12 @@ class FacturacionController extends Controller
             $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
 
 
-            $fpdf->SetXY(131,162);
+            $fpdf->SetXY(133,163);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
 
 
-            $fpdf->SetXY(130,198);
+            $fpdf->SetXY(133,198);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
            

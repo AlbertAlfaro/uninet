@@ -837,11 +837,11 @@ class FacturacionController extends Controller
                     $fpdf->Cell(20,10,utf8_decode(1));
                     $fpdf->SetXY(20,$y);
                     $fpdf->Cell(20,10,utf8_decode($concepto));
-                    $y+=7;
+                    $y+=5;
                     $fpdf->SetXY(20,$y);
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
-                    $y-=7;
-                    $fpdf->SetXY(132,$y);
+                    $y-=3;
+                    $fpdf->SetXY(134,$y);
                     $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=14;
     

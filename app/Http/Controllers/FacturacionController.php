@@ -663,29 +663,29 @@ class FacturacionController extends Controller
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA FINAL | UNINET');
 
-            $fpdf->SetXY(115,32);
+            $fpdf->SetXY(115,20);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
     
-            $fpdf->SetXY(115,36);
+            $fpdf->SetXY(116,36);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
     
-            $fpdf->SetXY(20,42);
+            $fpdf->SetXY(20,41);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
     
-            $fpdf->SetXY(22,50);
+            $fpdf->SetXY(23,48);
             $fpdf->SetFont('Arial','',8);
             $direccion = substr($factura->get_cliente->dirreccion,0,50);
             $fpdf->Cell(20,10,utf8_decode($direccion));
     
     
-            $fpdf->SetXY(23,55);
+            $fpdf->SetXY(24,55);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dui));
     
-            $fpdf->SetXY(39,62);
+            $fpdf->SetXY(40,62);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->telefono1));
     
@@ -699,17 +699,17 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($letras));
 
-            $fpdf->SetXY(16,165);
+            $fpdf->SetXY(16,155);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
 
 
-            $fpdf->SetXY(131,160);
+            $fpdf->SetXY(131,162);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
 
 
-            $fpdf->SetXY(131,200);
+            $fpdf->SetXY(130,198);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
            
@@ -822,7 +822,7 @@ class FacturacionController extends Controller
                     $y+=5;
                     $fpdf->SetXY(20,$y);
                     $fpdf->Cell(20,10,utf8_decode($concepto1));
-                    $y-=5;
+                    $y-=3;
                     $fpdf->SetXY(132,$y);
                     $fpdf->Cell(20,10,utf8_decode('$ '.number_format($value->precio,2)));
                     $y+=10;

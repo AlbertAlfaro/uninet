@@ -736,7 +736,8 @@ class FacturacionController extends Controller
         
             $fpdf->SetXY(115,45);
             $fpdf->SetFont('Arial','',10);
-            $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->numero_registro));
+            //$fpdf->Cell(20,10,utf8_decode($factura->get_cliente->numero_registro));
+            $fpdf->Cell(20,10,utf8_decode("0000 0000"));
         
             $fpdf->SetXY(115,58);
             $fpdf->SetFont('Arial','',10);

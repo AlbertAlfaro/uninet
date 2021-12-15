@@ -726,7 +726,7 @@ class FacturacionController extends Controller
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA CREDITO| UNINET');
 
-            $fpdf->SetXY(125,19);
+            $fpdf->SetXY(125,20);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
         
@@ -746,21 +746,21 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->giro));
         
-            $fpdf->SetXY(20,47);
+            $fpdf->SetXY(20,48);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
         
-            $fpdf->SetXY(23,57);
+            $fpdf->SetXY(23,58);
             $direccion = substr($factura->get_cliente->dirreccion,0,45);
             $fpdf->SetFont('Arial','',9);
             $fpdf->Cell(20,10,utf8_decode($direccion));
         
             
-            $fpdf->SetXY(23,62);
+            $fpdf->SetXY(23,63);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->nombre));
         
-            $fpdf->SetXY(65,62);
+            $fpdf->SetXY(65,63);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->get_departamento->nombre));
         

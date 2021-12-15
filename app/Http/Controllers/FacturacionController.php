@@ -726,19 +726,19 @@ class FacturacionController extends Controller
             $fpdf->AddPage();
             $fpdf->SetTitle('FACTURA CREDITO| UNINET');
 
-            $fpdf->SetXY(125,18);
+            $fpdf->SetXY(125,19);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
         
-            $fpdf->SetXY(115,48);
+            $fpdf->SetXY(115,47);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
         
-            $fpdf->SetXY(115,53);
+            $fpdf->SetXY(115,45);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->numero_registro));
         
-            $fpdf->SetXY(115,63);
+            $fpdf->SetXY(115,58);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nit));
         
@@ -746,21 +746,21 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->giro));
         
-            $fpdf->SetXY(20,48);
+            $fpdf->SetXY(20,47);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
         
-            $fpdf->SetXY(23,58);
+            $fpdf->SetXY(23,57);
             $direccion = substr($factura->get_cliente->dirreccion,0,45);
             $fpdf->SetFont('Arial','',9);
             $fpdf->Cell(20,10,utf8_decode($direccion));
         
             
-            $fpdf->SetXY(23,63);
+            $fpdf->SetXY(23,62);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->nombre));
         
-            $fpdf->SetXY(65,63);
+            $fpdf->SetXY(65,62);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->get_departamento->nombre));
         

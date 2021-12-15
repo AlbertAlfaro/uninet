@@ -681,11 +681,11 @@ class FacturacionController extends Controller
             $fpdf->Cell(20,10,utf8_decode($direccion));
     
     
-            $fpdf->SetXY(22,61);
+            $fpdf->SetXY(23,55);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->dui));
     
-            $fpdf->SetXY(39,68);
+            $fpdf->SetXY(39,62);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->telefono1));
     

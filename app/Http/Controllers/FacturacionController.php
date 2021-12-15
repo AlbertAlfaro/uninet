@@ -730,11 +730,11 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('No. '.$factura->numero_documento));
         
-            $fpdf->SetXY(115,53);
+            $fpdf->SetXY(115,48);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode(date('d/m/Y')));
         
-            $fpdf->SetXY(115,58);
+            $fpdf->SetXY(115,53);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->numero_registro));
         
@@ -746,21 +746,21 @@ class FacturacionController extends Controller
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->giro));
         
-            $fpdf->SetXY(20,53);
+            $fpdf->SetXY(20,48);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->nombre));
         
-            $fpdf->SetXY(23,63);
+            $fpdf->SetXY(23,58);
             $direccion = substr($factura->get_cliente->dirreccion,0,45);
             $fpdf->SetFont('Arial','',9);
             $fpdf->Cell(20,10,utf8_decode($direccion));
         
             
-            $fpdf->SetXY(23,68);
+            $fpdf->SetXY(23,63);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->nombre));
         
-            $fpdf->SetXY(65,68);
+            $fpdf->SetXY(65,63);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode($factura->get_cliente->get_municipio->get_departamento->nombre));
         
@@ -780,21 +780,21 @@ class FacturacionController extends Controller
             $fpdf->Cell(20,10,utf8_decode('TIPO DE PAGO: '.$tipo_pago));
 
 
-            $fpdf->SetXY(131,161);
+            $fpdf->SetXY(131,156);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->sumas,2)));
 
-            $fpdf->SetXY(131,169);
+            $fpdf->SetXY(131,164);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->iva,2)));
 
-            $fpdf->SetXY(131,177);
+            $fpdf->SetXY(131,172);
             $fpdf->SetFont('Arial','',10);
             $fpdf->Cell(20,10,utf8_decode('$ '.number_format($factura->total,2)));
 
-            $fpdf->SetXY(131,184);
-            $fpdf->SetFont('Arial','',10);
-            $fpdf->Cell(20,10,utf8_decode('$ '.number_format(0,2)));
+            //$fpdf->SetXY(131,184);
+            //$fpdf->SetFont('Arial','',10);
+            //$fpdf->Cell(20,10,utf8_decode('$ '.number_format(0,2)));
 
 
             $fpdf->SetXY(131,201);

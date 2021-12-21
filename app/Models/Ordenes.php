@@ -21,4 +21,8 @@ class Ordenes extends Model
     {
         return $this->hasOne('App\Models\Tecnicos','id','id_tecnico');
     }
+    public function get_usuario()
+    {
+        return $this->hasOne('App\Models\User','id','id_usuario');
+    }
 }

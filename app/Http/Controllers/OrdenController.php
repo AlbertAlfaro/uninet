@@ -515,7 +515,7 @@ class OrdenController extends Controller
         $fpdf->SetXY(165,130);
         $fpdf->Cell(40,5,utf8_decode("Autorizado"),0,0,'C');
         $fpdf->SetXY(10,135);
-        $fpdf->Cell(40,5,utf8_decode("Creado por: ".Auth::user()->name),0,0,'L');
+        $fpdf->Cell(40,5,utf8_decode("Creado por: ".$orden->get_usuario->name),0,0,'L');
         $fpdf->Line(10,140,205,140,225,140);
   
         $fpdf->Output();

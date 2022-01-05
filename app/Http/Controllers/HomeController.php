@@ -35,7 +35,7 @@ class HomeController extends Controller
         $clientes=$cliente->count();
         $fecha_inicio = date('Y-m-d 00:00:00');
         $fecha_fin = date('Y-m-d 23:59:59');
-        $factura = Factura::whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
+        $factura = Factura::where('anulada',0)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
         $total_fac=0;
         foreach ($factura as $value) {
            $total_fac+=$value->total;

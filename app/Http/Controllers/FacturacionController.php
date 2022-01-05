@@ -181,7 +181,8 @@ class FacturacionController extends Controller
     public function anular($id)
     {
         Factura::where('id',$id)->update(['anulada' =>1]);
-        Abono::where('id_factura',$id)->update(['anulado' =>1]);
+        Abono::where('id_factura',$id)->where('cargo',0.00)->update(['anulado' =>1]);
+        Abono::where('id_factura',$id)->where('abono',0.00)->update(['pagado'=>0]);
         $factura = Factura::find($id);
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Se anulo '.$factura->tipo.': '.$factura->numero_documento);
@@ -347,8 +348,9 @@ class FacturacionController extends Controller
                         if($abono)
                         {
                             if($fila['id']!=0)
-                            {
+                            {   //se pone que se pago el cargo y se le asigna el id factura al cargo
                                 Abono::where('id',$fila['id'])->update(['pagado' =>'1']);
+                                Abono::where('id',$fila['id'])->update(['id_factura' =>$id_factura]);
                             }
                         }
                     }
@@ -805,7 +807,7 @@ class FacturacionController extends Controller
         }
         if($factura->cuota==1){
 
-            $detalle_factura = Abono::where('id_factura',$id)->get();
+            $detalle_factura = Abono::where('id_factura',$id)->where('cargo',0.00)->get();
 
             foreach ($detalle_factura as $value) {
                 if($value->tipo_servicio==1){

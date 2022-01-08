@@ -223,8 +223,8 @@
 
     <script>
         $(document).ready(function() {
-        var table = $('#datatable-1').DataTable({"order": [ 2, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
-        var table1 = $('#datatable-2').DataTable({"order": [ 2, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
+        var table = $('#datatable-1').DataTable({"order": [ 0, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
+        var table1 = $('#datatable-2').DataTable({"order": [ 0, "asc" ],language:{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'}});
     
 	});
 

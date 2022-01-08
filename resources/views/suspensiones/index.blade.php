@@ -72,7 +72,10 @@
                                     @foreach ($suspensiones as $obj_item)
                                     <tr class="filas">
                                         <td>{{$obj_item->numero}}</td>
-                                        <td>{{$obj_item->get_cliente->nombre}}</td>
+                                        <td>
+                                        @if($obj_item->id_cliente!=null)@endif
+
+                                        </td>
                                         <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
                                         <td>{{$obj_item->tipo_servicio}}</td>
                                         <td>{{$obj_item->get_tecnico->nombre}}</td>

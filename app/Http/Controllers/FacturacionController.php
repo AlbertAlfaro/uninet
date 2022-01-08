@@ -929,6 +929,7 @@ class FacturacionController extends Controller
                 'facturas.tipo_documento',
                 'facturas.numero_documento',
                 'facturas.cuota',
+                'facturas.anulada',
                 'facturas.created_at',
                 'cobradors.nombre as nombre_cobrador',
             )
@@ -949,6 +950,7 @@ class FacturacionController extends Controller
                 'facturas.tipo_documento',
                 'facturas.numero_documento',
                 'facturas.cuota',
+                'facturas.anulada',
                 'facturas.created_at',
                 'cobradors.nombre as nombre_cobrador',
             )
@@ -970,6 +972,7 @@ class FacturacionController extends Controller
                 'facturas.tipo_documento',
                 'facturas.numero_documento',
                 'facturas.cuota',
+                'facturas.anulada',
                 'facturas.created_at',
                 'cobradors.nombre as nombre_cobrador',
             )

@@ -101,7 +101,7 @@ class FacturacionController extends Controller
             return $xdatos;
         }else{
             $factura=Factura::find($id);
-            $detalle=Abono::where('id_factura',$id)->get();
+            $detalle=Abono::where('id_factura',$id)->where('cargo','0.00')->get();
             if($detalle->count()>0)
             {
                 foreach ($detalle as $query){

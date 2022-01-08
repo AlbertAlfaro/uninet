@@ -147,7 +147,6 @@ class ClientesController extends Controller
             $posts =  Cliente::orwhere('codigo','LIKE',"%{$search}%")
             ->orWhere('nombre', 'LIKE',"%{$search}%")
             ->where('activo',1)
-            //$posts=Cliente::orwhere('codigo','LIKE','%'.$search.'%')->orwhere('nombre','LIKE','%'.$search.'%')->where('activo',1)
             ->offset($start)
             ->limit($limit)
             ->orderBy($order,$dir)

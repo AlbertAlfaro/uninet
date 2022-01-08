@@ -265,6 +265,7 @@ Route::group(['middleware' => ['permission:Facturacion']], function () {
     Route::get('facturacion/verfactura/{id}/{cuota}',[App\Http\Controllers\FacturacionController::class ,'show'])->middleware('permission:Facturacion')->name('facturacion.verfactura');
     Route::get('facturacion/imprimir_factura/{id}/{efectivo}/{cambio}',[App\Http\Controllers\FacturacionController::class ,'imprimir_factura'])->middleware('permission:Facturacion')->name('facturacion.imprimir_factura');
 
+    Route::get('facturas/get',[App\Http\Controllers\FacturacionController::class ,'getFacturas'])->middleware('permission:index_cliente')->name('facturas.getFacturas');
 });
 
 Route::get('gen_cobros',[App\Http\Controllers\ClientesController::class ,'gen_cobros'])->name('cobros.generacion');

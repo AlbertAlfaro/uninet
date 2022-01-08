@@ -636,7 +636,7 @@ class FacturacionController extends Controller
     public function index3()
     {
         $obj_factura = Factura::where('id_sucursal',Auth::user()->id_sucursal)->get();
-        return view('facturacion/index3',compact('obj_factura'));
+        return view('facturacion/index3');
     }
     public function imprimir_factura($id,$efectivo,$cambio){
         $factura = Factura::find($id);
@@ -895,6 +895,157 @@ class FacturacionController extends Controller
         }
         $fpdf->Output();
         exit;
+    }
+    //datos para la gestion de facturas
+    public function getFacturas(Request $request){
+        
+        $columns = array( 
+            0 =>'id',
+            1 =>'numero_documento',
+            2 =>'cliente',
+            3 => 'id_cobrador',
+            4 => 'total'
+            //5=> 'fecha',
+           // 6=> 'tipo',
+            //7=> 'estado',
+            //8=> 'id'
+        );
+
+        $totalData = Factura::where('id_sucursal',Auth::user()->id_sucursal)->count();
+
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {   
+            $posts = Factura::select(
+                'clientes.codigo',
+                'clientes.nombre',
+                'facturas.id',
+                'facturas.total',
+                'facturas.tipo_documento',
+                'facturas.numero_documento',
+                'facturas.cuota',
+                'facturas.created_at',
+                'cobradors.nombre as nombre_cobrador',
+            )
+             ->join('clientes','facturas.id_cliente','=','clientes.id')
+             ->join('cobradors','facturas.id_cobrador','=','cobradors.id')
+             ->where('facturas.id_sucursal',Auth::user()->id_sucursal)
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->get();
+        }else{
+            $search = $request->input('search.value');
+            $posts =  Factura::select(
+                'clientes.codigo',
+                'clientes.nombre',
+                'facturas.id',
+                'facturas.total',
+                'facturas.tipo_documento',
+                'facturas.numero_documento',
+                'facturas.cuota',
+                'facturas.created_at',
+                'cobradors.nombre as nombre_cobrador',
+            )
+            ->join('clientes','facturas.id_cliente','=','clientes.id')
+            ->join('cobradors','facturas.id_cobrador','=','cobradors.id')
+            ->orwhere('facturas.numero_documento','LIKE',"%{$search}%")
+            ->orWhere('clientes.nombre', 'LIKE',"%{$search}%")
+            ->orwhere('cobradors.nombre','LIKE',"%{$search}%")
+            ->where('facturas.id_sucursal',Auth::user()->id_sucursal)
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->get();
+            $totalFiltered = Factura::select(
+                'clientes.codigo',
+                'clientes.nombre',
+                'facturas.id',
+                'facturas.total',
+                'facturas.tipo_documento',
+                'facturas.numero_documento',
+                'facturas.cuota',
+                'facturas.created_at',
+                'cobradors.nombre as nombre_cobrador',
+            )
+            ->join('clientes','facturas.id_cliente','=','clientes.id')
+            ->join('cobradors','facturas.id_cobrador','=','cobradors.id')
+            ->orwhere('facturas.numero_documento','LIKE',"%{$search}%")
+            ->orWhere('clientes.nombre', 'LIKE',"%{$search}%")
+            ->orwhere('cobradors.nombre','LIKE',"%{$search}%")
+            ->where('facturas.id_sucursal',Auth::user()->id_sucursal)
+            ->count();
+        }
+
+        $data = array();
+        if(!empty($posts))
+        {
+            foreach ($posts as $post)
+            {
+                $nestedData['id'] = $post->id;
+                $tipo_doc=$post->tipo_documento;
+                if($tipo_doc==1){
+                    $nestedData['numero_documento'] = 'FAC_'.$post->numero_documento;
+                }else{
+                    $nestedData['numero_documento'] = 'CRE_'.$post->numero_documento;
+
+                }
+                $nestedData['cliente'] = $post->nombre;
+                $nestedData['cobrador'] = $post->nombre_cobrador;
+                $nestedData['total'] = '$'.$post->total;
+                $nestedData['fecha'] = $post->created_at->format('d-m-Y');
+                if($post->cuota==1){
+                    $tipo="<div class='col-md-8 badge badge-pill badge-primary'>Cuota </div>";
+                }else{
+                    $tipo="<div class='col-md-8 badge badge-pill badge-secondary'>Manual</div>";
+                }
+                $nestedData['tipo'] = $tipo;
+                if($post->anulada==0){
+                    $estado="<div class='col-md-8 badge badge-pill badge-success'>Finalizada</div>";
+                }else{
+                    $estado="<div class='col-md-8 badge badge-pill badge-danger'>Anulada</div>";
+                }
+                $nestedData['estado'] = $estado;
+                $actionBtn = '<div class="btn-group mr-1 mt-2">
+                <button type="button" class="btn btn-primary">Acciones</button>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" onclick="detalleFactura('.$post->id.','.$post->cuota.')">Ver Factura</a>
+                        <a class="dropdown-item" href="#" onclick="imprimir('.$post->id.')">Imprimir</a>
+                        <a class="dropdown-item" href="#" onclick="anular('.$post->id.')">Anular</a>
+                        <a class="dropdown-item" href="#" onclick="eliminar('.$post->id.','.$post->cuota.')">Eliminar</a>
+                        <div class="dropdown-divider"></div>
+                    
+                    </div>
+                </div>';
+                $nestedData['action']=$actionBtn;
+
+                //$nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
+                //$nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
+                //                    &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>";
+                $data[] = $nestedData;
+
+            }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+        );
+
+        echo json_encode($json_data);
+        /*echo json_encode(
+            SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
+        );*/
     }
 
 }

@@ -31,11 +31,11 @@
                 @include('flash::message')
                 <div class="table-responsive">
 
-					<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+					<table  class="table table-bordered dt-responsive nowrap yajra-datatable" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 						<thead>
 							<tr>
                                 <th>ID</th>
-								<th>Correltivo</th>
+								<th>Documento</th>
 								<th>Cliente</th>
 								<th>Cobrador</th>
                                 <th>Total</th>
@@ -47,62 +47,6 @@
 							</tr>
 						</thead>
 							<tbody>
-								@foreach ($obj_factura as $obj_item)
-								<tr class="filas">
-                                    <td>{{$obj_item->id}}</td>
-									<td>
-                                        @if($obj_item->tipo_documento==1)
-                                            FAC_{{$obj_item->numero_documento}}
-                                        @else
-                                            CRE_{{$obj_item->numero_documento}}
-                                        @endif
-                                    </td>
-									<td>{{$obj_item->get_cliente->nombre}}</td>
-                                    <td>{{$obj_item->get_cobrador->nombre}}</td>
-									<td>${{number_format($obj_item->total,2)}}</td>
-                                    <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
-                                    <td>
-                                        @if($obj_item->cuota==1)
-                                            <div class="col-md-8 badge badge-pill badge-primary">Cuota </div>
-                                        @else
-                                        <div class="col-md-8 badge badge-pill badge-secondary">Manual</div>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($obj_item->anulada==0)
-                                            <div class="col-md-8 badge badge-pill badge-success">Finalizada</div>
-                                        @else
-                                        <div class="col-md-8 badge badge-pill badge-danger">Anulada</div>
-                                        @endif
-                                    </td>
-                                    <!--<td>
-                                    @if($obj_item->activo==1)
-                                        <div class="col-md-8 badge badge-pill badge-success ">Activo</div>
-                                    @else
-                                        <div class="col-md-8 badge badge-pill badge-secondary">Inactivo</div>
-                                    @endif--}}
-                                    </td>-->   
-                                    <td>
-                                        <div class="btn-group mr-1 mt-2">
-                                            <button type="button" class="btn btn-primary">Acciones</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#" onclick="detalleFactura({{$obj_item->id}},{{$obj_item->cuota}})">Ver Factura</a>
-                                                <a class="dropdown-item" href="#" onclick="imprimir({{$obj_item->id}})">Imprimir</a>
-                                                <a class="dropdown-item" href="#" onclick="anular({{$obj_item->id}})">Anular</a>
-                                                @if($obj_item->anulada==0)
-                                                <a class="dropdown-item" href="#" onclick="eliminar({{$obj_item->id}},{{$obj_item->cuota}})">Eliminar</a>
-                                                @endif
-                                                <div class="dropdown-divider"></div>
-                                                
-                                            </div>
-                                        </div>
-                                    </td>
-											
-								</tr>
-								@endforeach
 							</tbody>
 					
 					</table>
@@ -224,6 +168,36 @@
     <script src="{{ URL::asset('assets/js/pages/sweet-alerts.init.js')}}"></script>
 
     <script>
+        
+        $(document).ready(function(){
+            $('.yajra-datatable').DataTable({
+                "order": [ [0, "desc"] ],
+                "language":{url:'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'},
+                "processing": true,
+                "serverSide": true,
+                pageLength: 50,
+                "ajax":{
+                    "url": "{{ route('facturas.getFacturas')  }}",
+                    "dataType": "json",
+                    "type": "GET",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                {data: 'id'},
+                {data: 'numero_documento'},
+                {data: 'cliente'},
+                {data: 'cobrador'},
+                {data: 'total'},
+                {data: 'fecha', orderable: true, searchable: true},
+                {data: 'tipo', orderable: true,  searchable: true},
+                {data: 'estado', orderable: true,  searchable: true},    
+                {data: 'action', orderable: true, searchable: true},
+                ]	 
+            });   
+        });   
+
+
+
         function eliminar(id,cuota){
             Swal.fire({
                 title: 'Estas seguro de eliminar el registro?',

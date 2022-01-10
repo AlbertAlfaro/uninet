@@ -196,6 +196,7 @@ class FacturacionController extends Controller
         $term1 = $request->term;
         $results = array();
         $queries = Cliente::
+        where('activo','1')->
         Where('codigo', 'LIKE', '%'.$term1.'%')->
         orWhere('nombre', 'LIKE', '%'.$term1.'%')->
         Where('id_sucursal',Auth::user()->id_sucursal)->

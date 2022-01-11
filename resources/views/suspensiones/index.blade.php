@@ -73,8 +73,9 @@
                                     <tr class="filas">
                                         <td>{{$obj_item->numero}}</td>
                                         <td>
-                                        @if($obj_item->id_cliente!=null)@endif
-
+                                        @if($obj_item->id_cliente!=null)
+                                            {{$obj_item->get_cliente->nombre}}
+                                        @endif
                                         </td>
                                         <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
                                         <td>{{$obj_item->tipo_servicio}}</td>

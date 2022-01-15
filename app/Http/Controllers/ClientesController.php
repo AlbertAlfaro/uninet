@@ -3177,6 +3177,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
         $primer_fac_inter = new DateTime();
         $primer_fac_tv = new DateTime();
+        
 
         $fecha_fa = new DateTime($fecha_actual);
 
@@ -3187,21 +3188,29 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                 $cargos_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('cargo','!=','0.00')->get()->count();
                 $abono_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('abono','!=','0.00')->where('pagado',1)->get()->count();
                 $pagado=0;
+                $chek_mes_servicio=0;
                 if($abono_inter>$cargos_inter){
                     $pagado=1;
+                }else{
+
+                    $chek_mes_servicio = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('cargo','!=','0.00')->where('mes_servicio',$mes_servicio)->get()->count();
                 }
-                $abono = new Abono();
-                $abono->id_cliente = $value->id_cliente;
-                $abono->tipo_servicio = 1;
-                $abono->mes_servicio = $mes_servicio;
-                $abono->fecha_aplicado = date('Y-m-d');
-                $abono->cargo = $value->cuota_mensual;
-                $abono->abono = 0.00;
-                $abono->fecha_vence = $fecha_vence;
-                $abono->anulado = 0;
-                $abono->pagado = $pagado;
-                $abono->save();
-                //echo "Cargo ".$cargos_inter." pago: ".$abono_inter;
+
+                if($chek_mes_servicio == 0 ){
+
+                    $abono = new Abono();
+                    $abono->id_cliente = $value->id_cliente;
+                    $abono->tipo_servicio = 1;
+                    $abono->mes_servicio = $mes_servicio;
+                    $abono->fecha_aplicado = date('Y-m-d');
+                    $abono->cargo = $value->cuota_mensual;
+                    $abono->abono = 0.00;
+                    $abono->fecha_vence = $fecha_vence;
+                    $abono->anulado = 0;
+                    $abono->pagado = $pagado;
+                    $abono->save();
+                    //echo "Cargo ".$cargos_inter." pago: ".$abono_inter;
+                }
                 
             }
         
@@ -3214,21 +3223,27 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                 $cargos_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('cargo','!=','0.00')->get()->count();
                 $abono_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('abono','!=','0.00')->where('pagado',1)->get()->count();
                 $pagado=0;
+                $chek_mes_servicio_tv=0;
                 if($abono_tv>$cargos_tv){
                     $pagado=1;
+
+                    $chek_mes_servicio_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('cargo','!=','0.00')->where('mes_servicio',$mes_servicio)->get()->count();
                 }
 
-                $abono = new Abono();
-                $abono->id_cliente = $value->id_cliente;
-                $abono->tipo_servicio = 2;
-                $abono->mes_servicio = $mes_servicio;
-                $abono->cargo = $value->cuota_mensual;
-                $abono->fecha_aplicado = date('Y-m-d');
-                $abono->abono = 0.00;
-                $abono->fecha_vence = $fecha_vence;
-                $abono->anulado = 0;
-                $abono->pagado = $pagado;
-                $abono->save();
+                if($chek_mes_servicio_tv == 0 ){
+
+                    $abono = new Abono();
+                    $abono->id_cliente = $value->id_cliente;
+                    $abono->tipo_servicio = 2;
+                    $abono->mes_servicio = $mes_servicio;
+                    $abono->cargo = $value->cuota_mensual;
+                    $abono->fecha_aplicado = date('Y-m-d');
+                    $abono->abono = 0.00;
+                    $abono->fecha_vence = $fecha_vence;
+                    $abono->anulado = 0;
+                    $abono->pagado = $pagado;
+                    $abono->save();
+                }
             }
     
         }

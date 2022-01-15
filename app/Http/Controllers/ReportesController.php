@@ -204,9 +204,9 @@ class ReportesController extends Controller
                                             )
                                         ->join('clientes','abonos.id_cliente','=','clientes.id')
                                         ->where('abonos.pagado',0)
-                                        ->where('clientes.internet','!=',2)
-                                        ->where('clientes.tv','!=',2)
                                         ->where('abonos.fecha_vence',$fecha_fin->format('Y-m-d'))
+                                        ->where('clientes.internet','=',1)
+                                        ->orwhere('clientes.tv','=',1)
                                         ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
                                         ->get();
         }else{
@@ -226,8 +226,8 @@ class ReportesController extends Controller
                 )
             ->join('clientes','abonos.id_cliente','=','clientes.id')
             ->where('abonos.pagado',0)
-            ->where('clientes.internet','!=',2)
-            ->where('clientes.tv','!=',2)
+            ->where('clientes.internet','=',1)
+            ->orwhere('clientes.tv','=',1)
             //->where('abonos.fecha_vence',$fecha_fin->format('Y-m-d'))
             ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
             ->get();

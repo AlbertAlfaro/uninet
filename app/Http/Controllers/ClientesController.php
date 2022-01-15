@@ -3059,7 +3059,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
                 //--------------------------------------------------
                 $identificador='';
                 if($row->identificador==1){ $identificador = '<div class="col-md-9 badge badge-pill badge-primary">Internet </div>';}
-                if($row->identificador==0){ $identificador = '<div class="col-md-9 badge badge-pill badge-light">Televisión </div>'; }
+                if($row->identificador==2){ $identificador = '<div class="col-md-9 badge badge-pill badge-light">Televisión </div>'; }
                 $nestedData['identificador'] =$identificador;
                 //---------------------------------------------------
                 $activo='';

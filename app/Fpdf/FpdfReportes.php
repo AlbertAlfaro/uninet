@@ -198,11 +198,11 @@ class FpdfReportes extends Fpdf{
     function BasicTable_pago_servicios($data,$estado_pago){
         $this->SetFont('Arial','B',9);
         $this->Cell(20,7,utf8_decode('C. Cliente'),1,0,'C');
-        $this->Cell(60,7,utf8_decode('Nombre'),1,0,'C');
-        $this->Cell(26,7,utf8_decode('Cargo'),1,0,'C');
+        $this->Cell(75,7,utf8_decode('Nombre'),1,0,'C');
+        $this->Cell(20,7,utf8_decode('Cargo'),1,0,'C');
         $this->Cell(26,7,utf8_decode('Tipo de servicio'),1,0,'C');
         $this->Cell(20,7,utf8_decode('Vencimiento'),1,0,'C');
-        $this->Cell(20,7,utf8_decode('Dias'),1,0,'C');
+        $this->Cell(10,7,utf8_decode('Dias'),1,0,'C');
         $this->Cell(26,7,utf8_decode('Estado'),1,0,'C');
 
         $this->Ln();
@@ -213,8 +213,8 @@ class FpdfReportes extends Fpdf{
             if($estado_pago==1){
 
                 $this->Cell(20,6,$row->get_cliente->codigo,0,0,'C');
-                $this->Cell(60,6,$row->get_cliente->nombre,0,0,'');
-                $this->Cell(26,6,'$ '.number_format($row->cargo,2),0,0,'');
+                $this->Cell(75,6,$row->get_cliente->nombre,0,0,'');
+                $this->Cell(20,6,'$ '.number_format($row->cargo,2),0,0,'C');
                 if($row->tipo_servicio==1){
                     $servicio = 'Internet';
                 }else{
@@ -224,7 +224,7 @@ class FpdfReportes extends Fpdf{
                 $this->Cell(26,6,utf8_decode($servicio),0,0,'C');
     
                 $this->Cell(20,6,$row->fecha_vence->format('d/m/Y'),0,0,'C');
-                $this->Cell(20,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
+                $this->Cell(10,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
     
                 if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) == 0){
                     $this->Cell(26,6,utf8_decode('A pagar hoy'),0,0,'C');
@@ -244,8 +244,8 @@ class FpdfReportes extends Fpdf{
                 if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) < 0){
 
                     $this->Cell(20,6,$row->get_cliente->codigo,0,0,'C');
-                    $this->Cell(60,6,$row->get_cliente->nombre,0,0,'');
-                    $this->Cell(26,6,'$ '.number_format($row->cargo,2),0,0,'');
+                    $this->Cell(75,6,$row->get_cliente->nombre,0,0,'');
+                    $this->Cell(20,6,'$ '.number_format($row->cargo,2),0,0,'C');
                     if($row->tipo_servicio==1){
                         $servicio = 'Internet';
                     }else{
@@ -255,7 +255,7 @@ class FpdfReportes extends Fpdf{
                     $this->Cell(26,6,utf8_decode($servicio),0,0,'C');
         
                     $this->Cell(20,6,$row->fecha_vence->format('d/m/Y'),0,0,'C');
-                    $this->Cell(20,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
+                    $this->Cell(10,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
         
                     if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) == 0){
                         $this->Cell(26,6,utf8_decode('A pagar hoy'),0,0,'C');
@@ -279,7 +279,7 @@ class FpdfReportes extends Fpdf{
                 if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) > 0){
 
                     $this->Cell(20,6,$row->get_cliente->codigo,0,0,'C');
-                    $this->Cell(60,6,$row->get_cliente->nombre,0,0,'');
+                    $this->Cell(75,6,$row->get_cliente->nombre,0,0,'');
                     $this->Cell(26,6,'$ '.number_format($row->cargo,2),0,0,'');
                     if($row->tipo_servicio==1){
                         $servicio = 'Internet';
@@ -290,7 +290,7 @@ class FpdfReportes extends Fpdf{
                     $this->Cell(26,6,utf8_decode($servicio),0,0,'C');
         
                     $this->Cell(20,6,$row->fecha_vence->format('d/m/Y'),0,0,'C');
-                    $this->Cell(20,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
+                    $this->Cell(10,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
         
                     if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) == 0){
                         $this->Cell(26,6,utf8_decode('A pagar hoy'),0,0,'C');

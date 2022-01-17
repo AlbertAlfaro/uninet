@@ -446,20 +446,19 @@ class FacturacionController extends Controller
         $xdatos['typeinfo']='';
         $xdatos['msg']='';
         $xdatos['results']=[];
-        if($tipo_ser==1){$contrato= Internet::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
-        if($tipo_ser==2){$contrato= Tv::select('cuota_mensual')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        if($tipo_ser==1){$contrato= Internet::select('cuota_mensual','fecha_primer_fact')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
+        if($tipo_ser==2){$contrato= Tv::select('cuota_mensual','fecha_primer_fact')->where('id_cliente',$id_cliente)->where('activo','1')->get(); }
         $results2 = array();
         if(count($contrato)!=0)
         {
             $precio=$contrato[0]->cuota_mensual;
             $abono= Abono::where('id_cliente',$id_cliente)->where('tipo_servicio',$tipo_ser)->where('cargo','0.00')->where('pagado','1')->where('anulado','0')->get();
             $abono1=$abono->last();
-            $results2 = array();
-            if($abono->count()>0)
+            $results2 = array();           
+            if($filas==0)//valida si la tabla no tiene ningun mes a pagar
             {
-                if($filas==0)
+                if($abono->count()>0)
                 {
-                 
                     $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ 1 month"));
                     $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ 1 month"));
                     $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
@@ -478,10 +477,33 @@ class FacturacionController extends Controller
                     $xdatos['msg']='ok';
                     $xdatos['results']=$results2;
                     return response($xdatos);
-                    
-                }
-                if($filas>0)
-                {   $filas =$filas+1;
+                }else
+                {
+                    $mes_servicio=date("d-m-Y", strtotime($contrato[0]->fecha_primer_fact."- 1 month"));
+                    $mes_ser=date("Y/m/d", strtotime($contrato[0]->fecha_primer_fact."- 1 month"));
+                    $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                    $fecha_vence=date("d/m/Y", strtotime($contrato[0]->fecha_primer_fact."+ 10 days"));
+                    $cargo_sin_iva=$precio/1.13;
+                    $mes=explode("-", $mes_servicio);
+                    $results2[] = [ 
+                        //'id' => $abono1->id,
+                        'cargo' => $precio,
+                        'mes_servicio' =>$mes[1].'/'.$mes[2],
+                        'fecha_vence'=>$fecha_vence,
+                        'mes_ser'=>$mes_ser,
+                        'cargo_sin_iva'=>$cargo_sin_iva,
+                    ];
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='ok';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);    
+                }        
+            }
+            if($filas>0)// validad si la tabla tienes meses a pagar
+            {   
+                if($abono->count()>0)
+                {
+                    $filas =$filas+1;
                     $mes_servicio=date("d-m-Y", strtotime($abono1->mes_servicio."+ ".$filas." month"));
                     $mes_ser=date("Y/m/d", strtotime($abono1->mes_servicio."+ ".$filas." month"));
                     $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
@@ -500,13 +522,29 @@ class FacturacionController extends Controller
                     $xdatos['msg']='ok';
                     $xdatos['results']=$results2;
                     return response($xdatos);
+                }else
+                {
+                    $filas =$filas-1;
+                    $mes_servicio=date("d-m-Y", strtotime($contrato[0]->fecha_primer_fact."+ ".$filas." month"));
+                    $mes_ser=date("Y/m/d", strtotime($contrato[0]->fecha_primer_fact."+ ".$filas." month"));
+                    $fecha_ven=date("d-m-Y", strtotime($mes_servicio."+ 1 month"));
+                    $fecha_vence=date("d/m/Y", strtotime($fecha_ven."+ 10 days"));
+                    $cargo_sin_iva=$precio/1.13;
+                    $mes=explode("-", $mes_servicio);
+                    $show_mes=strtotime($contrato[0]->fecha_primer_fact);
+                    $results2[] = [ 
+                        //'id' => $abono1->id,
+                        'cargo' => $precio,
+                        'mes_servicio' =>$mes[1].'/'.$mes[2],
+                        'fecha_vence'=>$fecha_vence,
+                        'mes_ser'=>$mes_ser,
+                        'cargo_sin_iva'=>$cargo_sin_iva,
+                    ];
+                    $xdatos['typeinfo']='Success';
+                    $xdatos['msg']='ok';
+                    $xdatos['results']=$results2;
+                    return response($xdatos);
                 }
-            }else
-            {
-                $xdatos['typeinfo']='Warning';
-                $xdatos['msg']='Cliente no posee abonos, debe tener al menos uno!';
-                $xdatos['results']=$results2;
-                return response($xdatos);
             }
 
         }else

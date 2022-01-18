@@ -3186,7 +3186,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
             if($primer_fac_inter<=$fecha_fa){
                 //comparar cantidad de cargo y abonos
                 $cargos_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('cargo','!=','0.00')->get()->count();
-                $abono_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('abono','!=','0.00')->where('pagado',1)->get()->count();
+                $abono_inter = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',1)->where('abono','!=','0.00')->where('pagado',1)->where('anulado',0)->where('anulado',0)->get()->count();
                 $pagado=0;
                 $chek_mes_servicio=0;
                 if($abono_inter>$cargos_inter){
@@ -3221,7 +3221,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
                 //comparar cantidad de cargo y abonos
                 $cargos_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('cargo','!=','0.00')->get()->count();
-                $abono_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('abono','!=','0.00')->where('pagado',1)->get()->count();
+                $abono_tv = Abono::where('id_cliente',$value->id_cliente)->where('tipo_servicio',2)->where('abono','!=','0.00')->where('pagado',1)->where('anulado',0)->get()->count();
                 $pagado=0;
                 $chek_mes_servicio_tv=0;
                 if($abono_tv>$cargos_tv){

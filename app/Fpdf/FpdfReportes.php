@@ -78,17 +78,18 @@ class FpdfReportes extends Fpdf{
 
     function BasicTable_clientes($data,$servicio){
         $this->SetFont('Arial','B',9);
+        $this->Cell(13,7,utf8_decode('#'),'B',0,'C');
         $this->Cell(13,7,utf8_decode('Código'),'B',0,'C');
         $this->Cell(73,7,utf8_decode('Nombre'),'B',0,'C');
-        $this->Cell(26,7,utf8_decode('Departamento'),'B',0,'C');
-        $this->Cell(20,7,utf8_decode('Teléfono'),'B',0,'C');
+        $this->Cell(23,7,utf8_decode('Departamento'),'B',0,'C');
+        $this->Cell(15,7,utf8_decode('Teléfono'),'B',0,'C');
         $this->Cell(20,7,utf8_decode('Dui'),'B',0,'C');
         if($servicio==""){
             $this->Cell(15,7,utf8_decode('Internet'),'B',0,'C');
             $this->Cell(9,7,utf8_decode('Mbs'),'B',0,'C');
             $this->Cell(15,7,utf8_decode('Tv'),'B',0,'C');
         }elseif($servicio==1){//internet
-            $this->Cell(17,7,utf8_decode('Internet'),'B',0,'C');
+            $this->Cell(15,7,utf8_decode('Internet'),1,0,'C');
             $this->Cell(9,7,utf8_decode('Mbs'),'B',0,'C');
         }elseif($servicio==2){//tv
             $this->Cell(17,7,utf8_decode('Tv'),'B',0,'C');
@@ -97,19 +98,21 @@ class FpdfReportes extends Fpdf{
 
         $this->SetFont('Arial','',9);
         $m=0;
+        $n=0;
         foreach($data as $row){
             $i = Internet::select('velocidad')->where('activo',1)->where('id_cliente',$row->id)->get();
-
+            $n++;
+            $this->Cell(13,7,$n,0,0,'C');
             $this->Cell(13,7,utf8_decode($row->codigo),0,0,'C');
             $this->Cell(73,7,utf8_decode($row->nombre),0,0,'');
             if($row->id_municipio!=""){
 
-                $this->Cell(26,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
+                $this->Cell(23,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
             }else{
-                $this->Cell(26,7,utf8_decode(''),0,0,'');
+                $this->Cell(23,7,utf8_decode(''),0,0,'');
 
             }
-            $this->Cell(20,7,utf8_decode($row->telefono1),0,0,'C');
+            $this->Cell(15,7,utf8_decode($row->telefono1),0,0,'C');
             $this->Cell(20,7,utf8_decode($row->dui),0,0,'C');
             if($row->internet==3){
                 $einter = 'Vencido';
@@ -137,7 +140,7 @@ class FpdfReportes extends Fpdf{
                 $etv = 'Inactivo';
             }
             if($servicio==""){
-                $this->Cell(17,7,utf8_decode($einter),0,0,'C');
+                $this->Cell(15,7,utf8_decode($einter),0,0,'C');
                 if(isset($i[0]->velocidad)){
                     $this->Cell(9,7,$i[0]->velocidad,0,0,'C');
                     $porciones = explode(" ", $i[0]->velocidad);
@@ -148,7 +151,7 @@ class FpdfReportes extends Fpdf{
                 }
                 $this->Cell(17,7,utf8_decode($etv),0,0,'C');
             }elseif($servicio==1){//internet
-                $this->Cell(17,7,utf8_decode($einter),0,0,'C');
+                $this->Cell(15,7,utf8_decode($einter),0,0,'C');
                 if(isset($i[0]->velocidad)){
                     $this->Cell(9,7,$i[0]->velocidad,0,0,'C');
                     $porciones = explode(" ", $i[0]->velocidad);

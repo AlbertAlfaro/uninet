@@ -59,25 +59,7 @@
                 </form>
             
                 @endif
-                <div class="button-items text-right">
-                    @if($id!=0)
-                        <a href="{{route('clientes.index')}}"> 
-                            <button type="button" class="btn btn-primary waves-effect waves-light">
-                                Regresar <i class="fa fa-undo" aria-hidden="true"></i>
-
-                            </button>
-                        </a>
-                    @endif
-                    @if(count($inter_activos)==0 || count($tv_activos)==0)
-                        <a href="{{ route('contrato.create',$id) }}"> 
-                            <button type="button" class="btn btn-primary waves-effect waves-light">
-                                Agregar <i class="uil uil-arrow-right ml-2"></i>
-
-                            </button>
-                        </a>
-                    @endif
-					
-				</div>
+              
 				<br>
                 @include('flash::message')
                 <br>

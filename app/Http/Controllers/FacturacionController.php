@@ -97,7 +97,14 @@ class FacturacionController extends Controller
             $xdatos['iva']=number_format($factura->iva,2);
             $xdatos['sumas']=number_format($factura->sumas,2);
             $xdatos['total']=number_format($factura->total,2);
-            $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($factura->get_cliente->get_municipio->nombre).' '.strtoupper($factura->get_cliente->get_municipio->get_departamento->nombre);
+            if(!isset($factura->get_cliente->get_municipio->nombre)){
+                $municipio="Imcompleto";
+                
+            }else{$municipio=$factura->get_cliente->get_municipio->nombre;}
+            if(!isset($factura->get_cliente->get_municipio->get_departamento->nombre)){
+                $departamento="Imcompleto";
+            }else{$departamento=$factura->get_cliente->get_municipio->get_departamento->nombre;}
+            $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($municipio).' '.strtoupper($departamento);
             return $xdatos;
         }else{
             $factura=Factura::find($id);
@@ -129,7 +136,14 @@ class FacturacionController extends Controller
             $xdatos['iva']=number_format($factura->iva,2);
             $xdatos['sumas']=number_format($factura->sumas,2);
             $xdatos['total']=number_format($factura->total,2);
-            $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($factura->get_cliente->get_municipio->nombre).' '.strtoupper($factura->get_cliente->get_municipio->get_departamento->nombre);
+            if(!isset($factura->get_cliente->get_municipio->nombre)){
+                $municipio="Imcompleto";
+                
+            }else{$municipio=$factura->get_cliente->get_municipio->nombre;}
+            if(!isset($factura->get_cliente->get_municipio->get_departamento->nombre)){
+                $departamento="Imcompleto";
+            }else{$departamento=$factura->get_cliente->get_municipio->get_departamento->nombre;}
+            $xdatos['direccion']=$factura->get_cliente->dirreccion.' '. strtoupper($municipio).' '.strtoupper($departamento);
             return $xdatos;   
         }
     }
@@ -181,9 +195,14 @@ class FacturacionController extends Controller
     public function anular($id)
     {
         Factura::where('id',$id)->update(['anulada' =>1]);
-        Abono::where('id_factura',$id)->where('cargo',0.00)->update(['anulado' =>1]);
-        Abono::where('id_factura',$id)->where('abono',0.00)->update(['pagado'=>0]);
         $factura = Factura::find($id);
+        Abono::where('id_factura',$id)->where('cargo',0.00)->update(['anulado' =>1]);
+        //Abono::where('id_factura',$id)->where('abono',0.00)->update(['pagado'=>0]);
+        $abono=Abono::where('id_factura',$id)->where('cargo','0.00')->get();
+        foreach($abono as $row)
+        {
+            Abono::where('id_cliente',$factura->id_cliente)->where('mes_servicio',$row->mes_servicio)->where('abono','0.00')->where('tipo_servicio',$row->tipo_servicio)->update(['pagado' =>0]);
+        }
         $obj_controller_bitacora=new BitacoraController();	
         $obj_controller_bitacora->create_mensaje('Se anulo '.$factura->tipo.': '.$factura->numero_documento);
 

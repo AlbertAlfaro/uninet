@@ -81,7 +81,7 @@ class FpdfReportes extends Fpdf{
         $this->Cell(13,7,utf8_decode('#'),'B',0,'C');
         $this->Cell(13,7,utf8_decode('Código'),'B',0,'C');
         $this->Cell(73,7,utf8_decode('Nombre'),'B',0,'C');
-        $this->Cell(23,7,utf8_decode('Departamento'),'B',0,'C');
+        //$this->Cell(23,7,utf8_decode('Departamento'),'B',0,'C');
         $this->Cell(15,7,utf8_decode('Teléfono'),'B',0,'C');
         $this->Cell(20,7,utf8_decode('Dui'),'B',0,'C');
         if($servicio==""){
@@ -89,29 +89,31 @@ class FpdfReportes extends Fpdf{
             $this->Cell(9,7,utf8_decode('Mbs'),'B',0,'C');
             $this->Cell(15,7,utf8_decode('Tv'),'B',0,'C');
         }elseif($servicio==1){//internet
-            $this->Cell(15,7,utf8_decode('Internet'),1,0,'C');
+            $this->Cell(15,7,utf8_decode('Internet'),'B',0,'C');
             $this->Cell(9,7,utf8_decode('Mbs'),'B',0,'C');
         }elseif($servicio==2){//tv
             $this->Cell(17,7,utf8_decode('Tv'),'B',0,'C');
         }
+        $this->Cell(23,7,'Cuota Mensual','B',0,'C');
         $this->Ln();
 
         $this->SetFont('Arial','',9);
         $m=0;
         $n=0;
+        $suma_cuota=0;
         foreach($data as $row){
-            $i = Internet::select('velocidad')->where('activo',1)->where('id_cliente',$row->id)->get();
+            $i = Internet::select('cuota_mensual','velocidad')->where('activo',1)->where('id_cliente',$row->id)->get();
             $n++;
             $this->Cell(13,7,$n,0,0,'C');
             $this->Cell(13,7,utf8_decode($row->codigo),0,0,'C');
             $this->Cell(73,7,utf8_decode($row->nombre),0,0,'');
-            if($row->id_municipio!=""){
+            /*if($row->id_municipio!=""){
 
                 $this->Cell(23,7,utf8_decode($row->get_municipio->get_departamento->nombre),0,0,'');
             }else{
                 $this->Cell(23,7,utf8_decode(''),0,0,'');
 
-            }
+            }*/
             $this->Cell(15,7,utf8_decode($row->telefono1),0,0,'C');
             $this->Cell(20,7,utf8_decode($row->dui),0,0,'C');
             if($row->internet==3){
@@ -150,6 +152,13 @@ class FpdfReportes extends Fpdf{
                     $this->Cell(9,7,'-',0,0,'C');
                 }
                 $this->Cell(17,7,utf8_decode($etv),0,0,'C');
+                if(isset($i[0]->cuota_mensual))
+                {
+                    $this->Cell(23,7,'$'.$i[0]->cuota_mensual,0,0,'C');
+                    $suma_cuota+=$i[0]->cuota_mensual;
+                }else{
+                    $this->Cell(23,7,'-',0,0,'C');
+                }
             }elseif($servicio==1){//internet
                 $this->Cell(15,7,utf8_decode($einter),0,0,'C');
                 if(isset($i[0]->velocidad)){
@@ -160,11 +169,17 @@ class FpdfReportes extends Fpdf{
                 }else{
                     $this->Cell(9,7,'-',0,0,'C');
                 }
+                if(isset($i[0]->cuota_mensual))
+                {
+                    $this->Cell(23,7,'$'.$i[0]->cuota_mensual,0,0,'C');
+                    $suma_cuota+=$i[0]->cuota_mensual;
+                }else{
+                    $this->Cell(23,7,'-',0,0,'C');
+                }
             }elseif($servicio==2){//tv
                 $this->Cell(17,7,utf8_decode($etv),0,0,'C');
             }
-           
-           $this->Ln();
+            $this->Ln();
 
         }
         $this->Cell(193,1,'','B',0,'C');
@@ -175,11 +190,13 @@ class FpdfReportes extends Fpdf{
         $this->Cell(20,7,'',0,0,'C');
         $this->Cell(20,7,'',0,0,'C');
         if($servicio==""){
-            $this->Cell(15,7,'Total: ',0,0,'C');
-            $this->Cell(9,7,$m.' Mbs','B',0,'C');
+            $this->Cell(12,7,'Total: ',0,0,'C');
+            $this->Cell(17,7,$m.' Mbs','B',0,'C');
+            $this->Cell(14,7,'$'.$suma_cuota,'B',0,'C');
         }elseif($servicio==1){//internet
-            $this->Cell(17,7,'Total: ','B',0,'C');
-            $this->Cell(9,7,$m.' Mbs','B',0,'C');
+            $this->Cell(12,7,'Total:','B',0,'C');
+            $this->Cell(17,7,$m.'Mbs','B',0,'C');
+            $this->Cell(14,7,'$'.$suma_cuota,'B',0,'C');
         }
 
     }

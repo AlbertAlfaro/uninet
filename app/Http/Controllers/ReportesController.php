@@ -122,7 +122,7 @@ class ReportesController extends Controller
             if($servicio==1){//internet
                 $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->Where('internet','=',$estado)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
             }
-            if($servicio==2){//internet
+            if($servicio==2){//Tv
                 $clientes = Cliente::where('id_sucursal',Auth::user()->id_sucursal)->Where('tv','=',$estado)->whereBetween('created_at',[$fecha_inicio,$fecha_fin])->get();
             }
         }

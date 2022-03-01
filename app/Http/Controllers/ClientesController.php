@@ -3167,7 +3167,7 @@ La suma antes mencionada la pagaré en esta ciudad, en las oficinas principales 
 
     public function gen_cobros(){
         //$dia_actual = date('j');
-        $dia_actual = 29;
+        $dia_actual = 30;
         $fecha_actual = date('Y-m-d');
         $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;
         $fecha_vence = date ( 'Y-m-d' , $fecha_vence );

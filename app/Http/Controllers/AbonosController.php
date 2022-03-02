@@ -25,13 +25,17 @@ class AbonosController extends Controller
     public function index(){
         $id=0;
         $abono_inter = Abono::join('clientes','abonos.id_cliente','=','clientes.id')
+                            ->join('internets','clientes.id','=','internets.id_cliente')
                             ->where('abonos.tipo_servicio',1)
                             ->where('abonos.pagado',0)
+                            ->where('internets.activo',1)
                             ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
                             ->get();
         $abono_tv = Abono::join('clientes','abonos.id_cliente','=','clientes.id')
+                            ->join('tvs','clientes.id','=','tvs.id_cliente')
                             ->where('abonos.tipo_servicio',2)
                             ->where('abonos.pagado',0)
+                            ->where('tvs.activo',1)
                             ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
                             ->get();
 

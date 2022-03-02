@@ -41,7 +41,13 @@ class HomeController extends Controller
            $total_fac+=$value->total;
         }
 
-        $cargos_pen = Abono::where('pagado',0)->where('anulado',0)->get();
+        $cargos_pen = Abono::join('clientes','abonos.id_cliente','=','clientes.id')
+                            ->join('internets','clientes.id','=','internets.id_cliente')
+                            ->where('internets.activo',1)
+                            ->where('abonos.pagado',0)
+                            ->where('anulado',0)
+                            ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
+                            ->get();
         $total_pen=0;
         foreach ($cargos_pen as $value1) {
            $total_pen+=1;

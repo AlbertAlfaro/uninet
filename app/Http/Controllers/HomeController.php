@@ -45,7 +45,7 @@ class HomeController extends Controller
                             ->join('internets','clientes.id','=','internets.id_cliente')
                             ->where('internets.activo',1)
                             ->where('abonos.pagado',0)
-                            ->where('anulado',0)
+                            ->where('abonos.anulado',0)
                             ->where('clientes.id_sucursal',Auth::user()->id_sucursal)
                             ->get();
         $total_pen=0;

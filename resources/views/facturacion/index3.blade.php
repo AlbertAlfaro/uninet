@@ -137,7 +137,7 @@
 										            </tr>
 									            </tfoot>
                                             </table>
-                                            
+                                            <img id="cancelado" src="{{ URL::asset('assets/images/images.png')}}" alt="" height="70"/>
                                         </div>
                                     </div>
                                 </div>
@@ -278,6 +278,11 @@
                         $("#Tdetalle").append(tr_add);
                         if(data['tipo_docu']==2){
                             $(".cre").show();
+                        }
+                        if(data['anulada']==0){
+                            $("#cancelado").show();
+                        }else{
+                            $("#cancelado").hide();
                         }
 
 

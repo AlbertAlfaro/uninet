@@ -94,6 +94,7 @@ class FacturacionController extends Controller
             $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
             $xdatos['fecha']=$factura->created_at->format('d/m/Y');
             $xdatos['tipo_docu']=$factura->tipo_documento;
+            $xdatos['anulada']=$factura->anulada;
             $xdatos['iva']=number_format($factura->iva,2);
             $xdatos['sumas']=number_format($factura->sumas,2);
             $xdatos['total']=number_format($factura->total,2);
@@ -133,6 +134,7 @@ class FacturacionController extends Controller
             $xdatos['correlativo']=$tipo."_".$factura->numero_documento;
             $xdatos['fecha']=$factura->created_at->format('d/m/Y');
             $xdatos['tipo_docu']=$factura->tipo_documento;
+            $xdatos['anulada']=$factura->anulada;
             $xdatos['iva']=number_format($factura->iva,2);
             $xdatos['sumas']=number_format($factura->sumas,2);
             $xdatos['total']=number_format($factura->total,2);

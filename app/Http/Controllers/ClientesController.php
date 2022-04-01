@@ -37,8 +37,8 @@ class ClientesController extends Controller
         return view('clientes.index',compact('obj'));
     }
 
-    public function cliente_genCargo($id){
-        $inter = Internet::where('id_cliente',$id)->get();
+    public function cliente_genCargo($id){// solo gnera para internet falta para catv
+        $inter = Internet::where('id_cliente',$id)->where('activo',1)->get();
         
         $fecha_actual = date('Y-m-d');
         $fecha_vence = strtotime ( '+10 day' , strtotime ( $fecha_actual ) ) ;

@@ -56,6 +56,7 @@ class OrdenController extends Controller
     {   
         if($request->tipo_servicio=="Internet")
         {   $cliente=Cliente::where('id',$request->id_cliente)->where('internet','1')->get();
+            $C_i=Internet::where('id_cliente',$request->id_cliente)->where('activo','1')->get();
             if(count($cliente)>0)
             {
                 $orden = new Ordenes();
@@ -65,6 +66,8 @@ class OrdenController extends Controller
                 $orden->id_actividad = $request->id_actividad;
                 $orden->id_tecnico = $request->id_tecnico;
                 $orden->observacion = $request->observacion;
+                $orden->recepcion = $C_i[0]->recepcion;
+                $orden->tx = $C_i[0]->trasmision;
                 $orden->soporte = $request->soporte;
                 $orden->id_usuario=Auth::user()->id;
                 $orden->save();
@@ -456,19 +459,19 @@ class OrdenController extends Controller
         $fpdf->Cell(40,5,utf8_decode($orden->get_cliente->telefono1.'/'.$orden->get_cliente->telefono2),'B',0,'L');
         $fpdf->SetXY(73,82);
         $fpdf->Cell(8,5,utf8_decode("Rx:"),0,0,'L');
-        $fpdf->SetXY(81,82);
-        $fpdf->Cell(12,5,utf8_decode($orden->recepcion),'B',0,'L');
-        $fpdf->SetXY(94,82);
-        $fpdf->Cell(8,5,utf8_decode("tx:"),0,0,'L');
-        $fpdf->SetXY(102,82);
-        $fpdf->Cell(12,5,utf8_decode($orden->tx),'B',0,'L');
-        $fpdf->SetXY(120,82);
+        $fpdf->SetXY(79,82);
+        $fpdf->Cell(20,5,utf8_decode($orden->recepcion),'B',0,'L');
+        $fpdf->SetXY(101,82);
+        $fpdf->Cell(8,5,utf8_decode("Tx:"),0,0,'L');
+        $fpdf->SetXY(107,82);
+        $fpdf->Cell(20,5,utf8_decode($orden->tx),'B',0,'L');
+        $fpdf->SetXY(130,82);
         $fpdf->Cell(20,5,utf8_decode("Velocidad:"),0,0,'L');
-        $fpdf->SetXY(140,82);
+        $fpdf->SetXY(150,82);
         $fpdf->Cell(15,5,utf8_decode($velocidad),'B',0,'L');
-        $fpdf->SetXY(160,82);
+        $fpdf->SetXY(170,82);
         $fpdf->Cell(15,5,utf8_decode("Colilla:"),0,0,'L');
-        $fpdf->SetXY(175,82);
+        $fpdf->SetXY(185,82);
         $fpdf->Cell(20,5,utf8_decode($colilla),'B',0,'L');
 
         $fpdf->SetXY(10,89);
@@ -482,11 +485,11 @@ class OrdenController extends Controller
         $fpdf->SetXY(100,89);
         $fpdf->Cell(25,5,utf8_decode("Coordenadas:"),0,0,'L');
         $fpdf->SetXY(125,89);
-        $fpdf->Cell(35,5,utf8_decode($orden->get_cliente->cordenada),'B',0,'L');
-        $fpdf->SetXY(160,89);
+        $fpdf->Cell(50,5,utf8_decode($orden->get_cliente->cordenada),'B',0,'L');
+        $fpdf->SetXY(175,89);
         $fpdf->Cell(5,5,utf8_decode("IP:"),0,0,'L');
-        $fpdf->SetXY(165,89);
-        $fpdf->Cell(35,5,utf8_decode($ip),'B',0,'L');
+        $fpdf->SetXY(180,89);
+        $fpdf->Cell(25,5,utf8_decode($ip),'B',0,'L');
 
 
         $fpdf->SetXY(10,96);

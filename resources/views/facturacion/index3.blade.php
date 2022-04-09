@@ -108,7 +108,7 @@
                                                 <thead class="">
                                                     <tr>
                                                         <th class="bg-primary text-white">Cantidad</th>
-                                                        <th class="bg-primary text-white">Nombre</th>
+                                                        <th class="bg-primary text-white">Concepto</th>
                                                         <th class="bg-primary text-white">Precio</th>
                                                         <th class="bg-primary text-white">Subtotal</th>
                                                     </tr>

@@ -114,9 +114,13 @@ class FacturacionController extends Controller
             {
                 foreach ($detalle as $query){
                     if($query->tipo_servicio==1){
-                        $servicio="Internet";
+                        //$servicio="Internet";
+                        $servicio = 'DESDE '.$query->mes_servicio->format('d/m/Y')." HASTA ".date("d/m/Y",strtotime($query->mes_servicio."+ 1 month"));
+
                     }else{
-                        $servicio="Television";
+                        //$servicio="Television";
+                        $servicio = 'DESDE '.$query->mes_servicio->format('d/m/Y')." HASTA ".date("d/m/Y",strtotime($query->mes_servicio."+ 1 month"));
+
                     }
                     $results[] = [ 'cantidad' => '1', 'producto' => $servicio,'precio' => number_format($query->abono,2),'subtotal' => number_format($query->abono,2)];
                 }

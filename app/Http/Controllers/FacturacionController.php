@@ -301,12 +301,13 @@ class FacturacionController extends Controller
     public function guardar(Request $request)//SE GUARDA FACTURA Y ABONO
     {   
         if ($request->cuantos >0)
-        { 
-            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
+        {   
+            $serie = Correlativo::find($request->tipo_impresion);
+            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->where('serie',$serie->serie)->exists())
             {
                 
                 $xdatos['typeinfo']='Warning';
-                $xdatos['msg']='el número de documento ya fue impreso.';
+                $xdatos['msg']='El número de documento ya fue impreso.';
                 return response($xdatos);
             }else
             { 
@@ -324,8 +325,8 @@ class FacturacionController extends Controller
                 $factura->total=$request->total;
                 $factura->tipo_pago=$request->tipo_pago;
                 $factura->tipo=$tipo;
-                $correlativo=Correlativo::find($request->tipo_impresion);
-                $factura->serie=$correlativo->serie;
+                //$correlativo=Correlativo::find($request->tipo_impresion);
+                $factura->serie=$serie->serie;
                 $factura->tipo_documento=$request->tipo_impresion;
                 $factura->numero_documento=$request->numdoc;
                 $factura->impresa=0;
@@ -610,11 +611,12 @@ class FacturacionController extends Controller
         $xdatos['results']=[];
         if ($request->cuantos >0)
         { 
-            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->exists())
+            $serie2 = Correlativo::find($request->tipo_impresion);    
+            if(Factura::where('tipo_documento',$request->tipo_impresion)->where('numero_documento',$request->numdoc)->where('serie',$serie2->serie)->exists())
             {
                 
                 $xdatos['typeinfo']='Warning';
-                $xdatos['msg']='Este numero de documento ya fue impresa.';
+                $xdatos['msg']='Este numero de documento ya fue impreso.';
                 return response($xdatos);
             }else
             { 
@@ -632,8 +634,8 @@ class FacturacionController extends Controller
                 $factura->total=$request->total;
                 $factura->tipo_pago=$request->tipo_pago;
                 $factura->tipo=$tipo;
-                $correlativo=Correlativo::find($request->tipo_impresion);
-                $factura->serie=$correlativo->serie;
+                //$correlativo=Correlativo::find($request->tipo_impresion);
+                $factura->serie=$serie2->serie;
                 $factura->tipo_documento=$request->tipo_impresion;
                 $factura->numero_documento=$request->numdoc;
                 $factura->impresa=0;

@@ -259,7 +259,7 @@ class ReportesController extends Controller
         if($estado_pago==3){
             $tipo ="A tiempo";
         }
-        if($estado_pago==3){
+        if($estado_pago==4){
             $tipo ="hoy";
         }
 

@@ -260,7 +260,7 @@ class ReportesController extends Controller
             $tipo ="A tiempo";
         }
         if($estado_pago==4){
-            $tipo ="hoy";
+            $tipo ="Hoy";
         }
 
         $fpdf->SetXY(95,44);

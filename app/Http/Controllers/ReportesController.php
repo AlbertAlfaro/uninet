@@ -53,7 +53,6 @@ class ReportesController extends Controller
         
         }
 
-
     }
 
     private function format_fecha($x,$date){
@@ -259,6 +258,9 @@ class ReportesController extends Controller
         }
         if($estado_pago==3){
             $tipo ="A tiempo";
+        }
+        if($estado_pago==3){
+            $tipo ="hoy";
         }
 
         $fpdf->SetXY(95,44);

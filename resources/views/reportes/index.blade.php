@@ -88,6 +88,7 @@
                                 <option value="1" >Ultima fecha de pago</option>
                                 <option value="2" >Vencido</option>
                                 <option value="3" >A tiempo</option>
+                                <option value="4" >Hoy</option>
                             </select>
                         </div>
                         <div class="col-md-2" style="display: none;" id="div_estado_servi">

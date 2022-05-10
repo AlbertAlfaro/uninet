@@ -228,10 +228,10 @@ class FpdfReportes extends Fpdf{
         $this->Ln();
 
         $this->SetFont('Arial','',9);
-
         foreach($data as $row){
+           
             if($estado_pago==1){
-
+                
                 $this->Cell(20,6,$row->get_cliente->codigo,0,0,'C');
                 $this->Cell(75,6,$row->get_cliente->nombre,0,0,'');
                 $this->Cell(20,6,'$ '.number_format($row->cargo,2),0,0,'C');
@@ -330,8 +330,8 @@ class FpdfReportes extends Fpdf{
             }
             ///_____________________________________
             if($estado_pago==4){
-                if($this->dias_pasados($row->mes_servicio->format('Y/m/d'),date('Y/m/d')) == 0){
-
+                
+                if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) == 10){
                     $this->Cell(20,6,$row->get_cliente->codigo,0,0,'C');
                     $this->Cell(75,6,$row->get_cliente->nombre,0,0,'');
                     $this->Cell(26,6,'$ '.number_format($row->cargo,2),0,0,'');
@@ -345,17 +345,9 @@ class FpdfReportes extends Fpdf{
         
                     $this->Cell(20,6,$row->fecha_vence->format('d/m/Y'),0,0,'C');
                     $this->Cell(10,6,$this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')),0,0,'C');
-        
-                    if($this->dias_pasados($row->mes_servicio->format('Y/m/d'),date('Y/m/d')) == 0){
-                        $this->Cell(26,6,utf8_decode('A pagar hoy'),0,0,'C');
-        
-                    }
+
                     if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) > 0){
-                        $this->Cell(26,6,utf8_decode('A tiempo'),0,0,'C');
-        
-                    }
-                    if($this->dias_pasados($row->fecha_vence->format('Y/m/d'),date('Y/m/d')) < 0){
-                        $this->Cell(26,6,utf8_decode('Vencido'),0,0,'C');
+                        $this->Cell(26,6,utf8_decode('Hoy'),0,0,'C');
         
                     }
                     

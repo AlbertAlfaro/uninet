@@ -38,7 +38,7 @@
                                 <select name="tipo_reporte" id="tipo_reporte" class="form-control">
                                     <option value="" >Seleccionar... </option>
                                     <option value="1" >Contratos a vencer</option>
-                                    <option value="2" >Pago de servicio</option>
+                                    <option value="2" selected>Pago de servicio</option>
                                     <option value="3" >General</option>
                                     <option value="4" >Mbs Vendidos</option>
                                 </select>
@@ -82,13 +82,13 @@
                             <label for="estado">Fecha *</label>
                             <input type="text" class="form-control datepicker" name="fecha" id="fecha" value="{{ date('d/m/Y') }}" autocomplete="off">
                         </div>
-                        <div class="col-md-2" style="display: none;" id="div_estado_pago">
+                        <div class="col-md-2" style="" id="div_estado_pago">
                             <label for="tipo_reporte">Estado *</label>
                             <select name="estado_pago" id="estado_pago" class="form-control">
                                 <option value="1" >Ultima fecha de pago</option>
                                 <option value="2" >Vencido</option>
                                 <option value="3" >A tiempo</option>
-                                <option value="4" >Hoy</option>
+                                <option value="4" selected>Hoy</option>
                             </select>
                         </div>
                         <div class="col-md-2" style="display: none;" id="div_estado_servi">

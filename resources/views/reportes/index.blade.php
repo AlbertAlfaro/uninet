@@ -54,6 +54,17 @@
                                     <option value="2" >General</option>
                                 </select>
                             </div>
+                            <div class="col-md-2" id="div_pago">
+                                <label for="example-text-input">Tipo de pago</label>              
+                                <select class="form-control" name="tipo_pago" id="tipo_pago">
+                                    <option value="" >Seleccionar...</option>
+                                    <option value="EFEC" >EFECTIVO</option>
+                                    <option value="TRANS" >TRANSFERENCIA</option>
+                                    <option value="BITCOIN" >BITCOIN</option>
+                                    <option value="DEPO" >DEPOSITO</option>
+                                    <option value="POST" >POST</option>
+                                </select>
+                            </div>
                         @endif
                         @if($opcion=="Ordenes")
                             <div class="col-md-2">
@@ -77,6 +88,7 @@
                             <label for="estado">Hasta</label>
                             <input type="text" class="form-control datepicker" name="fecha_f" id="fecha_f" value="{{ date('d/m/Y') }}" autocomplete="off">
                         </div>
+
                         @if($opcion=="Clientes")
                         <div class="col-md-2" style="display:none;" id="div_dia">
                             <label for="estado">Fecha *</label>

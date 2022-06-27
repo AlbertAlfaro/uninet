@@ -45,7 +45,7 @@ class ReportesController extends Controller
             
         }
         if($request->opcion=="Facturas"){
-            $this->facturas($request->fecha_i,$request->fecha_f,$request->tipo_reporte);
+            $this->facturas($request->fecha_i,$request->fecha_f,$request->tipo_reporte,$request->tipo_pago);
         
         }
         if($request->opcion=="Ordenes"){
@@ -335,7 +335,7 @@ class ReportesController extends Controller
         exit;
     }
 
-    private function facturas($fecha_i,$fecha_f,$tipo_reporte){
+    private function facturas($fecha_i,$fecha_f,$tipo_reporte,$tipo_pago){
         $fecha_inicio =  $this->format_fecha(1, $fecha_i);
         $fecha_fin =  $this->format_fecha(2, $fecha_f);
 
@@ -376,33 +376,39 @@ class ReportesController extends Controller
         $fpdf->Cell(20,7,utf8_decode('Código'),1,0,'C');
         $fpdf->Cell(75,7,utf8_decode('Cliente'),1,0,'C');
         $fpdf->Cell(20,7,utf8_decode('Fecha'),1,0,'C');
-        $fpdf->Cell(15,7,utf8_decode('Servicio'),1,0,'C');
-        $fpdf->Cell(20,7,utf8_decode('Cantidad'),1,0,'C');
+        $fpdf->Cell(10,7,utf8_decode('Serv.'),1,0,'C');
+        $fpdf->Cell(15,7,utf8_decode('Cant.'),1,0,'C');
+        $fpdf->Cell(15,7,utf8_decode('Pago'),1,0,'C');
         $fpdf->Ln();
         $suma=0.00;
         $fpdf->SetFont('Arial','',9);
         foreach($facturas as $row){
             if($row->tipo_documento==1){$tipo='FAC';}
             if($row->tipo_documento==2){$tipo='CRE';}
-            $fpdf->Cell(20,7,utf8_decode($row->get_cobrador->nombre),0,0,'');
-            $fpdf->Cell(20,7,utf8_decode($tipo.'-'.$row->numero_documento),0,0,'C');
-            $fpdf->Cell(20,7,utf8_decode($row->get_cliente->codigo),0,0,'C');
-            $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
-            $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');
-            //tipo servicio 
-            if($row->tipo_servicio==1){$fpdf->Cell(15,7,'I',0,0,'C');}
-            if($row->tipo_servicio==2){$fpdf->Cell(15,7,'Tv',0,0,'C');}
-            if($row->tipo_servicio==0){$fpdf->Cell(15,7,'-',0,0,'C');}
-            //fin de tipo servicio
-            if($row->anulada==0){
-                $fpdf->Cell(20,7,number_format($row->total,2),0,0,'C');
-                $suma+=$row->total;
-            }else{
-                $fpdf->SetTextColor(194,8,8);
-                $fpdf->Cell(20,7,utf8_decode("ANULADA"),0,0,'C');
-                $fpdf->SetTextColor(0,0,0);
+            if($tipo_pago==$row->tipo_pago OR $tipo_pago=="")
+            {
+                $fpdf->Cell(20,7,utf8_decode($row->get_cobrador->nombre),0,0,'');
+                $fpdf->Cell(20,7,utf8_decode($tipo.'-'.$row->numero_documento),0,0,'C');
+                $fpdf->Cell(20,7,utf8_decode($row->get_cliente->codigo),0,0,'C');
+                $fpdf->Cell(75,7,utf8_decode($row->get_cliente->nombre),0,0,'L');
+                $fpdf->Cell(20,7,$row->created_at->format("d/m/Y"),0,0,'L');
+                //tipo servicio 
+                if($row->tipo_servicio==1){$fpdf->Cell(10,7,'I',0,0,'C');}
+                if($row->tipo_servicio==2){$fpdf->Cell(10,7,'Tv',0,0,'C');}
+                if($row->tipo_servicio==0){$fpdf->Cell(10,7,'-',0,0,'C');}
+                //fin de tipo servicio
+                if($row->anulada==0){
+                    $fpdf->Cell(15,7,number_format($row->total,2),0,0,'C');
+                    $suma+=$row->total;
+                }else{
+                    $fpdf->SetTextColor(194,8,8);
+                    $fpdf->Cell(15,7,utf8_decode("ANULADA"),0,0,'C');
+                    $fpdf->SetTextColor(0,0,0);
+                }
+                $fpdf->Cell(15,7,$row->tipo_pago,0,0,'C');
+                $fpdf->Ln();
             }
-            $fpdf->Ln();
+            
         }
         $fpdf->Cell(20,7,'','B',0,'');
         $fpdf->Cell(20,7,'','B',0,'C');

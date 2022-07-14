@@ -76,7 +76,11 @@
                                         <td>{{$obj_item->get_cliente->nombre}}</td>
                                         <td>{{$obj_item->created_at->format('d/m/Y')}}</td>
                                         <td>{{$obj_item->tipo_servicio}}</td>
-                                        <td>{{$obj_item->get_tecnico->nombre}}</td>
+                                        <td>
+                                            @if(isset($obj_item->get_tecnico->nombre))
+                                            {{$obj_item->get_tecnico->nombre}}
+                                            @endif
+                                        </td>
                                         <td>
                                         @if($obj_item->fecha_trabajo==NULL)
                                             <div class="col-md-8 badge badge-pill badge-danger ">Pendiente</div>

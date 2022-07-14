@@ -104,12 +104,12 @@ class HomeController extends Controller
             $produc = Factura::where('anulada',0)->where('cuota',0)->whereBetween('created_at',[$fecha_inicial,$fecha_final])->get();
             
             foreach ($dat_in as $value) {
-                $total+= $value->total;
+                $total+= $value->precio;
                 
             }
 
             foreach ($dat_tv as $value1) {
-                $total1+= $value1->total;
+                $total1+= $value1->precio;
                 
             }
 

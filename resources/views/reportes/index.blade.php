@@ -65,6 +65,17 @@
                                     <option value="POST" >POST</option>
                                 </select>
                             </div>
+                            <div class="col-md-2">
+                                <label for="example-text-input">Cobrador</label>
+                                
+                                <select class="form-control" data-live-search="true" name="id_cobrador" id="id_cobrador">
+                                    <option value="" >Seleccionar...</option>        
+                                    @foreach ($obj_cobradores as $obj_item)
+                                    <option value="{{$obj_item->id}}">{{$obj_item->nombre}}</option>          
+                                    @endforeach            
+                                </select>
+                                
+                            </div>
                         @endif
                         @if($opcion=="Ordenes")
                             <div class="col-md-2">
